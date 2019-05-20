@@ -8,20 +8,26 @@ all:  sw
 clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
+run:  sw
+	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /tmp/x/main.go
+	go run /tmp/x/main.go 	 
+
 check: sw nds/ac.sw
 	./sw nds/aa.sw  
 	./sw nds/ab.sw
-	./sw nds/ac.sw
-	./sw nds/ae1.sw || echo OK
+	./sw nds/ac.sw || echo OK
 	
-sw: sw.o swnemod.o  ${OBJS}
-	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o   -o sw
+sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o 
+	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o  -o sw
 	
 sw.o: sw.c sw.h  Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
 swnemod.o: swnemod.c sw.h swnemod.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c swnemod.c -o swnemod.o 	
+	
+swgo.o: swgo.c swgo.h
+	${CC} ${CCFLAGS} -c swgo.c -o swgo.o	
 
 Absyn.h: ../Absyn.h
 	cp -s ../Absyn.h ./	

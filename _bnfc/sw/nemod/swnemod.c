@@ -6,28 +6,54 @@
 #include "Printer.h"
 #include "Absyn.h"
 #include "sw.h"
+#include "swgo.h"
 
 ValidSW pValidSW(FILE *inp);
 
 
 Model genGraph(Model nemod) { return nemod;};       /*Create Graphviz file */
 
-Model genGo(Model nemod) { return nemod;};			/*Create Go Program*/
 
-Model verify(Model nemod) { 						/*expand and check nemod*/
+int verifyOK(Model nemod) { 						/*expand and check nemod*/
+	Flow f;
 	
 	if(!nemod) {
-		fprintf(stderr,"SW:FAIL: Model nemod not built!");
-		exit(1);
+		fprintf(stderr,"SW/verify: Model nemod not built!");
+		return(0);
 	}	
-	
+
+#ifdef VERIFY_VERBOSE	
 	fprintf(stderr,
-		"verify/nemod: %d/%d/%d flows/procs/components.\n", 
+		"SW/verify/nemod: %d/%d/%d flows/procs/components.\n", 
 			nemod->nflows, 
 			nemod->nprocs, 
 			nemod->ncomponents
 	);
-	return nemod;
+#endif	
+	
+	f=nemod->flow;
+	while(f) {
+			if(!f->sink->comp) {
+				fprintf(stderr,
+				  "SW/verify: missing sink component for process: (%s)\n", 
+					f->sink->name
+				);
+				return 0;
+			}
+#if 0		
+			printf("/* (%s %s.%s)%d<-%d(%s %s) */\n", 
+				f->sink->name,
+				f->sink->comp->path,
+				f->sink->comp->name,
+				f->sink->port->id, 
+				f->source->port->id, 
+				f->source->name,
+				f->source->comp->name
+			);
+#endif				
+		f=f->next;
+	}
+	return 1;
 	
 };  		
 
@@ -133,20 +159,17 @@ int main(int argc, char ** argv)
   Model nemod;    /* Network Model */
   
   ValidSW parse_tree;
-  if (argc > 1) 
-  {
+  if (argc > 1)   {
     input = fopen(argv[1], "r");
-    if (!input)
-    {
+    if (!input)   {
       fprintf(stderr, "Error opening input file.\n");
       exit(1);
-    }
+    } 
   }
   else input = stdin;
   /* The default entry point is used. For other options see Parser.h */
- 		parse_tree = pValidSW(input);
-  if (parse_tree)
-  {
+  parse_tree = pValidSW(input);
+  if (parse_tree)   {
     // printf("\nParse Succesful!\n");
     // printf("\n[Abstract Syntax]\n");
     // printf("%s\n\n", showValidSW(parse_tree));
@@ -154,10 +177,14 @@ int main(int argc, char ** argv)
     // printf("%s\n\n", printValidSW(parse_tree));
     
     nemod=visitValidSW(parse_tree);
-    fprintf(stderr,"Nice visit!\n");
-    verify(nemod);  
-    genGo(nemod); 
-    genGraph(nemod);
+    // fprintf(stderr,"Nice visit!\n");
+    if(verifyOK(nemod)) {  
+	    genGo(nemod); 
+    	genGraph(nemod);
+    } else {
+    	fprintf(stderr,"SW/FAIL: Verify failed.\n");
+    	exit(1);
+    }	
     return 0;
   }
   return 1;
