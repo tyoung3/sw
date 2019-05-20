@@ -51,7 +51,7 @@ QuickStart (on Linux)
 	* Install StreamWork backend from github.  (Requires Go installation.)
 	* Download 'sw' from github to any convenient location.
 	* Run 'chmod a+x sw'
-	* Run 'echo "(Snk std.Print1)0 <- 0(Src strings.Gen1); " | ./sw ' 	
+	* Run 'echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw ' 	
 
 Author
 ------

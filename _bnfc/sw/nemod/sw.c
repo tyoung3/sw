@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include "sw.h"
 
-String default_path={"github/tyoung3/streamwork/std"};   /* ?? arg later */
+String default_path={"strings"};   /* ?? arg later */
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
