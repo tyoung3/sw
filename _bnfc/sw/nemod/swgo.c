@@ -1,5 +1,9 @@
 /* SWGO.C 
 		  Greate StreamWork Go program 
+		  
+TODO: 
+	. fix argument strings
+	. Make collate work 		  
 */
 #include <stdio.h>
 #include <stdlib.h>

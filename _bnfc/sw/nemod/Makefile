@@ -1,7 +1,7 @@
 CC = gcc
 
-# CCFLAGS = -g -W -Wall
-CCFLAGS = -O6 -W -Wall
+CCFLAGS = -g -W -Wall
+#CCFLAGS = -O6 -W -Wall
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
@@ -20,9 +20,12 @@ check: sw nds/ac.sw
 	./sw nds/ab.sw
 	./sw nds/ac.sw || echo OK
 	
-sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o 
-	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o  -o sw
+sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o swsym.o 
+	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o swsym.o -o sw
 	
+swsym.o: swsym.c swsym.h 
+	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
+		
 sw.o: sw.c sw.h  Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
