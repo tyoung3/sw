@@ -25,9 +25,9 @@ Description
 -----------
 
 StreamWork is a proof-of-concept for a Go language flow-based system 
-which reads and executes a StreamWork network definition(NEMOD).
+which reads and executes a StreamWork network definition(ND).
 
-The current NEMOD is defined as a list of Flows.  Each Flow consists 
+A ND is a list of Flows in a text file.  Each Flow consists 
 of a a sink process, a sink port number, "<->", a source portnumber, and   source process.  Ex.  
 
     (In strings.Print1)0 <- 0(Out strings.Gen1);
@@ -38,7 +38,7 @@ This frontend has is extremely limited to just enough to provide the
 proof-of-concept.
 
 
-Everything here(including the project name) is subject to change.  
+Everything here(including the project name) is subject tgit checkout -b "o change.  
 Versions will be backward compatible within the same major version. 
 Ex. your code depending on v0.0.1 will still work on v0.8.7, but may fail on v1.0.0.  
 Streamwork is developed using the Go module facility, so that dependencies are clear.   
