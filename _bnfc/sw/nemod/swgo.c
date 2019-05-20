@@ -78,11 +78,17 @@ void genGo(Model nemod) {
 	while(f) {
 			printf("fbp.Launch(&wg,");
 			printf(" []string{\"%s\"}",f->sink->name); 
-			printf(", strings.%s, cs[0:1])\n",f->sink->comp->name);
+			printf(", %s.%s, cs[0:1])\n",			
+				f->sink->comp->path,
+				f->sink->comp->name
+			);
 	
 			printf("fbp.Launch(&wg,");
 			printf(" []string{\"%s\"}",f->source->name); 
-			printf(", strings.%s, cs[0:1])\n",f->source->comp->name);
+			printf(", %s.%s, cs[0:1])\n",
+				f->source->comp->path,
+				f->source->comp->name
+			);
 	
 		f=f->next;
 	}

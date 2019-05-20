@@ -1,4 +1,4 @@
 # 
 
-(A Comp1)0<-0(B Comp2);
+(A std.Comp1)0<-0(B xyz.Comp2);
 
