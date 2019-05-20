@@ -40,21 +40,25 @@ void genPrefix(int nflows) {
 }
 	
 void genLaunches(Flow f) {	
+    int cn=0;   /* Channel number */
+    
 	while(f) {
 			printf("fbp.Launch(&wg,");
 			printf(" []string{\"%s\"}",f->sink->name); 
-			printf(", %s.%s, cs[0:1])\n",			
+			printf(", %s.%s, cs[%i:%i])\n",			
 				f->sink->comp->path,
-				f->sink->comp->name
+				f->sink->comp->name,
+				cn, cn+1
 			);
 	
 			printf("fbp.Launch(&wg,");
 			printf(" []string{\"%s\"}",f->source->name); 
-			printf(", %s.%s, cs[0:1])\n",
+			printf(", %s.%s, cs[%i:%i])\n",
 				f->source->comp->path,
-				f->source->comp->name
+				f->source->comp->name, 
+				cn, cn+1
 			);
-	
+			cn++;
 		f=f->next;
 	}	
 	printf("\n");
