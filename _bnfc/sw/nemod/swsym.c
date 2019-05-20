@@ -15,10 +15,13 @@
 
 
 struct bucket {
+	union {
+		Flow flow; 
+		Process proc; 
+	} u;
 	char *tag;
 	struct bucket *link;
 	struct bucket *next;
-	Process proc; 
 } bucket;
 typedef struct bucket *bucketp;
 
@@ -168,7 +171,7 @@ Process getProc(char *key) {
 		return MakeProcess(key,NULL);
 	}
 	
-	return b->proc;
+	return b->u.proc;
 }
 
 #ifdef TEST_MAIN
