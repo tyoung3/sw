@@ -1,5 +1,7 @@
 CC = gcc
-CCFLAGS = -g -W -Wall
+
+# CCFLAGS = -g -W -Wall
+CCFLAGS = -O6 -W -Wall
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
@@ -9,8 +11,9 @@ clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
 run:  sw
-	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /tmp/x/main.go
-	go run /tmp/x/main.go 	 
+	[ -d /dev/shm/sw ] || mkdir /dev/shm/sw
+	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /dev/shm/sw/main.go
+	go run /dev/shm/sw/main.go 	 
 
 check: sw nds/ac.sw
 	./sw nds/aa.sw  
