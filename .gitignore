@@ -1,20 +1,22 @@
-	Absyn.c
-	Absyn.h
-	AbsynLexer.c
-	Lexer.o
-    Parser.c
-	Parser.h
-	Parser.o
-	_bnfc/sw/Makefile
-	Printer.h
-	Printer.o
-	SW.l
-	SW.y
-	Skeleton.c
-	Skeleton.h
-	Test.c
-	*.o
-	*.bak
-	_bnfc/sw/TestSW
+Absyn.c
+Absyn.h
+AbsynLexer.c
+Lexer.o
+Lexer.c
+Parser.c
+Parser.h
+Parser.o
+_bnfc/sw/Makefile
+Printer.h
+Printer.c
+Printer.o
+SW.l
+SW.y
+Skeleton.c
+Skeleton.h
+Test.c
+*.o
+*.bak
+_bnfc/sw/TestSW
 
 
