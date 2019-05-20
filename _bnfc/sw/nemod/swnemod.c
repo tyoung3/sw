@@ -21,14 +21,15 @@ int verifyOK(Model nemod) { 						/*expand and check nemod*/
 		fprintf(stderr,"SW/verify: Model nemod not built!");
 		return(0);
 	}	
-	
+
+#ifdef VERIFY_VERBOSE	
 	fprintf(stderr,
 		"SW/verify/nemod: %d/%d/%d flows/procs/components.\n", 
 			nemod->nflows, 
 			nemod->nprocs, 
 			nemod->ncomponents
 	);
-	
+#endif	
 	
 	f=nemod->flow;
 	while(f) {
