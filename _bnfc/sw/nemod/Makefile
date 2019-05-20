@@ -8,6 +8,10 @@ all:  sw
 clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
+run:  sw
+	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /tmp/x/main.go
+	go run /tmp/x/main.go 	 
+
 check: sw nds/ac.sw
 	./sw nds/aa.sw  
 	./sw nds/ab.sw
