@@ -19,5 +19,5 @@ Test.c
 *.bak
 _bnfc/sw/TestSW
 tags
-
+gen/*
 
