@@ -34,7 +34,8 @@ int verifyOK(Model nemod) { 						/*expand and check nemod*/
 	f=nemod->flow;
 	while(f) {
 			if(!f->sink->comp) {
-				fprintf(stderr,"SW/verify: missing (%s) sink component.\n", 
+				fprintf(stderr,
+				  "SW/verify: missing sink component for process: (%s)\n", 
 					f->sink->name
 				);
 				return 0;
@@ -181,7 +182,7 @@ int main(int argc, char ** argv)
 	    genGo(nemod); 
     	genGraph(nemod);
     } else {
-    	fprintf(stderr,"SW/FAIL: Verify failed!");
+    	fprintf(stderr,"SW/FAIL: Verify failed.\n");
     	exit(1);
     }	
     return 0;

@@ -10,7 +10,7 @@ void genGo(Model mod) {
 	
 	//? genND(mod);
 	
-	fprintf(stderr,"GenGo: %d flows.\n", mod->nflows);
+	// fprintf(stderr,"GenGo: %d flows.\n", mod->nflows);
 	
 	if (!mod) {
 			fprintf(stderr,"swgo/FAIL: Missing model\n");
@@ -22,7 +22,7 @@ void genGo(Model mod) {
 				//* Generate Flow code */
 	f=mod->flow;
 	while(f) {
-			printf("/* (%s %s.%s)%d<-%d(%s %s.%s) */\n", 
+			printf("/* (%s %s.%s)%d <- %d(%s %s.%s) */\n", 
 				f->sink->name,
 				f->sink->comp->path,
 				f->sink->comp->name,

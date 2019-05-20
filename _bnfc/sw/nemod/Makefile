@@ -11,8 +11,7 @@ clean:
 check: sw nds/ac.sw
 	./sw nds/aa.sw  
 	./sw nds/ab.sw
-	./sw nds/ac.sw
-	./sw nds/ae1.sw || echo OK
+	./sw nds/ac.sw || echo OK
 	
 sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o 
 	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o  -o sw

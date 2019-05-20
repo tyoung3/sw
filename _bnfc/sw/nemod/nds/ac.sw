@@ -1,12 +1,19 @@
 {#
-      AC.sw
+      AE1.sw
       
-      This file contains semantic errors, but not syntax errors.
-      I.e. it will parse successfully, but fail later.
+      This file contains only syntax errors.
+      I.e. every statement will fail to parse successfully.
 #}
 
-(A strings.Print1)0 <- 0(B strings.Gen1); 
-(C strings.Print1)0 <- 0(D strings.Gen1 "2"); 
-(E strings.Print1)0 <- 3(F strings.Gen1 "3" "7"); 
-(F)2 <- 7(D);
-(F "8")2 <- 8(D);
+(X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b.c "abc" FailOKHere); 
+(X b.c)2 <- "ab"; 
+"File" <- 0(X b.c); 
+(X in.b.c)2 <- 3(D); 
+(E Comp_bc@2)2 <- 8(D);
+(3)2 <- 8(D);
+(F 8)2 <- 8(D);
+(A strings.Print1)0 <- a(B strings.Gen1); 
+(F)2 <- 7(D) <- 8(E);
+(A strings.Print1)0 <- a(B strings.Gen1); 
+(E strings.Print1)in1 <- 2(F strings.Gen1 "3" "7"); 
+(C strings.Print1)0 <- out1(D strings.Gen1 "2"); 
