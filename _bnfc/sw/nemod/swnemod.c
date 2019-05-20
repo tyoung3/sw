@@ -176,7 +176,7 @@ int main(int argc, char ** argv)
     // printf("%s\n\n", printValidSW(parse_tree));
     
     nemod=visitValidSW(parse_tree);
-    fprintf(stderr,"Nice visit!\n");
+    // fprintf(stderr,"Nice visit!\n");
     if(verifyOK(nemod)) {  
 	    genGo(nemod); 
     	genGraph(nemod);
