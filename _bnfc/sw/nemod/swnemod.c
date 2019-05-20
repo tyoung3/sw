@@ -6,13 +6,13 @@
 #include "Printer.h"
 #include "Absyn.h"
 #include "sw.h"
+#include "swgo.h"
 
 ValidSW pValidSW(FILE *inp);
 
 
 Model genGraph(Model nemod) { return nemod;};       /*Create Graphviz file */
 
-Model genGo(Model nemod) { return nemod;};			/*Create Go Program*/
 
 Model verify(Model nemod) { 						/*expand and check nemod*/
 	

@@ -2,6 +2,7 @@
 #define nemod_h_
 
 
+#include "Absyn.h"
 
 /*          Network  Model
  
