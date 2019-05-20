@@ -38,8 +38,8 @@ Model visitListStm(ListStm liststm)
 Flow visitFlw(Flw _p_)
 {
     return MakeFlow(
-    	visitSrce(_p_->u.flowx_.srce_),  
-    	visitSnk(_p_->u.flowx_.snk_)
+    	visitSnk(_p_->u.flowx_.snk_),
+    	visitSrce(_p_->u.flowx_.srce_)  
     	); 
 }
 

@@ -2,5 +2,6 @@
 #define SWGO_H_
 
 void genGo(Model mod);
+void genND(Model mod);   /* Generate Network Definition */
 
 #endif  // SWGO_H_
