@@ -8,7 +8,7 @@
 void genGo(Model mod) {
 	Flow f;
 	
-	genND(mod);
+	//? genND(mod);
 	
 	fprintf(stderr,"GenGo: %d flows.\n", mod->nflows);
 	
@@ -22,10 +22,15 @@ void genGo(Model mod) {
 				//* Generate Flow code */
 	f=mod->flow;
 	while(f) {
-		if ( f->sink->port->id )
-			printf("/* (%s)%d<-%d(%s) */\n", f->sink->name,f->sink->port->id, f->source->port->id, f->source->name);
-		else 
-			printf("/* (%s)%d<-(%s) */\n", f->sink->name, f->source->port->id, f->source->name);		
+			printf("/* (%s %s.%s)%d<-%d(%s %s) */\n", 
+				f->sink->name,
+				f->sink->comp->path,
+				f->sink->comp->name,
+				f->sink->port->id, 
+				f->source->port->id, 
+				f->source->name,
+				f->source->comp->name
+			);
 				
 		f=f->next;
 	}

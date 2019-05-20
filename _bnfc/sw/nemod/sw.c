@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "sw.h"
+
+String default_path={"github/tyoung3/streamwork/std"};   /* ?? arg later */
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
@@ -100,7 +102,7 @@ Component visitComp(Comp _p_)
   switch(_p_->kind)
   {
   case is_Compx:
-     return MakeComponent(visitIdent(_p_->u.compx_.ident_), NULL);
+     return MakeComponent(visitIdent(_p_->u.compx_.ident_), default_path);
    case is_Compy:
     return MakeComponent( 
 	    visitIdent(_p_->u.compy_.ident_2),
