@@ -1,0 +1,162 @@
+--  SW.cf  
+--	    Note: No semicolon(;) after INCLUDE statement.  INCLUDE is a lexer directive. (Like EXIT)
+--          Note: There can be up to MAX_NESTING(currently=15) levels of INCLUDE files. 
+--	    Note: "EXIT" causes the SW parser to quit parsing the current file.  
+
+entrypoints		ValidSWFE; 
+Valid.	 	ValidSWFE  	::= [Stm] ;
+
+SFlow.			Stm		::= Flow;     
+SPrcss.			Stm		::= Prcess;
+SOrphan.		Stm		::= Orphan;		
+AssignmentA.		Stm		::= Assignment;
+ProcessPnmCmp. 		Stm		::= "PROCESS"       Symval Component ;
+SAttr.			Stm		::= "ATTR" Symval Symval "=" Sexpr;
+Assert.			Stm		::= "ASSERT"  Aexpr  ;
+IfAexStmStm.		Stm		::= "IF"  Acond   "{" [Stm]  "}" "ELSE" "{" [Stm]  "}" ;
+IfAexStm.		Stm		::= "IF"  Acond   "{" [Stm]  "}" ;
+SwitchAexCase.		Stm		::= "SWITCH"  Acond "{" [Case] "}" ;
+ForNumAexNumStm. 	Stm		::= "FOR"   NumAssgn ";"  Aexpr ";" Acond  "{" [Stm]  "}" ;
+WhlAexStm. 		Stm		::= "WHILE"   Acond    "{" [Stm]  "}" ;
+internal IncFile.  	Stm	 	::= "INCLUDE" FILENAME; 	-- Lexer, not the parser, handles INCLUDE processing.
+internal ExitPgm.  	Stm	 	::= "EXIT" ; 	-- EXIT Stops the parsing.
+internal ExecPgm.  	Stm	 	::= "exec" ; 	-- Bash exec statement will be ignored by the lexer.
+terminator	       	Stm    ";" ;
+
+AAsgn.		       	Acond		::= NumAssgn;
+AAexp.		       	Acond		::= Aexpr;
+
+Casea.			Case		::= "CASE"    Aexpr  "{"  [Stm]  "}"  ; 
+Default.		Case		::= "DEFAULT"        "{"  [Stm]  "}"  ; 
+terminator   		Case   ";"  ;
+
+FlwGo.			Flow		::= Source  "<-"  Sink;					-- This is a go channel
+FlwQueSs.		Flow		::= Source  "~>"  Sink;
+FlwMemSs.		Flow		::= Source  "_>"  Sink;
+FlwPipeSs.		Flow 		::= Source  "=>"  Sink ;
+FlwbigPipeSs.		Flow 		::= Source  "==>" Sink ;     
+FlwToFile.		Flow		::= Source  "=>"  Sexpr;
+FileToFlw.		Flow		::= Sexpr   "=>"  Sink; 
+FlwToPrcs.		Flow		::= Source        Prcess;       	  --Ex.  (Src)flow(Sink)
+FlwSrcSnk.		Flow		::= Source  "|"   Sink;	          	  --(A)OUT|IN(B) is equivalent to  (A)OUT==>IN(B) 
+FlwSrcIn.		Flow		::= Source  "|"   Prcess;	          --(A)OUT|(B) is equivalent to  (A)OUT=>0(B) 
+FlwOutSnk.		Flow		::= Prcess  "|"   Sink;	         	  --(A)|IN(B) is equivalent to  (A)1=>IN(B) 
+FlwOutIn.		Flow		::= Prcess  "|"   Prcess;	          --(A)|(B) is equivalent to  (A)1=>0(B) 
+-- FlwAuto.		Flow		::= Prcess        Prcess;		  --Autoconnect components. use (A); (B); instead
+
+OrphSrcA.		Orphan		::= Source  "=>"  ;           
+OrphSnkA.		Orphan		::= "=>" Sink ;  
+OrphSrc.		Orphan		::= Source  "=>" "*" Symval;           
+OrphSnk.		Orphan		::= "*" Symval "=>" Sink ;           
+
+SrcPrcsGt.		Source		::= Prcess Validate GATe ;		
+SrcFlowGt. 		Source		::= Flow   Validate GATe ;		
+
+ValEmpty.		Validate	::= ;
+ValPrcs.		Validate	::= "^";				-- Data validation not implemented.
+
+Snk.			Sink		::= Expression  Prcess; 		-- DFD fails if 'Expression' is replaced by 'GATe'. 
+SChk.			Sink		::= Expression "^" Prcess; 		-- "^" = validate dataflow		
+
+GateOut.		GATe		::= Expression;				-- CAPitals in 'GATe' to prevent name clashes w/dfd code.
+
+PrcsSym.		Prcess		::= "(" Symval ")" ;
+PrcsSymCmp.		Prcess		::= "(" Symval  Component ")" ;
+
+CmpStr.			Component3   	::= Sexpr; 
+CmpPth.			Component3   	::= PATH; 		
+CmpFlnm.		Component3   	::= FILENAME; 	
+CmpNdSym.		Component2   	::= Hostnode Sexpr;
+CmpNdPth.		Component2   	::= Hostnode PATH ;	
+CmpCArg.		Component1   	::= Component1 Argument;
+_.			Component     	::= Component1;
+_.			Component1   	::= Component2;
+_.			Component2   	::= Component3;
+
+NdHstn.			Hostnode	::= Hostname;				
+NdHsnPrtnm.		Hostnode	::= Hostname Aexpr ":" ;               
+NdUsr.			Hostnode	::= User; 
+NdUsrPrtnm.		Hostnode	::= User Aexpr ":";
+
+HostnameS.		Hostname 	::= Symval ":";
+
+Usr. 			User		::= Symval "@" Hostname ;
+
+ArgumentS.		Argument	::= Sexpr;
+
+NasNvarNasg.		NumAssgn1 	::= ARITHVAR "=" NumAssgn;  		
+NasNvarAxpr.		NumAssgn 	::= ARITHVAR "=" Aexpr;	    
+_.			NumAssgn      	::= NumAssgn1;
+
+AsNum.	 	       	Assignment	::= NumAssgn;
+AsSym.	        	Assignment	::= SymAssgn;
+AsStr.			Assignment	::= StrAssgn;
+	
+SasSvarSasg.		SymAssgn1 	::= SYMVAR 	"=" SymAssgn;
+SasSvarSval.		SymAssgn 	::= SYMVAR 	"=" Symval;	
+_.			SymAssgn	::= SymAssgn1;
+
+StaStvarSagn.		StrAssgn1 	::= STRINGVAR  "=" StrAssgn;
+StaStvarSexp.		StrAssgn	::= STRINGVAR  "=" Sexpr;
+_.			StrAssgn	::= StrAssgn1;
+	
+ESval.			Expression	::= Symval;
+EAexp.			Expression	::= Aexpr;
+EAexpSexp.		Expression	::= Aexpr "." Symval;
+
+Aint.      		Aexpr9		::= Integer;
+Avar.			Aexpr9		::= ARITHVAR;
+AUmin.			Aexpr8   	::= "-" Aexpr8;
+
+AASymEq.	        Aexpr7		::= "%(" Symval "==" Symval ")";  
+AASexpEq.	        Aexpr7		::= "%(" Sexpr  "==" Sexpr  ")";
+AASexpNe.	        Aexpr7		::= "%(" Sexpr  "!=" Sexpr  ")";
+AASexpGe.	        Aexpr7		::= "%(" Sexpr  ">=" Sexpr  ")"; 
+AASexpLe.	        Aexpr7		::= "%(" Sexpr  "<=" Sexpr  ")";
+AASexpGt.	        Aexpr7		::= "%(" Sexpr  ">"  Sexpr  ")"; 
+AASexpLt.	        Aexpr7		::= "%(" Sexpr  "<"  Sexpr  ")"; 
+AASexpAexp.	 	Aexpr7		::= "%(" Sexpr  ")"  ;         	
+		
+AAxprMul.		Aexpr5		::= Aexpr5 "*"   Aexpr6; 
+AAxprDiv.		Aexpr5		::= Aexpr5 "/"   Aexpr6; 
+AAxprPlus.		Aexpr3		::= Aexpr3 "+"   Aexpr4 ;
+AAxprMin.		Aexpr3 		::= Aexpr3 "-"   Aexpr4;
+AAxprEq.		Aexpr1 		::= Aexpr1 "=="  Aexpr2;
+AAxprNe.		Aexpr1 		::= Aexpr1 "!="  Aexpr2;
+AAxprGe.		Aexpr1 		::= Aexpr1 ">="  Aexpr2;
+AAxprLe.		Aexpr1 		::= Aexpr1 "<="  Aexpr2;
+AAxprGt.		Aexpr1 		::= Aexpr1 ">"   Aexpr2;
+AAxprLt.		Aexpr1 		::= Aexpr1 "<"   Aexpr2;
+AAxprOr.		Aexpr 		::= Aexpr  "OR"  Aexpr1;
+AAxprAnd.		Aexpr 		::= Aexpr  "AND" Aexpr1;
+coercions		Aexpr 	9;
+	 
+SeStr.			Sexpr3		::= String;
+SeSval.			Sexpr3		::= Symval;
+Sesvar.			Sexpr3		::= STRINGVAR;
+SetSexpAexp.		Sexpr2		::= "$("  Aexpr ")";                            
+SetSexpCncat.		Sexpr1		::= Sexpr1 "*" Sexpr2  ;      			
+SetSexpCmmt.		Sexpr1		::= Sexpr1  "(" Sexpr2 "," Sexpr2 ")" ;  	
+coercions		Sexpr	3;
+
+Symbol.			Symval		::= SYMBOL;
+Symvar.			Symval		::= SYMVAR;
+Sstrng.			Symval		::= "&("  Sexpr ")" ;    
+
+token	SYMBOL	      	letter ( letter | digit | '_' | '.' )* ;
+token	ARITHVAR  	'%'         	letter	( letter | digit | '_' )* ;
+token	STRINGVAR 	'$'   ( letter | digit ) ( letter | digit | '_' )*;
+token	SYMVAR      	'&'  		letter 	( letter | digit | '_' )* ;
+
+token 	PATH           	( letter | digit | '_' | '.'   )* 
+						'/' 
+				     ( letter | digit | '_' | '.'  | '/')*  ;
+						      
+token	FILENAME   	( letter | digit | '_' | '.'  )* 
+						'.' 
+				    ( letter | digit | '_' | '.'  )* ;
+
+comment "#";
+comment "{#" "#}";	
+	
+
