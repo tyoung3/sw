@@ -1,21 +1,20 @@
-	_bnfc/sw/Absyn.c
-	_bnfc/sw/Absyn.h
-	_bnfc/sw/Absyn.o
-	_bnfc/sw/Lexer.c
-	_bnfc/sw/Lexer.o
+	Absyn.c
+	Absyn.h
+	AbsynLexer.c
+	Lexer.o
+    Parser.c
+	Parser.h
+	Parser.o
 	_bnfc/sw/Makefile
-	_bnfc/sw/Parser.c
-	_bnfc/sw/Parser.h
-	_bnfc/sw/Parser.o
-	_bnfc/sw/Printer.c
-	_bnfc/sw/Printer.h
-	_bnfc/sw/Printer.o
-	_bnfc/sw/SW.l
-	_bnfc/sw/SW.y
-	_bnfc/sw/Skeleton.c
-	_bnfc/sw/Skeleton.h
-	_bnfc/sw/Test.c
-	_bnfc/sw/Test.o
+	Printer.h
+	Printer.o
+	SW.l
+	SW.y
+	Skeleton.c
+	Skeleton.h
+	Test.c
+	*.o
+	*.bak
 	_bnfc/sw/TestSW
 
 
