@@ -48,13 +48,16 @@ Comments and critiques are welcome.    Please do not submit code before contacti
 
 QuickStart (on Linux) 
 ----------
-	* To run generated Go code, install the tyoung3/StreamWork backend 
+	* To run the generated Go code, install the tyoung3/StreamWork backend 
 	  from github.  (Requires Go installation.).  The backend should run 
-	  in any Golang compatible environment. 
+	  in any Golang compatible environment.  Sw will run without  
+	  installing tyoung3/StreamWork, the generated Go code just won't work.
 	* Download the 'sw' executable from github to any convenient location.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run 'echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw ' 	> /tmp/main.go 
-	* Run 'go run /tmp/main.go
+	* Run 
+```	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /tmp/main.go 
+```
+	* Run 'go run /tmp/main.go  ...
 
 OUTPUT: 
 ```	
