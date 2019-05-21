@@ -23,7 +23,7 @@ static void genPrefix(int nflows) {
 	printf("#Prefix here. %d flows\n",nflows);
 	P(digraph g {);
 	P(graph [);
-		C(	name="Network Definition Edit Panel" );
+		C(	name="Streamwork: Collate Example Graph" );
         C(	fontcolor=black);
         P(	fontname="Helvetica");           
     P(]);
@@ -42,50 +42,79 @@ static void genPrefix(int nflows) {
             C(                fontsize="18");
               C(              fontcolor=black);
                P(     ]);
-               
-  P(subgraph "clusternogales" { );
-	P( label = "nogales"; name="nogales";);
-	P(URL="nogales.shtml";);
-	
-     P(       "PANEL" );
-       C(                                     [ shape=record);
-     C(                                       color="black" );
-     C(                                       URL=".PANEL.shtml");
-     C(                                       host="taos");
-     P(                                      label="{<P> PANEL|GC.tcl }|<1 > 1 |<0> 0"];);
 
+}
+
+
+static void genEdit() {
     P(        "EDIT" );
     C(                [ shape=record);
     C(                  color="black");
     C(                  URL="EDIT.shtml");
     C(                  host="nogales");
-    P(  label="{<P> EDIT);|lefty -el 2 vdfd.lefty}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];);
-    P(        });
+    P(  label="{<P> EDIT);|swedit}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];);
+   
+}
 
-        
-    P(subgraph "clustertaos" { );
-     P(        label = "taos"; name="taos";);
-    P(        URL="taos.html";);
-    
-    
+static void genPort(int n) {
+  		printf("|<%i> %i", n, n);
+}  	
 
+static void genProc(char *name, char *comp, char *host) {
+
+     printf("       \"%s\" ", name );
+     C(                   [ shape=record);
+     C(                  color="black" );
+     printf("  URL=\".%s.shtml\"\n",name);
+     printf(" host=\"%s\" \n", host);
+     printf("label=\"{<P> %s|%s }",name,comp);
+  
+}  	    
+ 
+
+static void endProc() {
+    printf("\"\n"); 
+    printf("];\n"); // End proc 
+}
+
+     
+static void genCluster1(char *name) { 
+               
+  printf("subgraph \"cluster%s\" {\n",name );
+	printf("label = \"%s\"; name=\"%s\";\n",name,name);
+	printf("URL=\"%s.shtml\";\n\n",name);
+
+     
+}
+    
+static void genSAVE() {
     P(        "SAVE" );
     C(                     [ shape=record);
     C(                       URL="SAVE.shtml");
     C(                       color="black" );
     C(                       host="taos");
     P(                       label="{<P> SAVE|WriteFile }|<in> in"];);
-    P(        });
+}
 
+
+static void genTaos() {        
+    P(subgraph "clustertaos" { );
+     P(        label = "taos"; name="taos";);
+    P(        URL="taos.html";);
+		genSAVE();
+    P(        });
+ }   
+
+static void genLinks() {
     P({ "PANEL":1  -> "EDIT":0;  headurl="pe10.shtml";});
     P("EDIT":7  -> "SAVE":in;);
     P("EDIT":5  -> "PANEL":0;);
-    //  In suffix P(});
-
-
 }
+
+
 	
-static void genProcs(Process p) {	
+static void genProcs(Process p) {
+	Port pt;	
     
 	while(p) {
 			printf("#(%s %s.%s) %d ports\n",
@@ -94,9 +123,19 @@ static void genProcs(Process p) {
 				p->comp->name,
 				p->nportsIn + p->nportsOut
 			);
-			p=p->next;
+	
+		genProc(p->name,p->comp->name,"taos_");
+			pt = p->port;
+			do {
+				genPort(pt->id);
+				pt=pt->next;
+			} while(pt->next != p->port);
+		endProc(); 
+		
+		p=p->next;
 	}	
 	
+		
 	printf("\n");
 }	
 
@@ -138,9 +177,27 @@ void genGraph(Model nemod) {
 	
 				//* Generate Prefix code */
 	genPrefix(nemod->nflows);
-	p=nemod->proc;  /* Get first process */
-	genProcs(p); 
-	genSuffix();	//* Generate Suffix code */
+	
+	
+	genCluster1("newStuff");
+		
+		p=nemod->proc;  /* Get first process */
+		genProcs(p); 
+    P(        });    /* End Cluster1 */	
+	
+		//genTaos();
+	genCluster1("OLDhost");
+		genProc("PANEL", "Pcomp","PnlHost");
+			genPort(0);
+			genPort(2);
+			genPort(1);
+		endProc(); 
+		genEdit();
+		genSAVE();
+    P(        });    /* End Cluster1 */	
+    
+	genLinks(); 
+	genSuffix();	   //* Generate Suffix code */
 }
 
 /*    End of SWGRAPH.C  */
@@ -148,7 +205,7 @@ void genGraph(Model nemod) {
 #ifdef EXAMPLE_GRAPH
 digraph g {
 	graph [
-		name="Network Definition Edit Panel",
+		name="Collate Example Graph",
  		style=bold,
  		color=black,
  		margin="2",
@@ -200,7 +257,7 @@ digraph g {
 					color="black", 
 					URL="EDIT.shtml",
  					host="nogales",
-					label="{<P> EDIT|lefty -el 2 vdfd.lefty}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];
+					label="{<P> EDIT|swedit}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];
 	"SAVE" 
 					[ shape=record,
 					URL="SAVE.shtml",
