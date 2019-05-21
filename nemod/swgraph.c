@@ -108,17 +108,19 @@ static void genTaos() {
 
 static void genLinks(Model m) {
 	Flow f;
-	Process src, snk;
+	Process src,snk;
 	
 	f=m->flow;
 	
 	while(f) {
-		src = f->source;
-		snk = f->sink;
-		printf("\"%s\":%i -> \"%s\":%i;\n",
-				src->name, 1, 
-				snk->name,
-				2);	
+		src=f->source;
+		snk=f->sink;
+			 
+			printf("\"%s\":%i -> \"%s\":%i;\n",
+					src->name, f->source_id, 
+					snk->name,
+					f->sink_id);
+	 		
 		f=f->next;
 	}
 	
