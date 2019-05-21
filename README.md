@@ -28,7 +28,7 @@ StreamWork is a proof-of-concept for a Go language flow-based system
 which reads and executes a StreamWork network definition(ND).
 
 A ND is a list of Flows in a text file.  Each Flow consists 
-of a a sink process, a sink port number, "<->", a source portnumber, and   source process.  Ex.  
+of a a sink process, a sink port number, "<-", a source portnumber, and   source process.  Ex.  
 
     (In strings.Print1)0 <- 0(Out strings.Gen1);
 
