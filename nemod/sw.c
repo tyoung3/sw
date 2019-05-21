@@ -39,6 +39,11 @@ static int notListed(Process p, Model m) {
 
 Model visitListStm(ListStm liststm)
 {
+	if(!liststm) {
+		fprintf(stderr,"SW/FAIL: no valid flows\n"); 
+		exit(1);
+	}
+
 	Model m;
 	m = visitStm(liststm->stm_);
 	m->proc = m->flow->source;

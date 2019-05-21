@@ -7,6 +7,9 @@ OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
 all:  sw tags 
 
+install: sw
+	sudo cp ./sw /usr/local/bin 
+
 tags:   sw.c  swgo.c  swnemod.c swsym.c swgo.h nemod.h sw.h  swnemod.h  swsym.h
 
 	ctags *.c *.h
