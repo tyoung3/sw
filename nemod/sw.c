@@ -7,7 +7,7 @@
 #include "sw.h"
 #include "swsym.h"
 
-static String default_path={"strings"};   /* ?? arg later */
+static String default_path={"std"};   /* ?? arg later */
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
@@ -16,9 +16,7 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 
 Model visitStm(Stm _p_) 
 {	
-	Model m;
-					//m=MakeModel(visitStm(liststm->stm_));
-	
+	Model m;  // ?? m=MakeModel(visitStm(liststm->stm_));
 	m=MakeModel(visitFlw(_p_->u.sflow_.flw_));
 	return m;
 }
