@@ -1,4 +1,6 @@
+/* SWNEMOD.C 
 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,12 +10,9 @@
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
+#include "swgraph.h"
 
 ValidSW pValidSW(FILE *inp);
-
-
-Model genGraph(Model nemod) { return nemod;};       /*Create Graphviz file */
-
 
 	
 static int badProc(Process p) {
@@ -200,11 +199,18 @@ Model MakeModel(Flow f) {
 	return m;
 	
 } 
-	
+
+typedef enum{ GOMODE, GRAPHMODE, CMODE, ASTMODE}   MODE;
+ 	
 int main(int argc, char ** argv)
 {
   FILE *input;
   Model nemod;    /* Network Model */
+  MODE mode=GOMODE;
+  
+  if(argc>2) {
+  		mode=atoi(argv[2]);
+  }
   
   ValidSW parse_tree;
   if (argc > 1)   {
@@ -215,20 +221,28 @@ int main(int argc, char ** argv)
     } 
   }
   else input = stdin;
-  /* The default entry point is used. For other options see Parser.h */
+  
   parse_tree = pValidSW(input);
   if (parse_tree)   {
     // printf("\nParse Succesful!\n");
     // printf("\n[Abstract Syntax]\n");
-    // printf("%s\n\n", showValidSW(parse_tree));
     // printf("[Linearized Tree]\n");
     // printf("%s\n\n", printValidSW(parse_tree));
     
     nemod=visitValidSW(parse_tree);
-    // fprintf(stderr,"Nice visit!\n");
-    if(verifyOK(nemod)) {  
-	    genGo(nemod); 
-    	genGraph(nemod);
+    if(verifyOK(nemod)) {
+    	switch (mode) {
+	    	case GRAPHMODE:      
+    			genGraph(nemod);
+    			break;
+	    	case ASTMODE:       // Abstract Syntax 			
+    			printf("%s\n\n", showValidSW(parse_tree));
+    			break;
+    		case GOMODE: 
+    		default:
+	    	    genGo(nemod);
+	    	    break;	
+	    } 	    	
     } else {
     	fprintf(stderr,"SW/FAIL: Verify failed.\n");
     	exit(1);
