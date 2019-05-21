@@ -7,7 +7,7 @@
 #include "sw.h"
 #include "swsym.h"
 
-static String default_path={"strings"};   /* ?? arg later */
+static String default_path={"std"};   /* ?? arg later */
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
@@ -16,9 +16,7 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 
 Model visitStm(Stm _p_) 
 {	
-	Model m;
-					//m=MakeModel(visitStm(liststm->stm_));
-	
+	Model m;  // ?? m=MakeModel(visitStm(liststm->stm_));
 	m=MakeModel(visitFlw(_p_->u.sflow_.flw_));
 	return m;
 }
@@ -39,6 +37,11 @@ static int notListed(Process p, Model m) {
 
 Model visitListStm(ListStm liststm)
 {
+	if(!liststm) {
+		fprintf(stderr,"SW/FAIL: no valid flows\n"); 
+		exit(1);
+	}
+
 	Model m;
 	m = visitStm(liststm->stm_);
 	m->proc = m->flow->source;
@@ -75,31 +78,62 @@ Flow visitFlw(Flw _p_)
     snk=visitSnk(_p_->u.flowx_.snk_);
     src=visitSrce(_p_->u.flowx_.srce_);
 	
-    return MakeFlow(snk, src);
+    return MakeFlow(src, snk);
     
 }
+
+
+/* Add port,p to port list at P->port */
+static void linkPort(Process P, Port p) {  
+	Port p2;   
+	
+	if(P->port == NULL) {
+   		P->port = p;
+    	p->next = p;
+    	p->prev = p;
+		return;
+	}
+	  
+	p2 = P->port;
+	while(p2!=P->port) {
+		if(p->id < p2->id) {         
+			p->next = p2;
+			p->prev = p2->prev;
+			p->prev->next = p;
+			p->next->prev = p;
+			return;
+		}
+		p2 = p2->next;
+	}
+	
+    p->next = P->port;      //    p=9  p2=1
+    p->prev = P->port->prev;
+    p->next->prev = p;
+	p->prev->next = p;
+}    
 
 Process visitSrce(Srce _p_)
 {
 	Process p;
 	Port pt;
-    p = visitProc(_p_->u.sourcex_.proc_);
-    pt = visitPrt(_p_->u.sourcex_.prt_);
-    pt->next = p->port;
-    p->port  = pt; 
+    p  = visitProc(_p_->u.sourcex_.proc_);
+    pt = visitPrt (_p_->u.sourcex_.prt_);  
+    p->source_id = pt->id; 
     p->nportsOut++;
+    linkPort(p,pt);
     return p;
 }
-
+    
 Process visitSnk(Snk _p_)
 {
 	Process p;
 	Port pt;
-    pt=visitPrt(_p_->u.sinkx_.prt_);
-    p=visitProc(_p_->u.sinkx_.proc_);
-    pt->next = p->port;
-    p->port = pt; 
+	
+    pt=visitPrt (_p_->u.sinkx_.prt_);
+    p =visitProc(_p_->u.sinkx_.proc_);
+    p->sink_id = pt->id;
     p->nportsIn++;  
+    linkPort(p,pt);
     return p;
 }
 

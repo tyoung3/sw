@@ -15,7 +15,39 @@ ValidSW pValidSW(FILE *inp);
 Model genGraph(Model nemod) { return nemod;};       /*Create Graphviz file */
 
 
-int verifyOK(Model nemod) { 						/*expand and check nemod*/
+	
+static int badProc(Process p) {
+			int i;
+			Port port;
+			
+			if(!p->comp) {
+				fprintf(stderr,
+				  "SW/verify: missing component for process: (%s)\n", 
+						p->name
+				);
+				return 1;
+			}
+			
+			
+			port = p->port; 
+			for(i=0;i < (p->nportsIn + p->nportsOut); i++) {
+				if( port->id != i ) {
+					fprintf(stderr,
+						"SW/verify: (%s) %ith port is %i, not = %i\n", 
+						p->name, 
+						i, 
+						port->id,
+						i); 
+					return 1;
+				}
+				port = port->next;
+			}
+			
+			
+			return 0;
+}
+
+static int verifyOK(Model nemod) { 						/*expand and check nemod*/
 	Flow f;
 	
 	if(!nemod) {
@@ -34,13 +66,13 @@ int verifyOK(Model nemod) { 						/*expand and check nemod*/
 	
 	f=nemod->flow;
 	while(f) {
-			if(!f->sink->comp) {
-				fprintf(stderr,
-				  "SW/verify: missing sink component for process: (%s)\n", 
-					f->sink->name
-				);
-				return 0;
-			}
+		if( badProc(f->sink) || badProc(f->source) ) {
+			fprintf(stderr,"SW/verify: failed.");
+			exit(1);
+		}	
+		f=f->next;
+	}
+	return 1;
 #if 0		
 			printf("/* (%s %s.%s)%d<-%d(%s %s) */\n", 
 				f->sink->name,
@@ -52,9 +84,6 @@ int verifyOK(Model nemod) { 						/*expand and check nemod*/
 				f->source->comp->name
 			);
 #endif				
-		f=f->next;
-	}
-	return 1;
 	
 };  		
 
@@ -70,8 +99,8 @@ Port MakePort(int n) {
     
 	p->id = n;
 	p->match = NULL;
-	p->next = NULL;
-	p->prev = NULL;
+	p->next = p;
+	p->prev = p;
 	p->match = NULL;
 	// p->owner = own;
 	return p;
@@ -107,12 +136,13 @@ Flow MakeFlow(Process src, Process snk) {
         exit(1);
     }
     
-	f->source = src;
-	f->sink = snk;
-	f->source_id=src->port->id; 
-	f->sink_id=snk->port->id;
-	f->next = NULL;
-	f->prev = NULL;
+	f->source    = src;
+	f->sink      = snk;
+	f->source_id = src->source_id; 
+	f->sink_id   = snk->sink_id;
+	f->next      = NULL;
+	f->prev      = NULL;
+	f->type		 = GOGO;  /* Defined w/ '<-'  */
 	return f;
 } 
 

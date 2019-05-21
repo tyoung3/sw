@@ -5,16 +5,20 @@ CCFLAGS = -g -W -Wall
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
-all:  sw
+all:  sw tags 
+
+install: sw
+	sudo cp ./sw /usr/local/bin 
+
+tags:   sw.c  swgo.c  swnemod.c swsym.c swgo.h nemod.h sw.h  swnemod.h  swsym.h
+
+	ctags *.c *.h
 
 clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
 run:  sw
-	./sw */collate.sw
-	[ -d /dev/shm/sw ] || mkdir /dev/shm/sw
-	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /dev/shm/sw/main.go
-	go run /dev/shm/sw/main.go 	 
+	./collate.sh
 
 check: sw nds/ac.sw
 	./sw nds/aa.sw  

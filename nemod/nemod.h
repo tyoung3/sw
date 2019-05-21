@@ -13,6 +13,8 @@
 */
 
 /*    NEMOD  Structures   */
+
+typedef enum {NONE,GOGO,OTHER} FLOWTYPE;
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
@@ -39,6 +41,8 @@ struct Process_ {
 		int  nportsIn;
 		int  nportsOut;
 		int  ch;			/* Low channel number */
+		int  sink_id;
+		int  source_id;
 		struct Process_ *next;
 		struct Process_ *prev;    
 } Process_; 
@@ -49,6 +53,7 @@ struct Flow_ {
 	Process sink;
 	int source_id; 	
 	int sink_id; 	
+	FLOWTYPE type;    /* Type of flow GOGO, ORPHAN, etc*/
 	struct Flow_ *next;
 	struct Flow_ *prev;
 } Flow_;

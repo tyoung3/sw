@@ -12,11 +12,11 @@ Valid.	 	    ValidSW  	::= [Stm] ;
 SFlow.			Stm			::= Flw;     
 terminator	    Stm   ";" ;
 
-Flowx.			Flw		::= Srce  "<-"  Snk;	   -- This is a go channel
+Flowx.			Flw		::= Snk  "<-"  Srce;	   -- This is a go channel
 
-Sourcex.		Srce      ::= Proc Prt; 	
+Sourcex.		Srce     ::= Prt Proc; 	
 
-Sinkx.			Snk		::= Prt  Proc; 		
+Sinkx.			Snk		::=  Proc Prt; 		
 
 Processx.		Proc		::= "(" Ident  Comp [Argument] ")" ;
 Processy.		Proc		::= "(" Ident  [Argument] ")" ;
@@ -32,7 +32,10 @@ separator	    Argument   "";
 
 comment "#";
 comment "{#" "#}";	
--- --------------------------------------------------------------------------------------
+------------   End of Current Language Definition   --------------
+
+
+----------    Possible future additions -------------------
 {-  
 AAsgn.		       	Acond		::= NumAssgn;
 AAexp.		       	Acond		::= Aexpr;
