@@ -1,4 +1,6 @@
+/* SWNEMOD.C 
 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -8,12 +10,9 @@
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
+#include "swgraph.h"
 
 ValidSW pValidSW(FILE *inp);
-
-
-Model genGraph(Model nemod) { return nemod;};       /*Create Graphviz file */
-
 
 	
 static int badProc(Process p) {
@@ -226,9 +225,9 @@ int main(int argc, char ** argv)
     
     nemod=visitValidSW(parse_tree);
     // fprintf(stderr,"Nice visit!\n");
-    if(verifyOK(nemod)) {  
-	    genGo(nemod); 
+    if(verifyOK(nemod)) {
     	genGraph(nemod);
+	    if(0) genGo(nemod); 
     } else {
     	fprintf(stderr,"SW/FAIL: Verify failed.\n");
     	exit(1);

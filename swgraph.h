@@ -4,4 +4,4 @@
 void genGraph(Model nemod);
 
 
-#endif //  SWGRAPH_H_
+#endif // SWGRAPH_H_

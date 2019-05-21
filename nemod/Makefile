@@ -26,7 +26,7 @@ check: sw nds/ac.sw
 	./sw nds/ac.sw || echo OK
 	
 sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o swsym.o swgraph.o
-	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o swsym.o -o sw
+	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o swsym.o swgraph.o -o sw
 	
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
