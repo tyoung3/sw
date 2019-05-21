@@ -123,10 +123,13 @@ static void genLinks(Model m) {
 	 		
 		f=f->next;
 	}
-	
+
+#ifdef GENOLD_STUFF	
     P({ "PANEL":1  -> "EDIT":0;  headurl="pe10.shtml";});
     P("EDIT":7  -> "SAVE":in;);
     P("EDIT":5  -> "PANEL":0;);
+#endif
+    
 }
 
 
@@ -147,7 +150,7 @@ static void genProcs(Process p) {
 			do {
 				genPort(pt->id);
 				pt=pt->next;
-			} while(pt->next != p->port);
+			} while(pt != p->port);
 		endProc(); 
 		
 		p=p->next;
@@ -197,13 +200,13 @@ void genGraph(Model nemod) {
 	genPrefix(nemod->nflows);
 	
 	
-	genCluster1("newStuff");
+	genCluster1("COLLATING NODE");
 		
 		p=nemod->proc;  /* Get first process */
 		genProcs(p); 
     P(        });    /* End Cluster1 */	
-	
-		//genTaos();
+
+#ifdef GENOLD_STUFF	
 	genCluster1("OLDhost");
 		genProc("PANEL", "Pcomp","PnlHost");
 			genPort(0);
@@ -213,6 +216,7 @@ void genGraph(Model nemod) {
 		genEdit();
 		genSAVE();
     P(        });    /* End Cluster1 */	
+#endif
     
 	genLinks(nemod); 
 	genSuffix();	   //* Generate Suffix code */
