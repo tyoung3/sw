@@ -25,7 +25,7 @@ check: sw nds/ac.sw
 	./sw nds/ab.sw
 	./sw nds/ac.sw || echo OK
 	
-sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o swsym.o 
+sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o swsym.o swgraph.o
 	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o swsym.o -o sw
 	
 swsym.o: swsym.c swsym.h 
@@ -40,6 +40,9 @@ swnemod.o: swnemod.c sw.h swnemod.h Parser.h Printer.h Absyn.h
 swgo.o: swgo.c swgo.h nemod.h
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o	
 
+swgraph.o: swgraph.c swgraph.h 
+	${CC} ${CCFLAGS} -c swgraph.c -o swgraph.o
+	
 Absyn.h: ../Absyn.h
 	cp -s ../Absyn.h ./	
 	
