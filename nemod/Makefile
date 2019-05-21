@@ -18,10 +18,7 @@ clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
 run:  sw
-	./sw */collate.sw
-	[ -d /dev/shm/sw ] || mkdir /dev/shm/sw
-	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /dev/shm/sw/main.go
-	go run /dev/shm/sw/main.go 	 
+	./collate.sh
 
 check: sw nds/ac.sw
 	./sw nds/aa.sw  

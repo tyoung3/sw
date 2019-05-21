@@ -99,8 +99,8 @@ Port MakePort(int n) {
     
 	p->id = n;
 	p->match = NULL;
-	p->next = NULL;
-	p->prev = NULL;
+	p->next = p;
+	p->prev = p;
 	p->match = NULL;
 	// p->owner = own;
 	return p;
@@ -136,12 +136,13 @@ Flow MakeFlow(Process src, Process snk) {
         exit(1);
     }
     
-	f->source = src;
-	f->sink = snk;
-	f->source_id=src->port->id; 
-	f->sink_id=snk->port->id;
-	f->next = NULL;
-	f->prev = NULL;
+	f->source    = src;
+	f->sink      = snk;
+	f->source_id = src->source_id; 
+	f->sink_id   = snk->sink_id;
+	f->next      = NULL;
+	f->prev      = NULL;
+	f->type		 = GOGO;  /* Defined w/ '<-'  */
 	return f;
 } 
 

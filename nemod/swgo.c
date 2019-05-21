@@ -103,6 +103,7 @@ void genGo(Model nemod) {
 	
 				
 			//* Generate commented Reconstructed Network Definition */
+	printf("/*      Expanded Network Definition  */\n");
 	f=nemod->flow;
 	while(f) {
 			printf("/* (%s %s.%s)%d <- %d(%s %s.%s) */\n", 
