@@ -7,7 +7,7 @@
 #include "sw.h"
 #include "swsym.h"
 
-String default_path={"strings"};   /* ?? arg later */
+static String default_path={"strings"};   /* ?? arg later */
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
@@ -86,8 +86,8 @@ Process visitSrce(Srce _p_)
     p = visitProc(_p_->u.sourcex_.proc_);
     pt = visitPrt(_p_->u.sourcex_.prt_);
     pt->next = p->port;
-    p->port = pt; 
-    p->nports++;   
+    p->port  = pt; 
+    p->nportsOut++;
     return p;
 }
 
@@ -99,7 +99,7 @@ Process visitSnk(Snk _p_)
     p=visitProc(_p_->u.sinkx_.proc_);
     pt->next = p->port;
     p->port = pt; 
-    p->nports ++;  
+    p->nportsIn++;  
     return p;
 }
 

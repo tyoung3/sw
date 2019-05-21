@@ -138,6 +138,8 @@ Process MakeProcess(Ident name, Component comp) {
     	
 		p->comp = comp;
 		p->name = name;
+		p->nportsIn =0;
+		p->nportsOut=0;
 		p->port	= NULL;
 		p->next = NULL;
 		p->prev = NULL;

@@ -46,24 +46,52 @@ void genPrefix(int nflows) {
 void genLaunches(Process p) {	
     
 	while(p) {
-		if(p->nports) {
+		if(p->nportsOut) {
 			printf("fbp.Launch(&wg,");
 			printf(" []string{\"%s\"}",p->name); 
 			printf(", %s.%s, cs[%i:%i])\n",			
 				p->comp->path,
 				p->comp->name,
-				0, p->nports
+				p->ch, p->ch + p->nportsOut
 			);
-		}			
+		}	else {
+			
+			printf("fbp.Launch(&wg,");
+			printf(" []string{\"%s\"}",p->name); 
+			printf(", %s.%s, cs[%i:%i])\n",			
+				p->comp->path,
+				p->comp->name,
+				p->ch, p->ch + p->nportsIn
+			);
+		}
+				
 		p=p->next;
 	}	
 	
 	printf("\n");
 }	
 
+
+static void allocateChannels( Model nemod) {
+	Process p;
+	int cha=0;  // current channel allocation
+	
+	p= nemod->proc;
+	while(p) {
+			if(p->nportsOut > 0) {  /* This is nbr source ports */ 
+				 p->ch =cha;  
+				 cha+=p->nportsOut;	
+			}
+			p=p->next;
+	}
+	 
+}
+
 void genGo(Model nemod) {
 	Flow f;
 	Process p;
+	
+	allocateChannels(nemod);
 	
 				//* Generate Prefix code */
 	genPrefix(nemod->nflows);

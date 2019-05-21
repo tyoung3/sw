@@ -36,7 +36,9 @@ struct Process_ {
 		Component comp;    
 		// ArgList arg;
 		Port   port; 	      /* Port list */
-		int  nports;
+		int  nportsIn;
+		int  nportsOut;
+		int  ch;			/* Low channel number */
 		struct Process_ *next;
 		struct Process_ *prev;    
 } Process_; 
