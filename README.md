@@ -55,7 +55,9 @@ QuickStart (on Linux)
 	* Download the 'sw' executable from github to any convenient location.
 	* Run 'chmod a+x sw' if necessary. 
 	* Run 
-```	echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /tmp/main.go 
+	
+```	
+echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /tmp/main.go 
 ```
 	* Run 'go run /tmp/main.go  ...
 
