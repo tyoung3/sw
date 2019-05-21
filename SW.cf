@@ -32,7 +32,10 @@ separator	    Argument   "";
 
 comment "#";
 comment "{#" "#}";	
--- --------------------------------------------------------------------------------------
+------------   End of Current Language Definition   --------------
+
+
+----------    Possible future additions -------------------
 {-  
 AAsgn.		       	Acond		::= NumAssgn;
 AAexp.		       	Acond		::= Aexpr;
