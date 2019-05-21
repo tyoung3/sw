@@ -43,33 +43,27 @@ void genPrefix(int nflows) {
 	printf("\t}\n\n");
 }
 	
-void genLaunches(Flow f) {	
-    int cn=0;   /* Channel number */
+void genLaunches(Process p) {	
     
-	while(f) {
+	while(p) {
+		if(p->nports) {
 			printf("fbp.Launch(&wg,");
-			printf(" []string{\"%s\"}",f->sink->name); 
+			printf(" []string{\"%s\"}",p->name); 
 			printf(", %s.%s, cs[%i:%i])\n",			
-				f->sink->comp->path,
-				f->sink->comp->name,
-				cn, cn+1
+				p->comp->path,
+				p->comp->name,
+				0, p->nports
 			);
-	
-			printf("fbp.Launch(&wg,");
-			printf(" []string{\"%s\"}",f->source->name); 
-			printf(", %s.%s, cs[%i:%i])\n",
-				f->source->comp->path,
-				f->source->comp->name, 
-				cn, cn+1
-			);
-			cn++;
-		f=f->next;
+		}			
+		p=p->next;
 	}	
+	
 	printf("\n");
 }	
 
 void genGo(Model nemod) {
 	Flow f;
+	Process p;
 	
 				//* Generate Prefix code */
 	genPrefix(nemod->nflows);
@@ -87,8 +81,8 @@ void genGo(Model nemod) {
 				f->sink->name,
 				f->sink->comp->path,
 				f->sink->comp->name,
-				f->sink->port->id, 
-				f->source->port->id, 
+				f->sink_id, 
+				f->source_id, 
 				f->source->name,
 				f->source->comp->path,
 				f->source->comp->name
@@ -100,8 +94,8 @@ void genGo(Model nemod) {
 	
 		
 				//* Generate Flow Code */
-	f=nemod->flow;
-	genLaunches(f); 
+	p=nemod->proc;  /* Get first process */
+	genLaunches(p); 
 
 	
 				//* Generate Suffix code */

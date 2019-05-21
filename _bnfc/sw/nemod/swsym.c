@@ -112,36 +112,32 @@ static bucketp lookup(char *key)
 
     found = 0;
     while (bp != NULL && found == 0) { 
-	if (strcmp(key, bp->tag) == 0)
-	    found = 1;
-	else
-	    bp = bp->link;
+		if (strcmp(key, bp->tag) == 0)
+	   	 	found = 1;
+		else
+	   	 	bp = bp->link;
     }
 
     if (found == 0) {
-	nsyms++;
-	if (nsyms > TABLESIZE) {
-	    fprintf(stderr, "%i variables not enough for this job.\n",
+		nsyms++;
+		if (nsyms > TABLESIZE) {
+	   	 	fprintf(stderr, "%i variables not enough for this job.\n",
 		    TABLESIZE);
-	    exit(1);
-	}
-	bp = (bucketp) malloc(sizeof(bucket));
-	bp->link = symtable[hashval];
-	bp->next = NULL;
-	bp->tag = strdup(key);
-#ifdef TYPE_CLASS
-	bp->class = (unsigned char) SUNKNOWN;
-	/*       bp->type_name = ??; */
-#endif
-	if (firstsymbol == NULL) {
-	    firstsymbol = bp;
-	    lastsymbol = bp;
-	} else {
-	    lastsymbol->next = bp;
-	    lastsymbol = bp;
-	}
+	    	exit(1);
+		}
+		bp = (bucketp) malloc(sizeof(bucket));
+		bp->link = symtable[hashval];
+		bp->next = NULL;
+		bp->tag = strdup(key);
+		if (firstsymbol == NULL) {
+	   	 	firstsymbol = bp;
+	    	lastsymbol = bp;
+		} else {
+	    	lastsymbol->next = bp;
+	    	lastsymbol = bp;
+		}
 
-	symtable[hashval] = bp;
+		symtable[hashval] = bp;
     }
 
     return (bp);
@@ -162,15 +158,18 @@ void free_symtab()
     }
 }
 
+Process addProc(char *key, Process p) {
+	bucketp b;
+	
+	b=lookup(key);
+	b->u.proc = p;
+	return b->u.proc;
+}
 
 Process getProc(char *key) {
 	bucketp b;
 		
 	b=lookup(key);
-	if(b == NULL) {
-		return MakeProcess(key,NULL);
-	}
-	
 	return b->u.proc;
 }
 

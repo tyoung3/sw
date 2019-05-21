@@ -7,6 +7,7 @@
 #include "Absyn.h"
 #include "sw.h"
 #include "swgo.h"
+#include "swsym.h"
 
 ValidSW pValidSW(FILE *inp);
 
@@ -108,6 +109,8 @@ Flow MakeFlow(Process src, Process snk) {
     
 	f->source = src;
 	f->sink = snk;
+	f->source_id=src->port->id; 
+	f->sink_id=snk->port->id;
 	f->next = NULL;
 	f->prev = NULL;
 	return f;
@@ -116,19 +119,31 @@ Flow MakeFlow(Process src, Process snk) {
 
 Process MakeProcess(Ident name, Component comp) {
 	Process p;
+	static int onone=1;
 	
-	p=(Process)malloc(sizeof(Process_)); 
-    if (!p)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Process!\n");
-        exit(1);
-    }
+	if(onone) {
+		onone=0; 
+		tabinit(100000);
+	}
+	
+	p=getProc(name);
+	
+	if(p==NULL) {
+		p=(Process)malloc(sizeof(Process_)); 
+    	if (!p)
+    	{
+    	    fprintf(stderr, "Error: out of memory when allocating Process!\n");
+    	    exit(1);
+    	}
+    	
+		p->comp = comp;
+		p->name = name;
+		p->port	= NULL;
+		p->next = NULL;
+		p->prev = NULL;
+    	addProc(name,p);
+    }	
     
-	p->comp = comp;
-	p->name = name;
-	p->port	= NULL;
-	p->next = NULL;
-	p->prev = NULL;
 	return p;
 	
 } 
@@ -147,6 +162,7 @@ Model MakeModel(Flow f) {
 	m->ncomponents = 0;
 	m->nprocs	= 0;
 	m->flow=f;
+	m->proc = NULL;
 	//p->next = NULL;
 	//p->prev = NULL;
 	return m;

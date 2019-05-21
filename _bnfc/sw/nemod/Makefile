@@ -27,13 +27,13 @@ sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o swsym.o
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
 		
-sw.o: sw.c sw.h  Parser.h Printer.h Absyn.h
+sw.o: sw.c sw.h swsym.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
 swnemod.o: swnemod.c sw.h swnemod.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c swnemod.c -o swnemod.o 	
 	
-swgo.o: swgo.c swgo.h
+swgo.o: swgo.c swgo.h nemod.h
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o	
 
 Absyn.h: ../Absyn.h
