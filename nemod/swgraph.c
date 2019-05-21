@@ -96,7 +96,7 @@ static void genSAVE() {
     P(                       label="{<P> SAVE|WriteFile }|<in> in"];);
 }
 
-
+#ifdef GENTAOS
 static void genTaos() {        
     P(subgraph "clustertaos" { );
      P(        label = "taos"; name="taos";);
@@ -104,8 +104,24 @@ static void genTaos() {
 		genSAVE();
     P(        });
  }   
+#endif 
 
-static void genLinks() {
+static void genLinks(Model m) {
+	Flow f;
+	Process src, snk;
+	
+	f=m->flow;
+	
+	while(f) {
+		src = f->source;
+		snk = f->sink;
+		printf("\"%s\":%i -> \"%s\":%i;\n",
+				src->name, 1, 
+				snk->name,
+				2);	
+		f=f->next;
+	}
+	
     P({ "PANEL":1  -> "EDIT":0;  headurl="pe10.shtml";});
     P("EDIT":7  -> "SAVE":in;);
     P("EDIT":5  -> "PANEL":0;);
@@ -196,7 +212,7 @@ void genGraph(Model nemod) {
 		genSAVE();
     P(        });    /* End Cluster1 */	
     
-	genLinks(); 
+	genLinks(nemod); 
 	genSuffix();	   //* Generate Suffix code */
 }
 
