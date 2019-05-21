@@ -5,7 +5,11 @@ CCFLAGS = -g -W -Wall
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
-all:  sw
+all:  sw tags 
+
+tags:   sw.c  swgo.c  swnemod.c swsym.c swgo.h nemod.h sw.h  swnemod.h  swsym.h
+
+	ctags *.c *.h
 
 clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
