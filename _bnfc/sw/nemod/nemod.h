@@ -36,6 +36,9 @@ struct Process_ {
 		Component comp;    
 		// ArgList arg;
 		Port   port; 	      /* Port list */
+		int  nportsIn;
+		int  nportsOut;
+		int  ch;			/* Low channel number */
 		struct Process_ *next;
 		struct Process_ *prev;    
 } Process_; 
@@ -44,6 +47,8 @@ typedef struct Process_ *Process;
 struct Flow_ {
 	Process source;
 	Process sink;
+	int source_id; 	
+	int sink_id; 	
 	struct Flow_ *next;
 	struct Flow_ *prev;
 } Flow_;
@@ -51,10 +56,10 @@ typedef struct Flow_ *Flow;
 
 struct Model_ {
 	int nflows;
-/*   End of NEMOD  Structures   */
 	int ncomponents;
 	int nprocs; 		/* number of processes */
 	Flow flow;			/* pointer to first flow */
+	Process proc;		/* First Process */
 } Model_;
 typedef struct Model_ *Model;
 

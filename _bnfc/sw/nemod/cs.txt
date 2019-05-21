@@ -1,0 +1,40 @@
+fbp.Launch(&wg, []string{"Miss1"}, strings.Print1, cs[0:1])
+fbp.Launch(&wg, []string{"Miss0"}, strings.Print1, cs[0:1])
+fbp.Launch(&wg, []string{"Match1"}, strings.Print1, cs[0:1])
+fbp.Launch(&wg, []string{"Match0"}, strings.Print1, cs[0:1])
+fbp.Launch(&wg, []string{"G1"}, xyz.Mygen0, cs[0:1])
+fbp.Launch(&wg, []string{"G0"}, xyz.Mygen0, cs[0:1])
+fbp.Launch(&wg, []string{"C"}, std.collate, cs[0:6])
+
+fbp.Launch(&wg, []string{"Miss1"}, strings.Print1, cs[5:6])
+fbp.Launch(&wg, []string{"Miss0"}, strings.Print1, cs[4:5])
+fbp.Launch(&wg, []string{"Match1"}, strings.Print1, cs[3:4])
+fbp.Launch(&wg, []string{"Match0"}, strings.Print1, cs[2:3])
+fbp.Launch(&wg, []string{"G1"}, xyz.Mygen0, cs[1:2])
+fbp.Launch(&wg, []string{"G0"}, xyz.Mygen0, cs[0:1])
+fbp.Launch(&wg, []string{"C"}, std.collate, cs[0:6])
+
+
+
+/* (Miss1 strings.Print1)0 <- 5(C std.collate) */
+/* (Miss0 strings.Print1)0 <- 4(C std.collate) */
+/* (Match1 strings.Print1)0 <- 3(C std.collate) */
+/* (Match0 strings.Print1)0 <- 2(C std.collate) */
+/* (C std.collate)1 <- 0(G1 xyz.Mygen0) */
+/* (C std.collate)0 <- 0(G0 xyz.Mygen0) */
+
+find process w/most ports and allocate. 
+
+	Out   In
+	co    ci
+G1	0     0    C  
+G2	1     1    C
+C	2          Match0
+C	3          Match1
+C	4      	   Miss0
+C	5          Miss1
+	
+
+ 
+ 
+
