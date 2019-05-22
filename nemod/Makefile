@@ -24,6 +24,13 @@ check: sw nds/ac.sw
 	./sw nds/aa.sw  
 	./sw nds/ab.sw
 	./sw nds/ac.sw || echo OK
+
+jpeg:  /tmp/collate.jpg
+
+/tmp/collate.jpg: sw */collate.sw
+	./sw */collate.sw 1 > /tmp/collate.dot		\
+	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg \
+	&& gimp /tmp/collate.jpg &
 	
 sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o
 	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o -o sw
