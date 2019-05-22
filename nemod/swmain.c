@@ -1,4 +1,4 @@
-/* SWNEMOD.C 
+/* SWMAIN.C 
 
 */
 #include <stdio.h>
