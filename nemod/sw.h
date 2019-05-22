@@ -24,5 +24,7 @@ void visitDouble(Double d);
 void visitChar(Char c);
 String visitString(String s);
 
+	/* swjafafbp.c */
+void genJavaFBP(Model nemod);
 #endif   // SWNEMOD_H_
 

@@ -18,7 +18,7 @@ clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
 run:  sw
-	./collate.sh
+	./collate.sh r
 
 check: sw nds/ac.sw
 	./sw nds/aa.sw  
@@ -28,12 +28,12 @@ check: sw nds/ac.sw
 jpeg:  /tmp/collate.jpg
 
 /tmp/collate.jpg: sw  
-	./sw */collate.sw 1 > /tmp/collate.dot		\
+	./sw -m 3 */collate.sw  > /tmp/collate.dot		\
 	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg \
 	&& gimp /tmp/collate.jpg &
 	
-sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o
-	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o -o sw
+sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o
+	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o -o sw
 	
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
@@ -49,6 +49,9 @@ swgo.o: swgo.c swgo.h nemod.h
 
 swgraph.o: swgraph.c swgraph.h 
 	${CC} ${CCFLAGS} -c swgraph.c -o swgraph.o
+	
+swjavafbp.o: swjavafbp.c  
+	${CC} ${CCFLAGS} -c swjavafbp.c -o swjavafbp.o
 	
 Absyn.h: ../Absyn.h
 	cp -s ../Absyn.h ./	
