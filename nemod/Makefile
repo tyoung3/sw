@@ -27,7 +27,7 @@ check: sw nds/ac.sw
 
 jpeg:  /tmp/collate.jpg
 
-/tmp/collate.jpg: sw */collate.sw
+/tmp/collate.jpg: sw  
 	./sw */collate.sw 1 > /tmp/collate.dot		\
 	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg \
 	&& gimp /tmp/collate.jpg &

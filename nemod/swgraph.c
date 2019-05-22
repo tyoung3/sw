@@ -33,11 +33,11 @@ static void genPrefix(int nflows) {
                       C(      fontcolor=black);
                        C(    fontname="Helvetica");
                     C(        color=black);
-                   C(         fillcolor=tan);
+                   C(         fillcolor=powderblue);
                   C(          style=filled);
                     P(        height=.2);
                   P(   ];);
-               C(     edge [ color=black);
+               C(     edge [ color=green);
               C(              style=bold);
             C(                fontsize="18");
               C(              fontcolor=black);
@@ -229,7 +229,7 @@ digraph g {
 	graph [
 		name="Collate Example Graph",
  		style=bold,
- 		color=black,
+ 		color=green,
  		margin="2",
    		rankdir="TB",
 #   		rankdir="LR",
@@ -238,23 +238,23 @@ digraph g {
  		size="8,11",
  		center=1,
  		fontsize="24",
-  		fontcolor=black,
+  		fontcolor=green,
  		fontname="Helvetica"
 		URL="/home/tyoung3/vdfd/bin/html/g.html"
  	   ]
  		node [  shape=record,
  			fontsize="18",
- 	        	fontcolor=black,
+ 	        	fontcolor=green,
  		       	fontname="Helvetica",
-			color=black,
+			color=green,
          		fillcolor=tan,
          		style=filled,
  	        	height=.2
      		 ];
- 		edge [ color=black,
+ 		edge [ color=green,
          		style=bold,
  			fontsize="18",
- 	        	fontcolor=black,
+ 	        	fontcolor=green,
       		]
  	
 
@@ -264,7 +264,7 @@ digraph g {
 	URL="taos.html";
 	"PANEL" 
 					[ shape=record,
-					color="black", 
+					color="green", 
 					URL="./PANEL.shtml",
  					host="taos",
 					label="{<P> PANEL|GC.tcl }|<1 > 1 |<0> 0"];
@@ -276,14 +276,14 @@ digraph g {
 
 	"EDIT" 
 					[ shape=record,
-					color="black", 
+					color="green", 
 					URL="EDIT.shtml",
  					host="nogales",
 					label="{<P> EDIT|swedit}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];
 	"SAVE" 
 					[ shape=record,
 					URL="SAVE.shtml",
-					color="black", 
+					color="green", 
  					host="nogales",
 					label="{<P> SAVE|WriteFile }|<in> in"];
 					
