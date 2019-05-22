@@ -10,11 +10,14 @@
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
-#include "swgraph.h"
+#include "swgraph.h"       
+#include <string.h>
+
 
 ValidSW pValidSW(FILE *inp);
 
-	
+typedef enum{ GOMODE=0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE=7 }   MODE;
+
 static int badProc(Process p) {
 			int i;
 			Port port;
@@ -198,49 +201,79 @@ Model MakeModel(Flow f) {
 	//p->prev = NULL;
 	return m;
 	
-} 
+}
 
-typedef enum{ GOMODE, GRAPHMODE, CMODE, ASTMODE}   MODE;
+
+static void Usage() {
+    fprintf(stderr,"Usage:\tsw [-m MODE [ SW_FILE ]\n");
+    fprintf(stderr,"\tWHERE MODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|7-CMODE,}\n");
+    fprintf(stderr,"\t[with no arguments, sw will read from stdin. \n");
+    fprintf(stderr,"\t[This behavior may change with minor version changes.\n");
+}
  	
+  
+FILE *input;
+static FILE *openFile(char *fname) {
+    input = fopen(fname, "r");
+    if (!input)   {
+      fprintf(stderr, "Error opening input file: %s.\n", fname);
+      exit(1);
+    } 
+    return input;
+}
+
 int main(int argc, char ** argv)
 {
-  FILE *input;
+  ValidSW parse_tree;
   Model nemod;    /* Network Model */
   MODE mode=GOMODE;
   
-  if(argc>2) {
-  		mode=atoi(argv[2]);
-  }
+  input = stdin;
   
-  ValidSW parse_tree;
-  if (argc > 1)   {
-    input = fopen(argv[1], "r");
-    if (!input)   {
-      fprintf(stderr, "Error opening input file.\n");
-      exit(1);
-    } 
+  if (argc > 1)  {
+  	if(argc>2) {
+  		if(strncmp(argv[1],"-m",30) == 0) {  
+  			mode=atoi(argv[2]);
+  		} else {
+  			Usage(); 
+  			exit(1);
+  		}	
+  		if(argc>4) {
+  			Usage();
+  			exit(1);
+  		} 
+  		if(argc>3) {
+  			input=openFile(argv[3]);
+  		} 
+  	}	else {
+  			input=openFile(argv[1]);
+  	}			
   }
-  else input = stdin;
-  
+  	
   parse_tree = pValidSW(input);
-  if (parse_tree)   {
-    // printf("\nParse Succesful!\n");
-    // printf("\n[Abstract Syntax]\n");
-    // printf("[Linearized Tree]\n");
-    // printf("%s\n\n", printValidSW(parse_tree));
-    
+  
+  if (parse_tree)   {  
     nemod=visitValidSW(parse_tree);
     if(verifyOK(nemod)) {
     	switch (mode) {
 	    	case GRAPHMODE:      
     			genGraph(nemod);
     			break;
+    		case JAVAFBP:
+    			genJavaFBP(nemod);
+    			break;
 	    	case ASTMODE:       // Abstract Syntax 			
     			printf("%s\n\n", showValidSW(parse_tree));
     			break;
+    		case GENTREE:
+    			printf("[Linearized Tree]\n");
+   				printf("%s\n\n", printValidSW(parse_tree));
+    			break;	
     		case GOMODE: 
-    		default:
 	    	    genGo(nemod);
+    			break;	
+    		default:
+    			Usage();
 	    	    break;	
 	    } 	    	
     } else {
