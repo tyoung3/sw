@@ -48,9 +48,13 @@ void genPrefix(int nflows) {
 
 static int needaSlice(Port pt) {
 	Port pt0=pt;
+	int  ch; 
+	
+	ch = pt->channel;
+	pt = pt->next;
 	
 	do {
-		if(pt->channel!=pt->id) {
+		if(pt->channel!=++ch) {
 			return 1;
 		}
 		pt=pt->next;
@@ -183,7 +187,6 @@ static void showND(Model nemod) {
 }	
 		
 void genGo(Model nemod) {
-	Flow f;
 	Process p;
 		
 	if (!nemod) {
