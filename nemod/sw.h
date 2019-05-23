@@ -3,7 +3,7 @@
 /* You might want to change the above name. */
 
 #include "Absyn.h"
-#include "swnemod.h"
+#include "swmain.h"
 
 Model visitValidSW(ValidSW p);
 Model visitStm(Stm p);

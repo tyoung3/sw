@@ -10,7 +10,7 @@ all:  sw tags
 install: sw
 	sudo cp ./sw /usr/local/bin 
 
-tags:   sw.c  swgo.c  swnemod.c swsym.c swgo.h nemod.h sw.h  swnemod.h  swsym.h
+tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h nemod.h sw.h  swmain.h  swsym.h
 
 	ctags *.c *.h
 
@@ -24,9 +24,16 @@ check: sw nds/ac.sw
 	./sw nds/aa.sw  
 	./sw nds/ab.sw
 	./sw nds/ac.sw || echo OK
+
+jpeg:  /tmp/collate.jpg
+
+/tmp/collate.jpg: sw  
+	./sw */collate.sw 1 > /tmp/collate.dot		\
+	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg \
+	&& gimp /tmp/collate.jpg &
 	
-sw: sw.o swnemod.o  ${OBJS}  swnemod.o swgo.o swsym.o 
-	${CC} ${CCFLAGS} ${OBJS}  sw.o swnemod.o swgo.o swsym.o -o sw
+sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o
+	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o -o sw
 	
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
@@ -34,12 +41,15 @@ swsym.o: swsym.c swsym.h
 sw.o: sw.c sw.h swsym.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
-swnemod.o: swnemod.c sw.h swnemod.h Parser.h Printer.h Absyn.h
-	${CC} ${CCFLAGS} -c swnemod.c -o swnemod.o 	
+swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h
+	${CC} ${CCFLAGS} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h nemod.h
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o	
 
+swgraph.o: swgraph.c swgraph.h 
+	${CC} ${CCFLAGS} -c swgraph.c -o swgraph.o
+	
 Absyn.h: ../Absyn.h
 	cp -s ../Absyn.h ./	
 	

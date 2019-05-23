@@ -1,5 +1,5 @@
-#ifndef swnemod_h_
-#define swnemod_h_
+#ifndef SWMAIN_H_
+#define SWMAIN_H_
 
 #include "nemod.h"
 
@@ -12,4 +12,4 @@ Process MakeProcess(Ident name, Component comp) ;
 Port MakePort(int n) ;
 Flow MakeFlow(Process src, Process snk) ;
 Model MakeModel(Flow f);
-#endif  // swnemod_h_
+#endif  // SWMAIN_H_
