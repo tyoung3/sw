@@ -7,6 +7,7 @@ TODO:
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include "swsym.h"
 #include "nemod.h"
 
 #define P(s) printf("%s\n",(#s));
@@ -128,18 +129,18 @@ void genLaunches(Process p) {
 			if(needaSlice(p->port))  { 
 				makeChSlice(p, nflows);
 				printf("fbp.Launch(&wg,");
-				printf(" []string{\"%s\"}",p->name); 
-				printf(", %s.%s, ",		
+				printf("[]string{\"%s\"}",p->name); 
+				printf(",\t%9s.%s, ",		
 					p->comp->path,
 					p->comp->name);
-				printf("cs_%s[0:%i])\n",
+				printf("\tcs_%s[0:%i])\n",
 					p->name,	
 					nflows
 				);		
 			} else {
 				printf("fbp.Launch(&wg,");
-				printf(" []string{\"%s\"}",p->name); 
-				printf(", %s.%s, ",		
+				printf("[]string{\"%s\"}",p->name); 
+				printf(",\t%9s.%s, ",		
 					p->comp->path,
 					p->comp->name);
 				printf("cs[0:%i])\n",
@@ -149,8 +150,8 @@ void genLaunches(Process p) {
 		} else {
 			ch = p->port->channel;	
 			printf("fbp.Launch(&wg,");
-			printf(" []string{\"%s\"}",p->name); 
-			printf(", %s.%s, ",		
+			printf("[]string{\"%s\"}",p->name); 
+			printf(",\t%9s.%s, ",		
 				p->comp->path,
 				p->comp->name);
 			printf("cs[%i:%i])\n",
