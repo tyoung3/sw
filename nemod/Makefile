@@ -30,6 +30,7 @@ check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw
 	./sw -m 7 nds/collate.sw  >/dev/null
 	./sw nds/aa.sw  >/dev/null
 	./sw nds/ab.sw  >/dev/null
+	! ./sw nds/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 
 
 jpeg:  /tmp/collate.jpg

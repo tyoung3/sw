@@ -21,12 +21,14 @@ GenJPG() {
 }	
 
 case $1 in	
+	c) make check && echo Success! || echo Check Failed.;;
 	j) GenJPG;;
 	r) RunCollate;;
 	x) $EDITOR collate.sw;;
 	*) cat << EOF 
 	
 USAGE: 
+		c		. Make check
 		j		. Generate collate jpeg 
 		r		. Build and run Collate program (BUGGY)
 		x		. Edit this script
