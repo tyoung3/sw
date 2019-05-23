@@ -26,10 +26,11 @@
 
 #      In Go: 
 (C Collate)0   <-  0(R1 Read);
-(P  Proc)2     <-  1(C);
-(SE Report)0   <-  0(P);
-(M  Write)0    <-  1(P);
-(C)2    	   <-  0(R2 Read);
+#(P)2    	  <-  1(C);
+(SE Report)0   <-  0(P Proc);
+#(M  Write)0    <-  1(P);
+#(C)2    	   <-  0(R2 Read);
+
 #(M)1  		   <-     "c:\\newmast";
 #(R1)1 		   <-     "c:\\mastfile";
 #(R2)1 		   <-     "c:\\detlfile";
