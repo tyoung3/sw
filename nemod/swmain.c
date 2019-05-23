@@ -272,6 +272,9 @@ int main(int argc, char ** argv)
     		case GOMODE: 
 	    	    genGo(nemod);
     			break;	
+    		case CMODE: 
+	    	    genC(nemod);
+    			break;	
     		default:
     			Usage();
 	    	    break;	

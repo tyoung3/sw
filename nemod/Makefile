@@ -17,13 +17,20 @@ tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h nemod.h sw.h  swmain.h  swsym.h
 clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
+poc:	run 
+
 run:  sw
 	./collate.sh r
 
-check: sw nds/ac.sw
-	./sw nds/aa.sw  
-	./sw nds/ab.sw
-	./sw nds/ac.sw || echo OK
+check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw  
+	./sw -m 1 nds/collate.sw  >/dev/null
+	./sw -m 2 nds/collate.sw  >/dev/null
+	./sw -m 3 nds/collate.sw  >/dev/null
+	./sw -m 4 nds/java.sw     >/dev/null
+	./sw -m 7 nds/collate.sw  >/dev/null
+	./sw nds/aa.sw  >/dev/null
+	./sw nds/ab.sw  >/dev/null
+
 
 jpeg:  /tmp/collate.jpg
 
