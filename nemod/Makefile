@@ -20,7 +20,7 @@ clean:
 poc:	run 
 
 run:  sw
-	./collate.sh r
+	./collate.sh poc 
 
 check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw  
 	./sw -m 1 nds/collate.sw  >/dev/null

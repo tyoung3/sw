@@ -32,6 +32,7 @@ void genPrefix(int nflows) {
 	P(import "sync");
 	P(import "github.com/tyoung3/streamwork");
 	P(import "github.com/tyoung3/streamwork/strings");
+	// P(import "github.com/tyoung3/streamwork/std");
 	printf("\n\n");
 
 	P(func main() {);
@@ -240,7 +241,9 @@ package  main
 import "fmt"
 import "sync"
 import "github.com/tyoung3/streamwork"
+import "github.com/tyoung3/streamwork/std"
 import "github.com/tyoung3/streamwork/strings"
+
 
 func main() {
 	var cs []chan interface{}
