@@ -17,13 +17,20 @@ tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h nemod.h sw.h  swmain.h  swsym.h
 clean:
 	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
 
+poc:	run 
+
 run:  sw
 	./collate.sh r
 
-check: sw nds/ac.sw
-	./sw nds/aa.sw  
-	./sw nds/ab.sw
-	./sw nds/ac.sw || echo OK
+check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw  
+	./sw -m 1 nds/collate.sw  >/dev/null
+	./sw -m 2 nds/collate.sw  >/dev/null
+	./sw -m 3 nds/collate.sw  >/dev/null
+	./sw -m 4 nds/java.sw     >/dev/null
+	./sw -m 7 nds/collate.sw  >/dev/null
+	./sw nds/aa.sw  >/dev/null
+	./sw nds/ab.sw  >/dev/null
+
 
 jpeg:  /tmp/collate.jpg
 
@@ -32,8 +39,8 @@ jpeg:  /tmp/collate.jpg
 	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg \
 	&& gimp /tmp/collate.jpg &
 	
-sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o
-	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o -o sw
+sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o 
+	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o -o sw
 	
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
@@ -45,7 +52,11 @@ swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h nemod.h
-	${CC} ${CCFLAGS} -c swgo.c -o swgo.o	
+	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
+		
+swc.o: swc.c sw.h nemod.h
+	${CC} ${CCFLAGS} -c swc.c -o swc.o	
+
 
 swgraph.o: swgraph.c swgraph.h 
 	${CC} ${CCFLAGS} -c swgraph.c -o swgraph.o
