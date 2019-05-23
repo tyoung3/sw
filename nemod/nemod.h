@@ -25,7 +25,8 @@ struct Component_ {
 typedef struct Component_ *Component;
 
 struct Port_ {
-	int id; 	
+	int id; 
+	int channel;  /* Go Channel Number */	
 	struct Port_ *match;
 	struct Port_ *next;
 	struct Port_ *prev;
