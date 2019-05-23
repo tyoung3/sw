@@ -9,7 +9,7 @@
 #include <memory.h>
 #include <string.h>
 #include <errno.h>
-#include "swnemod.h"
+#include "nemod.h"
 
 // #define TEST_MAIN
 
@@ -20,6 +20,7 @@ struct bucket {
 		Process proc; 
 	} u;
 	char *tag;
+	int nrefs;  // Number of references to this symbol
 	struct bucket *link;
 	struct bucket *next;
 } bucket;
@@ -171,6 +172,14 @@ Process getProc(char *key) {
 		
 	b=lookup(key);
 	return b->u.proc;
+}
+
+int getPath(char *key) {
+	bucketp b;
+		
+	b=lookup(key);
+	b->nrefs++;
+	return b->nrefs;
 }
 
 #ifdef TEST_MAIN

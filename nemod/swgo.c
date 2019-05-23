@@ -18,8 +18,47 @@ void genSuffix() {
 	printf("}\n");
 }
 
+static void genPath(char *s) {
+	char *importPath={"github.com/tyoung3/streamwork"};	
+
+	if(s==NULL) {
+		printf("import \"%s\"\n",importPath);
+	} else {	
+		printf("import \"%s/%s\"\n",importPath,s);
+	}
+
+}
+
+int newPath(char *p) {
+
+	if(getPath(p) ==1) 
+		return 1;
+		
+	return 0;	
+}
+	
+static void genPaths(Model m) {
+	Process p;
+		
+	P(import "fmt");
+	P(import "sync");
+	
+	genPath(NULL);
+
+	p=m->proc;
+	do {
+		if( newPath(p->comp->path) ) {
+			genPath(p->comp->path);
+		}	
+		p=p->next;
+ 	} while (p);
+
+	printf("\n\n");
+}	
+
 //* Generate Prefix code */
-void genPrefix(int nflows) {
+void genPrefix(Model m) {
+	int nflows=m->nflows;	 
 
 	P(package main);
 	printf("\n/");
@@ -28,12 +67,8 @@ void genPrefix(int nflows) {
 **/);
 
 	printf("\n");
-	P(import "fmt");
-	P(import "sync");
-	P(import "github.com/tyoung3/streamwork");
-	P(import "github.com/tyoung3/streamwork/strings");
-	// P(import "github.com/tyoung3/streamwork/std");
-	printf("\n\n");
+
+	genPaths(m);
 
 	P(func main() {);
 		P(	var cs []chan interface{});
@@ -195,7 +230,7 @@ void genGo(Model nemod) {
 			exit(1);
 	}
 	
-	genPrefix(nemod->nflows);  	/* Generate Prefix code */
+	genPrefix(nemod);  	/* Generate Prefix code */
 	showND(nemod);  			/* Show commented ND    */	
 	p=nemod->proc;  			/* Get first process    */
 	genLaunches(p); 			/* Expand processes     */ 
