@@ -9,13 +9,13 @@ TODO:
 #include "nemod.h"
 
 #define P(s) printf("// %s\n",(#s));
-void genSuffix() {
+static void genSuffix() {
 
 	P(wg.Wait());
 	printf("}\n");
 }
 
-void genPrefix(int nflows) {
+static void genPrefix(int nflows) {
 
 	printf("//  Prefix here. %d flows\n",nflows);
 	P(*		 	 DO NOT EDIT!!!

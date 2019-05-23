@@ -26,5 +26,8 @@ String visitString(String s);
 
 	/* swjafafbp.c */
 void genJavaFBP(Model nemod);
+
+	/* swc.c       */
+void genC(Model nemod); 
 #endif   // SWNEMOD_H_
 

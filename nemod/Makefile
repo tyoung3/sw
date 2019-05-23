@@ -39,8 +39,8 @@ jpeg:  /tmp/collate.jpg
 	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg \
 	&& gimp /tmp/collate.jpg &
 	
-sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o
-	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o -o sw
+sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o 
+	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o -o sw
 	
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
@@ -52,7 +52,11 @@ swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h nemod.h
-	${CC} ${CCFLAGS} -c swgo.c -o swgo.o	
+	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
+		
+swc.o: swc.c sw.h nemod.h
+	${CC} ${CCFLAGS} -c swc.c -o swc.o	
+
 
 swgraph.o: swgraph.c swgraph.h 
 	${CC} ${CCFLAGS} -c swgraph.c -o swgraph.o
