@@ -40,8 +40,8 @@ jpeg:  /tmp/collate.jpg
 
 /tmp/collate.jpg: sw  nds/collate.sw
 	./sw -m 3 */collate.sw  > /tmp/collate.dot		\
-	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg \
-	&& gimp /tmp/collate.jpg &
+	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg 
+	
 	
 sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o 
 	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o -o sw
