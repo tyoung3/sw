@@ -45,7 +45,7 @@ struct Process_ {
 		int  source_id;
 		struct Process_ *next;
 		struct Process_ *prev;    
-		char *arg[];		  /* An array of strings. */
+		char **arg;		  /* An array of strings. */
 } Process_; 
 typedef struct Process_ *Process;
 

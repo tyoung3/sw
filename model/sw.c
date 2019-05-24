@@ -188,12 +188,18 @@ Argument visitArgument(Argument _p_)
 
 ListArgument visitListArgument(ListArgument listargument)
 {
-    if(listargument == NULL) {
-    	return NULL;
-    }
-    return make_ListArgument(
-    		visitArgument(listargument->argument_), 
-        	listargument);
+	ListArgument l=NULL;
+	
+	while(listargument != 0)
+  {
+    /* Code For ListArgument Goes Here */
+    l = make_ListArgument(visitArgument(
+    	listargument->argument_),
+    	l);
+    listargument = listargument->listargument_;
+  }
+  
+  return l;
    
 }
 
