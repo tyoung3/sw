@@ -1,7 +1,7 @@
 #ifndef SWSYM_H_
 #define SWSYM_H_
 
-#include "nemod.h"
+#include "model.h"
 
 int getPath(char *key);
 // int addPath(char *key);

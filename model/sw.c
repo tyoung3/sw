@@ -142,22 +142,20 @@ Process visitProc(Proc _p_)
   switch(_p_->kind) {
   
   case is_Processx:  
-    visitListArgument(_p_->u.processx_.listargument_);
     return MakeProcess(
     	visitIdent(_p_->u.processx_.ident_), 
-    	visitComp(_p_->u.processx_.comp_)
+    	visitComp(_p_->u.processx_.comp_),
+    	visitListArgument(_p_->u.processx_.listargument_)
     );   
-    break;
       
   case is_Processy:   
-    visitListArgument(_p_->u.processy_.listargument_);
     return MakeProcess(
-    	visitIdent(_p_->u.processy_.ident_), NULL);
-    	
-     
-    break;
+    	visitIdent(_p_->u.processy_.ident_), 
+    	NULL,
+    	visitListArgument(_p_->u.processy_.listargument_) 
+    );
   default:
-    fprintf(stderr, "Error: bad kind field when printing Proc!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Proc!\n");
     exit(1);
   }
 }
@@ -190,14 +188,13 @@ Argument visitArgument(Argument _p_)
 
 ListArgument visitListArgument(ListArgument listargument)
 {
-
-  return listargument;
-  
-  while(listargument != 0)
-  {
-    visitArgument(listargument->argument_);
-    listargument = listargument->listargument_;
-  }
+    if(listargument == NULL) {
+    	return NULL;
+    }
+    return make_ListArgument(
+    		visitArgument(listargument->argument_), 
+        	listargument);
+   
 }
 
 Ident visitIdent(Ident i)

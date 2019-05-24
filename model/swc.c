@@ -6,7 +6,7 @@ TODO:
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include "nemod.h"
+#include "model.h"
 
 #define P(s) printf("// %s\n",(#s));
 static void genSuffix() {
@@ -42,14 +42,14 @@ static void genProcs(Process p) {
 
 
 
-void genC(Model nemod) {
+void genC(Model model) {
 	Flow f;
 	Process p;
 	
 				//* Generate Prefix code */
-	genPrefix(nemod->nflows);
+	genPrefix(model->nflows);
 	
-	if (!nemod) {
+	if (!model) {
 			fprintf(stderr,"SWC/FAIL: Missing model\n");
 			exit(1);
 	}
@@ -57,7 +57,7 @@ void genC(Model nemod) {
 				
 			//* Generate commented Reconstructed Network Definition */
 	printf("/*******  Expanded Network Definition   *****/\n");
-	f=nemod->flow;
+	f=model->flow;
 
 	while(f) {
 			printf("// (%s %s.%s)%d <- %d(%s %s.%s) \n", 
@@ -75,7 +75,7 @@ void genC(Model nemod) {
 	}
 	
 	printf("\n");		 
-	p=nemod->proc;  /* Get first process */
+	p=model->proc;  /* Get first process */
 	genProcs(p); 
 	genSuffix();	//* Generate Suffix code */
 }

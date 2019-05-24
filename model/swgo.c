@@ -8,7 +8,7 @@ TODO:
 #include <stdio.h>
 #include <stdlib.h>
 #include "swsym.h"
-#include "nemod.h"
+#include "model.h"
 
 #define P(s) printf("%s\n",(#s));
 
@@ -165,11 +165,11 @@ void genLaunches(Process p) {
 }	
 
 #ifdef ALLOCATECH
-static void allocateChannels( Model nemod) {
+static void allocateChannels( Model model) {
 	Process p;
 	int cha=0;  // current channel allocation
 	
-	p= nemod->proc;
+	p= model->proc;
 	while(p) {
 			if(p->nportsOut > 0) {  /* This is nbr source ports */ 
 				 p->ch =cha;  
@@ -199,13 +199,13 @@ static int assign_channel(int ch, Flow f) {
 		return ch;
 }
 	
-static void showND(Model nemod) {	
+static void showND(Model model) {	
 	Flow f;
-	int ch=nemod->nflows-1;
+	int ch=model->nflows-1;
 				
 			//* Generate commented Reconstructed Network Definition */
 	printf("/*       Network Definition  */\n");
-	f=nemod->flow;
+	f=model->flow;
 	while(f) {
 			assign_channel(ch--,f);	
 			printf("/* (%s %s.%s)%d <- %d(%s %s.%s) */\n", 
@@ -223,17 +223,17 @@ static void showND(Model nemod) {
 	printf("\n");
 }	
 		
-void genGo(Model nemod) {
+void genGo(Model model) {
 	Process p;
 		
-	if (!nemod) {
+	if (!model) {
 			fprintf(stderr,"swgo/FAIL: Missing model\n");
 			exit(1);
 	}
 	
-	genPrefix(nemod);  	/* Generate Prefix code */
-	showND(nemod);  			/* Show commented ND    */	
-	p=nemod->proc;  			/* Get first process    */
+	genPrefix(model);  	/* Generate Prefix code */
+	showND(model);  			/* Show commented ND    */	
+	p=model->proc;  			/* Get first process    */
 	genLaunches(p); 			/* Expand processes     */ 
 	genSuffix();				/* Generate Suffix code */
 }

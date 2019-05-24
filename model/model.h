@@ -1,5 +1,5 @@
-#ifndef nemod_h_
-#define nemod_h_
+#ifndef MODEL_H
+#define MODEL_H
 
 
 #include "Absyn.h"
@@ -12,7 +12,7 @@
 				    Process        > Process
 */
 
-/*    NEMOD  Structures   */
+/*    MODEL  Structures   */
 
 typedef enum {NONE,GOGO,OTHER} FLOWTYPE;
 struct Component_ {
@@ -36,9 +36,8 @@ typedef struct Port_ *Port;
 		
 struct Process_ {
 		String name;
-		Component comp;    
-		// ArgList arg;
-		Port   port; 	      /* Port list */
+		Component comp;    		  
+		Port  port; 	      /* Port list */
 		int  nportsIn;
 		int  nportsOut;
 		int  ch;			/* Low channel number */
@@ -46,6 +45,7 @@ struct Process_ {
 		int  source_id;
 		struct Process_ *next;
 		struct Process_ *prev;    
+		char *arg[];		  /* An array of strings. */
 } Process_; 
 typedef struct Process_ *Process;
 
@@ -69,6 +69,6 @@ struct Model_ {
 } Model_;
 typedef struct Model_ *Model;
 
-/*   End of NEMOD  Structures   */
+/*   End of MODEL  Structures   */
 
-#endif  // nemod_h_
+#endif  // MODEL_H
