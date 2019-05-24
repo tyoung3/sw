@@ -150,6 +150,27 @@ Flow MakeFlow(Process src, Process snk) {
 	return f;
 } 
 
+static char **MakeArg(ListArgument la, char *name) {
+	char **arg;   /* Pointer to array of string pointers. */
+	int i=1,narg=1;
+	ListArgument la2=la;
+	
+	while(la2) {
+		narg++;
+		la2     = la2->listargument_;
+	}
+	
+	arg = (char **) malloc((narg+1)*sizeof(char*)); 
+	arg[0] = name;
+	arg[narg] = NULL; 
+
+	while(la) {
+		arg[i++] = la->argument_->u.argumentx_.string_;
+		la       = la->listargument_;
+	}
+	
+	return arg;
+}
 
 Process MakeProcess(Ident name, Component comp, ListArgument la) {
 	Process p;
@@ -177,6 +198,7 @@ Process MakeProcess(Ident name, Component comp, ListArgument la) {
 		p->port	= NULL;
 		p->next = NULL;
 		p->prev = NULL;
+		p->arg  = MakeArg(la,name);
     	addProc(name,p);
     }	
     
@@ -261,6 +283,7 @@ int main(int argc, char ** argv)
   
   if (parse_tree)   {  
     model=visitValidSW(parse_tree);
+    // @TODO Free Parse tree storage
     if(verifyOK(model)) {
     	switch (mode) {
 	    	case GRAPHMODE:      

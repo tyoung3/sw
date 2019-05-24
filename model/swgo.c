@@ -119,7 +119,21 @@ static void makeChSlice(Process p, int nflows) {
 	} while (pt != p->port);
 }			
 
-void genLaunches(Process p) {	
+static void	genLaunch1(Process p) {
+	int i=1;
+	
+				printf("fbp.Launch(&wg,");
+				printf("[]string{\"%s\"",p->name); 
+				while(p->arg[i]) {
+					printf(",\"%s\"",p->arg[i]);
+					i++;
+				}
+				printf("},\t%9s.%s, ",		
+					p->comp->path,
+					p->comp->name);
+}					
+
+static void genLaunches(Process p) {	
 	int ch;   /* Assigned channel */
 	int nflows;
     
@@ -128,32 +142,20 @@ void genLaunches(Process p) {
 		if( nflows > 1 ) {
 			if(needaSlice(p->port))  { 
 				makeChSlice(p, nflows);
-				printf("fbp.Launch(&wg,");
-				printf("[]string{\"%s\"}",p->name); 
-				printf(",\t%9s.%s, ",		
-					p->comp->path,
-					p->comp->name);
-				printf("\tcs_%s[0:%i])\n",
+				genLaunch1(p);
+				printf("cs_%s[0:%i])\n",
 					p->name,	
 					nflows
 				);		
 			} else {
-				printf("fbp.Launch(&wg,");
-				printf("[]string{\"%s\"}",p->name); 
-				printf(",\t%9s.%s, ",		
-					p->comp->path,
-					p->comp->name);
+				genLaunch1(p);
 				printf("cs[0:%i])\n",
 					nflows
 				);				
 			}		
 		} else {
 			ch = p->port->channel;	
-			printf("fbp.Launch(&wg,");
-			printf("[]string{\"%s\"}",p->name); 
-			printf(",\t%9s.%s, ",		
-				p->comp->path,
-				p->comp->name);
+			genLaunch1(p);
 			printf("cs[%i:%i])\n",
 				ch,ch+1	
 			);		
@@ -199,6 +201,42 @@ static int assign_channel(int ch, Flow f) {
 		return ch;
 }
 	
+static void showArgs(Process p) {
+	int i=1;
+	
+	while(p->arg[i]) {
+		printf(" \"%s\"",p->arg[i]);
+		i++;
+	}	
+
+	
+}
+static void showSink(Process p, int id) {	
+		
+			printf("/* (%s %s.%s ",
+				p->name,
+				p->comp->path,
+				p->comp->name
+				);
+				
+			showArgs(p);	
+			
+			
+			printf(")%d ",id);
+}			
+
+static void showSource(Process p, int id) {		
+		
+			printf(" <- %d(%s %s.%s", 
+				id, 
+				p->name,
+				p->comp->path,
+				p->comp->name
+			);
+			
+			showArgs(p);
+			printf(")\t*/\n");
+}			
 static void showND(Model model) {	
 	Flow f;
 	int ch=model->nflows-1;
@@ -206,20 +244,14 @@ static void showND(Model model) {
 			//* Generate commented Reconstructed Network Definition */
 	printf("/*       Network Definition  */\n");
 	f=model->flow;
+	
 	while(f) {
-			assign_channel(ch--,f);	
-			printf("/* (%s %s.%s)%d <- %d(%s %s.%s) */\n", 
-				f->sink->name,
-				f->sink->comp->path,
-				f->sink->comp->name,
-				f->sink_id, 
-				f->source_id, 
-				f->source->name,
-				f->source->comp->path,
-				f->source->comp->name
-			);
+		assign_channel(ch--,f);	
+		showSink(f->sink, f->sink_id);	
+		showSource(f->source,f->source_id);
 		f=f->next;
 	}
+	
 	printf("\n");
 }	
 		
