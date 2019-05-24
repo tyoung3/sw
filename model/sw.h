@@ -1,5 +1,5 @@
-#ifndef SWNEMOD_H_
-#define SWNEMOD_H_
+#ifndef SW_H_
+#define SW_H_
 /* You might want to change the above name. */
 
 #include "Absyn.h"
@@ -25,9 +25,9 @@ void visitChar(Char c);
 String visitString(String s);
 
 	/* swjafafbp.c */
-void genJavaFBP(Model nemod);
+void genJavaFBP(Model model);
 
 	/* swc.c       */
-void genC(Model nemod); 
-#endif   // SWNEMOD_H_
+void genC(Model model); 
+#endif   // SW_H_
 

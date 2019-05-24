@@ -10,12 +10,12 @@ all:  sw tags
 install: sw
 	sudo cp ./sw /usr/local/bin 
 
-tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h nemod.h sw.h  swmain.h  swsym.h
+tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h model.h sw.h  swmain.h  swsym.h
 
 	ctags *.c *.h
 
 clean:
-	rm -f sw.o swnom.o  swnemod.o  ${OBJS} Parser.h Printer.h Absyn.h
+	rm -f sw.o swnom.o    ${OBJS} Parser.h Printer.h Absyn.h
 
 poc:	run 
 
@@ -52,10 +52,10 @@ sw.o: sw.c sw.h swsym.h Parser.h Printer.h Absyn.h
 swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c swmain.c -o swmain.o 	
 	
-swgo.o: swgo.c swgo.h nemod.h
+swgo.o: swgo.c swgo.h model.h
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
 		
-swc.o: swc.c sw.h nemod.h
+swc.o: swc.c sw.h model.h
 	${CC} ${CCFLAGS} -c swc.c -o swc.o	
 
 

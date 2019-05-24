@@ -49,24 +49,24 @@ static int badProc(Process p) {
 			return 0;
 }
 
-static int verifyOK(Model nemod) { 						/*expand and check nemod*/
+static int verifyOK(Model model) { 						/*expand and check model*/
 	Flow f;
 	
-	if(!nemod) {
-		fprintf(stderr,"SW/verify: Model nemod not built!");
+	if(!model) {
+		fprintf(stderr,"SW/verify: model not built!");
 		return(0);
 	}	
 
 #ifdef VERIFY_VERBOSE	
 	fprintf(stderr,
-		"SW/verify/nemod: %d/%d/%d flows/procs/components.\n", 
-			nemod->nflows, 
-			nemod->nprocs, 
-			nemod->ncomponents
+		"SW/verify/model: %d/%d/%d flows/procs/components.\n", 
+			model->nflows, 
+			model->nprocs, 
+			model->ncomponents
 	);
 #endif	
 	
-	f=nemod->flow;
+	f=model->flow;
 	while(f) {
 		if( badProc(f->sink) || badProc(f->source) ) {
 			fprintf(stderr,"SW/verify: failed.");
@@ -149,7 +149,7 @@ Flow MakeFlow(Process src, Process snk) {
 } 
 
 
-Process MakeProcess(Ident name, Component comp) {
+Process MakeProcess(Ident name, Component comp, ListArgument la) {
 	Process p;
 	static int onone=1;
 	
@@ -225,7 +225,7 @@ static FILE *openFile(char *fname) {
 int main(int argc, char ** argv)
 {
   ValidSW parse_tree;
-  Model nemod;    /* Network Model */
+  Model model;    /* Network Model */
   MODE mode=GOMODE;
   
   input = stdin;
@@ -253,14 +253,14 @@ int main(int argc, char ** argv)
   parse_tree = pValidSW(input);
   
   if (parse_tree)   {  
-    nemod=visitValidSW(parse_tree);
-    if(verifyOK(nemod)) {
+    model=visitValidSW(parse_tree);
+    if(verifyOK(model)) {
     	switch (mode) {
 	    	case GRAPHMODE:      
-    			genGraph(nemod);
+    			genGraph(model);
     			break;
     		case JAVAFBP:
-    			genJavaFBP(nemod);
+    			genJavaFBP(model);
     			break;
 	    	case ASTMODE:       // Abstract Syntax 			
     			printf("%s\n\n", showValidSW(parse_tree));
@@ -270,10 +270,10 @@ int main(int argc, char ** argv)
    				printf("%s\n\n", printValidSW(parse_tree));
     			break;	
     		case GOMODE: 
-	    	    genGo(nemod);
+	    	    genGo(model);
     			break;	
     		case CMODE: 
-	    	    genC(nemod);
+	    	    genC(model);
     			break;	
     		default:
     			Usage();

@@ -1,6 +1,5 @@
 CC = gcc
 CCFLAGS = -g -W -Wall
-CCFLAGS = -O6 -W -Wall
 
 FLEX = flex
 FLEX_OPTS = -PSW

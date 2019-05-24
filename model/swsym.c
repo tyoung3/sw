@@ -9,7 +9,7 @@
 #include <memory.h>
 #include <string.h>
 #include <errno.h>
-#include "nemod.h"
+#include "model.h"
 
 // #define TEST_MAIN
 

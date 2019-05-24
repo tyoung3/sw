@@ -6,7 +6,7 @@ TODO:
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include "nemod.h"
+#include "model.h"
 
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s,\n",(#s));
@@ -130,13 +130,13 @@ static void genProcs(Process p) {
 
 
 
-void genJavaFBP(Model nemod) {
+void genJavaFBP(Model model) {
 	Flow f;
 	Process p;
 	
 	
 	
-	if (!nemod) {
+	if (!model) {
 			fprintf(stderr,"swgo/FAIL: Missing model\n");
 			exit(1);
 	}
@@ -144,7 +144,7 @@ void genJavaFBP(Model nemod) {
 		
 			//* Generate commented Reconstructed Network Definition */
 	// printf("#########   Expanded Network Definition   ######### \n");
-	f=nemod->flow;
+	f=model->flow;
 
 #ifdef CAN_COMMENT
 	while(f) {
@@ -166,17 +166,17 @@ void genJavaFBP(Model nemod) {
 #endif	
 	
 				//* Generate Prefix code */
-	genPrefix(nemod->nflows);
+	genPrefix(model->nflows);
 	
 	
 	genCluster1("COLLATING NODE");
 		
-		p=nemod->proc;  /* Get first process */
+		p=model->proc;  /* Get first process */
 		genProcs(p); 
     // P(        });    /* End Cluster1 */	
 
     
-	genLinks(nemod); 
+	genLinks(model); 
 	genSuffix();	   //* Generate Suffix code */
 }
 
