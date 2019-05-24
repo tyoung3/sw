@@ -125,9 +125,12 @@ static void	genLaunch1(Process p) {
 	
 				printf("fbp.Launch(&wg,");
 				printf("[]string{\"%s\"",p->name); 
-				while(p->arg[i]) {
-					printf(",\"%s\"",p->arg[i]);
-					i++;
+				
+				if(p->arg) {
+					while(p->arg[i]) {
+						printf(",\"%s\"",p->arg[i]);
+						i++;
+					}
 				}
 				printf("},\t%9s.%s, ",		
 					p->comp->path,
@@ -205,7 +208,10 @@ static int assign_channel(int ch, Flow f) {
 static void showArgs(Process p) {
 	int i=1;
 	
-	while(p->arg[i]) {
+	if(!p->arg) 
+			return;
+			
+	while(p->arg[i] != NULL) {
 		printf(" \"%s\"",p->arg[i]);
 		i++;
 	}	

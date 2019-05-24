@@ -164,12 +164,48 @@ static char **MakeArg(ListArgument la, char *name) {
 	arg[0] = name;
 	arg[narg] = NULL; 
 
+	i=narg-1;
 	while(la) {
-		arg[i++] = la->argument_->u.argumentx_.string_;
+		arg[i--] = la->argument_->u.argumentx_.string_;
 		la       = la->listargument_;
 	}
 	
 	return arg;
+}
+
+static int countArg(char **arg) {
+	int i=0;
+	
+	while(arg[i++] != NULL) {
+	}
+	
+	return i;
+}
+
+static char **NewArg(char **arg, char **narg) {    			
+		char **a; 
+		int i,j,na;
+		
+		
+		na = countArg(arg) + countArg(narg) - 1;
+		a = (char**) malloc( na * sizeof(char*));
+		
+		while ( arg[i]  ) {
+			a[i] = arg[i];
+			i++;
+		}		
+		
+		j=1;
+		
+		while ( narg[j] ) {
+			a[i] = narg[j];
+			i++; j++;
+		} 
+		
+		free(arg);
+		free(narg);
+		return a;
+		
 }
 
 Process MakeProcess(Ident name, Component comp, ListArgument la) {
@@ -200,7 +236,18 @@ Process MakeProcess(Ident name, Component comp, ListArgument la) {
 		p->prev = NULL;
 		p->arg  = MakeArg(la,name);
     	addProc(name,p);
-    }	
+    }	else {
+    	if(comp) {
+    		p->comp = comp;
+    	}
+    	if(la) {
+    		if( p->arg ) { 	
+    			p->arg  = NewArg(p->arg,MakeArg(la,name)); 
+    		} else {
+	    		p->arg  = MakeArg(la,name);
+	    	}	
+    	}	
+    }
     
 	return p;
 	
