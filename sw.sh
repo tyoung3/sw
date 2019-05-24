@@ -24,10 +24,10 @@ EOF
 
 # curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 BuildModel() {
-	pushd nemod || Die xx
-	# Die Cannot cd to ./nemod
+	pushd model || Die xx
+	# Die Cannot cd to ./model
 	[ -f sw.c ] || Die Missing sw.c 
-	[ -f Makefile ] || Die Missing ../nemod/Makefile 
+	[ -f Makefile ] || Die Missing ../model/Makefile 
 	make all
 }
 
@@ -41,13 +41,13 @@ BuildIt() {
 
 case $1 in
 	b)BuildIt;;
-	j)cd nemod; ./collate.sh j;;
-	poc) cd nemod; ./collate.sh r;;
+	j)cd model; ./collate.sh j;;
+	poc) cd model; ./collate.sh poc;;
 	v)gimp /tmp/collate.jpg;;
 	x)$EDITOR $scr;;
 	*)cat << EOF
 	
-USAGE:  $scr
+USAGE:  $scr-0.0.0
 	b		. Build sw from SW.cf
 	j		. Generate and view /tmp/collate.jpg 
 	poc 		. Run PoC (Build and run simplistic Go program)  
