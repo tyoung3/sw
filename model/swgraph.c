@@ -12,7 +12,7 @@ TODO:
 #define C(s) printf("%s,\n",(#s));
 
 
-/////////////////////////////////////////////////
+/////////////////  Dupes code in swgo.c  //////////////////////////////
 static Port findPort(Port pt, int id) {
 	
 	while(pt) {

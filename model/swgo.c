@@ -140,6 +140,7 @@ static void	genLaunch1(Process p) {
 static void genLaunches(Process p) {	
 	int ch;   /* Assigned channel */
 	int nflows;
+    int ch0;  /* initial channel index */
     
 	while(p) {
    		nflows=p->nportsIn + p->nportsOut;
@@ -153,8 +154,10 @@ static void genLaunches(Process p) {
 				);		
 			} else {
 				genLaunch1(p);
-				printf("cs[0:%i])\n",
-					nflows
+				ch0=p->port->channel;
+				printf("cs[%i:%i])\n",
+					ch0,
+					ch0+nflows
 				);				
 			}		
 		} else {
