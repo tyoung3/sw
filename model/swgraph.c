@@ -10,12 +10,43 @@ TODO:
 
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s,\n",(#s));
+
+
+/////////////////////////////////////////////////
+static Port findPort(Port pt, int id) {
+	
+	while(pt) {
+		if(pt->id == id) {					
+			return pt;
+		}	
+		pt=pt->next;
+	}
+	return NULL;
+}
+static int assign_channel(int ch, Flow f) {
+		
+		findPort(f->source->port,f->source_id)->channel=ch;
+		findPort(f->sink->port,  f->sink_id) ->channel=ch;
+		return ch;
+}
+	
+static void assignChannels(Model m) {
+	int ch=m->nflows-1;
+	Flow f=m->flow;
+	
+	while(f) {
+		assign_channel(ch--,f);	
+		f=f->next;
+	}	
+}
+
+/////////////////////////////////////////////////
+
 static void genSuffix() {
 
 	 
 	printf("}\n");
 }
-
 
 static void genPrefix(int nflows) {
 
@@ -116,20 +147,34 @@ static void genTaos() {
     P(        });
  }   
 #endif 
-
-static void genLinks(Model m) {
+static int findChannel(Port p, int id) {
+	Port p0;	
+	
+	p0 = p;
+	do {
+		if(p->id == id) {
+				return p->channel;
+		}		
+		p=p->next;
+	} while(p != p0);
+	
+	return -1;
+}
+static void genLinks(Model m) {   // [label="C Miss"];
 	Flow f;
 	Process src,snk;
+	int channel=7;
 	
 	f=m->flow;
 	while(f) {
 		src=f->source;
 		snk=f->sink;
-			 
-			printf("\"%s\":%i -> \"%s\":%i;\n",
+			channel=findChannel(src->port,f->source_id);  
+			printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"];\n",
 					src->name, f->source_id, 
 					snk->name,
-					f->sink_id);
+					f->sink_id,
+					channel);
 	 		
 		f=f->next;
 	}
@@ -188,7 +233,7 @@ void genGraph(Model model) {
 			exit(1);
 	}
 	
-		
+	assignChannels(model);
 		
 			//* Generate commented Reconstructed Network Definition */
 	printf("#########   Expanded Network Definition   ######### \n");
