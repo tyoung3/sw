@@ -45,7 +45,7 @@ static void genPrefix(int nflows) {
 
 }
 
-
+#ifdef OLDSTUFF
 static void genEdit() {
     P(        "EDIT" );
     C(                [ shape=record);
@@ -55,19 +55,30 @@ static void genEdit() {
     P(  label="{<P> EDIT);|swedit}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];);
    
 }
+#endif
 
 static void genPort(int n) {
-  		printf("|<%i> %i", n, n);
+  		printf("<%i> %i  ", n, n);
 }  	
 
-static void genProc(char *name, char *comp, char *host) {
+static void genArgs(char **a) {
+		int i=1;
+		
+		while(a[i] != NULL) {
+			printf(" \\\"%s\\\"", a[i++]);
+		}
+}
+
+	/* EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */
+static void genProc(char *name, char *comp, char *host, char **args) {
 
      printf("       \"%s\" ", name );
      C(                   [ shape=record);
      C(                  color="black" );
      printf("  URL=\".%s.shtml\"\n",name);
      printf(" host=\"%s\" \n", host);
-     printf("label=\"{<P> %s|%s }",name,comp);
+     printf("label=\"{<P> %s %s",name,comp);
+     genArgs(args);
   
 }  	    
  
@@ -87,6 +98,7 @@ static void genCluster1(char *name) {
      
 }
     
+#ifdef OLDSTUF    
 static void genSAVE() {
     P(        "SAVE" );
     C(                     [ shape=record);
@@ -96,7 +108,6 @@ static void genSAVE() {
     P(                       label="{<P> SAVE|WriteFile }|<in> in"];);
 }
 
-#ifdef GENTAOS
 static void genTaos() {        
     P(subgraph "clustertaos" { );
      P(        label = "taos"; name="taos";);
@@ -111,7 +122,6 @@ static void genLinks(Model m) {
 	Process src,snk;
 	
 	f=m->flow;
-	
 	while(f) {
 		src=f->source;
 		snk=f->sink;
@@ -144,13 +154,18 @@ static void genProcs(Process p) {
 				p->comp->name,
 				p->nportsIn + p->nportsOut
 			);
-	
-		genProc(p->name,p->comp->name,"taos_");
+ 
+		genProc(p->name,p->comp->name,"taos_", p->arg);
 			pt = p->port;
+			printf("|{");
 			do {
 				genPort(pt->id);
 				pt=pt->next;
+				if(pt != p->port ) {
+					printf("|");
+				}
 			} while(pt != p->port);
+        printf(" }}");
 		endProc(); 
 		
 		p=p->next;

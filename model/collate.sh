@@ -24,8 +24,7 @@ RunPoC() {
 
 		# Create collate.jpg 		
 GenJPG() {  
-	make jpeg
-	
+	make jpeg && gimp /tmp/collate.jpg &
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.JPG
 	#gimp /tmp/collate_SW.JPG
