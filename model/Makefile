@@ -3,7 +3,7 @@ CC = gcc
 CCFLAGS = -g -W -Wall
 #CCFLAGS = -O6 -W -Wall
 
-VERSION = \"0.1.3\"
+VERSION = \"0.2.0\"
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
@@ -52,7 +52,7 @@ swsym.o: swsym.c swsym.h
 sw.o: sw.c sw.h swsym.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
-swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h
+swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h Makefile
 	${CC} ${CCFLAGS} -DVERSION=${VERSION} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h model.h
