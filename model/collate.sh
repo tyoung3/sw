@@ -33,24 +33,32 @@ GenJPG() {
 
 ShowCheck() {
 	cat << EOF
-	
+
+On Branch:	
 					Release Checklist 
     	 	* git pull origin master	
 		* make check OK?
 		* git status
 		* git push  	
-				
+
+On Master 				
 		* git checkout master
     	 	* git pull origin master	
     	 	* make check OK?	
 		* git merge --no-ff BRANCH_NAME(Ex. Fix_Comp_names)
+
+New version?:		
 		* git tag	
 		* [git tag -a  New_VERSION ] 
 		* git commit -m "v0.0.?"
 		* git push origin VERSION (Ex. git push origin v.0.0.2 )
 					OR
 		  git push origin --tags  (Pushes all tags to remote)
-		  
+
+Remove Branch:		
+	  * git branch -d branchname 
+	       * git push origin --delete branchname
+		   * git branch	       	  
 EOF
 }
 
