@@ -5,6 +5,8 @@
 #include "Absyn.h"
 #include "swmain.h"
 
+extern char *version;
+
 Model visitValidSW(ValidSW p);
 Model visitStm(Stm p);
 Model visitListStm(ListStm p);
