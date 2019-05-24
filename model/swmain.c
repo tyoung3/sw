@@ -318,7 +318,7 @@ int main(int argc, char ** argv)
   		} 
   	}	else {
   			if( strncmp(argv[1],"-v",4) == 0) {
-  				printf("Streamworks/sw-%s\n", version);
+  				printf("Streamwork/sw-%s\n", version);
   				exit(0);
   			} else {
   				input=openFile(argv[1]);
