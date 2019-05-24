@@ -13,6 +13,8 @@
 #include "swgraph.h"       
 #include <string.h>
 
+static char *version={VERSION};
+
 
 ValidSW pValidSW(FILE *inp);
 
@@ -206,9 +208,9 @@ Model MakeModel(Flow f) {
 
 static void Usage() {
     fprintf(stderr,"Usage:\tsw [-m MODE [ SW_FILE ]\n");
-    fprintf(stderr,"\tWHERE MODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|7-CMODE,}\n");
-    fprintf(stderr,"\t[with no arguments, sw will read from stdin. \n");
-    fprintf(stderr,"\t[This behavior may change with minor version changes.\n");
+    fprintf(stderr,"\tsw -v\n");
+    fprintf(stderr,"\t\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|7-CMODE,}\n");
+    fprintf(stderr,"\t\t[with no arguments, sw will read from stdin. \n");
 }
  	
   
@@ -246,7 +248,12 @@ int main(int argc, char ** argv)
   			input=openFile(argv[3]);
   		} 
   	}	else {
-  			input=openFile(argv[1]);
+  			if( strncmp(argv[1],"-v",4) == 0) {
+  				printf("Streamworks/sw-%s\n", version);
+  				exit(0);
+  			} else {
+  				input=openFile(argv[1]);
+  			}	
   	}			
   }
   	

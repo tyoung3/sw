@@ -3,6 +3,8 @@ CC = gcc
 CCFLAGS = -g -W -Wall
 #CCFLAGS = -O6 -W -Wall
 
+VERSION = \"0.1.3\"
+
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
 all:  sw tags 
@@ -23,6 +25,7 @@ run:  sw
 	./collate.sh poc 
 
 check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw  
+	./sw -v 
 	./sw -m 1 nds/collate.sw  >/dev/null
 	./sw -m 2 nds/collate.sw  >/dev/null
 	./sw -m 3 nds/collate.sw  >/dev/null
@@ -50,7 +53,7 @@ sw.o: sw.c sw.h swsym.h Parser.h Printer.h Absyn.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
 swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h
-	${CC} ${CCFLAGS} -c swmain.c -o swmain.o 	
+	${CC} ${CCFLAGS} -DVERSION=${VERSION} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h model.h
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
