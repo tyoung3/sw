@@ -13,7 +13,7 @@
 #include "swgraph.h"       
 #include <string.h>
 
-static char *version={VERSION};
+char *version={VERSION};
 
 
 ValidSW pValidSW(FILE *inp);
