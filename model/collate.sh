@@ -31,9 +31,33 @@ GenJPG() {
 	#gimp /tmp/collate_SW.JPG
 }	
 
+ShowCheck() {
+	cat << EOF
+	
+					Release Checklist 
+    	 	* git pull origin master	
+		* make check OK?
+		* git status
+		* git push  	
+				
+		* git checkout master
+    	 	* git pull origin master	
+    	 	* make check OK?	
+		* git merge --no-ff BRANCH_NAME(Ex. Fix_Comp_names)
+		* git tag	
+		* [git tag -a  New_VERSION ] 
+		* git commit -m "v0.0.?"
+		* git push origin VERSION (Ex. git push origin v.0.0.2 )
+					OR
+		  git push origin --tags  (Pushes all tags to remote)
+		  
+EOF
+}
+
 case $1 in	
 	c) make check && echo Success! || echo Check Failed.;;
 	j) GenJPG;;
+	l) ShowCheck;;
 	poc) RunPoC;;
 	r) RunCollate;;
 	x) $EDITOR collate.sw;;
@@ -41,7 +65,8 @@ case $1 in
 	
 USAGE: 
 		c		. Make check
-		j		. Generate collate jpeg 
+		j		. Generate collate jpeg
+		l       . Show release check list. 
 		poc		. Build and run Proof of Concept 
 		r		. Build and run Collate program 
 		x		. Edit this script
