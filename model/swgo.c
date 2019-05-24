@@ -187,7 +187,7 @@ static void allocateChannels( Model model) {
 }
 #endif 
 
-Port findPort(Port pt, int id) {
+static Port findPort(Port pt, int id) {
 	
 	while(pt) {
 		if(pt->id == id) {					
@@ -198,13 +198,6 @@ Port findPort(Port pt, int id) {
 	return NULL;
 }
 
-static int assign_channel(int ch, Flow f) {
-		
-		findPort(f->source->port,f->source_id)->channel=ch;
-		findPort(f->sink->port,  f->sink_id) ->channel=ch;
-		return ch;
-}
-	
 static void showArgs(Process p) {
 	int i=1;
 	
@@ -244,16 +237,33 @@ static void showSource(Process p, int id) {
 			showArgs(p);
 			printf(")\t*/\n");
 }			
+
+static int assign_channel(int ch, Flow f) {
+		
+		findPort(f->source->port,f->source_id)->channel=ch;
+		findPort(f->sink->port,  f->sink_id) ->channel=ch;
+		return ch;
+}
+	
+static void assignChannels(Model m) {
+	int ch=m->nflows-1;
+	Flow f=m->flow;
+	
+	while(f) {
+		assign_channel(ch--,f);	
+		f=f->next;
+	}	
+}
+
 static void showND(Model model) {	
 	Flow f;
-	int ch=model->nflows-1;
 				
 			//* Generate commented Reconstructed Network Definition */
 	printf("/*       Network Definition  */\n");
 	f=model->flow;
+	assignChannels(model);
 	
 	while(f) {
-		assign_channel(ch--,f);	
 		showSink(f->sink, f->sink_id);	
 		showSource(f->source,f->source_id);
 		f=f->next;
