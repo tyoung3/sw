@@ -67,7 +67,7 @@ case $1 in
 	l) ShowCheck;;
 	poc) RunPoC;;
 	r) RunCollate;;
-	x) $EDITOR */collate.sw;;
+	x) $EDITOR */collate.sw ../bin/collate.sh;;
 	*) cat << EOF 
 	
 USAGE: 

@@ -41,8 +41,8 @@ BuildIt() {
 
 case $1 in
 	b)BuildIt;;
-	j)cd model; ./collate.sh j;;
-	poc) cd model; ./collate.sh poc;;
+	j) cd model;   ../bin/collate.sh j;;
+	poc) cd model; ../bin/collate.sh poc;;
 	v)gimp /tmp/collate.jpg;;
 	x)$EDITOR $scr;;
 	*)cat << EOF
