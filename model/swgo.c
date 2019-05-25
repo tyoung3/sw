@@ -106,8 +106,9 @@ static void makeChSlice(Process p, int nflows) {
 	Port pt;
 	
 	name=p->name;
+	printf("var cs_%s []chan interface{}\n",name);
 	printf("\n\tfor i:=0; i<%i; i++ {\n\t\t", nflows); 
-	printf("cs_%s:=append(cs_%s, make(chan interface{}))",
+	printf("cs_%s=append(cs_%s, make(chan interface{}))",
 				name,name
 				);
 	printf("\n\t}\n");
