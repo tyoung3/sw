@@ -42,7 +42,7 @@ int newPath(char *p) {
 static void genPaths(Model m) {
 	Process p;
 		
-	P(import "fmt");
+	// P(import "fmt");
 	P(import "sync");
 	
 	genPath(NULL);
@@ -60,7 +60,10 @@ static void genPaths(Model m) {
 
 //* Generate Prefix code */
 void genPrefix(Model m) {
-	int nflows=m->nflows;	 
+	int nflows=m->nflows;
+	int bfrtbl[m->nflows + 10];	
+	int i;
+	Flow f=m->flow; 
 
 	P(package main);
 	printf("\n/");
@@ -73,15 +76,29 @@ void genPrefix(Model m) {
 	genPaths(m);
 
 	P(func main() {);
-		P(	var cs []chan interface{});
+		printf("	var cs []chan interface{}\n	");
 		P(	var wg sync.WaitGroup);
 	printf("\n\t");
 	
-	P(fmt.Println("StreamWork Proof of Concept Example."));
-	
-	printf("\n\tfor i:=0; i<%i; i++ {\n\t\t", nflows); 
-	P(cs = append(cs, make(chan interface{})));
-	printf("\t}\n\n");
+	//P(fmt.Println("StreamWork/sw generated  ."));
+	f=m->flow;
+	i=0;
+	while(f) {
+		bfrtbl[nflows - i++ - 1 ] = f->bufsz;
+		f=f->next;
+	}	
+	i=0;
+	f=m->flow;
+	while(i<nflows) {
+		if(bfrtbl[i]>1) {
+			printf("cs = append(cs,make(chan interface{},%i))\n",
+					bfrtbl[i]);
+		} else {
+			printf("cs = append(cs,make(chan interface{}))\n");
+		}		
+		i++;
+		f=f->next;
+	}		
 }
 
 static int needaSlice(Port pt) {
@@ -108,7 +125,7 @@ static void makeChSlice(Process p, int nflows) {
 	name=p->name;
 	printf("var cs_%s []chan interface{}\n",name);
 	printf("\n\tfor i:=0; i<%i; i++ {\n\t\t", nflows); 
-	printf("cs_%s=append(cs_%s, make(chan interface{}))",
+	printf("cs_%s=append(cs_%s, make(chan interface{},2))",
 				name,name
 				);
 	printf("\n\t}\n");
@@ -229,14 +246,24 @@ static void showSink(Process p, int id) {
 			printf(")%d ",id);
 }			
 
-static void showSource(Process p, int id) {		
+static void showSource(Process p, int id, int bfsz) {		
 		
+		if(bfsz<2) {
 			printf(" <- %d(%s %s.%s", 
 				id, 
 				p->name,
 				p->comp->path,
 				p->comp->name
 			);
+		} else {
+			printf("<%d- %d(%s %s.%s",
+				bfsz, 
+				id, 
+				p->name,
+				p->comp->path,
+				p->comp->name
+			);
+		}
 			
 			showArgs(p);
 			printf(")\t*/\n");
@@ -269,7 +296,7 @@ static void showND(Model model) {
 	
 	while(f) {
 		showSink(f->sink, f->sink_id);	
-		showSource(f->source,f->source_id);
+		showSource(f->source,f->source_id,f->bufsz);
 		f=f->next;
 	}
 	

@@ -12,7 +12,11 @@ Valid.	 	    ValidSW  	::= [Stm] ;
 SFlow.			Stm			::= Flw;     
 terminator	    Stm   ";" ;
 
-Flowx.			Flw		::= Snk  "<-"  Srce;	   -- This is a go channel
+--  <- is a go channel
+Flowx.			Flw		::= Snk  "<" Buffsize "-"  Srce; 
+
+Bufszi.			Buffsize ::= Integer;
+Bufsze.			Buffsize ::=; 
 
 Sourcex.		Srce     ::= Prt Proc; 	
 

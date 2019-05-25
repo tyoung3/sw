@@ -7,6 +7,9 @@
 
 extern char *version;
 
+/* sw.c  */
+extern int maxbfsz;
+
 Model visitValidSW(ValidSW p);
 Model visitStm(Stm p);
 Model visitListStm(ListStm p);

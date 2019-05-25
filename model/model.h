@@ -54,6 +54,7 @@ struct Flow_ {
 	Process sink;
 	int source_id; 	
 	int sink_id; 	
+	int bufsz; 
 	FLOWTYPE type;    /* Type of flow GOGO, ORPHAN, etc*/
 	struct Flow_ *next;
 	struct Flow_ *prev;
