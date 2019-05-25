@@ -5,11 +5,11 @@
 
 RunCollate () {
 	temp=/tmp
-	[ -d $temp/sw/collate ] || mkdir $temp/sw/collate 
+	[ -d $temp/sw/collate ] || mkdir -p $temp/sw/collate 
 	./sw */collate.sw >  $temp/sw/collate/main.go
 	pushd $temp/sw/collate
 	[ -f go.mod ] || go mod init collate/collate
-	go run main.go 	
+	go run main.go 	| sort -r
 }
 
 RunPoC() {
@@ -67,7 +67,7 @@ case $1 in
 	l) ShowCheck;;
 	poc) RunPoC;;
 	r) RunCollate;;
-	x) $EDITOR collate.sw;;
+	x) $EDITOR */collate.sw;;
 	*) cat << EOF 
 	
 USAGE: 

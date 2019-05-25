@@ -9,7 +9,12 @@ RunLocusts () {
 	./sw */locusts.sw >  $temp/sw/locusts/main.go
 	pushd $temp/sw/locusts
 	[ -f go.mod ] || go mod init locusts/locusts
-	go run main.go 	| grep Match_IV
+	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 
+	go run main.go 		\
+	|tee $temp/sw/locusts/locusts.nomatch \
+	| grep MISSOURI 	\
+	&& echo&&echo Dates for Washington brood XIX and brood X, appearing two years early  
+	grep WASHINGTON $temp/sw/locusts/locusts.nomatch
 }
 
 
