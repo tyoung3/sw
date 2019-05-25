@@ -15,7 +15,7 @@ RunCollate () {
 RunPoC() {
 	temp=/tmp
 	[ -d $temp/sw/poc ] || mkdir -p $temp/sw/poc
-	echo "(Si strings.Print1)0 <- 0(Source strings.Gen1); " 	\
+	echo "(Hello strings.Print1)0 <- 0(World strings.Gen1\"3\"); " 	\
 	 | ./sw >  $temp/sw/poc/main.go 
 	pushd $temp/sw/poc
 	[ -f go.mod ] || go mod init poc/poc

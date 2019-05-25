@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 SW - STREAMWORK/FrontEnd
-=======================
+========================
 
 Name
 ----
@@ -24,29 +24,49 @@ Name
 Description
 -----------
 
-StreamWork is a proof-of-concept for a Go language flow-based system 
+StreamWork is the prototype for a Go language flow-based system 
 which reads and executes a StreamWork network definition(ND) file.
 
-A network definition consists of a list of Flows.  Each Flow consists 
-of a a sink process, a sink port number, "<-", a source portnumber, and   source process.  
+Employing StreamWork, an ND becomes, in effect, an executable
+script. Sw launches collects pre-compiled components 
+into one main.go program, launches them as goroutines, 
+and connects them via Go interface channels.
+
+The ND consists of a list of Flows. 
+Each Flow consists of a a sink process, 
+a sink port number, "<-", a source portnumber, and a source process.  
 
 Ex.  
+```
+    (Hello strings.Print1)0 <- 0(World strings.Gen1 "3"); 
+```
+produces:
+```
+Hello World-1
+Hello World-2
+Hello World-3
+```
 
-    (In strings.Print1)0 <- 0(Out strings.Gen1);
+The IPs are designed as nil(empty) interfaces to be 
+filled by the source components.   I.e. the interface
+data type is determined by the sending component.  IPs
+may or may not cause a type mis-match depending 
+on the sink component coding.  Components can be coded to
+handle all types(like Collate), a few types(like Print1), 
+or just one type; on each receiving port.    
 
-The IPs are designed as nil(empty) interfaces to be filled by the source components. I.e. the 
-interface type is determined by the first send to the channel.  Subsequent sends with different 
-types may or may not cause a type mis-match depending on the sink program coding. 
-
-This frontend is limited to just enough logic
- to provide a proof-of-concept.
-
+This prototype frontend is limited to a small part of its 
+intended capabilities, but can still perform highly 
+complex operations.
 
 Everything here. including the project name, is subject to change.  
-Versions will be backward compatible within the same major version. 
-Ex. your code depending on v0.0.1 will still work on v0.8.7, but may fail on v1.0.0.   
+Sw versions will be backward compatible within the same major version. 
+Ex. your code depending on sw-v0.0.1 will still work on sw-v0.8.7, but may fail on sw-v1.0.0.   
 
-Sw currenly generates Go code from the generated network model.  C and other languages could also be generated. 
+Sw builds a network model in memory then generates an
+abstract syntax tree, a linearized tree(an ND recronstruction), 
+a GraphViz .dot file, or Go source code from this model.
+C and other languages could also be generated.  JavaFBP is in progress.   
 
 Comments and critiques are welcome.    Contributors are encouraged.  
 Please do not submit code before contacting the project by e-mailing streamwork@twyoung.com or 
@@ -63,45 +83,39 @@ QuickStart (on Linux)
 	* Run 
 	
 ```	
-echo "(Sink strings.Print1)0 <- 0(Source strings.Gen1); " | ./sw > /tmp/main.go 
+echo "(Hello strings.Print1)0 <- 0(World strings.Gen1 \"3\");" | ./sw > /tmp/main.go 
 ```
 	* Run 'go run /tmp/main.go  ...
 
 OUTPUT: 
-```	
-	StreamWork Proof of Concept Example.
-Sink Source-1
-Sink Source-2
-Sink Source-3
-Sink Source-4
-Sink Source-5
-Sink Source-6
-Sink Source-7
+```StreamWork Proof of Concept Example.
+Hello World-1
+Hello World-2
+Hello World-3
 ```
 
 SW.cf Language Notes
 --------------------
-Statements in the network definition language, SW.cf, end
-with a semi-colon.  Semi-colons are like periods at the end of
-English statements -- they tell the reader (and the interpreter) when
+Statements in the network definition language, SW.cf, are 
+terminated with a semi-colon.  Semi-colons in code are like 
+periods at the end of English statements -- 
+they tell the reader (and the interpreter) when
 you have reached the end; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
 Without semi-colons, line breaks become
-necessary  and awkward syntax rules evolve.
-The Go language syntax actually requires semi-colons to be supplied by
-a smart lexer.  
+necessary  and awkward syntax rules evolve.  
 
-In the future, there may be some exceptions to the 
+In the future, there may be some, very few exceptions to the 
 semi-colon rule for  special pre-interpreter commands, like INCLUDE.
 
 The, ```<-```,  token is used to be consistent with its 
-usage in the Go language.   
+usage in the Go language.     
 
-Currently only numeric ports are supported.  Named ports are planned.
+Currently only numeric ports are supported.  Named ports are planned.  Any helpers?
 
 Comments in the SW.cf file provide 
 clues to possible future language additions.  
-We will strive hard for backward compatibility.
+We strive for backward compatibility.
 
 Collate/Merge Example
 ---------------------
@@ -123,7 +137,7 @@ running the following (in Linux):
 ```
 	sw < /tmp/collate.sw      > /tmp/collate/main.go
 	cd /tmp/collate; go mod init
-	go run *go 
+	go run *go   ; # Try go run main.go |sort | grep ...
 ```	
 will produce:
 ```
@@ -147,9 +161,7 @@ Match1 Int: 17
 Match1 Int: 23
 ```
 but not necessarily in that order.
-
-/tmp/sw/main.go:
-
+and also produce /tmp/sw/main.go:
 ```
 package main
 
@@ -214,22 +226,27 @@ Running:
 	sw -m 4 < /tmp/collate.sw > /tmp/collate.dot
 	dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg
 ```
-should produce /tmp/collate.jpg  [copy may be in this directory]
+produces /tmp/collate.jpg  [copy may be in this directory]
 
 WARNING:
 --------
-	 std.Gen1  is not the same as strings.Gen1 
+	 std.Gen1 generates integer IPs. It is not the same as
+	 strings.Gen1 
   
 BUGS:
 -----
 	 std.Gen1 fails unless all three arguments are present.
+	 
+	 Re-ordering dataflows in the ND, sometimes causes sw to
+	 fail for multi-port components. 
 
 Author
 ------
 
     Tom Young, streamwork@twyoung.com
     
-    with thanks to J.P.Morrison, Sam Watkins, Phillip W. Young, 
-    all the other contributors 
-    to  flow-based-programming@googlegroups.com, 
-    and the developers of Linux, gcc, BNFC, Go, and Github. 
+    with thanks to J.P.Morrison, Phillip W. Young, Sam Watkins, 
+    all the other contributors to 
+    flow-based-programming@googlegroups.com, 
+    and to the developers of Linux/Ubuntu, gcc, 
+    BNFC, Go, git, and Github. 
