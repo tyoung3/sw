@@ -36,10 +36,10 @@ static void genPrefix(int nflows) {
 	
 }
 
-
-static void genPort(int n) {
-  		// printf("|<%i> %i", n, n);
-}  	
+#define genPort(X) 
+//static void genPort(int n) {
+//  		// printf("|<%i> %i", n, n);
+//}  	
 
 static void genProc(char *name, char *comp, char *host) {
 
@@ -75,13 +75,13 @@ static void genCluster1(char *name) {
 
 static void genLinks(Model m) {
 	Flow f;
-	Process src,snk;
+	Process src;
 	
 	f=m->flow;
 	
 	while(f) {
 		src=f->source;
-		snk=f->sink;
+		// snk=f->sink;
 
     	printf("\tconnect(component(\"%s\",",src->comp->name);
     	printf("%s.class),port(\"OUT\"), \n",src->comp->path); 

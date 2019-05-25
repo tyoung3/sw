@@ -7,6 +7,8 @@
 #include "sw.h"
 #include "swsym.h"
 
+#define NOBUFFERS
+
 static String default_path={"std"};   /* ?? arg later */
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
@@ -71,14 +73,44 @@ Model visitListStm(ListStm liststm)
   return m;
 }
 
+int visitBuffsize(Buffsize _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Bufszi:
+    /* Code for Bufszi Goes Here */
+    return visitInteger(_p_->u.bufszi_.integer_);
+    break;  case is_Bufsze:
+    	return 1;
+    /* Code for Bufsze Goes Here */
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Buffsize!\n");
+    exit(1);
+  }
+}
+
+int bs,maxbfsz=1;		/*  Buffer size */
+
 Flow visitFlw(Flw _p_)
 {
 	Process snk,src;
-    	
+
+#if 0   	
     snk=visitSnk(_p_->u.flowx_.snk_);
+    visitBuffsize(_p_->u.flowx_.buffsize_);
     src=visitSrce(_p_->u.flowx_.srce_);
-	
-    return MakeFlow(src, snk);
+#else
+    snk=visitSnk(_p_->u.flowx_.snk_);
+    bs=visitBuffsize(_p_->u.flowx_.buffsize_);
+    if(bs<1) bs=1;   
+    if(bs>1000)   // TODO Config file for max sizes
+    	bs=1000;
+    if( bs > maxbfsz) 
+    		maxbfsz=bs;	
+    src=visitSrce(_p_->u.flowx_.srce_);
+#endif	
+    return MakeFlow(src, snk, bs);
     
 }
 

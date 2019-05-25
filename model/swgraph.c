@@ -169,13 +169,22 @@ static void genLinks(Model m) {   // [label="C Miss"];
 	while(f) {
 		src=f->source;
 		snk=f->sink;
-			channel=findChannel(src->port,f->source_id);  
-			printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"];\n",
+			channel=findChannel(src->port,f->source_id); 
+			if(f->bufsz<2) { 
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"];\n",
 					src->name, f->source_id, 
 					snk->name,
 					f->sink_id,
-					channel);
-	 		
+					channel); 		
+			} else {
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i[%i]\"];\n",
+					src->name, f->source_id, 
+					snk->name,
+					f->sink_id,
+					channel,
+					f->bufsz
+					); 		
+			}		
 		f=f->next;
 	}
 

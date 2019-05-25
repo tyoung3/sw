@@ -130,7 +130,7 @@ Component MakeComponent(Ident name, String path) {
 	return c;
 } 
     
-Flow MakeFlow(Process src, Process snk) {
+Flow MakeFlow(Process src, Process snk, int bufsz) {
 	Flow f;
 	
 	f=(Flow)malloc(sizeof(Flow_)); 
@@ -144,6 +144,7 @@ Flow MakeFlow(Process src, Process snk) {
 	f->sink      = snk;
 	f->source_id = src->source_id; 
 	f->sink_id   = snk->sink_id;
+	f->bufsz	 = bufsz;
 	f->next      = NULL;
 	f->prev      = NULL;
 	f->type		 = GOGO;  /* Defined w/ '<-'  */
