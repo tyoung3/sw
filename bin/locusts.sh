@@ -6,7 +6,7 @@
 RunLocusts () {
 	temp=/tmp
 	[ -d $temp/sw/locusts ] || mkdir -p $temp/sw/locusts 
-	./sw */locusts.sw >  $temp/sw/locusts/main.go
+	./model/sw model/nds/locusts.sw >  $temp/sw/locusts/main.go
 	pushd $temp/sw/locusts
 	[ -f go.mod ] || go mod init locusts/locusts
 	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 
@@ -27,7 +27,7 @@ GenJPG() {
 case $1 in	
 	j) GenJPG;;
 	r) RunLocusts;;
-	x) $EDITOR locusts.sh nds/locusts.sw;;
+	x) $EDITOR bin/locusts.sh nds/locusts.sw;;
 	*) cat << EOF 
 	
 USAGE: 
