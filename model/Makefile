@@ -3,7 +3,7 @@ CC = gcc
 CCFLAGS = -g -W -Wall
 #CCFLAGS = -O6 -W -Wall
 
-VERSION = \"0.3.0\"
+VERSION = \"0.4.0\"
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
