@@ -76,34 +76,38 @@ Sink Source-7
 SW.cf Language Notes
 --------------------
 Statements in the network definition language, SW.cf, end
-with a semi-colon.  
-Semi-colons are like periods at the end of
+with a semi-colon.  Semi-colons are like periods at the end of
 English statements -- they tell the reader (and the interpreter) when
-you have reached the end, making reading the statements easier. 
+you have reached the end; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
-
 Without semi-colons, line breaks become
-necessary  and awkward syntax rules evolve, 
+necessary  and awkward syntax rules evolve.
+The Go language syntax actually requires semi-colons to be supplied by
+a smart lexer.  
+
+In the future, there may be some exceptions to the 
+semi-colon rule for  special pre-interpreter commands, like INCLUDE.
 
 The, ```<-```,  token is used to be consistent with its 
 usage in the Go language.   
 
 Currently only numeric ports are supported.  Named ports are planned.
+
 Comments in the SW.cf file provide 
 clues to possible future language additions.  
-We strive hard for backward compatibility.
+We will strive hard for backward compatibility.
 
 Collate/Merge Example
 ---------------------
 
-Given this input file (say /tmp/collate.sw):  
+Given the input file: /tmp/collate.sw  
 
 ```   
+#/TMP/COLLATE.SW
 (C std.Collate  )0       <- 0(G0  std.Gen1 "12" "1" "2" );
 (C)1                     <- 0(M);         
 (M std.Merge)1           <- 0(G1  std.Gen1 "5"  "5" "1" );
 (M)2                     <- 0(G2  std.Gen1 "8"  "2" "3" );
-
 (Match0 strings.Print1)0 <- 2(C std.Collate  );
 (Match1 strings.Print1)0 <- 3(C);
 (Miss0  strings.Print1)0 <- 4(C);
@@ -111,13 +115,37 @@ Given this input file (say /tmp/collate.sw):
 ```
 running the following (in Linux):
 ```
-	sw < /tmp/collate.sw      > /tmp/main.go 
-	sw -m 4 < /tmp/collate.sw > /tmp/collate.dot
-	dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg
+	sw < /tmp/collate.sw      > /tmp/collate/main.go
+	cd /tmp/collate; go mod init
+	go run *go 
+```	
+will produce:
 ```
+go: finding github.com/tyoung3/streamwork/std latest
+go: finding github.com/tyoung3/streamwork/strings latest
+StreamWork Proof of Concept Example.
+M std.Merge: starting 
+G2  std.Gen1 8 2 3
+M std.Merge:  2 3
+G1  std.Gen1 5 5 1
+M std.Merge:  5 3
+G0  std.Gen1 12 1 2
+M std.Merge:  6 3
+    ... 
+M std.Merge: exit 
+M std.Merge: ending
+Miss0 Int: 19
+Miss0 Int: 21
+Match0 Int: 23
+Match1 Int: 17
+Match1 Int: 23
+```
+but not necessarily in that order.
 
-produces main.go:
-```package main
+/tmp/sw/main.go:
+
+```
+package main
 
 /* DO NOT EDIT!!!
 *
@@ -146,7 +174,7 @@ var wg sync.WaitGroup
 /* (Match1 strings.Print1 )0  <- 3(C std.Collate)	*/
 /* (Match0 strings.Print1 )0  <- 2(C std.Collate)	*/
 /* (M std.Merge )2  <- 0(G2 std.Gen1 "8" "2" "3")	*/
-/* (M std.Merge )1  <- 0(G1 std.Gen1 "5" "5")	*/
+/* (M std.Merge )1  <- 0(G1 std.Gen1 "5" "5" "1")	*/
 /* (C std.Collate )1  <- 0(M std.Merge)	*/
 /* (C std.Collate )0  <- 0(G0 std.Gen1 "12" "1" "2")	*/
 
@@ -174,7 +202,13 @@ wg.Wait()
 }
 
 ```
-and /tmp/collate.jpg  [copy may be in this directory]
+
+Running:
+```	 
+	sw -m 4 < /tmp/collate.sw > /tmp/collate.dot
+	dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg
+```
+should produce /tmp/collate.jpg  [copy may be in this directory]
 
 WARNING:
 --------
