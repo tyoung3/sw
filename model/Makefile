@@ -42,6 +42,9 @@ jpeg:  /tmp/collate.jpg
 	./sw -m 3 */collate.sw  > /tmp/collate.dot		\
 	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg 
 	
+/tmp/sw/locusts.jpg: nds/locusts.sw
+	./sw -m 3 nds/locusts.sw  > /tmp/sw/locusts.dot		\
+	&& dot -Tjpg  /tmp/sw/locusts.dot > /tmp/sw/locusts.jpg 
 	
 sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o 
 	${CC} ${CCFLAGS} ${OBJS}  sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o -o sw

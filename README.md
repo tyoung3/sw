@@ -25,26 +25,32 @@ Description
 -----------
 
 StreamWork is a proof-of-concept for a Go language flow-based system 
-which reads and executes a StreamWork network definition(ND).
+which reads and executes a StreamWork network definition(ND) file.
 
-A ND is a list of Flows in a text file.  Each Flow consists 
-of a a sink process, a sink port number, "<-", a source portnumber, and   source process.  Ex.  
+A network definition consists of a list of Flows.  Each Flow consists 
+of a a sink process, a sink port number, "<-", a source portnumber, and   source process.  
+
+Ex.  
 
     (In strings.Print1)0 <- 0(Out strings.Gen1);
 
-The IPs are designed as nil(empty) interfaces to be filled by the source components.    
+The IPs are designed as nil(empty) interfaces to be filled by the source components. I.e. the 
+interface type is determined by the first send to the channel.  Subsequent sends with different 
+types may or may not cause a type mis-match depending on the sink program coding. 
 
-This frontend is limited to just barely enough logic
+This frontend is limited to just enough logic
  to provide a proof-of-concept.
-tm
+
 
 Everything here. including the project name, is subject to change.  
 Versions will be backward compatible within the same major version. 
 Ex. your code depending on v0.0.1 will still work on v0.8.7, but may fail on v1.0.0.   
 
-Contributors are encouraged.  Sw currenly generates Go code from the generated network model.  C and other languages could also be generated. 
+Sw currenly generates Go code from the generated network model.  C and other languages could also be generated. 
 
-Comments and critiques are welcome.    Please do not submit code before contacting the project by e-mailing streamwork@twyoung.com.     
+Comments and critiques are welcome.    Contributors are encouraged.  
+Please do not submit code before contacting the project by e-mailing streamwork@twyoung.com or 
+posting a request on Github.     
 
 QuickStart (on Linux) 
 ----------
@@ -214,8 +220,16 @@ WARNING:
 --------
 	 std.Gen1  is not the same as strings.Gen1 
   
+BUGS:
+-----
+	 std.Gen1 fails unless all three arguments are present.
 
 Author
 ------
 
     Tom Young, streamwork@twyoung.com
+    
+    with thanks to J.P.Morrison, Sam Watkins, Phillip W. Young, 
+    all the other contributors 
+    to  flow-based-programming@googlegroups.com, 
+    and the developers of Linux, gcc, BNFC, Go, and Github. 
