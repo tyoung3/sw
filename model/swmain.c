@@ -59,6 +59,15 @@ static int badProc(Process p) {
 
 
 static Port findPrt(Process p, int id) {
+	Port pt;	
+
+	pt = p->port;
+	do {
+		if( pt->id == id )
+			return pt;
+		pt=pt->next;
+	} while(pt != p->port); 
+				
 	return p->port;
 }
 
@@ -70,44 +79,66 @@ static int eqs(char *s1, char *s2) {
 	return 0;	
 }
 
+static int nameFail(char *psnkname, char *nsnk, char *nsrc, char *psrcname) {    	    	
+				
+				fprintf(stderr,"SWMAIN/NameMisMatch/FAIL: (%s)%s <- %s(%s) \n",
+						psnkname,
+						nsnk,
+						nsrc,
+						psrcname
+				);
+    			exit(1);
+}    			
+
 static int NameMisMatch(Process src, int source_id, Process snk, int sink_id) {
 	Port psrc, psnk;
 	char *nsrc, *nsnk;
 	
 	psrc = findPrt(src,source_id);	
 	nsrc=psrc->name;
-	
-	if(eqs(nsrc,"")) 
-			return 0;
 		 
 	psnk = findPrt(snk,sink_id);	
 	nsnk=psnk->name;
-	if(strcmp(nsnk,"") == 0 ) 
-			return 0;
 	
+    if( eqs(nsnk,"IN") 		&&  eqs(nsrc,"OUT")  )  {
+    	return 0; 
+	}
+    	
+    if( eqs(nsnk,"in") 		&&  eqs(nsrc,"out")  ) 	{
+    	return 0; 
+	}
+
+    if( eqs(nsnk,"SOCKET") 	&&  eqs(nsrc,"PLUG")  ) {
+    	return 0; 
+	}
+
+    if( eqs(nsnk,"SLOT")	 &&  eqs(nsrc,"TAB")  ) {
+    	return 0; 
+	}
+    	
+    	if( eqs(nsrc,"IN") || 
+    	    eqs(nsrc,"in")  ||
+    	    eqs(nsrc,"PLUG")||
+    	    eqs(nsrc,"SLOT")
+    	    )  return nameFail(snk->name,nsnk,nsrc,src->name);
+    				
+    	if( eqs(nsnk,"OUT")   || 
+    	    eqs(nsnk,"out")   ||
+    	    eqs(nsnk,"SOCKET")||
+    	    eqs(nsnk,"TAB")  	   
+    	    )  return nameFail(snk->name,nsnk,nsrc,src->name);
 	
 	if(strcmp(nsnk,nsrc) == 0 ) 	
 		return 0;
 
-    if( eqs(nsnk,"IN") &&  eqs(nsrc,"OUT")  )
-    	return 0; 
-    	
-    if( eqs(nsnk,"IN") &&  eqs(nsnk,"OUT")  )
-    	return 0; 
-
-    if( eqs(nsnk,"SOCKET") &&  eqs(nsnk,"PLUG")  )
-    	return 0; 
-
-    if( eqs(nsnk,"SLOT") &&  eqs(nsnk,"TAB")  )
-    	return 0; 
-    	
-	fprintf(stderr,"SWMAIN/NameMisMatch/FAIL: (%s)%s <- %s(%s) \n",
-			snk->name,
-			nsnk,
-			nsrc,
-			src->name
-			);
-	exit(1);
+	if(eqs(nsrc,"")) 
+			return 0;
+	if(eqs(nsnk,"")) {
+			return 0;
+	}
+	
+    return nameFail(snk->name,nsnk,nsrc,src->name);
+    	    
 }
 
 static int verifyOK(Model model) { 						/*expand and check model*/

@@ -29,6 +29,7 @@ check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw
 	! ./sw nds/e1.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ./sw nds/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ./sw nds/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ./sw nds/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ./sw nds/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	../bin/collate.sh poc     
 	./sw      nds/locusts.sw  >/dev/null

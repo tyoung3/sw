@@ -36,9 +36,11 @@ The ND consists of a list of Flows.
 Each Flow consists of a a sink process, 
 a sink port number, "<-", a source portnumber, and a source process.  
 
+Port numbers default to 0.
+
 Ex.  
 ```
-    (Hello strings.Print1)0 <- 0(World strings.Gen1 "3"); 
+    (Hello strings.Print1) <- (World strings.Gen1 "3"); 
 ```
 produces:
 ```
@@ -47,19 +49,24 @@ Hello World-2
 Hello World-3
 ```
 
-The IPs are designed as nil(empty) interfaces to be 
+A process is defined by its process name, its component identifier,  and component arguments
+surrounded by parens. 
+
+A dataflow(or IP for Information Packet) consists of a sink component, channal pointer, and a source component, ended by a ```;```. 
+ 
+Channel pointers consist of ```<```, an optional buffersize integer, and ```-```.
+ 
+IPs are designed as nil(empty) interfaces to be 
 filled by the source components.   I.e. the interface
 data type is determined by the sending component.  IPs
 may or may not cause a type mis-match depending 
 on the sink component coding.  Components can be coded to
 handle all types(like Collate), a few types(like Print1), 
 or just one type; on each receiving port.    
-
-This prototype frontend is limited to a small part of its 
-intended capabilities, but can still perform highly 
-complex operations.
-
-Everything here. including the project name, is subject to change.  
+ 
+The ND language is defined in less than 25 statements -- easily learned. 
+Progams developed using this fairly simple system, however, are highly capabile.  
+ 
 Sw versions will be backward compatible within the same major version. 
 Ex. your code depending on sw-v0.0.1 will still work on sw-v0.8.7, but may fail on sw-v1.0.0.   
 
@@ -76,14 +83,14 @@ QuickStart (on Linux)
 ----------
 	* To run the generated Go code, install the tyoung3/StreamWork backend 
 	  from github.  (Requires Go installation.).  The backend should run 
-	  in any Golang compatible environment.  Sw will run without  
-	  installing tyoung3/StreamWork, the generated Go code just won't work.
-	* Download the 'sw' executable from github to any convenient location.e
+	  in any Golang compatible environment.  Sw(written in C) will run without  
+	  installing github/tyoung3/StreamWork; the generated Go code just won't work.
+	* Download the 'sw' executable from github to any convenient location.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run 
+	* Run ```.../sw -v``` to check that the version is at least v0.5.0.
 	
 ```	
-echo "(Hello strings.Print1)0 <- 0(World strings.Gen1 \"3\");" | ./sw > /tmp/main.go 
+echo "(Hello strings.Print1) <- (World strings.Gen1 \"3\");" | ./sw > /tmp/main.go 
 ```
 	* Run 'go run /tmp/main.go  ...
 
@@ -94,6 +101,32 @@ Hello World-2
 Hello World-3
 ```
 
+Release Notes
+=============
+
+V0.4.0
+------
+
+Enabled buffer size specification. 
+Ex. (A a)0 <NNN- 0(B b); will allocate NNN buffers to this dataflow.
+
+v0.5.0
+------
+
+Port numbers default to zero.  
+Ex. (A a) <- (B b); expands to (A a)0 <- 0(B b);
+
+Named Ports
+-----------
+
+Ex.  (A a)FOO <- FOO(B b);  expands to (A a)0 <- 0(B b);
+	 (A a)FOO <- BAR(B b);  fails with a name mismatch, but 
+	 (A a)IN  <- OUT(B b);  succeeds, as do
+	 (X1 a)0.SOCKET  <- PLUG.0(Y1 b); and
+	 (X2 a)0.SLOT    <- TAB.0(Y2 b);
+	 
+	 
+	 
 SW.cf Language Notes
 --------------------
 Statements in the network definition language, SW.cf, are 
@@ -111,7 +144,6 @@ semi-colon rule for  special pre-interpreter commands, like INCLUDE.
 The, ```<-```,  token is used to be consistent with its 
 usage in the Go language.     
 
-Currently only numeric ports are supported.  Named ports are planned.  Any helpers?
 
 Comments in the SW.cf file provide 
 clues to possible future language additions.  
@@ -124,14 +156,14 @@ Given the input file: /tmp/collate.sw
 
 ```   
 #/TMP/COLLATE.SW
-(C std.Collate  )0       <- 0(G0  std.Gen1 "12" "1" "2" );
-(C)1                     <- 0(M);         
-(M std.Merge)1           <- 0(G1  std.Gen1 "5"  "5" "1" );
-(M)2                     <- 0(G2  std.Gen1 "8"  "2" "3" );
-(Match0 strings.Print1)0 <- 2(C std.Collate  );
-(Match1 strings.Print1)0 <- 3(C);
-(Miss0  strings.Print1)0 <- 4(C);
-(Miss1  strings.Print1)0 <- 5(C);
+(C std.Collate  )       <-  (G0  std.Gen1 "12" "1" "2" );
+(C)1                    <-  (M);         
+(M std.Merge)1          <-  (G1  std.Gen1 "5"  "5" "1" );
+(M)2                    <-  (G2  std.Gen1 "8"  "2" "3" );
+(Match0 strings.Print1) <- 2(C std.Collate  );
+(Match1 strings.Print1) <- 3(C);
+(Miss0  strings.Print1) <- 4(C);
+(Miss1  strings.Print1) <- 5(C);
 ```
 running the following (in Linux):
 ```
