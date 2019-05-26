@@ -1,8 +1,7 @@
 /* SWC.C 
 		  Generate C code  
 		  
-TODO: 
-	. Everything  	  
+TODO:   
 */
 #include <stdio.h>
 #include <stdlib.h>

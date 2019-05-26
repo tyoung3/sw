@@ -20,5 +20,6 @@ Test.c
 _bnfc/sw/TestSW
 tags
 gen/*
+gitignore*
 
 

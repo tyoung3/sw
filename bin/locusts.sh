@@ -5,16 +5,21 @@
 
 RunLocusts () {
 	temp=/tmp
-	[ -d $temp/sw/locusts ] || mkdir -p $temp/sw/locusts 
-	./model/sw model/nds/locusts.sw >  $temp/sw/locusts/main.go
-	pushd $temp/sw/locusts
+	dir=$temp/sw/locusts
+	[ -d /tmp/x/ ] || mkdir /tmp/x || exit 1
+	mv $dir/* /tmp/x/ 2>&1 >/dev/null
+	[ -d $dir ] || mkdir -p  
+	./model/sw model/nds/locusts.sw >  $dir/main.go
+	pushd $dir
 	[ -f go.mod ] || go mod init locusts/locusts
 	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 
 	go run main.go 		\
-	|tee $temp/sw/locusts/locusts.nomatch \
+	|tee $dir/locusts.txt \
 	| grep MISSOURI 	\
-	&& echo&&echo Dates for Washington brood XIX and brood X, appearing two years early  
-	grep WASHINGTON $temp/sw/locusts/locusts.nomatch
+	&& echo&&echo Dates for Washington brood XIX and brood X, appearing two years early  \
+	&&grep WASH $dir/locusts.txt  \
+	&& echo&&echo  Matches in 2019	\
+	&& grep MATCH_QQ $dir/locusts.txt
 }
 
 

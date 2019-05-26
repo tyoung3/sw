@@ -42,6 +42,7 @@ static int badProc(Process p) {
 						i, 
 						port->id,
 						i); 
+					fprintf(stderr,"\t %p port numbers need to be 0,1,2,... \n",p->name);	
 					return 1;
 				}
 				port = port->next;
