@@ -1,25 +1,15 @@
-Absyn.c
-Absyn.h
+Absyn.?
 AbsynLexer.c
-Lexer.o
 Lexer.c
-Parser.c
-Parser.h
-Parser.o
-_bnfc/sw/Makefile
-Printer.h
-Printer.c
-Printer.o
+Parser.?
+Printer.?
 SW.l
 SW.y
-Skeleton.c
-Skeleton.h
-Test.c
+Skeleton.?
+/Test.c
 *.o
 *.bak
-_bnfc/sw/TestSW
 tags
-gen/*
-gitignore*
+IGNORE*
 
 

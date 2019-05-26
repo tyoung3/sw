@@ -320,7 +320,7 @@ int main(int argc, char ** argv)
   		} 
   	}	else {
   			if( strncmp(argv[1],"-v",4) == 0) {
-  				printf("Streamwork/sw-%s\n", version);
+  				printf("StreamWork/sw-%s\n", version);
   				exit(0);
   			} else {
   				input=openFile(argv[1]);
@@ -335,24 +335,24 @@ int main(int argc, char ** argv)
     // @TODO Free Parse tree storage
     if(verifyOK(model)) {
     	switch (mode) {
-	    	case GRAPHMODE:      
-    			genGraph(model);
+	    	case GRAPHMODE:       
+    			genGraph(model);  	// Generate GraphViz .DOT file
     			break;
     		case JAVAFBP:
-    			genJavaFBP(model);
+    			genJavaFBP(model); 	// Generate JavaFBP 
     			break;
 	    	case ASTMODE:       // Abstract Syntax 			
-    			printf("%s\n\n", showValidSW(parse_tree));
+    			printf("%s\n\n", showValidSW(parse_tree));  //Print abstract syntax tree
     			break;
     		case GENTREE:
     			printf("[Linearized Tree]\n");
-   				printf("%s\n\n", printValidSW(parse_tree));
+   				printf("%s\n\n", printValidSW(parse_tree)); //Print expanded network definition 
     			break;	
     		case GOMODE: 
-	    	    genGo(model);
+	    	    genGo(model);	// Generate Go MAIN.GO
     			break;	
     		case CMODE: 
-	    	    genC(model);
+	    	    genC(model);    // Generate C source
     			break;	
     		default:
     			Usage();
