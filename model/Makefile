@@ -3,7 +3,7 @@ CC = gcc
 CCFLAGS = -g -W -Wall
 #CCFLAGS = -O6 -W -Wall
 
-VERSION = \"0.4.0\"
+VERSION = \"0.5.0\"
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
@@ -26,6 +26,13 @@ run:  sw
 
 check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw  
 	./sw -v 
+	! ./sw nds/e1.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ./sw nds/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ./sw nds/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ./sw nds/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ./sw nds/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	../bin/collate.sh poc     
+	./sw      nds/locusts.sw  >/dev/null
 	./sw -m 1 nds/collate.sw  >/dev/null
 	./sw -m 2 nds/collate.sw  >/dev/null
 	./sw -m 3 nds/collate.sw  >/dev/null
@@ -33,7 +40,6 @@ check: sw nds/java.sw nds/ac.sw nds/aa.sw  nds/ab.sw
 	./sw -m 7 nds/collate.sw  >/dev/null
 	./sw nds/aa.sw  >/dev/null
 	./sw nds/ab.sw  >/dev/null
-	! ./sw nds/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 
 
 jpeg:  /tmp/collate.jpg

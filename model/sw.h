@@ -4,6 +4,7 @@
 
 #include "Absyn.h"
 #include "swmain.h"
+#include "model.h"
 
 extern char *version;
 

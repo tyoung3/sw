@@ -9,7 +9,7 @@ void SendSuffix();
 void GenChan(int nchannels); 
 Component MakeComponent(Ident name, String path);
 Process MakeProcess(Ident name, Component comp, ListArgument la);  
-Port MakePort(int n) ;
+Port MakePort(int n, Ident id) ;
 Flow MakeFlow(Process src, Process snk, int bufsz) ;
 Model MakeModel(Flow f);
 #endif  // SWMAIN_H_

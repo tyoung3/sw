@@ -209,13 +209,15 @@ static void allocateChannels( Model model) {
 #endif 
 
 static Port findPort(Port pt, int id) {
+	Port pt0=pt;
 	
-	while(pt) {
+	do  {
 		if(pt->id == id) {					
 			return pt;
 		}	
 		pt=pt->next;
-	}
+	} 	while(pt != pt0);
+	 
 	return NULL;
 }
 
