@@ -26,7 +26,7 @@ static int badProc(Process p) {
 			
 			if(!p->comp) {
 				fprintf(stderr,
-				  "SW/verify: missing component for process: (%s)\n", 
+				  "SW/badProc/FAIL: missing component for process: (%s)\n", 
 						p->name
 				);
 				return 1;
@@ -42,7 +42,7 @@ static int badProc(Process p) {
 			for(;i < (p->nportsIn + p->nportsOut); i++) {
 				if( port->id != i ) {
 					fprintf(stderr,
-						"SW/verify: (%s) %ith port is %i, not = %i\n", 
+						"SWMAIN/badProc/FAIL: (%s) port[%i] is %i, should be = %i\n", 
 						p->name, 
 						i, 
 						port->id,
@@ -57,17 +57,70 @@ static int badProc(Process p) {
 			return 0;
 }
 
+
+static Port findPrt(Process p, int id) {
+	return p->port;
+}
+
+static int eqs(char *s1, char *s2) {
+
+	if(strncmp(s1,s2,40) == 0) 
+		return 1;
+
+	return 0;	
+}
+
+static int NameMisMatch(Process src, int source_id, Process snk, int sink_id) {
+	Port psrc, psnk;
+	char *nsrc, *nsnk;
+	
+	psrc = findPrt(src,source_id);	
+	nsrc=psrc->name;
+	
+	if(eqs(nsrc,"")) 
+			return 0;
+		 
+	psnk = findPrt(snk,sink_id);	
+	nsnk=psnk->name;
+	if(strcmp(nsnk,"") == 0 ) 
+			return 0;
+	
+	
+	if(strcmp(nsnk,nsrc) == 0 ) 	
+		return 0;
+
+    if( eqs(nsnk,"IN") &&  eqs(nsrc,"OUT")  )
+    	return 0; 
+    	
+    if( eqs(nsnk,"IN") &&  eqs(nsnk,"OUT")  )
+    	return 0; 
+
+    if( eqs(nsnk,"SOCKET") &&  eqs(nsnk,"PLUG")  )
+    	return 0; 
+
+    if( eqs(nsnk,"SLOT") &&  eqs(nsnk,"TAB")  )
+    	return 0; 
+    	
+	fprintf(stderr,"SWMAIN/NameMisMatch/FAIL: (%s)%s <- %s(%s) \n",
+			snk->name,
+			nsnk,
+			nsrc,
+			src->name
+			);
+	exit(1);
+}
+
 static int verifyOK(Model model) { 						/*expand and check model*/
 	Flow f;
 	
 	if(!model) {
-		fprintf(stderr,"SW/verify: model not built!");
+		fprintf(stderr,"SWMAIN/verifyOK/FAIL: network model is missing!");
 		return(0);
 	}	
 
 #ifdef VERIFY_VERBOSE	
 	fprintf(stderr,
-		"SW/verify/model: %d/%d/%d flows/procs/components.\n", 
+		"SWMAIN/VerifyOK/model: %d/%d/%d flows/procs/components.\n", 
 			model->nflows, 
 			model->nprocs, 
 			model->ncomponents
@@ -80,24 +133,15 @@ static int verifyOK(Model model) { 						/*expand and check model*/
 			fprintf(stderr,"SW/verify: failed.");
 			exit(1);
 		}	
+		if(NameMisMatch(f->source,f->source_id,f->sink,f->sink_id))	
+				return 1;
 		f=f->next;
 	}
-	return 1;
-#if 0		
-			printf("/* (%s %s.%s)%d<-%d(%s %s) */\n", 
-				f->sink->name,
-				f->sink->comp->path,
-				f->sink->comp->name,
-				f->sink->port->id, 
-				f->source->port->id, 
-				f->source->name,
-				f->source->comp->name
-			);
-#endif				
+	return 1;			
 	
 };  		
 
-Port MakePort(int n) {
+Port MakePort(int n, Ident id) {
 	Port p; 
 	
 	p=(Port)malloc(sizeof(Port_)); 
@@ -107,6 +151,11 @@ Port MakePort(int n) {
         exit(1);
     }
     
+    if(id) {
+    	p->name=id;
+    } else {
+    	p->name="";
+    }	
 	p->id = n;
 	p->match = NULL;
 	p->next = p;
@@ -148,7 +197,7 @@ Flow MakeFlow(Process src, Process snk, int bufsz) {
 	f=(Flow)malloc(sizeof(Flow_)); 
     if (!f)
     {
-        fprintf(stderr, "Error: out of memory when allocating Flow!\n");
+        fprintf(stderr, "SW/MakeFlow/FAIL: out of memory when allocating Flow!\n");
         exit(1);
     }
     
@@ -236,7 +285,7 @@ Process MakeProcess(Ident name, Component comp, ListArgument la) {
 		p=(Process)malloc(sizeof(Process_)); 
     	if (!p)
     	{
-    	    fprintf(stderr, "Error: out of memory when allocating Process!\n");
+    	    fprintf(stderr, "SW/MakeProcess/FAIL: out of memory when allocating Process!\n");
     	    exit(1);
     	}
     	
@@ -272,7 +321,7 @@ Model MakeModel(Flow f) {
 	m=(Model)malloc(sizeof(Model_)); 
     if (!m)
     {
-        fprintf(stderr, "Error: out of memory when allocating Process!\n");
+        fprintf(stderr, "SW/MakeModel/FAIL: out of memory when allocating Process!\n");
         exit(1);
     }
     
@@ -300,7 +349,7 @@ FILE *input;
 static FILE *openFile(char *fname) {
     input = fopen(fname, "r");
     if (!input)   {
-      fprintf(stderr, "Error opening input file: %s.\n", fname);
+      fprintf(stderr, "SW/openFile/FAIL Error opening input file: %s.\n", fname);
       exit(1);
     } 
     return input;
@@ -370,7 +419,7 @@ int main(int argc, char ** argv)
 	    	    break;	
 	    } 	    	
     } else {
-    	fprintf(stderr,"SW/FAIL: Verify failed.\n");
+    	fprintf(stderr,"SW/VerfyOK/FAIL:  failed.\n");
     	exit(1);
     }	
     return 0;

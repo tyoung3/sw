@@ -1,8 +1,7 @@
 /* SWGRAPH.C 
 		  Generate Graphviz input 
 		  
-TODO: 
-	. Everything  	  
+TODO:   
 */
 #include <stdio.h>
 #include <stdlib.h>
