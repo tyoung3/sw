@@ -192,8 +192,28 @@ Process visitProc(Proc _p_)
   }
 }
 
-Port visitPrt(Prt _p_)  {
-    return MakePort(visitInteger(_p_->u.portx_.integer_)); 
+Port visitPrt(Prt _p_)   
+{
+  switch(_p_->kind)
+  {
+  case is_Portx:
+    	return MakePort(visitInteger(_p_->u.portx_.integer_)); 
+    break;  case is_Portni:
+    	return MakePort(visitInteger(_p_->u.portni_.integer_));
+        visitIdent(_p_->u.portni_.ident_);
+    break;  case is_Portin:
+         visitIdent(_p_->u.portin_.ident_);
+         return MakePort(visitInteger(_p_->u.portin_.integer_));
+    break;  case is_Portn:
+    	return MakePort(-1);
+    	//return MakePort(visitIdent(_p_->u.portn_.ident_));
+    break;  case is_Porte:
+    	return MakePort(-1);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Prt!\n");
+    exit(1);
+  }
 }
 
 Component visitComp(Comp _p_)

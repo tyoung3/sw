@@ -25,7 +25,11 @@ Sinkx.			Snk		::=  Proc Prt;
 Processx.		Proc		::= "(" Ident  Comp [Argument] ")" ;
 Processy.		Proc		::= "(" Ident  [Argument] ")" ;
 
-Portx.			Prt		::= Integer;		
+Portx.			Prt		::= Integer;
+Portni.         Prt     ::= Integer "." Ident; 
+Portin.         Prt     ::= Ident "." Integer; 
+Portn.          Prt     ::= Ident; 
+Porte.			Prt		::= ;		
 
 Compx.			Comp	::= Ident;	
 Compy.			Comp	::= Ident "." Ident;	
@@ -37,6 +41,16 @@ separator	    Argument   "";
 comment "#";
 comment "{#" "#}";	
 ------------   End of Current Language Definition   --------------
+
+
+--        Version changes  Must be new minor level for any SW.cf change  -- 
+-- v0.4.0   Added buffer sizes ( Buffsize )
+-- v0.5.0   Named ports (portni, 'in, 'n).  Expand missing port numbers(Porte).
+
+
+
+-- Force component names to have initial capitals
+
 
 
 ----------    Possible future additions -------------------

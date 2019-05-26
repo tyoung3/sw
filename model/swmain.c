@@ -32,9 +32,14 @@ static int badProc(Process p) {
 				return 1;
 			}
 			
-			
 			port = p->port; 
-			for(i=0;i < (p->nportsIn + p->nportsOut); i++) {
+			i=0;
+			if(port->id < 0) { 
+				port->id = 0;   // Expand missing port number 
+				port=port->next;
+				i=1;
+			}	
+			for(;i < (p->nportsIn + p->nportsOut); i++) {
 				if( port->id != i ) {
 					fprintf(stderr,
 						"SW/verify: (%s) %ith port is %i, not = %i\n", 
@@ -42,7 +47,7 @@ static int badProc(Process p) {
 						i, 
 						port->id,
 						i); 
-					fprintf(stderr,"\t %p port numbers need to be 0,1,2,... \n",p->name);	
+					fprintf(stderr,"\t port numbers for (%s)  need to be 0,1,2,... \n",p->name);	
 					return 1;
 				}
 				port = port->next;
@@ -130,7 +135,13 @@ Component MakeComponent(Ident name, String path) {
 	c->next = NULL;
 	return c;
 } 
-    
+
+static int fixId(int i) {
+	if (i<0) 
+		return 0;
+	return i;
+}
+		    
 Flow MakeFlow(Process src, Process snk, int bufsz) {
 	Flow f;
 	
@@ -143,8 +154,8 @@ Flow MakeFlow(Process src, Process snk, int bufsz) {
     
 	f->source    = src;
 	f->sink      = snk;
-	f->source_id = src->source_id; 
-	f->sink_id   = snk->sink_id;
+	f->source_id = fixId(src->source_id); 
+	f->sink_id   = fixId(snk->sink_id);
 	f->bufsz	 = bufsz;
 	f->next      = NULL;
 	f->prev      = NULL;
