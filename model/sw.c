@@ -19,7 +19,7 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 Model visitStm(Stm _p_) 
 {	
 	Model m;  // ?? m=MakeModel(visitStm(liststm->stm_));
-	m=MakeModel(visitFlw(_p_->u.sflow_.flw_));
+	m=MakeModel(visitS_tream(_p_->u.sflow_.s_tream_));
 	return m;
 }
 
@@ -92,7 +92,7 @@ int visitBuffsize(Buffsize _p_)
 
 int bs,maxbfsz=1;		/*  Buffer size */
 
-Stream visitFlw(Flw _p_)
+Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
 

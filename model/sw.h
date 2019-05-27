@@ -14,7 +14,7 @@ extern int maxbfsz;
 Model visitValidSW(ValidSW p);
 Model visitStm(Stm p);
 Model visitListStm(ListStm p);
-Stream visitFlw(Flw p);
+Stream visitS_tream(S_tream p);
 Process visitSrce(Srce p);
 Process visitSnk(Snk p);
 Process visitProc(Proc p);

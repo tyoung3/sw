@@ -9,11 +9,10 @@
 entrypoints		ValidSW; 
 Valid.	 	    ValidSW  	::= [Stm] ;
 
-SFlow.			Stm			::= Flw;     
+SFlow.			Stm			::= S_tream;       
 terminator	    Stm   ";" ;
 
---  <- is a go channel
-Flowx.			Flw		::= Snk  "<" Buffsize "-"  Srce; 
+Flowx.			S_tream		::= Snk  "<" Buffsize "-"  Srce; 
 
 Bufszi.			Buffsize ::= Integer;
 Bufsze.			Buffsize ::=; 
