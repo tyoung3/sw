@@ -24,16 +24,17 @@ Name
 Description
 -----------
 
-StreamWork is the prototype for a Go language flow-based system 
-which reads and executes a StreamWork network definition(ND) file.
+StreamWork is the prototype for a Go language,
+flow-based-programming(FBP) system.  
 
+StreamWork reads and executes a StreamWork network definition(ND) file.
 Employing StreamWork, an ND becomes, in effect, an executable
 script. Sw launches collects pre-compiled components 
 into one main.go program, launches them as goroutines, 
 and connects them via Go interface channels.
 
-The ND consists of a list of Flows. 
-Each Flow consists of a a sink process, 
+The ND consists of a list of streams(or dataflows). 
+Each stream consists of a sink process, 
 a sink port number, "<-", a source portnumber, and a source process.  
 
 Port numbers default to 0.
@@ -49,35 +50,35 @@ Hello World-2
 Hello World-3
 ```
 
-A process is defined by its process name, its component identifier,  and component arguments
-surrounded by parens. 
+A process is defined by its process name, its component identifier,
+and component arguments surrounded by parens. 
 
-A dataflow(or IP for Information Packet) consists of a sink component, channal pointer, and a source component, ended by a ```;```. 
+A stream definition consists of a sink component,
+the channel pointer, and a source component, ended by a ```;```. 
  
-Channel pointers consist of ```<```, an optional buffersize integer, and ```-```.
+Channel pointers consist of ```<```, an optional buffersize integer, and ```-```. Example: ```<100-```
  
-IPs are designed as nil(empty) interfaces to be 
-filled by the source components.   I.e. the interface
+IPs are designed as nil(empty) interfaces.   The interface
 data type is determined by the sending component.  IPs
 may or may not cause a type mis-match depending 
 on the sink component coding.  Components can be coded to
 handle all types(like Collate), a few types(like Print1), 
 or just one type; on each receiving port.    
  
-The ND language is defined in less than 25 statements -- easily learned. 
-Progams developed using this fairly simple system, however, are highly capabile.  
+The ND language is defined in less than 25 statements. 
+Progams developed using this simple system, however, are highly capabile.  
  
-Sw versions will be backward compatible within the same major version. 
-Ex. your code depending on sw-v0.0.1 will still work on sw-v0.8.7, but may fail on sw-v1.0.0.   
+Sw versions are backward compatible within the same major 
+version(currently v0).  
 
-Sw builds a network model in memory then generates an
+Sw builds a network model in memory then (optionally) generates an
 abstract syntax tree, a linearized tree(an ND recronstruction), 
 a GraphViz .dot file, or Go source code from this model.
-C and other languages could also be generated.  JavaFBP is in progress.   
+C and other languages could also be generated.  JavaFBP is possible.   
 
 Comments and critiques are welcome.    Contributors are encouraged.  
-Please do not submit code before contacting the project by e-mailing streamwork@twyoung.com or 
-posting a request on Github.     
+Please do not submit code before contacting the project by 
+e-mailing streamwork@twyoung.com or  posting a request on Github.     
 
 QuickStart (on Linux) 
 ----------
@@ -90,9 +91,9 @@ QuickStart (on Linux)
 	* Run ```.../sw -v``` to check that the version is at least v0.5.0.
 	
 ```	
-echo "(Hello strings.Print1) <- (World strings.Gen1 \"3\");" | ./sw > /tmp/main.go 
+echo "(Hello strings.Print1) <- (World strings.Gen1 \"3\");" | ./sw > /tmp/hello.go 
 ```
-	* Run 'go run /tmp/main.go  ...
+	* Run 'go run /tmp/hello.go  ...
 
 OUTPUT: 
 ```StreamWork Proof of Concept Example.
@@ -108,7 +109,7 @@ V0.4.0
 ------
 
 Enabled buffer size specification. 
-Ex. (A a)0 <NNN- 0(B b); will allocate NNN buffers to this dataflow.
+Ex. (A a)0 <NNN- 0(B b); will allocate NNN buffers to this stream.
 
 v0.5.0
 ------
@@ -269,7 +270,7 @@ BUGS:
 -----
 	 std.Gen1 fails unless all three arguments are present.
 	 
-	 Re-ordering dataflows in the ND, sometimes causes sw to
+	 Re-ordering streams in the ND, sometimes causes sw to
 	 fail for multi-port components. 
 
 Author
