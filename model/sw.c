@@ -17,39 +17,46 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
     return visitListStm(_p_->u.valid_.liststm_);
 }
 
-Model visitStm(Stm _p_) 
-{	
-	Model m;  // ?? m=MakeModel(visitStm(liststm->stm_));
-	m=MakeModel(visitS_tream(_p_->u.stmx_.s_tream_));
-	return m;
-}
 
-void visitNumvar(Numvar p)
+Numvar visitNumvar(Numvar p)
 {
-  /* Code for NumvarNumvar Goes Here */
+	return p;
 }
-void visitStringvar(Stringvar p)
+String visitStringvar(Stringvar p)
 {
-  /* Code for STRINGVAR Goes Here */
+	return p;
 }
-
-void visitNumval(Numval _p_)
+String visitStringval(Stringval _p_)
 {
   switch(_p_->kind)
   {
-  case is_NumVali:
-    /* Code for Numvali Goes Here */
-    visitInteger(_p_->u.numvali_.integer_);
-    break;  case is_NumValv:
-    /* Code for Numvalv Goes Here */
-    visitNumvar(_p_->u.numvalv_.numvar_);
-    break;
+  case is_StringVals:
+    return (visitString(_p_->u.stringvals_.string_));
+  case is_StringValv:
+    visitStringvar(_p_->u.stringvalv_.stringvar_);
+    return NULL;
   default:
-    fprintf(stderr, "Error: bad kind field when printing NumVal!\n");
+    fprintf(stderr, "Error: bad kind field when printing Stringval!\n");
     exit(1);
   }
 }
 
+Integer visitNumval(Numval _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_NumVali:
+    /* Code for NumVali Goes Here */
+    return (visitInteger(_p_->u.numvali_.integer_));
+  case is_NumValv:
+    /* Code for NumValv Goes Here */
+    visitNumvar(_p_->u.numvalv_.numvar_);
+	return 0;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Numval!\n");
+    exit(1);
+  }
+}
 
 void visitNumassgn(Numassgn _p_)
 {
@@ -61,27 +68,11 @@ void visitNumassgn(Numassgn _p_)
     visitNumval(_p_->u.numassgnv_.numval_);
     break;
   default:
-    fprintf(stderr, "Error: bad kind field when printing NumAssgn!\n");
+    fprintf(stderr, "Error: bad kind field when printing Numassgn!\n");
     exit(1);
   }
 }
 
-void visitStringval(Stringval _p_)
-{
-  switch(_p_->kind)
-  {
-  case is_StringVals:
-    /* Code for StringVals Goes Here */
-    visitString(_p_->u.stringvals_.string_);
-    break;  case is_StringValv:
-    /* Code for StringValv Goes Here */
-    visitStringvar(_p_->u.stringvalv_.stringvar_);
-    break;
-  default:
-    fprintf(stderr, "Error: bad kind field when printing Stringval!\n");
-    exit(1);
-  }
-}
 void visitStrassgn(Strassgn _p_)
 {
   switch(_p_->kind)
@@ -92,10 +83,37 @@ void visitStrassgn(Strassgn _p_)
     visitStringval(_p_->u.strassgnv_.stringval_);
     break;
   default:
-    fprintf(stderr, "Error: bad kind field when printing StrAssgn!\n");
+    fprintf(stderr, "Error: bad kind field when printing Strassgn!\n");
     exit(1);
   }
 }
+
+Model visitStm(Stm _p_) 
+{	
+	Model m;  // ?? m=MakeModel(visitStm(liststm->stm_));
+	
+	switch(_p_->kind)
+  {
+  case is_Stmx:
+	m=MakeModel(visitS_tream(_p_->u.stmx_.s_tream_));
+	return m;
+    break;  
+  case is_Stmn:
+    /* Code for Stmn Goes Here */
+    visitNumassgn(_p_->u.stmn_.numassgn_);
+    return NULL;
+  case is_Stms:
+    /* Code for Stms Goes Here */
+    visitStrassgn(_p_->u.stms_.strassgn_);
+    return NULL;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Stm!\n");
+    exit(1);
+  }
+	
+	
+}
+
 static int notListed(Process p, Model m) {
 	Process a;
 	
@@ -146,23 +164,21 @@ Model visitListStm(ListStm liststm)
   return m;
 }
 
-int visitBuffsize(Buffsize _p_)
+Integer visitBuffsize(Buffsize _p_)
 {
   switch(_p_->kind)
   {
   case is_Bufszi:
-    /* Code for Bufszi Goes Here */
-    return visitInteger(_p_->u.bufszi_.integer_);
-    break;  case is_Bufsze:
+    	return( visitNumval(_p_->u.bufszi_.numval_)) ;
+  case is_Bufsze:
     	return 1;
-    /* Code for Bufsze Goes Here */
-    break;
   default:
     fprintf(stderr, "Error: bad kind field when printing Buffsize!\n");
     exit(1);
   }
 }
 
+ 
 Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
@@ -170,7 +186,7 @@ Stream visitS_tream(S_tream _p_)
     snk=visitSnk(_p_->u.streamx_.snk_);
     bs=visitBuffsize(_p_->u.streamx_.buffsize_);
     if(bs<1) bs=1;   
-    if(bs>MAX_BUFFER)   // TODO Config file for max sizes
+    if(bs>MAX_BUFFER)    
     	bs=MAX_BUFFER;
     if( bs > maxbfsz) 
     		maxbfsz=bs;	
@@ -252,7 +268,8 @@ Process visitProc(Proc _p_)
     	visitListArgument(_p_->u.processy_.listargument_) 
     );
   default:
-    fprintf(stderr, "Error: bad kind field when visiting Proc!\n");
+    fprintf(stderr, 
+    "Error: bad kind field when visiting Proc!\n");
     exit(1);
   }
 }
@@ -262,23 +279,21 @@ Port visitPrt(Prt _p_)
   switch(_p_->kind)
   {
   case is_Portx:
-    	return MakePort(visitInteger(_p_->u.portx_.integer_),NULL); 
-    break;  case is_Portni:
-    	 return MakePort(visitInteger(_p_->u.portni_.integer_),
-         			     visitIdent(_p_->u.portni_.ident_) 
-    	 );
-    break;  case is_Portin:
-         return MakePort(visitInteger(_p_->u.portin_.integer_),
-         				 visitIdent(_p_->u.portin_.ident_)
-         );
-    break;  case is_Portn:
-    	return MakePort(-1,visitIdent(_p_->u.portn_.ident_)
-    	);
-    break;  case is_Porte:
+  		return(MakePort(visitNumval(_p_->u.portx_.numval_),
+  			NULL));
+    case is_Portni:   		
+    	return MakePort(visitNumval(_p_->u.portni_.numval_),
+   		visitIdent(_p_->u.portni_.ident_));
+    case is_Portin:
+    		return MakePort(visitNumval(_p_->u.portin_.numval_),
+    		visitIdent(_p_->u.portin_.ident_));
+    case is_Portn:
+    	return MakePort(-1,visitIdent(_p_->u.portn_.ident_));
+    case is_Porte:
     	return MakePort(-1,NULL);
-    break;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Prt!\n");
+    fprintf(stderr, 
+    	"Error: bad kind field when printing Prt!\n");
     exit(1);
   }
 }
@@ -302,7 +317,8 @@ Component visitComp(Comp _p_)
 
 Argument visitArgument(Argument _p_)
 {   
-	return make_Argumentx(visitString(_p_->u.argumentx_.string_));
+	// OLD: return make_Argumentx(visitString(_p_->u.argumentx_.string_));	
+    return make_Argumentx(make_StringValv(visitStringval(_p_->u.argumentx_.stringval_)));
 }
 
 ListArgument visitListArgument(ListArgument listargument)

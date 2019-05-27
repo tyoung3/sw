@@ -259,7 +259,7 @@ static char **MakeArg(ListArgument la, char *name) {
 
 	i=narg-1;
 	while(la) {
-		arg[i--] = la->argument_->u.argumentx_.string_;
+		arg[i--] = la->argument_->u.argumentx_.stringval_;
 		la       = la->listargument_;
 	}
 	
