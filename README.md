@@ -29,9 +29,9 @@ flow-based-programming(FBP) system.
 
 StreamWork reads and executes a StreamWork network definition(ND) file.
 Employing StreamWork, an ND becomes, in effect, an executable
-script. Sw launches collects pre-compiled components 
+script. Sw launches collects go components(defined in go packages)  
 into one main.go program, launches them as goroutines, 
-and connects them via Go interface channels.
+and connects them via Go interface channels.  
 
 The ND consists of a list of streams(or dataflows). 
 Each stream consists of a sink process, 
