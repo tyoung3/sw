@@ -24,6 +24,78 @@ Model visitStm(Stm _p_)
 	return m;
 }
 
+void visitNumvar(Numvar p)
+{
+  /* Code for NumvarNumvar Goes Here */
+}
+void visitStringvar(Stringvar p)
+{
+  /* Code for STRINGVAR Goes Here */
+}
+
+void visitNumval(Numval _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_NumVali:
+    /* Code for Numvali Goes Here */
+    visitInteger(_p_->u.numvali_.integer_);
+    break;  case is_NumValv:
+    /* Code for Numvalv Goes Here */
+    visitNumvar(_p_->u.numvalv_.numvar_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing NumVal!\n");
+    exit(1);
+  }
+}
+
+
+void visitNumassgn(Numassgn _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_NumAssgnv:
+    /* Code for NumAssgnv Goes Here */
+    visitNumvar(_p_->u.numassgnv_.numvar_);
+    visitNumval(_p_->u.numassgnv_.numval_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing NumAssgn!\n");
+    exit(1);
+  }
+}
+
+void visitStringval(Stringval _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_StringVals:
+    /* Code for StringVals Goes Here */
+    visitString(_p_->u.stringvals_.string_);
+    break;  case is_StringValv:
+    /* Code for StringValv Goes Here */
+    visitStringvar(_p_->u.stringvalv_.stringvar_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Stringval!\n");
+    exit(1);
+  }
+}
+void visitStrassgn(Strassgn _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_StrAssgnv:
+    /* Code for StrAssgnv Goes Here */
+    visitStringvar(_p_->u.strassgnv_.stringvar_);
+    visitStringval(_p_->u.strassgnv_.stringval_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing StrAssgn!\n");
+    exit(1);
+  }
+}
 static int notListed(Process p, Model m) {
 	Process a;
 	

@@ -37,6 +37,20 @@ Compy.			Comp	::= Ident "." Ident;
 Argumentx.		Argument	::= String;	
 separator	    Argument   ""; 	
 
+NumAssgnv.		Numassgn   ::= Numvar     "=" Numval;
+
+StrAssgnv.		Strassgn 	::= Stringvar "=" Stringval;
+
+NumVali.		Numval     ::= Integer;
+NumValv.		Numval	   ::= Numvar;
+				
+StringVals.		Stringval  ::= String;
+StringValv.		Stringval  ::= Stringvar;
+	
+token Numvar 	'%' digit (   digit   )*;
+			
+token Stringvar '$' ( letter | digit ) ( letter | digit | '_' )*;
+
 comment "#";
 comment "{#" "#}";	
 ------------   End of Current Language Definition   --------------

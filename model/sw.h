@@ -7,7 +7,7 @@
 #include "model.h"
 
 extern char *version;
-#define MAX_BUFFER  10000
+#define MAX_BUFFER  1000000
 
 /* sw.c  */
 extern int maxbfsz;
