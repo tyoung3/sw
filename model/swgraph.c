@@ -22,7 +22,7 @@ static Port findPort(Port pt, int id) {
 	}
 	return NULL;
 }
-static int assign_channel(int ch, Flow f) {
+static int assign_channel(int ch, Stream f) {
 		
 		findPort(f->source->port,f->source_id)->channel=ch;
 		findPort(f->sink->port,  f->sink_id) ->channel=ch;
@@ -31,7 +31,7 @@ static int assign_channel(int ch, Flow f) {
 	
 static void assignChannels(Model m) {
 	int ch=m->nflows-1;
-	Flow f=m->flow;
+	Stream f=m->flow;
 	
 	while(f) {
 		assign_channel(ch--,f);	
@@ -160,7 +160,7 @@ static int findChannel(Port p, int id) {
 	return -1;
 }
 static void genLinks(Model m) {   // [label="C Miss"];
-	Flow f;
+	Stream f;
 	Process src,snk;
 	int channel=7;
 	
@@ -231,7 +231,7 @@ static void genProcs(Process p) {
 
 
 void genGraph(Model model) {
-	Flow f;
+	Stream f;
 	Process p;
 	
 	

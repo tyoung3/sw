@@ -142,7 +142,7 @@ static int NameMisMatch(Process src, int source_id, Process snk, int sink_id) {
 }
 
 static int verifyOK(Model model) { 						/*expand and check model*/
-	Flow f;
+	Stream f;
 	
 	if(!model) {
 		fprintf(stderr,"SWMAIN/verifyOK/FAIL: network model is missing!");
@@ -151,7 +151,7 @@ static int verifyOK(Model model) { 						/*expand and check model*/
 
 #ifdef VERIFY_VERBOSE	
 	fprintf(stderr,
-		"SWMAIN/VerifyOK/model: %d/%d/%d flows/procs/components.\n", 
+		"SWMAIN/VerifyOK/model: %d/%d/%d Stream/procs/components.\n", 
 			model->nflows, 
 			model->nprocs, 
 			model->ncomponents
@@ -222,13 +222,13 @@ static int fixId(int i) {
 	return i;
 }
 		    
-Flow MakeFlow(Process src, Process snk, int bufsz) {
-	Flow f;
+Stream MakeStream(Process src, Process snk, int bufsz) {
+	Stream f;
 	
-	f=(Flow)malloc(sizeof(Flow_)); 
+	f=(Stream)malloc(sizeof(Stream_)); 
     if (!f)
     {
-        fprintf(stderr, "SW/MakeFlow/FAIL: out of memory when allocating Flow!\n");
+        fprintf(stderr, "SWMAIN/MakeStream/FAIL: out of memory when allocating Stream!\n");
         exit(1);
     }
     
@@ -239,7 +239,7 @@ Flow MakeFlow(Process src, Process snk, int bufsz) {
 	f->bufsz	 = bufsz;
 	f->next      = NULL;
 	f->prev      = NULL;
-	f->type		 = GOGO;  /* Defined w/ '<-'  */
+	f->type		 = GOIP;  /* Defined w/ '<-'  */
 	return f;
 } 
 
@@ -346,7 +346,7 @@ Process MakeProcess(Ident name, Component comp, ListArgument la) {
 	
 } 
 
-Model MakeModel(Flow f) {
+Model MakeModel(Stream f) {
 	Model m;
 	
 	m=(Model)malloc(sizeof(Model_)); 

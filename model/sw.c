@@ -92,7 +92,7 @@ int visitBuffsize(Buffsize _p_)
 
 int bs,maxbfsz=1;		/*  Buffer size */
 
-Flow visitFlw(Flw _p_)
+Stream visitFlw(Flw _p_)
 {
 	Process snk,src;
 
@@ -110,7 +110,7 @@ Flow visitFlw(Flw _p_)
     		maxbfsz=bs;	
     src=visitSrce(_p_->u.flowx_.srce_);
 #endif	
-    return MakeFlow(src, snk, bs);
+    return MakeStream(src, snk, bs);
     
 }
 

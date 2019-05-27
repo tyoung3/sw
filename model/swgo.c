@@ -63,7 +63,7 @@ void genPrefix(Model m) {
 	int nflows=m->nflows;
 	int bfrtbl[m->nflows + 10];	
 	int i;
-	Flow f=m->flow; 
+	Stream f=m->flow; 
 
 	P(package main);
 	printf("\n/");
@@ -271,7 +271,7 @@ static void showSource(Process p, int id, int bfsz) {
 			printf(")\t*/\n");
 }			
 
-static int assign_channel(int ch, Flow f) {
+static int assign_channel(int ch, Stream f) {
 		
 		findPort(f->source->port,f->source_id)->channel=ch;
 		findPort(f->sink->port,  f->sink_id) ->channel=ch;
@@ -280,7 +280,7 @@ static int assign_channel(int ch, Flow f) {
 	
 static void assignChannels(Model m) {
 	int ch=m->nflows-1;
-	Flow f=m->flow;
+	Stream f=m->flow;
 	
 	while(f) {
 		assign_channel(ch--,f);	
@@ -289,7 +289,7 @@ static void assignChannels(Model m) {
 }
 
 static void showND(Model model) {	
-	Flow f;
+	Stream f;
 				
 			//* Generate commented Reconstructed Network Definition */
 	printf("/*       Network Definition  */\n");
@@ -322,7 +322,7 @@ void genGo(Model model) {
 
 /* Generate Expanded Network Definition */
 void genND(Model mod) {
-	Flow f;
+	Stream f;
 	
 	//fprintf(stderr,"GenGo: %d flows.\n", mod->nflows);
 	

@@ -16,7 +16,7 @@
 
 struct bucket {
 	union {
-		Flow flow; 
+		Stream flow; 
 		Process proc; 
 	} u;
 	char *tag;

@@ -74,7 +74,7 @@ static void genCluster1(char *name) {
     
 
 static void genLinks(Model m) {
-	Flow f;
+	Stream f;
 	Process src;
 	
 	f=m->flow;
@@ -131,7 +131,7 @@ static void genProcs(Process p) {
 
 
 void genJavaFBP(Model model) {
-	Flow f;
+	Stream f;
 	Process p;
 	
 	

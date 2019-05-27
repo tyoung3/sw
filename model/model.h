@@ -6,7 +6,7 @@
 
 /*          Network  Model
  
-	 Model > Flow > Source_Process > Port > Port 
+	 Model > Stream > Source_Process > Port > Port 
 	 			 	Sink_Process   > Port > Port
 	                Process        > Component
 				    Process        > Process
@@ -14,7 +14,7 @@
 
 /*    MODEL  Structures   */
 
-typedef enum {NONE,GOGO,OTHER} FLOWTYPE;
+typedef enum {NONE,GOIP,OTHER} STREAMTYPE;
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
@@ -50,23 +50,23 @@ struct Process_ {
 } Process_; 
 typedef struct Process_ *Process;
 
-struct Flow_ {
+struct Stream_ {
 	Process source;
 	Process sink;
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	FLOWTYPE type;    /* Type of flow GOGO, ORPHAN, etc*/
-	struct Flow_ *next;
-	struct Flow_ *prev;
-} Flow_;
-typedef struct Flow_ *Flow;
+	STREAMTYPE type;    /* Type of Stream GOGO, ORPHAN, etc*/
+	struct Stream_ *next;
+	struct Stream_ *prev;
+} Stream_;
+typedef struct Stream_ *Stream;
 
 struct Model_ {
 	int nflows;
 	int ncomponents;
 	int nprocs; 		/* number of processes */
-	Flow flow;			/* pointer to first flow */
+	Stream flow;			/* pointer to first stream*/
 	Process proc;		/* First Process */
 } Model_;
 typedef struct Model_ *Model;

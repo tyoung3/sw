@@ -42,7 +42,7 @@ static void genProcs(Process p) {
 
 
 void genC(Model model) {
-	Flow f;
+	Stream f;
 	Process p;
 	
 				//* Generate Prefix code */
