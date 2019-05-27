@@ -41,8 +41,8 @@ static int notListed(Process p, Model m) {
 Model visitListStm(ListStm liststm)
 {
 	if(!liststm) {
-		fprintf(stderr,"SW/FAIL: no valid streams\n"); 
-		exit(1);
+		fprintf(stderr,"SW/WARNING: no valid streams\n"); 
+		exit(0);
 	}
 
 	Model m;
@@ -95,20 +95,14 @@ Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
 
-#if 0   	
-    snk=visitSnk(_p_->u.streamx_.snk_);
-    visitBuffsize(_p_->u.streamx_.buffsize_);
-    src=visitSrce(_p_->u.streamx_.srce_);
-#else
     snk=visitSnk(_p_->u.streamx_.snk_);
     bs=visitBuffsize(_p_->u.streamx_.buffsize_);
     if(bs<1) bs=1;   
-    if(bs>1000)   // TODO Config file for max sizes
-    	bs=1000;
+    if(bs>MAX_BUFFER)   // TODO Config file for max sizes
+    	bs=MAX_BUFFER;
     if( bs > maxbfsz) 
     		maxbfsz=bs;	
     src=visitSrce(_p_->u.streamx_.srce_);
-#endif	
     return MakeStream(src, snk, bs);
     
 }
