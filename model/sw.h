@@ -7,6 +7,7 @@
 #include "model.h"
 
 extern char *version;
+#define ID_UNKNOWN 9999999
 
 /* sw.c  */
 extern int maxbfsz;

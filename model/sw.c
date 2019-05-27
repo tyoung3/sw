@@ -207,10 +207,10 @@ Port visitPrt(Prt _p_)
          				 visitIdent(_p_->u.portin_.ident_)
          );
     break;  case is_Portn:
-    	return MakePort(-1,visitIdent(_p_->u.portn_.ident_)
+    	return MakePort(ID_UNKNOWN,visitIdent(_p_->u.portn_.ident_)
     	);
     break;  case is_Porte:
-    	return MakePort(-1,NULL);
+    	return MakePort(ID_UNKNOWN,NULL);
     break;
   default:
     fprintf(stderr, "Error: bad kind field when printing Prt!\n");
