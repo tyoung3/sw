@@ -19,7 +19,7 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 Model visitStm(Stm _p_) 
 {	
 	Model m;  // ?? m=MakeModel(visitStm(liststm->stm_));
-	m=MakeModel(visitS_tream(_p_->u.sflow_.s_tream_));
+	m=MakeModel(visitS_tream(_p_->u.stmx_.s_tream_));
 	return m;
 }
 
@@ -40,32 +40,32 @@ static int notListed(Process p, Model m) {
 Model visitListStm(ListStm liststm)
 {
 	if(!liststm) {
-		fprintf(stderr,"SW/FAIL: no valid flows\n"); 
+		fprintf(stderr,"SW/FAIL: no valid streams\n"); 
 		exit(1);
 	}
 
 	Model m;
 	m = visitStm(liststm->stm_);
-	m->proc = m->flow->source;
-  	m->proc->next = m->flow->sink;
-  	m->flow->sink->next = NULL;
+	m->proc = m->stream->source;
+  	m->proc->next = m->stream->sink;
+  	m->stream->sink->next = NULL;
 	liststm = liststm->liststm_;
 	
   while(liststm != 0)
   {
   	Model m2;
     m2 = visitStm(liststm->stm_);
-  	m->nflows++;
-  	m2->flow->next=m->flow;
-  	m->flow=m2->flow;
+  	m->nstreams++;
+  	m2->stream->next=m->stream;
+  	m->stream=m2->stream;
   	
-  	if( notListed(m2->flow->source, m)) {
-  		m2->flow->source->next = m->proc;
-  		m->proc = m2->flow->source;
+  	if( notListed(m2->stream->source, m)) {
+  		m2->stream->source->next = m->proc;
+  		m->proc = m2->stream->source;
   	} 
-  	if( notListed(m2->flow->sink, m)) {
-  		m->flow->sink->next = m->proc;
-  		m->proc = m2->flow->sink;
+  	if( notListed(m2->stream->sink, m)) {
+  		m->stream->sink->next = m->proc;
+  		m->proc = m2->stream->sink;
   	} 
   	
     liststm = liststm->liststm_;
@@ -97,18 +97,18 @@ Stream visitS_tream(S_tream _p_)
 	Process snk,src;
 
 #if 0   	
-    snk=visitSnk(_p_->u.flowx_.snk_);
-    visitBuffsize(_p_->u.flowx_.buffsize_);
-    src=visitSrce(_p_->u.flowx_.srce_);
+    snk=visitSnk(_p_->u.streamx_.snk_);
+    visitBuffsize(_p_->u.streamx_.buffsize_);
+    src=visitSrce(_p_->u.streamx_.srce_);
 #else
-    snk=visitSnk(_p_->u.flowx_.snk_);
-    bs=visitBuffsize(_p_->u.flowx_.buffsize_);
+    snk=visitSnk(_p_->u.streamx_.snk_);
+    bs=visitBuffsize(_p_->u.streamx_.buffsize_);
     if(bs<1) bs=1;   
     if(bs>1000)   // TODO Config file for max sizes
     	bs=1000;
     if( bs > maxbfsz) 
     		maxbfsz=bs;	
-    src=visitSrce(_p_->u.flowx_.srce_);
+    src=visitSrce(_p_->u.streamx_.srce_);
 #endif	
     return MakeStream(src, snk, bs);
     

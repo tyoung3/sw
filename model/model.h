@@ -63,10 +63,10 @@ struct Stream_ {
 typedef struct Stream_ *Stream;
 
 struct Model_ {
-	int nflows;
+	int nstreams;
 	int ncomponents;
 	int nprocs; 		/* number of processes */
-	Stream flow;			/* pointer to first stream*/
+	Stream stream;			/* pointer to first stream*/
 	Process proc;		/* First Process */
 } Model_;
 typedef struct Model_ *Model;

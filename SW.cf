@@ -9,10 +9,10 @@
 entrypoints		ValidSW; 
 Valid.	 	    ValidSW  	::= [Stm] ;
 
-SFlow.			Stm			::= S_tream;       
+Stmx.			Stm			::= S_tream;       
 terminator	    Stm   ";" ;
 
-Flowx.			S_tream		::= Snk  "<" Buffsize "-"  Srce; 
+Streamx.		S_tream		::= Snk  "<" Buffsize "-"  Srce; 
 
 Bufszi.			Buffsize ::= Integer;
 Bufsze.			Buffsize ::=; 

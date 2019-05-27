@@ -152,13 +152,13 @@ static int verifyOK(Model model) { 						/*expand and check model*/
 #ifdef VERIFY_VERBOSE	
 	fprintf(stderr,
 		"SWMAIN/VerifyOK/model: %d/%d/%d Stream/procs/components.\n", 
-			model->nflows, 
+			model->nstreams, 
 			model->nprocs, 
 			model->ncomponents
 	);
 #endif	
 	
-	f=model->flow;
+	f=model->stream;
 	while(f) {
 		if( badProc(f->sink) || badProc(f->source) ) {
 			fprintf(stderr,"SW/verify: failed.");
@@ -356,10 +356,10 @@ Model MakeModel(Stream f) {
         exit(1);
     }
     
-	m->nflows = 1;
+	m->nstreams = 1;
 	m->ncomponents = 0;
 	m->nprocs	= 0;
-	m->flow=f;
+	m->stream=f;
 	m->proc = NULL;
 	//p->next = NULL;
 	//p->prev = NULL;

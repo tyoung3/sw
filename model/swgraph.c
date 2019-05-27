@@ -30,8 +30,8 @@ static int assign_channel(int ch, Stream f) {
 }
 	
 static void assignChannels(Model m) {
-	int ch=m->nflows-1;
-	Stream f=m->flow;
+	int ch=m->nstreams-1;
+	Stream f=m->stream;
 	
 	while(f) {
 		assign_channel(ch--,f);	
@@ -47,10 +47,10 @@ static void genSuffix() {
 	printf("}\n");
 }
 
-static void genPrefix(int nflows) {
+static void genPrefix(int nstreams) {
 
 
-	printf("#Prefix here. %d flows\n",nflows);
+	printf("#Prefix here. %d streams\n",nstreams);
 	P(digraph g {);
 	P(graph [);
 		C(	name="Streamwork: Collate Example Graph" );
@@ -164,7 +164,7 @@ static void genLinks(Model m) {   // [label="C Miss"];
 	Process src,snk;
 	int channel=7;
 	
-	f=m->flow;
+	f=m->stream;
 	while(f) {
 		src=f->source;
 		snk=f->sink;
@@ -245,7 +245,7 @@ void genGraph(Model model) {
 		
 			//* Generate commented Reconstructed Network Definition */
 	printf("#########   Expanded Network Definition   ######### \n");
-	f=model->flow;
+	f=model->stream;
 
 	while(f) {
 			printf("# (%s %s.%s)%d <- %d(%s %s.%s) \n", 
@@ -265,7 +265,7 @@ void genGraph(Model model) {
 	printf("\n");	
 	
 				//* Generate Prefix code */
-	genPrefix(model->nflows);
+	genPrefix(model->nstreams);
 	
 	
 	genCluster1("COLLATING NODE");
