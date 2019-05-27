@@ -9,7 +9,8 @@
 
 #define NOBUFFERS
 
-static String default_path={"std"};   /* ?? arg later */
+static String default_path={"strings"};   /* ?? arg later */
+int bs,maxbfsz=1;		              /*  Buffer size */
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
@@ -89,8 +90,6 @@ int visitBuffsize(Buffsize _p_)
     exit(1);
   }
 }
-
-int bs,maxbfsz=1;		/*  Buffer size */
 
 Stream visitS_tream(S_tream _p_)
 {
