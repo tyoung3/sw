@@ -1,0 +1,34 @@
+#!/bin/bash 
+
+# SWGO  script.  Generate a jpg image from  a StreamWork .sw file(ND).
+
+Die () {
+	echo "swgo/DIE: $*"
+	exit 1
+}
+
+SW=$GOPATH/bin/sw
+[ -e $SW     ] || Die $SW is missing 
+
+GenRun() {
+	base=`basename $file`
+	swfile=${file}.sw
+	if [ -f $swfile ]; then
+		$SW -m 3 $swfile > /tmp/$base.go > /tmp/$base.dot
+		dot -Tjpg /tmp/$base.dot > /tmp/$base.jpg
+		gimp /tmp/$base.jpg
+	else 
+		echo $swfile missing
+	fi
+}
+
+Run() {	
+	for file in $*; do 
+		GenRun $file
+	done 
+}
+
+case $1 in 
+	
+	*)Run $*;;
+esac	
