@@ -41,12 +41,11 @@ Port numbers default to 0.
 
 Ex.  
 ```
-    (Hello Print1) <- (World Gen1 "2"); 
+    Hello <- World; 
 ```
 produces:
 ```
-Hello World-1
-Hello World-2
+Hello World
 ```
 
 A process is defined by its process name, its component identifier,
@@ -88,16 +87,16 @@ QuickStart (on Linux)
 	* Run ```.../sw -v``` to check that the version is at least v0.5.2.
 	* Change directory to $GOPATH/mod (make one if necessary).
 	  This is usually ~/go/mod.  Go modules will fail in ~/go/src.
-	* Run go mod init hw/hw, unless go.mod already exists.  
+	* Run go mod init fb/fb, unless go.mod already exists.  
 	  
 	
 ```	
-echo "Hello <- World;" | sw > /tmp/hw.go 
+echo "Foo <- Bar;" | sw > /tmp/fb.go 
 ```
-	* Run 'go run /tmp/hello.go'
+	* Run 'go run /tmp/fb.go'
 
 OUTPUT: 
-Hello World
+Foo Bar
 ```
 
 ```go: finding github.com/tyoung3/streamwork/def latest```
