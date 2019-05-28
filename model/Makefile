@@ -1,9 +1,8 @@
 CC = gcc
 
 CCFLAGS = -g -W -Wall
-#CCFLAGS = -O6 -W -Wall
 
-VERSION = \"0.5.0\"
+VERSION = \"0.5.1\"
 
 OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
@@ -58,10 +57,10 @@ sw: ${OBJS}                   sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
 		
-sw.o: sw.c sw.h swsym.h Parser.h Printer.h Absyn.h
+sw.o: sw.c sw.h swsym.h ../Parser.h ../Printer.h ../Absyn.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
-swmain.o: swmain.c sw.h swmain.h Parser.h Printer.h Absyn.h Makefile
+swmain.o: swmain.c sw.h swmain.h ../Parser.h ../Printer.h ../Absyn.h Makefile
 	${CC} ${CCFLAGS} -DVERSION=${VERSION} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h model.h

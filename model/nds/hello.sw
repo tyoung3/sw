@@ -1,5 +1,5 @@
 # Hello World Example
-(Hello strings.Print1)0 <- 0(World strings.Gen1 "3");
+(Hello Print1)0 <- 0(World Gen1 "3");
 
 {# Produces 
 Hello World-1

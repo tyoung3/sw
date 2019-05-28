@@ -22,7 +22,7 @@ static Port findPort(Port pt, int id) {
 	}
 	return NULL;
 }
-static int assign_channel(int ch, Flow f) {
+static int assign_channel(int ch, Stream f) {
 		
 		findPort(f->source->port,f->source_id)->channel=ch;
 		findPort(f->sink->port,  f->sink_id) ->channel=ch;
@@ -30,8 +30,8 @@ static int assign_channel(int ch, Flow f) {
 }
 	
 static void assignChannels(Model m) {
-	int ch=m->nflows-1;
-	Flow f=m->flow;
+	int ch=m->nstreams-1;
+	Stream f=m->stream;
 	
 	while(f) {
 		assign_channel(ch--,f);	
@@ -47,10 +47,10 @@ static void genSuffix() {
 	printf("}\n");
 }
 
-static void genPrefix(int nflows) {
+static void genPrefix(int nstreams) {
 
 
-	printf("#Prefix here. %d flows\n",nflows);
+	printf("#Prefix here. %d streams\n",nstreams);
 	P(digraph g {);
 	P(graph [);
 		C(	name="Streamwork: Collate Example Graph" );
@@ -160,11 +160,11 @@ static int findChannel(Port p, int id) {
 	return -1;
 }
 static void genLinks(Model m) {   // [label="C Miss"];
-	Flow f;
+	Stream f;
 	Process src,snk;
 	int channel=7;
 	
-	f=m->flow;
+	f=m->stream;
 	while(f) {
 		src=f->source;
 		snk=f->sink;
@@ -231,7 +231,7 @@ static void genProcs(Process p) {
 
 
 void genGraph(Model model) {
-	Flow f;
+	Stream f;
 	Process p;
 	
 	
@@ -245,7 +245,7 @@ void genGraph(Model model) {
 		
 			//* Generate commented Reconstructed Network Definition */
 	printf("#########   Expanded Network Definition   ######### \n");
-	f=model->flow;
+	f=model->stream;
 
 	while(f) {
 			printf("# (%s %s.%s)%d <- %d(%s %s.%s) \n", 
@@ -265,7 +265,7 @@ void genGraph(Model model) {
 	printf("\n");	
 	
 				//* Generate Prefix code */
-	genPrefix(model->nflows);
+	genPrefix(model->nstreams);
 	
 	
 	genCluster1("COLLATING NODE");
