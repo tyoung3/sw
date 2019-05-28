@@ -102,7 +102,7 @@ Foo Bar
 ```go: finding github.com/tyoung3/streamwork/def latest```
  may appear the first time the program is run.
  
-	* Examine /tmp/hw.go  
+	* Examine /tmp/fb.go  
 
 Release Notes
 =============
