@@ -2,6 +2,8 @@
 
 (A std.Comp1)0<-0(B strings.Comp2);
 
+Hello <- World; 
+
 #   Later:
 
 #%sw_maxbfr_

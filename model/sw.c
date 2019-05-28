@@ -9,6 +9,10 @@
 
 #define NOBUFFERS
 
+#define defaultPath       "default"
+#define defaultSourceComp "Gen1"
+#define defaultSinkComp   "Print1"
+
 static String default_path={"strings"};   /* ?? arg later */
 int bs,maxbfsz=1;		              /*  Buffer size */
 
@@ -255,25 +259,65 @@ Process visitSrce(Srce _p_)
 {
 	Process p;
 	Port pt;
+	String s;
+	Component c;
+	
+  switch(_p_->kind)
+  {
+  case is_Sourcex:
     p  = visitProc(_p_->u.sourcex_.proc_);
     pt = visitPrt (_p_->u.sourcex_.prt_);  
     p->source_id = pt->id; 
     p->nportsOut++;
     linkPort(p,pt);
     return p;
+  case is_Sourcey:
+    s=visitIdent(_p_->u.sourcey_.ident_);
+    c=MakeComponent(defaultSourceComp,defaultPath);
+    p=MakeProcess(net_model,s,c,NULL);
+    pt=MakePort(-2,"");
+    p->source_id=-2;
+    p->nportsOut++;
+    linkPort(p,pt);
+    return p;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Srce!\n");
+    exit(1);
+  }
 }
     
 Process visitSnk(Snk _p_)
 {
 	Process p;
 	Port pt;
+	String s;
+	Component c;
 	
-    pt=visitPrt (_p_->u.sinkx_.prt_);
+  switch(_p_->kind)
+  {
+  case is_Sinkx:
+    /* Code for Sinkx Goes Here */
     p =visitProc(_p_->u.sinkx_.proc_);
+    pt=visitPrt(_p_->u.sinkx_.prt_);
     p->sink_id = pt->id;
     p->nportsIn++;  
     linkPort(p,pt);
+    return p;  
+  case is_Sinky:
+    /* Code for Sinky Goes Here */
+    s=visitIdent(_p_->u.sinky_.ident_);
+    c=MakeComponent(defaultSinkComp,defaultPath);
+    p=MakeProcess(net_model,s,c,NULL);
+    pt=MakePort(-2,"");
+    p->sink_id=-2;
+    p->nportsIn++;
+    linkPort(p,pt);
     return p;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Snk!\n");
+    exit(1);
+  }
+  
 }
 
 Process visitProc(Proc _p_)
