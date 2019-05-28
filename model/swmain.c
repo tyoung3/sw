@@ -259,7 +259,8 @@ static char **MakeArg(ListArgument la, char *name) {
 
 	i=narg-1;
 	while(la) {
-		arg[i--] = la->argument_->u.argumentx_.stringval_;
+		arg[i--] = 
+		  visitStringval(la->argument_->u.argumentx_.stringval_);
 		la       = la->listargument_;
 	}
 	
@@ -301,7 +302,7 @@ static char **NewArg(char **arg, char **narg) {
 		
 }
 
-Process MakeProcess(Ident name, Component comp, ListArgument la) {
+Process MakeProcess( Model model,Ident name, Component comp, ListArgument la) {
 	Process p;
 	static int onone=1;
 	
@@ -325,7 +326,9 @@ Process MakeProcess(Ident name, Component comp, ListArgument la) {
 		p->nportsIn =0;
 		p->nportsOut=0;
 		p->port	= NULL;
-		p->next = NULL;
+		p->next = model->proc;
+		model->proc = p;
+		model->nprocs++;
 		p->prev = NULL;
 		p->arg  = MakeArg(la,name);
     	addProc(name,p);
@@ -356,7 +359,7 @@ Model MakeModel(Stream f) {
         exit(1);
     }
     
-	m->nstreams = 1;
+	m->nstreams = 0;
 	m->ncomponents = 0;
 	m->nprocs	= 0;
 	m->stream=f;
@@ -425,6 +428,10 @@ int main(int argc, char ** argv)
     model=visitValidSW(parse_tree);
     // @TODO Free Parse tree storage
     if(verifyOK(model)) {
+		if(!model->proc) {
+			fprintf(stderr,"SWMAIN/FAIL: No processes found\n");
+			exit(1);
+		}
     	switch (mode) {
 	    	case GRAPHMODE:       
     			genGraph(model);  	// Generate GraphViz .DOT file

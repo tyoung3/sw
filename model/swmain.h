@@ -8,7 +8,7 @@ void SendSuffix();
 
 void GenChan(int nchannels); 
 Component MakeComponent(Ident name, String path);
-Process MakeProcess(Ident name, Component comp, ListArgument la);  
+Process MakeProcess(Model, Ident name, Component comp, ListArgument la);  
 Port MakePort(int n, Ident id) ;
 Stream MakeStream(Process src, Process snk, int bufsz) ;
 Model MakeModel(Stream f);

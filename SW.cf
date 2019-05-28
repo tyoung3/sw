@@ -10,11 +10,12 @@ entrypoints		ValidSW;
 Valid.	 	    ValidSW  	::= [Stm] ;
 
 Stmx.			Stm			::= S_tream; 
-Stmn.			Stm			::= Numassgn; 
-Stms.			Stm			::= Strassgn;   
+Stmn.			Stm			::= Numassgn ; 
+Stms.			Stm			::= Strassgn ;   
 terminator	    Stm   ";" ;
 
-Streamx.		S_tream		::= Snk  "<" Buffsize "-"  Srce; 
+Streamx.		S_tream		::= Snk  "<" Buffsize "-"  Srce ;
+separator		S_tream		";" ;  
 
 Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 

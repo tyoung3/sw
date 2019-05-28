@@ -11,10 +11,15 @@
 
 static String default_path={"strings"};   /* ?? arg later */
 int bs,maxbfsz=1;		              /*  Buffer size */
+
+
+Model net_model=NULL;  
 	
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
-    return visitListStm(_p_->u.valid_.liststm_);
+	 net_model=MakeModel(NULL);
+     visitListStm(_p_->u.valid_.liststm_);
+     return net_model;
 }
 
 
@@ -33,8 +38,8 @@ String visitStringval(Stringval _p_)
   case is_StringVals:
     return (visitString(_p_->u.stringvals_.string_));
   case is_StringValv:
-    visitStringvar(_p_->u.stringvalv_.stringvar_);
-    return NULL;
+    return visitStringvar(_p_->u.stringvalv_.stringvar_);
+  
   default:
     fprintf(stderr, "Error: bad kind field when printing Stringval!\n");
     exit(1);
@@ -71,7 +76,7 @@ void visitNumassgn(Numassgn _p_)
     fprintf(stderr, "Error: bad kind field when printing Numassgn!\n");
     exit(1);
   }
-}
+} 
 
 void visitStrassgn(Strassgn _p_)
 {
@@ -83,35 +88,75 @@ void visitStrassgn(Strassgn _p_)
     visitStringval(_p_->u.strassgnv_.stringval_);
     break;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Strassgn!\n");
+    fprintf(stderr, 
+        "Error: bad kind field when printing Strassgn!\n");
     exit(1);
   }
 }
 
-Model visitStm(Stm _p_) 
-{	
-	Model m;  // ?? m=MakeModel(visitStm(liststm->stm_));
+
+Integer visitBuffsize(Buffsize _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Bufszi:
+    	return( visitNumval(_p_->u.bufszi_.numval_)) ;
+  case is_Bufsze:
+    	return 1;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Buffsize!\n");
+    exit(1);
+  }
+}
+
+void visitS_tream(S_tream _p_)
+{
+	Process snk,src;
+	Stream s;
+	Model m;
 	
+    snk=visitSnk(_p_->u.streamx_.snk_);
+    bs=visitBuffsize(_p_->u.streamx_.buffsize_); 
+
+    
+    if(bs<1) bs=1;   
+    if(bs>MAX_BUFFER)    
+    	bs=MAX_BUFFER;
+    if( bs > maxbfsz) 
+    		maxbfsz=bs;	
+    		
+    src=visitSrce(_p_->u.streamx_.srce_);
+    
+
+  	s =  MakeStream(src, snk, bs);
+	    
+    m=net_model;
+    s->next = m->stream;	
+    m->stream=s;
+    
+ 	m->nstreams++;
+    
+}
+
+void visitStm(Stm _p_) 
+{	
 	switch(_p_->kind)
   {
   case is_Stmx:
-	m=MakeModel(visitS_tream(_p_->u.stmx_.s_tream_));
-	return m;
-    break;  
+  	visitS_tream(_p_->u.stmx_.s_tream_);
+  	return;
   case is_Stmn:
     /* Code for Stmn Goes Here */
     visitNumassgn(_p_->u.stmn_.numassgn_);
-    return NULL;
+    return ;
   case is_Stms:
     /* Code for Stms Goes Here */
     visitStrassgn(_p_->u.stms_.strassgn_);
-    return NULL;
+    return ;
   default:
     fprintf(stderr, "Error: bad kind field when printing Stm!\n");
     exit(1);
   }
-	
-	
 }
 
 static int notListed(Process p, Model m) {
@@ -128,72 +173,53 @@ static int notListed(Process p, Model m) {
 	return 1;
 }
 
-Model visitListStm(ListStm liststm)
+void visitListStm(ListStm liststm)
 {
-	if(!liststm) {
-		fprintf(stderr,"SW/WARNING: no valid streams\n"); 
-		exit(0);
-	}
-
-	Model m;
-	m = visitStm(liststm->stm_);
-	m->proc = m->stream->source;
-  	m->proc->next = m->stream->sink;
-  	m->stream->sink->next = NULL;
-	liststm = liststm->liststm_;
-	
+  
   while(liststm != 0)
   {
-  	Model m2;
-    m2 = visitStm(liststm->stm_);
-  	m->nstreams++;
-  	m2->stream->next=m->stream;
-  	m->stream=m2->stream;
-  	
-  	if( notListed(m2->stream->source, m)) {
-  		m2->stream->source->next = m->proc;
-  		m->proc = m2->stream->source;
-  	} 
-  	if( notListed(m2->stream->sink, m)) {
-  		m->stream->sink->next = m->proc;
-  		m->proc = m2->stream->sink;
-  	} 
-  	
+    visitStm(liststm->stm_);
     liststm = liststm->liststm_;
   }
+}
+
+#ifdef DSAWLKJ 
+Model visitListStm(ListStm liststm)
+{
+	Model m;
+    if( ! liststm)  
+    	return net_model;
+    
+    m=net_model;	    
+    m->proc = m->stream->source;
+  	m->proc->next = m->stream->sink;
+  	m->stream->sink->next = NULL;   
+	liststm = liststm->liststm_;
+	 
+ while(liststm != 0) {
+  	Model m2;
+    m2 = visitStm(liststm->stm_);
+    
+    if(m2) { 
+  		//m2->stream->next=m->stream;
+  		//m->stream=m2->stream;
+  	
+  		if( notListed(m2->stream->source, m)) {
+  			m2->stream->source->next = m->proc;
+  			m->proc = m2->stream->source;
+  		} 
+  		if( notListed(m2->stream->sink, m)) {
+  			m->stream->sink->next = m->proc;
+  			m->proc = m2->stream->sink;
+  		} 
+ 	}  	
+    liststm = liststm->liststm_;
+  }
+  
   return m;
 }
-
-Integer visitBuffsize(Buffsize _p_)
-{
-  switch(_p_->kind)
-  {
-  case is_Bufszi:
-    	return( visitNumval(_p_->u.bufszi_.numval_)) ;
-  case is_Bufsze:
-    	return 1;
-  default:
-    fprintf(stderr, "Error: bad kind field when printing Buffsize!\n");
-    exit(1);
-  }
-}
-
+#endif
  
-Stream visitS_tream(S_tream _p_)
-{
-	Process snk,src;
-
-    snk=visitSnk(_p_->u.streamx_.snk_);
-    bs=visitBuffsize(_p_->u.streamx_.buffsize_);
-    if(bs<1) bs=1;   
-    if(bs>MAX_BUFFER)    
-    	bs=MAX_BUFFER;
-    if( bs > maxbfsz) 
-    		maxbfsz=bs;	
-    src=visitSrce(_p_->u.streamx_.srce_);
-    return MakeStream(src, snk, bs);
-    
-}
 
 
 /* Add port,p to port list at P->port */
@@ -255,14 +281,14 @@ Process visitProc(Proc _p_)
   switch(_p_->kind) {
   
   case is_Processx:  
-    return MakeProcess(
+    return MakeProcess(net_model,
     	visitIdent(_p_->u.processx_.ident_), 
     	visitComp(_p_->u.processx_.comp_),
     	visitListArgument(_p_->u.processx_.listargument_)
     );   
       
   case is_Processy:   
-    return MakeProcess(
+    return MakeProcess(net_model,
     	visitIdent(_p_->u.processy_.ident_), 
     	NULL,
     	visitListArgument(_p_->u.processy_.listargument_) 
@@ -327,7 +353,6 @@ ListArgument visitListArgument(ListArgument listargument)
 	
 	while(listargument != 0)
   {
-    /* Code For ListArgument Goes Here */
     l = make_ListArgument(visitArgument(
     	listargument->argument_),
     	l);
