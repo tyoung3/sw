@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW - STREAMWORK/FrontEnd
-========================
+SW-0.5.2 - STREAMWORK/FrontEnd
+==============================
 
 Name
 ----
@@ -41,11 +41,12 @@ Port numbers default to 0.
 
 Ex.  
 ```
-    (Hello Print1) <- (World Gen1 "1"); 
+    (Hello Print1) <- (World Gen1 "2"); 
 ```
 produces:
 ```
 Hello World-1
+Hello World-2
 ```
 
 A process is defined by its process name, its component identifier,
@@ -62,14 +63,13 @@ may or may not cause a type mis-match depending
 on the sink component coding.  Components can be coded to
 handle any type(including user-defined types), a few types(like Print1), or just one type; on each receiving port.    
  
-The ND language is defined in less than 25 statements. 
-Progams developed using this simple system, however, are highly capabile.  
+The ND language is defined in less than 50 statements. 
+Progams developed using this simple system, however, are highly capable.  
  
 Sw versions are backward compatible within the same major 
 version(currently v0).  
 
-Sw builds a network model in memory then (optionally) generates an
-abstract syntax tree, a linearized tree(an ND recronstruction), 
+Sw builds a network model in memory, then optionally generates an abstract syntax tree, a linearized tree(an ND recronstruction), 
 a GraphViz .dot file, or Go source code from this model.
 C and other languages could also be generated.  JavaFBP is possible.   
 
@@ -85,19 +85,25 @@ QuickStart (on Linux)
 	  installing github/tyoung3/StreamWork; the generated Go code just won't work.
 	* Download the 'sw' executable from github to any convenient location.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```.../sw -v``` to check that the version is at least v0.5.0.
+	* Run ```.../sw -v``` to check that the version is at least v0.5.2.
+	* Change directory to $GOPATH/mod (make one if necessary).
+	  This is usually ~/go/mod.  Go modules will fail in ~/go/src.
+	* Run go mod init hw/hw, unless go.mod already exists.  
+	  
 	
 ```	
-echo "(Hello Print1) <- (World Gen1 \"3\");" | ./sw > /tmp/hello.go 
+echo "Hello <- World;" | sw > /tmp/hw.go 
 ```
-	* Run 'go run /tmp/hello.go  ...
+	* Run 'go run /tmp/hello.go'
 
 OUTPUT: 
-```StreamWork Proof of Concept Example.
-Hello World-1
-Hello World-2
-Hello World-3
+Hello World
 ```
+
+```go: finding github.com/tyoung3/streamwork/def latest```
+ may appear the first time the program is run.
+ 
+	* Examine /tmp/hw.go  
 
 Release Notes
 =============
@@ -114,6 +120,18 @@ v0.5.0
 Port numbers default to zero.  
 Ex. (A a) <- (B b); expands to (A a)0 <- 0(B b);
 
+v0.5.1
+------ 
+
+Introduces variables into the language, but are ignored for now.
+
+v0.5.2
+------
+
+Enabled default components. 
+Ex.  ```A<-B;``` expands to 
+```(a def.Print1 )0  <- 0(b def.Gen1);
+```
 Named Ports
 -----------
 

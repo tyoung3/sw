@@ -9,7 +9,7 @@
 
 #define NOBUFFERS
 
-#define defaultPath       "default"
+#define defaultPath       "def"
 #define defaultSourceComp "Gen1"
 #define defaultSinkComp   "Print1"
 
