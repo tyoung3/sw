@@ -20,9 +20,11 @@ separator		S_tream		";" ;
 Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 
 
-Sourcex.		Srce     ::= Prt Proc; 	
+Sourcex.		Srce     ::= Prt Proc; 
+Sourcey.		Srce     ::= Ident;	
 
 Sinkx.			Snk		::=  Proc Prt; 		
+Sinky.			Snk		::=  Ident;
 
 Processx.		Proc	::= "(" Ident  Comp [Argument] ")" ;
 Processy.		Proc	::= "(" Ident  [Argument] ")" ;
