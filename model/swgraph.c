@@ -65,6 +65,7 @@ static void genPrefix(char *gname, int nstreams) {
 	P(graph [);
 		C(	name="Streamwork/swgraph: " );
         C(	fontcolor=black);
+        C(  label="https://github.com/tyoung3/sw")
         P(	fontname="Helvetica");           
     P(]);
 
