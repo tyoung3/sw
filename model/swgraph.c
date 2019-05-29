@@ -7,6 +7,7 @@ TODO:
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "model.h"
 
 #define P(s) printf("%s\n",(#s));
@@ -55,13 +56,14 @@ static void genSuffix() {
 	printf("}\n");
 }
 
-static void genPrefix(int nstreams) {
+static void genPrefix(char *gname, int nstreams) {
 
 
 	printf("#Prefix here. %d streams\n",nstreams);
-	P(digraph g {);
+	printf("digraph \"%s\" {",gname);
+	 
 	P(graph [);
-		C(	name="Streamwork: Collate Example Graph" );
+		C(	name="Streamwork/swgraph: " );
         C(	fontcolor=black);
         P(	fontname="Helvetica");           
     P(]);
@@ -83,10 +85,11 @@ static void genPrefix(int nstreams) {
                P(     ]);
 
 }
-
+#ifndef NO_PORTS
 static void genPort(int n) {
   		printf("<%i> %i  ", n, n);
 }  	
+#endif
 
 static void genArgs(char **a) {
 		int i=1;
@@ -96,17 +99,28 @@ static void genArgs(char **a) {
 		}
 }
 
+
+static char *makeURL(char *comp) {
+		char bfr[100]; 
+		
+		snprintf(bfr, sizeof(bfr) -1,
+		"/home/tyoung3/go/mod/sw/html/%s.html",comp);
+		return strndup(bfr,sizeof(bfr) -1);
+}
+
+
 	/* EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */
-static void genProc(char *name, char *comp, char *host, char **args) {
+static void genProc(char *name, char *comp, char *path,  char *host, char **args) {
+
 
      printf("       \"%s\" ", name );
      C(                   [ shape=record);
      C(                  color="black" );
-     printf("  URL=\".%s.shtml\"\n",name);
+     printf("  URL=\"%s\"\n",makeURL(comp));
      printf(" host=\"%s\" \n", host);
-     printf(" tooltip=\"%s ",comp);
+     printf(" tooltip=\"%s.%s ",path,comp);
      genArgs(args);
-     printf("\"\n",comp);
+     printf("\"\n");
      // ? Generate args for tip
 #ifdef NO_COMP_LABELS
      printf("label=\"{<P> %s ",name);
@@ -127,7 +141,7 @@ static void genCluster1(char *name) {
                
   printf("subgraph \"cluster%s\" {\n",name );
 	printf("label = \"%s\"; name=\"%s\";\n",name,name);
-	printf("URL=\"%s.shtml\";\n\n",name);
+	printf("URL=\"%s.html\";\n\n",name);
 
      
 }
@@ -171,24 +185,22 @@ static void genLinks(Model m) {   // [label="C Miss"];
 					); 		
 			} else {
 #ifndef NO_PORTS			
-				printf("\"%s\":%i -> \"%s\":%i [label=\"%i[%i]\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%i\",taillabel=\"%i\"", tooltip=\"%i[%i]\"];\n",
 #else
-				printf("\"%s\" -> \"%s\" [label=\"%i[%i]\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+				printf("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
 #endif				
 					src->name,  
 					snk->name,
 					channel,
-					f->bufsz,
 					f->sink_id,
 					f->source_id,
-					channel); 		
+					channel, f->bufsz); 		
 			}		
 		f=f->next;
 	}
 }
 	
 static void genProcs(Process p) {
-	Port pt;	
     
 	while(p) {
 			printf("#(%s %s.%s) %d ports\n",
@@ -198,9 +210,10 @@ static void genProcs(Process p) {
 				p->nportsIn + p->nportsOut
 			);
  
-		genProc(p->name,p->comp->name,"taos_", p->arg);
-			pt = p->port;
-#ifndef NO_PORTS			
+		genProc(p->name,p->comp->name,p->comp->path,"taos_", p->arg);
+#ifndef NO_PORTS	
+	Port pt;			
+	    pt = p->port;
 			printf("|{");
 			do {
 				genPort(pt->id);
@@ -256,10 +269,10 @@ void genGraph(Model model) {
 	printf("\n");	
 	
 				//* Generate Prefix code */
-	genPrefix(model->nstreams);
+	genPrefix(model->name, model->nstreams);
 	
 	
-	genCluster1("COLLATING NODE");
+	genCluster1( model->name );
 		
 		p=model->proc;  /* Get first process */
 		genProcs(p); 

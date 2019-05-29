@@ -69,6 +69,7 @@ struct Model_ {
 	int nprocs; 		/* number of processes */
 	Stream stream;			/* pointer to first stream*/
 	Process proc;		/* First Process */
+	char *name;			/* Model Name */
 } Model_;
 typedef struct Model_ *Model;
 
