@@ -12,13 +12,21 @@ SW=$GOPATH/bin/sw
 
 GenRun() {
 	base=`basename $file`
-	swfile=${file}.sw
+	swfile=${base}
+	
+	echo looking for $swfile
+	if [ ! -f $swfile ]; then 
+		[ -f /home/tyoung3/go/mod/sw/nds/${swfile}.sw ]	\
+			&& swfile=/home/tyoung3/go/mod/sw/nds/${swfile}.sw
+		[ -f $swfile ] || swfile=${file}.sw
+	fi	
+	
 	if [ -f $swfile ]; then
-		$SW -m 3 $swfile > /tmp/$base.go > /tmp/$base.dot
-		dot -Tjpg /tmp/$base.dot > /tmp/$base.jpg
-		gimp /tmp/$base.jpg
+		$SW -m 3 $swfile > /tmp/${base}.dot
+		dot -Tsvg /tmp/$base.dot > /tmp/${base}.svg
+		$BROWSER /tmp/${base}.svg	
 	else 
-		echo $swfile missing
+		DIE $swfile missing
 	fi
 }
 
@@ -30,5 +38,5 @@ Run() {
 
 case $1 in 
 	
-	*)Run $*;;
+	*)echo aldkj ;Run $*;;
 esac	
