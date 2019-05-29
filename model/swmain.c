@@ -4,9 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Parser.h"
-#include "Printer.h"
-#include "Absyn.h"
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"

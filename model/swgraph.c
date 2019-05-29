@@ -2,6 +2,8 @@
 		  Generate Graphviz input 
 		  
 TODO:   
+	* Title 
+	* head,taillabels
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +12,13 @@ TODO:
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s,\n",(#s));
 
-
+// Define to remove process ports
+#define NO_PORTS
+// Define COMP_TIPS to move COMP info into tooltips for svg/html 
+#define COMP_TIPS 
+// Define NO_COMP_LABEL to hide component info
+#define NO_COMP_LABELS
+#define EDGE_LABELS
 /////////////////  Dupes code in swgo.c  //////////////////////////////
 static Port findPort(Port pt, int id) {
 	
@@ -67,25 +75,14 @@ static void genPrefix(int nstreams) {
                   C(          style=filled);
                     P(        height=.2);
                   P(   ];);
-               C(     edge [ color=green);
+               C(     edge [ color=blue);
               C(              style=bold);
             C(                fontsize="18");
-              C(              fontcolor=black);
+              C(              labelfontcolor=black);
+              C(              fontcolor=blue);
                P(     ]);
 
 }
-
-#ifdef OLDSTUFF
-static void genEdit() {
-    P(        "EDIT" );
-    C(                [ shape=record);
-    C(                  color="black");
-    C(                  URL="EDIT.shtml");
-    C(                  host="nogales");
-    P(  label="{<P> EDIT);|swedit}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];);
-   
-}
-#endif
 
 static void genPort(int n) {
   		printf("<%i> %i  ", n, n);
@@ -107,11 +104,18 @@ static void genProc(char *name, char *comp, char *host, char **args) {
      C(                  color="black" );
      printf("  URL=\".%s.shtml\"\n",name);
      printf(" host=\"%s\" \n", host);
-     printf("label=\"{<P> %s %s",name,comp);
+     printf(" tooltip=\"%s ",comp);
      genArgs(args);
-  
-}  	    
- 
+     printf("\"\n",comp);
+     // ? Generate args for tip
+#ifdef NO_COMP_LABELS
+     printf("label=\"{<P> %s ",name);
+#else
+     printf("label=\"{<P> %s %s",name,comp);
+     genArgs(args); 
+#endif 
+
+}  	 
 
 static void endProc() {
     printf("\"\n"); 
@@ -127,25 +131,7 @@ static void genCluster1(char *name) {
 
      
 }
-    
-#ifdef OLDSTUF    
-static void genSAVE() {
-    P(        "SAVE" );
-    C(                     [ shape=record);
-    C(                       URL="SAVE.shtml");
-    C(                       color="black" );
-    C(                       host="taos");
-    P(                       label="{<P> SAVE|WriteFile }|<in> in"];);
-}
-
-static void genTaos() {        
-    P(subgraph "clustertaos" { );
-     P(        label = "taos"; name="taos";);
-    P(        URL="taos.html";);
-		genSAVE();
-    P(        });
- }   
-#endif 
+   
 static int findChannel(Port p, int id) {
 	Port p0;	
 	
@@ -159,6 +145,7 @@ static int findChannel(Port p, int id) {
 	
 	return -1;
 }
+
 static void genLinks(Model m) {   // [label="C Miss"];
 	Stream f;
 	Process src,snk;
@@ -170,32 +157,35 @@ static void genLinks(Model m) {   // [label="C Miss"];
 		snk=f->sink;
 			channel=findChannel(src->port,f->source_id); 
 			if(f->bufsz<2) { 
-				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"];\n",
-					src->name, f->source_id, 
+#ifndef NO_PORTS			
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+#else
+				printf("\"%s\"  -> \"%s\"  [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+#endif				
+					src->name,  
 					snk->name,
-					f->sink_id,
-					channel); 		
-			} else {
-				printf("\"%s\":%i -> \"%s\":%i [label=\"%i[%i]\"];\n",
-					src->name, f->source_id, 
-					snk->name,
-					f->sink_id,
 					channel,
-					f->bufsz
+					f->sink_id,
+					f->source_id,
+					channel
 					); 		
+			} else {
+#ifndef NO_PORTS			
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i[%i]\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+#else
+				printf("\"%s\" -> \"%s\" [label=\"%i[%i]\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+#endif				
+					src->name,  
+					snk->name,
+					channel,
+					f->bufsz,
+					f->sink_id,
+					f->source_id,
+					channel); 		
 			}		
 		f=f->next;
 	}
-
-#ifdef GENOLD_STUFF	
-    P({ "PANEL":1  -> "EDIT":0;  headurl="pe10.shtml";});
-    P("EDIT":7  -> "SAVE":in;);
-    P("EDIT":5  -> "PANEL":0;);
-#endif
-    
 }
-
-
 	
 static void genProcs(Process p) {
 	Port pt;	
@@ -210,6 +200,7 @@ static void genProcs(Process p) {
  
 		genProc(p->name,p->comp->name,"taos_", p->arg);
 			pt = p->port;
+#ifndef NO_PORTS			
 			printf("|{");
 			do {
 				genPort(pt->id);
@@ -218,7 +209,9 @@ static void genProcs(Process p) {
 					printf("|");
 				}
 			} while(pt != p->port);
-        printf(" }}");
+        printf(" }");
+#endif        
+        printf(" }");
 		endProc(); 
 		
 		p=p->next;
@@ -227,8 +220,6 @@ static void genProcs(Process p) {
 		
 	printf("\n");
 }	
-
-
 
 void genGraph(Model model) {
 	Stream f;
@@ -274,17 +265,6 @@ void genGraph(Model model) {
 		genProcs(p); 
     P(        });    /* End Cluster1 */	
 
-#ifdef GENOLD_STUFF	
-	genCluster1("OLDhost");
-		genProc("PANEL", "Pcomp","PnlHost");
-			genPort(0);
-			genPort(2);
-			genPort(1);
-		endProc(); 
-		genEdit();
-		genSAVE();
-    P(        });    /* End Cluster1 */	
-#endif
     
 	genLinks(model); 
 	genSuffix();	   //* Generate Suffix code */
@@ -292,79 +272,3 @@ void genGraph(Model model) {
 
 /*    End of SWGRAPH.C  */
 
-#ifdef EXAMPLE_GRAPH
-digraph g {
-	graph [
-		name="Collate Example Graph",
- 		style=bold,
- 		color=green,
- 		margin="2",
-   		rankdir="TB",
-#   		rankdir="LR",
- 		ranksep=0.75,
- 		nodesep=0.75,
- 		size="8,11",
- 		center=1,
- 		fontsize="24",
-  		fontcolor=green,
- 		fontname="Helvetica"
-		URL="/home/tyoung3/vdfd/bin/html/g.html"
- 	   ]
- 		node [  shape=record,
- 			fontsize="18",
- 	        	fontcolor=green,
- 		       	fontname="Helvetica",
-			color=green,
-         		fillcolor=tan,
-         		style=filled,
- 	        	height=.2
-     		 ];
- 		edge [ color=green,
-         		style=bold,
- 			fontsize="18",
- 	        	fontcolor=green,
-      		]
- 	
-
-
-  subgraph "clustertaos" { 
-	 label = "taos"; name="taos";
-	URL="taos.html";
-	"PANEL" 
-					[ shape=record,
-					color="green", 
-					URL="./PANEL.shtml",
- 					host="taos",
-					label="{<P> PANEL|GC.tcl }|<1 > 1 |<0> 0"];
-	}
-
-  subgraph "clusternogales" { 
-	 label = "nogales"; name="nogales";
-	URL="nogales.shtml";
-
-	"EDIT" 
-					[ shape=record,
-					color="green", 
-					URL="EDIT.shtml",
- 					host="nogales",
-					label="{<P> EDIT|swedit}|<0> 0|<7 > 7 |<6> 6|<5 > 5 "];
-	"SAVE" 
-					[ shape=record,
-					URL="SAVE.shtml",
-					color="green", 
- 					host="nogales",
-					label="{<P> SAVE|WriteFile }|<in> in"];
-					
-	"/dev/null" [  
-					shape=record,
- 					host="nogales",
-					URL="_dev_null.shtml",
-					label="<F> /dev/null", 
-					fillcolor=limegreen ];
-  }
-{ "PANEL":1  -> "EDIT":0;  headurl="pe10.shtml";}
-"EDIT":7  -> "SAVE":in;
-"EDIT":6 -> "/dev/null";
-"EDIT":5  -> "PANEL":0;
-}
-#endif 

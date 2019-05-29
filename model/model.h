@@ -1,8 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-
-#include "Absyn.h"
+#include "../bnfc/Absyn.h"
+#include "../bnfc/Parser.h"
+#include "../bnfc/Printer.h"
 
 /*          Network  Model
  
