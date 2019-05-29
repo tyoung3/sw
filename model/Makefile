@@ -25,22 +25,22 @@ poc:	.phony
 
 .phony:  ${PGM} ../sw.sh
 
-check: ${PGM}  ../nds/java.sw ../nds/ac.sw ../nds/aa.sw  ../nds/ab.sw  
+check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
 	${PGM}  -v 
-	! ${PGM} ../nds/e1.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM}  ../nds/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM} ../nds/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM}  ../nds/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM}  ../nds/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/e1.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/nds/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	../sw.sh poc     
 	${PGM}       ../nds/locusts.sw  >/dev/null
 	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
-	${PGM}  -m 4 ../nds/java.sw     >/dev/null
+	${PGM}  -m 4 tests/java.sw     >/dev/null
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
-	${PGM}  ../nds/aa.sw  >/dev/null
-	${PGM}  ../nds/ab.sw  >/dev/null
+	${PGM}  tests/aa.sw  >/dev/null
+	${PGM}  tests/ab.sw  >/dev/null
 
 
 svg:  .phsvg 
