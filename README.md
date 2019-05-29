@@ -131,6 +131,17 @@ Enabled default components.
 Ex.  ```A<-B;``` expands to 
 ```(a def.Print1 )0  <- 0(b def.Gen1);
 ```
+
+v0.5.3
+------
+
+	*Reorganized development tree and fixed scripts 
+
+	* Cleaned up graphic.  
+		* Moved component info to tooltips.  
+		* Fixed up title.  
+		* Cleaned up URLs. Works with .SVG 
+		
 Named Ports
 -----------
 
