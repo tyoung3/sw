@@ -3,13 +3,13 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.5.2\"
+VERSION = \"0.5.3\"
 
 OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o
 HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 
-all:  sw tags 
+all:  ../bin/sw tags 
 
 install: ${PGM}
 	sudo cp ${PGM} /usr/local/bin 
@@ -60,8 +60,8 @@ jpeg:  /tmp/collate.jpg
 	./sw -m 3 ../nds/locusts.sw  > /tmp/sw/locusts.dot		\
 	&& dot -Tjpg  /tmp/sw/locusts.dot > /tmp/sw/locusts.jpg 
 	
-${PGM}: ${OBJS}       ${SWOBJS}  
-	${CC} ${CCFLAGS} ${OBJS}  ${SWOBJS}  -o sw
+${PGM}: ${OBJS} ${SWOBJS}  
+	${CC} ${CCFLAGS} ${OBJS}  ${SWOBJS}  -o ../bin/sw
 	
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o

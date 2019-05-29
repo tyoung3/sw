@@ -3,12 +3,12 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
-#include "swgraph.h"       
-#include <string.h>
+#include "swgraph.h"  
 
 char *version={VERSION};
 
