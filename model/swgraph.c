@@ -79,6 +79,7 @@ static void genPrefix(char *gname, int nstreams) {
                   P(   ];);
                C(     edge [ color=blue);
               C(              style=bold);
+          // NG in dot.    C(              len=0.1);
             C(                fontsize="18");
               C(              labelfontcolor=black);
               C(              fontcolor=blue);
