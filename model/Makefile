@@ -43,6 +43,13 @@ check: ${PGM}  ../nds/java.sw ../nds/ac.sw ../nds/aa.sw  ../nds/ab.sw
 	${PGM}  ../nds/ab.sw  >/dev/null
 
 
+svg:  /tmp/collate.svg
+
+
+/tmp/collate.svg: sw  ../nds/collate.sw
+	./sw -m 3 ../nds/collate.sw  > /tmp/collate.dot		\
+	&& dot -Tsvg  /tmp/collate.dot > /tmp/collate.svg 
+	
 jpeg:  /tmp/collate.jpg
 
 /tmp/collate.jpg: sw  ../nds/collate.sw

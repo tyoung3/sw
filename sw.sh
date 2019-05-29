@@ -31,9 +31,9 @@ RunPoC() {
 }
 
 		# Create collate.jpg 		
-GenJPG() { 
+GenSVG() { 
 	pushd model 
-	make jpeg && gimp /tmp/collate.jpg &
+	make svg && $BROWSER /tmp/collate.svg &
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.JPG
 	#gimp /tmp/collate_SW.JPG
@@ -72,7 +72,7 @@ EOF
 
 case $1 in	
 	c) pushd ./model&& make check && echo Success! || echo Check Failed.;;
-	j) GenJPG;;
+	j) GenSVG;;
 	l) ShowCheck;;
 	poc) RunPoC;;
 	r) RunCollate;;
