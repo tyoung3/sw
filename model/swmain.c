@@ -3,15 +3,12 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "Parser.h"
-#include "Printer.h"
-#include "Absyn.h"
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
-#include "swgraph.h"       
-#include <string.h>
+#include "swgraph.h"  
 
 char *version={VERSION};
 
@@ -389,11 +386,25 @@ static FILE *openFile(char *fname) {
     return input;
 }
 
+	/* Point to character past the last '/' */
+char *baseOf(char *s) {
+		char *sr=s;
+		
+		while(*s != 0) {
+			if(*s == '/') {
+				sr = s+1;
+			}
+			s++;
+		}
+		return sr;
+}
+
 int main(int argc, char ** argv)
 {
   ValidSW parse_tree;
   Model model;    /* Network Model */
   MODE mode=GOMODE;
+  char *fname={"stdin"};
   
   input = stdin;
   
@@ -411,6 +422,7 @@ int main(int argc, char ** argv)
   		} 
   		if(argc>3) {
   			input=openFile(argv[3]);
+  			fname=argv[3];
   		} 
   	}	else {
   			if( strncmp(argv[1],"-v",4) == 0) {
@@ -426,6 +438,7 @@ int main(int argc, char ** argv)
   
   if (parse_tree)   {  
     model=visitValidSW(parse_tree);
+    model->name = baseOf(fname) ;
     // @TODO Free Parse tree storage
     if(verifyOK(model)) {
 		if(!model->proc) {

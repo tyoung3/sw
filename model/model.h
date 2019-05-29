@@ -1,8 +1,9 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-
-#include "Absyn.h"
+#include "../bnfc/Absyn.h"
+#include "../bnfc/Parser.h"
+#include "../bnfc/Printer.h"
 
 /*          Network  Model
  
@@ -68,6 +69,7 @@ struct Model_ {
 	int nprocs; 		/* number of processes */
 	Stream stream;			/* pointer to first stream*/
 	Process proc;		/* First Process */
+	char *name;			/* Model Name */
 } Model_;
 typedef struct Model_ *Model;
 

@@ -2,7 +2,6 @@
 #define SW_H_
 /* You might want to change the above name. */
 
-#include "Absyn.h"
 #include "swmain.h"
 #include "model.h"
 
