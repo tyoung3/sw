@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.6.0 - STREAMWORK/FrontEnd
+SW-0.6.1 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -101,7 +101,7 @@ QuickStart (on Linux)
 	* Download the 'sw' executable from github to any 
 	  convenient location.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```.../sw -v``` to check that the version is at least v0.6.0  
+	* Run ```.../sw -v``` to check that the version is at least v0.6.1  
 	* Change directory to $GOPATH/mod (create the directory
 	  if necessary).
 	  This is usually ~/go/mod.  Go modules will fail in ~/go/src.
@@ -166,6 +166,10 @@ v0.6.0
 	  (A) <- (B);
 	  (B) <- (C);		
 		
+v0.6.1
+------
+	* Fixed dataflow chaining problems
+
 Named Ports
 -----------
 
