@@ -9,34 +9,51 @@
 entrypoints		ValidSW; 
 Valid.	 	    ValidSW  	::= [Stm] ;
 
-SFlow.			Stm			::= Flw;     
+Stmx.			Stm			::= S_tream; 
+Stmn.			Stm			::= Numassgn ; 
+Stms.			Stm			::= Strassgn ;   
 terminator	    Stm   ";" ;
 
---  <- is a go channel
-Flowx.			Flw		::= Snk  "<" Buffsize "-"  Srce; 
+Streamx.		S_tream		::= Snk  "<" Buffsize "-"  Srce ;
+separator		S_tream		";" ;  
 
-Bufszi.			Buffsize ::= Integer;
+Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 
 
-Sourcex.		Srce     ::= Prt Proc; 	
+Sourcex.		Srce     ::= Prt Proc; 
+Sourcey.		Srce     ::= Ident;	
 
 Sinkx.			Snk		::=  Proc Prt; 		
+Sinky.			Snk		::=  Ident;
 
-Processx.		Proc		::= "(" Ident  Comp [Argument] ")" ;
-Processy.		Proc		::= "(" Ident  [Argument] ")" ;
+Processx.		Proc	::= "(" Ident  Comp [Argument] ")" ;
+Processy.		Proc	::= "(" Ident  [Argument] ")" ;
 
-Portx.			Prt		::= Integer;
-Portni.         Prt     ::= Integer "." Ident; 
-Portin.         Prt     ::= Ident "." Integer; 
+Portx.			Prt		::= Numval;
+Portni.         Prt     ::= Numval "." Ident; 
+Portin.         Prt     ::= Ident "." Numval; 
 Portn.          Prt     ::= Ident; 
 Porte.			Prt		::= ;		
 
 Compx.			Comp	::= Ident;	
 Compy.			Comp	::= Ident "." Ident;	
 
-
-Argumentx.		Argument	::= String;	
+Argumentx.		Argument	::= Stringval;	
 separator	    Argument   ""; 	
+
+NumAssgnv.		Numassgn   ::= Numvar "=" Numval;
+
+StrAssgnv.		Strassgn 	::= Stringvar "=" Stringval;
+
+NumVali.		Numval     ::= Integer;
+NumValv.		Numval	   ::= Numvar;
+				
+StringVals.		Stringval  ::= String;
+StringValv.		Stringval  ::= Stringvar;
+	
+
+token   Numvar	  '%'	( letter ) ( letter | digit  )*;		
+token	Stringvar '$'   ( letter ) ( letter | digit  )*;
 
 comment "#";
 comment "{#" "#}";	

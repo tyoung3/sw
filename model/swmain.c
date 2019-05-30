@@ -3,15 +3,12 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "Parser.h"
-#include "Printer.h"
-#include "Absyn.h"
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
-#include "swgraph.h"       
-#include <string.h>
+#include "swgraph.h"  
 
 char *version={VERSION};
 
@@ -184,7 +181,7 @@ static int NameMisMatch(Flow f) {
 }
 
 static int verifyOK(Model model) { 						/*expand and check model*/
-	Flow f;
+	Stream f;
 	
 	if(!model) {
 		fprintf(stderr,"SWMAIN/verifyOK/FAIL: network model is missing!");
@@ -193,14 +190,14 @@ static int verifyOK(Model model) { 						/*expand and check model*/
 
 #ifdef VERIFY_VERBOSE	
 	fprintf(stderr,
-		"SWMAIN/VerifyOK/model: %d/%d/%d flows/procs/components.\n", 
-			model->nflows, 
+		"SWMAIN/VerifyOK/model: %d/%d/%d Stream/procs/components.\n", 
+			model->nstreams, 
 			model->nprocs, 
 			model->ncomponents
 	);
 #endif	
 	
-	f=model->flow;
+	f=model->stream;
 	while(f) {
 		if(NameMisMatch(f))	
 				return 1;
@@ -264,13 +261,13 @@ static int fixId(int i) {
 	return i;
 }
 		    
-Flow MakeFlow(Process src, Process snk, int bufsz) {
-	Flow f;
+Stream MakeStream(Process src, Process snk, int bufsz) {
+	Stream f;
 	
-	f=(Flow)malloc(sizeof(Flow_)); 
+	f=(Stream)malloc(sizeof(Stream_)); 
     if (!f)
     {
-        fprintf(stderr, "SW/MakeFlow/FAIL: out of memory when allocating Flow!\n");
+        fprintf(stderr, "SWMAIN/MakeStream/FAIL: out of memory when allocating Stream!\n");
         exit(1);
     }
     
@@ -281,7 +278,7 @@ Flow MakeFlow(Process src, Process snk, int bufsz) {
 	f->bufsz	 = bufsz;
 	f->next      = NULL;
 	f->prev      = NULL;
-	f->type		 = GOGO;  /* Defined w/ '<-'  */
+	f->type		 = GOIP;  /* Defined w/ '<-'  */
 	return f;
 } 
 
@@ -301,7 +298,8 @@ static char **MakeArg(ListArgument la, char *name) {
 
 	i=narg-1;
 	while(la) {
-		arg[i--] = la->argument_->u.argumentx_.string_;
+		arg[i--] = 
+		  visitStringval(la->argument_->u.argumentx_.stringval_);
 		la       = la->listargument_;
 	}
 	
@@ -343,7 +341,7 @@ static char **NewArg(char **arg, char **narg) {
 		
 }
 
-Process MakeProcess(Ident name, Component comp, ListArgument la) {
+Process MakeProcess( Model model,Ident name, Component comp, ListArgument la) {
 	Process p;
 	static int onone=1;
 	
@@ -367,7 +365,9 @@ Process MakeProcess(Ident name, Component comp, ListArgument la) {
 		p->nportsIn =0;
 		p->nportsOut=0;
 		p->port	= NULL;
-		p->next = NULL;
+		p->next = model->proc;
+		model->proc = p;
+		model->nprocs++;
 		p->prev = NULL;
 		p->arg  = MakeArg(la,name);
     	addProc(name,p);
@@ -388,7 +388,7 @@ Process MakeProcess(Ident name, Component comp, ListArgument la) {
 	
 } 
 
-Model MakeModel(Flow f) {
+Model MakeModel(Stream f) {
 	Model m;
 	
 	m=(Model)malloc(sizeof(Model_)); 
@@ -398,10 +398,10 @@ Model MakeModel(Flow f) {
         exit(1);
     }
     
-	m->nflows = 1;
+	m->nstreams = 0;
 	m->ncomponents = 0;
 	m->nprocs	= 0;
-	m->flow=f;
+	m->stream=f;
 	m->proc = NULL;
 	//p->next = NULL;
 	//p->prev = NULL;
@@ -428,11 +428,25 @@ static FILE *openFile(char *fname) {
     return input;
 }
 
+	/* Point to character past the last '/' */
+char *baseOf(char *s) {
+		char *sr=s;
+		
+		while(*s != 0) {
+			if(*s == '/') {
+				sr = s+1;
+			}
+			s++;
+		}
+		return sr;
+}
+
 int main(int argc, char ** argv)
 {
   ValidSW parse_tree;
   Model model;    /* Network Model */
   MODE mode=GOMODE;
+  char *fname={"stdin"};
   
   input = stdin;
   
@@ -450,6 +464,7 @@ int main(int argc, char ** argv)
   		} 
   		if(argc>3) {
   			input=openFile(argv[3]);
+  			fname=argv[3];
   		} 
   	}	else {
   			if( strncmp(argv[1],"-v",4) == 0) {
@@ -465,8 +480,13 @@ int main(int argc, char ** argv)
   
   if (parse_tree)   {  
     model=visitValidSW(parse_tree);
+    model->name = baseOf(fname) ;
     // @TODO Free Parse tree storage
     if(verifyOK(model)) {
+		if(!model->proc) {
+			fprintf(stderr,"SWMAIN/FAIL: No processes found\n");
+			exit(1);
+		}
     	switch (mode) {
 	    	case GRAPHMODE:       
     			genGraph(model);  	// Generate GraphViz .DOT file

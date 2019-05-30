@@ -6,17 +6,18 @@
 
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <memory.h>
 #include <string.h>
 #include <errno.h>
-#include "model.h"
+#include "swsym.h"
 
 // #define TEST_MAIN
 
 
 struct bucket {
 	union {
-		Flow flow; 
+		Stream  stream; 
 		Process proc; 
 	} u;
 	char *tag;
