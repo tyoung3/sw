@@ -10,16 +10,20 @@ Die () {
 SW=$GOPATH/bin/sw
 [ -e $SW     ] || Die $SW is missing 
 
-GenRun() {
+SearchFile() {
+	echo looking for $swfile
 	base=`basename $file`
 	swfile=${base}
 	
-	echo looking for $swfile
-	if [ ! -f $swfile ]; then 
-		[ -f /home/tyoung3/go/mod/sw/nds/${swfile}.sw ]	\
+	if [ ! -f $swfile ]; then
+		[ -f /home/tyoung3/go/mod/sw/nds/${swfile}.sw ] \
 			&& swfile=/home/tyoung3/go/mod/sw/nds/${swfile}.sw
 		[ -f $swfile ] || swfile=${file}.sw
 	fi	
+}
+
+GenRun() {
+	[ -f $file ] || searchFile  
 	
 	if [ -f $swfile ]; then
 		$SW -m 3 $swfile > /tmp/${base}.dot

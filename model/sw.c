@@ -118,32 +118,30 @@ Integer visitArrow(Arrow _p_)
     return visitBuffsize(_p_->u.arrowx_.buffsize_);
 }
 
-void visitS_tream(S_tream _p_)
+Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
-	Stream s;
-	Model m;
+	Stream s,sx;
 	
-    snk=visitSnk(_p_->u.streamx_.snk_);
-	bs=visitArrow(_p_->u.streamx_.arrow_);
-    
-    if(bs<1) bs=1;   
-    if(bs>MAX_BUFFER)    
-    	bs=MAX_BUFFER;
-    if( bs > maxbfsz) 
-    		maxbfsz=bs;	
-    		
-    src=visitSrce(_p_->u.streamx_.srce_);
-    
-
-  	s =  MakeStream(src, snk, bs);
-	    
-    m=net_model;
-    s->next = m->stream;	
-    m->stream=s;
-    
- 	m->nstreams++;
-    
+  switch(_p_->kind)
+  {
+  case is_Streamx:
+	return MakeStream(
+     visitSrce(_p_->u.streamx_.srce_),
+     visitSnk(_p_->u.streamx_.snk_),
+	 visitArrow(_p_->u.streamx_.arrow_),
+     net_model);
+  case is_Streamy:
+    sx=visitS_tream(_p_->u.streamy_.s_tream_);
+    src=sx->sink;
+    bs=visitArrow(_p_->u.streamy_.arrow_);
+    snk=visitSnk(_p_->u.streamy_.snk_);
+    s =  MakeStream(src, snk, bs, net_model);   
+    return s;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing S_tream!\n");
+    exit(1);
+  }
 }
 
 void visitStm(Stm _p_) 
