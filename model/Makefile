@@ -42,6 +42,8 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/aa.sw  >/dev/null
 	${PGM}  tests/ab.sw  >/dev/null
 	${PGM}  tests/ad.sw  >/dev/null
+	${PGM}  tests/ae.sw  >/dev/null
+	${PGM}  tests/aef.sw  >/dev/null
 
 
 svg:  .phsvg 

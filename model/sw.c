@@ -150,8 +150,8 @@ static void linkPort(Process P, Port p) {
 Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
-	Stream s,sx;
 	Port pt;
+	Stream s;
 	
   switch(_p_->kind)
   {
@@ -162,21 +162,15 @@ Stream visitS_tream(S_tream _p_)
 	 visitArrow(_p_->u.streamx_.arrow_),
      net_model);
   case is_Streamy:    
-    src=visitS_tream(_p_->u.streamy_.s_tream_)->source;
+    s=visitS_tream(_p_->u.streamy_.s_tream_);
+    snk=s->source;   
     bs=visitArrow(_p_->u.streamy_.arrow_);
-    snk=visitSnk(_p_->u.streamy_.snk_);
+    src=visitSrce(_p_->u.streamy_.srce_);
     pt=visitPrt(_p_->u.streamy_.prt_);
-    snk->sink_id = pt->id;
+    snk->sink_id   = pt->id;
     snk->nportsIn++;  
     linkPort( snk,pt);
-    s =  MakeStream(src, snk, bs, net_model); 
-    return s;
-  case is_Streamz:
-  	return MakeStream(
-       (visitS_tream(_p_->u.streamz_.s_tream_)->source),
-       (visitSnk(_p_->u.streamz_.snk_)),
-       (visitArrow(_p_->u.streamz_.arrow_)),
-       net_model);
+    return MakeStream(src, snk, bs, net_model);
   default:
     fprintf(stderr, "Error: bad kind field when printing S_tream!\n");
     exit(1);

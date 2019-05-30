@@ -9,6 +9,7 @@ TODO:
 #include <stdlib.h>
 #include <string.h>
 #include "model.h"
+#include "sw.h"
 
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s,\n",(#s));
@@ -63,9 +64,10 @@ static void genPrefix(char *gname, int nstreams) {
 	printf("digraph \"%s\" {",gname);
 	 
 	P(graph [);
-		C(	name="Streamwork/swgraph: " );
+		printf("\tname=\"Streamwork/swgraph:  v%s\",\n",  
+        		version);
         C(	fontcolor=black);
-        C(  label="https://github.com/tyoung3/sw")
+        printf("\tlabel=\"https://github.com/tyoung3/sw\",\n");
         P(	fontname="Helvetica");           
     P(]);
 
