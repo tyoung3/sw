@@ -41,7 +41,7 @@ Port numbers default to 0.
 
 Ex.  
 ```
-    Hello <- World; 
+    (Hello)0 <- 0(World); 
 ```
 produces:
 ```
@@ -56,11 +56,15 @@ the channel pointer, and a source component, ended by a ```;```.
  
 Channel pointers consist of ```<```, an optional buffersize integer, and ```-```. Example: ```<100-```
  
+ Because the Hello World example employs std,default components, without 
+ arguments; the network definition can be simplified to 
+ ```Hello <- World;```
+ 
 IPs are designed as nil(empty) interfaces.   The interface
 data type is determined by the sending component.  IPs
-may or may not cause a type mis-match depending 
+may or may not cause a type mis-match, depending 
 on the sink component coding.  Components can be coded to
-handle any type(including user-defined types), a few types(like Print1), or just one type; on each receiving port.    
+handle any type(including user-defined types), a few types(Print1 can process strings and integers), or just one type; on each receiving port.    
  
 The ND language is defined in less than 50 statements. 
 Progams developed using this simple system, however, are highly capable.  
@@ -68,7 +72,8 @@ Progams developed using this simple system, however, are highly capable.
 Sw versions are backward compatible within the same major 
 version(currently v0).  
 
-Sw builds a network model in memory, then optionally generates an abstract syntax tree, a linearized tree(an ND recronstruction), 
+Sw builds a network model in memory, then optionally generates
+either an abstract syntax tree, a linearized tree(an ND recronstruction), 
 a GraphViz .dot file, or Go source code from this model.
 C and other languages could also be generated.  JavaFBP is possible.   
 
@@ -85,11 +90,10 @@ QuickStart (on Linux)
 	* Download the 'sw' executable from github to any convenient location.
 	* Run 'chmod a+x sw' if necessary. 
 	* Run ```.../sw -v``` to check that the version is at least v0.5.3.
-	* Change directory to $GOPATH/mod (make one if necessary).
+	* Change directory to $GOPATH/mod (create the directory if necessary).
 	  This is usually ~/go/mod.  Go modules will fail in ~/go/src.
 	* Run go mod init fb/fb, unless go.mod already exists.  
 	  
-	
 ```	
 echo "Foo <- Bar;" | sw > /tmp/fb.go 
 ```
@@ -165,11 +169,10 @@ Without semi-colons, line breaks become
 necessary  and awkward syntax rules evolve.  
 
 In the future, there may be some, very few exceptions to the 
-semi-colon rule for  special pre-interpreter commands, like INCLUDE.
+semi-colon rule for special pre-interpreter commands, like INCLUDE.
 
 The, ```<-```,  token is used to be consistent with its 
 usage in the Go language.     
-
 
 Comments in the SW.cf file provide 
 clues to possible future language additions.  
@@ -219,7 +222,7 @@ Match1 Int: 17
 Match1 Int: 23
 ```
 but not necessarily in that order.
-and also produce /tmp/sw/main.go:
+This will also produce /tmp/sw/main.go:
 ```
 package main
 
@@ -288,8 +291,9 @@ produces /tmp/collate.jpg  [copy may be in this directory]
 
 WARNING:
 --------
+
 	 std.Gen1 generates integer IPs. It is not the same as
-	 strings.Gen1 
+	 strings.Gen1, or default.Gen1.  
   
 BUGS:
 -----
