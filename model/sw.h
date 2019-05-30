@@ -6,6 +6,7 @@
 #include "model.h"
 
 extern char *version;
+#define ID_UNKNOWN 9999999
 #define MAX_BUFFER  1000000
 
 /* sw.c  */
@@ -14,7 +15,7 @@ extern int maxbfsz;
 Model 	visitValidSW(ValidSW p);
 void	visitStm(Stm p);
 void 	visitListStm(ListStm p);
-void 	visitS_tream(S_tream p);
+Stream	visitS_tream(S_tream p);
 Process visitSrce(Srce p);
 Process visitSnk(Snk p);
 Process visitProc(Proc p);

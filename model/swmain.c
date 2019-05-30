@@ -219,7 +219,7 @@ static int fixId(int i) {
 	return i;
 }
 		    
-Stream MakeStream(Process src, Process snk, int bufsz) {
+Stream MakeStream(Process src, Process snk, int bs, Model m) {
 	Stream f;
 	
 	f=(Stream)malloc(sizeof(Stream_)); 
@@ -233,10 +233,18 @@ Stream MakeStream(Process src, Process snk, int bufsz) {
 	f->sink      = snk;
 	f->source_id = fixId(src->source_id); 
 	f->sink_id   = fixId(snk->sink_id);
-	f->bufsz	 = bufsz;
 	f->next      = NULL;
 	f->prev      = NULL;
 	f->type		 = GOIP;  /* Defined w/ '<-'  */
+    f->next = m->stream;	
+    m->stream=f;
+ 	m->nstreams++;
+    if(bs<1) bs=1;   
+    if(bs>MAX_BUFFER)    
+    	bs=MAX_BUFFER;
+    if( bs > maxbfsz) 
+    		maxbfsz=bs;	
+	f->bufsz	 = bs;
 	return f;
 } 
 

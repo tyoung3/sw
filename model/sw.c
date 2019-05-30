@@ -113,33 +113,74 @@ Integer visitBuffsize(Buffsize _p_)
   }
 }
 
-void visitS_tream(S_tream _p_)
+Integer visitArrow(Arrow _p_)
+{
+    return visitBuffsize(_p_->u.arrowx_.buffsize_);
+}
+
+/* Add port,p to port list at P->port */
+static void linkPort(Process P, Port p) {  
+	Port p2;   
+	
+	if(P->port == NULL) {
+   		P->port = p;
+    	p->next = p;
+    	p->prev = p;
+		return;
+	}
+	  
+	p2 = P->port;
+	while(p2!=P->port) {
+		if(p->id < p2->id) {         
+			p->next = p2;
+			p->prev = p2->prev;
+			p->prev->next = p;
+			p->next->prev = p;
+			return;
+		}
+		p2 = p2->next;
+	}
+	
+    p->next = P->port;      //    p=9  p2=1
+    p->prev = P->port->prev;
+    p->next->prev = p;
+	p->prev->next = p;
+}    
+
+Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
-	Stream s;
-	Model m;
+	Stream s,sx;
+	Port pt;
 	
-    snk=visitSnk(_p_->u.streamx_.snk_);
-    bs=visitBuffsize(_p_->u.streamx_.buffsize_); 
-
-    
-    if(bs<1) bs=1;   
-    if(bs>MAX_BUFFER)    
-    	bs=MAX_BUFFER;
-    if( bs > maxbfsz) 
-    		maxbfsz=bs;	
-    		
-    src=visitSrce(_p_->u.streamx_.srce_);
-    
-
-  	s =  MakeStream(src, snk, bs);
-	    
-    m=net_model;
-    s->next = m->stream;	
-    m->stream=s;
-    
- 	m->nstreams++;
-    
+  switch(_p_->kind)
+  {
+  case is_Streamx:
+	return MakeStream(
+     visitSrce(_p_->u.streamx_.srce_),
+     visitSnk(_p_->u.streamx_.snk_),
+	 visitArrow(_p_->u.streamx_.arrow_),
+     net_model);
+  case is_Streamy:    
+    src=visitS_tream(_p_->u.streamy_.s_tream_)->source;
+    bs=visitArrow(_p_->u.streamy_.arrow_);
+    snk=visitSnk(_p_->u.streamy_.snk_);
+    pt=visitPrt(_p_->u.streamy_.prt_);
+    snk->sink_id = pt->id;
+    snk->nportsIn++;  
+    linkPort( snk,pt);
+    s =  MakeStream(src, snk, bs, net_model); 
+    return s;
+  case is_Streamz:
+  	return MakeStream(
+       (visitS_tream(_p_->u.streamz_.s_tream_)->source),
+       (visitSnk(_p_->u.streamz_.snk_)),
+       (visitArrow(_p_->u.streamz_.arrow_)),
+       net_model);
+  default:
+    fprintf(stderr, "Error: bad kind field when printing S_tream!\n");
+    exit(1);
+  }
 }
 
 void visitStm(Stm _p_) 
@@ -225,35 +266,6 @@ Model visitListStm(ListStm liststm)
 #endif
  
 
-
-/* Add port,p to port list at P->port */
-static void linkPort(Process P, Port p) {  
-	Port p2;   
-	
-	if(P->port == NULL) {
-   		P->port = p;
-    	p->next = p;
-    	p->prev = p;
-		return;
-	}
-	  
-	p2 = P->port;
-	while(p2!=P->port) {
-		if(p->id < p2->id) {         
-			p->next = p2;
-			p->prev = p2->prev;
-			p->prev->next = p;
-			p->next->prev = p;
-			return;
-		}
-		p2 = p2->next;
-	}
-	
-    p->next = P->port;      //    p=9  p2=1
-    p->prev = P->port->prev;
-    p->next->prev = p;
-	p->prev->next = p;
-}    
 
 Process visitSrce(Srce _p_)
 {
@@ -349,6 +361,7 @@ Port visitPrt(Prt _p_)
   switch(_p_->kind)
   {
   case is_Portx:
+
   		return(MakePort(visitNumval(_p_->u.portx_.numval_),
   			NULL));
     case is_Portni:   		

@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.5.3\"
+VERSION = \"0.6.0\"
 
 OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o
@@ -41,6 +41,7 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
 	${PGM}  tests/aa.sw  >/dev/null
 	${PGM}  tests/ab.sw  >/dev/null
+	${PGM}  tests/ad.sw  >/dev/null
 
 
 svg:  .phsvg 
@@ -70,18 +71,18 @@ swsym.o: swsym.c swsym.h
 sw.o: sw.c sw.h swsym.h ${HEADERS}
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
-swmain.o: swmain.c sw.h swmain.h ${HEADERS} Makefile
+swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h ${HEADERS} Makefile
 	${CC} ${CCFLAGS} -DVERSION=${VERSION} -c swmain.c -o swmain.o 	
 	
-swgo.o: swgo.c swgo.h model.h
+swgo.o: swgo.c swgo.h swsym.h sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
 		
-swc.o: swc.c sw.h model.h
+swc.o: swc.c sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swc.c -o swc.o	
 	
-swgraph.o: swgraph.c swgraph.h 
+swgraph.o: swgraph.c swgraph.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swgraph.c -o swgraph.o
 	
-swjavafbp.o: swjavafbp.c  
+swjavafbp.o: swjavafbp.c  model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swjavafbp.c -o swjavafbp.o
 	
