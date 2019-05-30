@@ -17,19 +17,6 @@ ValidSW pValidSW(FILE *inp);
 
 typedef enum{ GOMODE=0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE=7 }   MODE;
 
-static int badId(char *pname, int i, int sb) { 
-
-			fprintf(stderr,
-				"SWMAIN/badProc/FAIL: (%s) port[%i] is %i, should be = %i\n", 
-				pname, 
-				i,
-				sb,
-				i); 
-			fprintf(stderr,"\t port numbers for (%s)  need to be 0,1,2,... \n",pname);	
-			return 1;
-			 
-}
-			
 static int badProc(Process p) {
 			int i;
 			Port port;
@@ -44,45 +31,26 @@ static int badProc(Process p) {
 			
 			port = p->port; 
 			i=0;
-			if(port->id == ID_UNKNOWN) { 
-				port->id = 0;   // Expand missing port number for first port only 
+			if(port->id < 0) { 
+				port->id = 0;   // Expand missing port number 
 				port=port->next;
 				i=1;
 			}	
- 
- #ifdef  FIX_THIS 			
-			for(i=i;i < (p->nportsIn + p->nportsOut); i++) {
+			for(;i < (p->nportsIn + p->nportsOut); i++) {
 				if( port->id != i ) {
-					if(port->id == 0) return badId(p->name,i,port->id);
 					fprintf(stderr,
-						"SWMAIN/badProc/WARNING: (%s) port[%i] is %i, should be = %i\n", 
+						"SWMAIN/badProc/FAIL: (%s) port[%i] is %i, should be = %i\n", 
 						p->name, 
 						i, 
 						port->id,
 						i); 
-					fprintf(stderr,"\tchanging it so.\n");
-					port->id = i;	
+					fprintf(stderr,"\t port numbers for (%s)  need to be 0,1,2,... \n",p->name);	
+					return 1;
 				}
 				port = port->next;
 			}
 			
-#else 
-			for(i=i;i < (p->nportsIn + p->nportsOut); i++) {
-				if( port->id != i ) {
-					if(port->id == 0) return badId(p->name,i,port->id);
-					fprintf(stderr,
-						"SWMAIN/badProc/WARNING: (%s) port[%i] is %i, should be = %i\n", 
-						p->name, 
-						i, 
-						port->id,
-						i);
-					return 	badId(p->name,i,port->id);
-					//fprintf(stderr,"\tchanging it so.\n");
-					port->id = i;	
-				}
-				port = port->next;
-			}
-#endif			
+			
 			return 0;
 }
 
@@ -119,25 +87,15 @@ static int nameFail(char *psnkname, char *nsnk, char *nsrc, char *psrcname) {
     			exit(1);
 }    			
 
-static int NameMisMatch(Stream f) {
-	Process src,snk;
-	int source_id, sink_id;
+static int NameMisMatch(Process src, int source_id, Process snk, int sink_id) {
 	Port psrc, psnk;
 	char *nsrc, *nsnk;
-	
-	src=f->source; 
-	snk=f->sink;
-	source_id=f->source_id;
-	sink_id=f->sink_id;
 	
 	psrc = findPrt(src,source_id);	
 	nsrc=psrc->name;
 		 
 	psnk = findPrt(snk,sink_id);	
 	nsnk=psnk->name;
-	
-	f->source_id = psnk->id;
-	f->sink_id   = psrc->id;
 	
     if( eqs(nsnk,"IN") 		&&  eqs(nsrc,"OUT")  )  {
     	return 0; 
@@ -199,12 +157,12 @@ static int verifyOK(Model model) { 						/*expand and check model*/
 	
 	f=model->stream;
 	while(f) {
-		if(NameMisMatch(f))	
-				return 1;
 		if( badProc(f->sink) || badProc(f->source) ) {
 			fprintf(stderr,"SW/verify: failed.");
 			exit(1);
 		}	
+		if(NameMisMatch(f->source,f->source_id,f->sink,f->sink_id))	
+				return 1;
 		f=f->next;
 	}
 	return 1;			
