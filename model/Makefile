@@ -70,18 +70,18 @@ swsym.o: swsym.c swsym.h
 sw.o: sw.c sw.h swsym.h ${HEADERS}
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
-swmain.o: swmain.c sw.h swmain.h ${HEADERS} Makefile
+swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h ${HEADERS} Makefile
 	${CC} ${CCFLAGS} -DVERSION=${VERSION} -c swmain.c -o swmain.o 	
 	
-swgo.o: swgo.c swgo.h model.h
+swgo.o: swgo.c swgo.h swsym.h sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
 		
-swc.o: swc.c sw.h model.h
+swc.o: swc.c sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swc.c -o swc.o	
 	
-swgraph.o: swgraph.c swgraph.h 
+swgraph.o: swgraph.c swgraph.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swgraph.c -o swgraph.o
 	
-swjavafbp.o: swjavafbp.c  
+swjavafbp.o: swjavafbp.c  model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swjavafbp.c -o swjavafbp.o
 	

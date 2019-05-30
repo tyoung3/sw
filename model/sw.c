@@ -113,6 +113,11 @@ Integer visitBuffsize(Buffsize _p_)
   }
 }
 
+Integer visitArrow(Arrow _p_)
+{
+    return visitBuffsize(_p_->u.arrowx_.buffsize_);
+}
+
 void visitS_tream(S_tream _p_)
 {
 	Process snk,src;
@@ -120,8 +125,7 @@ void visitS_tream(S_tream _p_)
 	Model m;
 	
     snk=visitSnk(_p_->u.streamx_.snk_);
-    bs=visitBuffsize(_p_->u.streamx_.buffsize_); 
-
+	bs=visitArrow(_p_->u.streamx_.arrow_);
     
     if(bs<1) bs=1;   
     if(bs>MAX_BUFFER)    

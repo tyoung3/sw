@@ -14,8 +14,11 @@ Stmn.			Stm			::= Numassgn ;
 Stms.			Stm			::= Strassgn ;   
 terminator	    Stm   ";" ;
 
-Streamx.		S_tream		::= Snk  "<" Buffsize "-"  Srce ;
-separator		S_tream		";" ;  
+Streamx.		S_tream	 ::= Snk     Arrow Srce;
+Streamy.		S_tream  ::= S_tream Arrow Srce;
+separator		S_tream	 ";" ;  
+
+Arrowx.			Arrow	 ::=  "<" Buffsize "-";
 
 Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 
@@ -50,10 +53,10 @@ NumValv.		Numval	   ::= Numvar;
 				
 StringVals.		Stringval  ::= String;
 StringValv.		Stringval  ::= Stringvar;
-	
 
-token   Numvar	  '%'	( letter ) ( letter | digit  )*;		
-token	Stringvar '$'   ( letter ) ( letter | digit  )*;
+token   Numvar	  '%' letter  ( letter | digit  )*;		
+token	Stringvar '$' letter  ( letter | digit  )*;
+token	SYMVAR    '&' letter  ( letter | digit | '_' )* ;	
 
 comment "#";
 comment "{#" "#}";	
@@ -77,7 +80,7 @@ AAexp.		       	Acond		::= Aexpr;
 
 Casea.			Case		::= "CASE"    Aexpr  "{"  [Stm]  "}"  ; 
 Default.		Case		::= "DEFAULT"        "{"  [Stm]  "}"  ; 
-terminator   		Case   ";"  ;
+terminator      Case   ";"  ;
 
 FlwQueSs.		Flow		::= Source  "~>"  Sink;
 FlwMemSs.		Flow		::= Source  "_>"  Sink;
