@@ -119,7 +119,7 @@ static int nameFail(char *psnkname, char *nsnk, char *nsrc, char *psrcname) {
     			exit(1);
 }    			
 
-static int NameMisMatch(Flow f) {
+static int NameMisMatch(Stream f) {
 	Process src,snk;
 	int source_id, sink_id;
 	Port psrc, psnk;
