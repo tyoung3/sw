@@ -14,8 +14,14 @@ Stmn.			Stm			::= Numassgn ;
 Stms.			Stm			::= Strassgn ;   
 terminator	    Stm   ";" ;
 
-Streamx.		S_tream	 ::= Snk Arrow Srce;
-Streamy.		S_tream  ::= Snk Arrow S_tream;
+
+--Streamx.		S_tream	 ::= Snk Arrow Srce;
+--Streamy.		S_tream  ::= Snk Arrow S_tream;
+--Streamy.		S_tream  ::= Snk     Arrow S_tream;
+
+Streamx.		S_tream	 ::= Snk         Arrow Srce;
+Streamy.		S_tream  ::= S_tream Prt Arrow Snk ;
+Streamz.		S_tream  ::= S_tream     Arrow Snk ;
 separator		S_tream	 ";" ;  
 
 Arrowx.			Arrow	 ::=  "<" Buffsize "-";

@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.5.3 - STREAMWORK/FrontEnd
+SW-0.6.0 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -34,8 +34,8 @@ into one main.go program, launches them as goroutines,
 and connects them via Go interface channels.  
 
 The ND consists of a list of streams(or dataflows). 
-Each stream consists of a sink process, 
-a sink port number, "<-", a source portnumber, and a source process.  
+Each stream definition consists of a sink process, 
+a sink port number, "<-", a source portnumber, and a source process followed by the statement terminator, ';'.   
 
 Port numbers default to 0.
 
@@ -54,43 +54,56 @@ and component arguments surrounded by parens.
 A stream definition consists of a sink component,
 the channel pointer, and a source component, ended by a ```;```. 
  
-Channel pointers consist of ```<```, an optional buffersize integer, and ```-```. Example: ```<100-```
+Channel pointers consist of ```<```, an optional
+buffersize integer, and ```-```. Example: ```<100-```
  
- Because the Hello World example employs std,default components, without 
- arguments; the network definition can be simplified to 
+Because the Hello World example employs 
+standard, default components, without 
+arguments; the network definition can be simplified to 
  ```Hello <- World;```
  
 IPs are designed as nil(empty) interfaces.   The interface
 data type is determined by the sending component.  IPs
 may or may not cause a type mis-match, depending 
 on the sink component coding.  Components can be coded to
-handle any type(including user-defined types), a few types(Print1 can process strings and integers), or just one type; on each receiving port.    
+handle any type(including user-defined types), 
+a few types(Print1 can process strings and integers), 
+or just one type; on each receiving port.    
  
 The ND language is defined in less than 50 statements. 
-Progams developed using this simple system, however, are highly capable.  
+Progams developed using this simple system, 
+however, are highly capable.  
  
 Sw versions are backward compatible within the same major 
 version(currently v0).  
 
 Sw builds a network model in memory, then optionally generates
-either an abstract syntax tree, a linearized tree(an ND recronstruction), 
+either an abstract syntax tree, 
+a linearized tree(an ND recronstruction), 
 a GraphViz .dot file, or Go source code from this model.
-C and other languages could also be generated.  JavaFBP is possible.   
+C and other languages could also be generated.  
+JavaFBP is possible.   
 
 Comments and critiques are welcome.    Contributors are encouraged.  
+
 Please do not submit code before contacting the project by 
 e-mailing streamwork@twyoung.com or  posting a request on Github.     
 
 QuickStart (on Linux) 
 ----------
-	* To run the generated Go code, install the tyoung3/StreamWork backend 
-	  from github.  (Requires Go installation.).  The backend should run 
-	  in any Golang compatible environment.  Sw(written in C) will run without  
-	  installing github/tyoung3/StreamWork; the generated Go code just won't work.
-	* Download the 'sw' executable from github to any convenient location.
+	* To run the generated Go code, install the 
+	  tyoung3/StreamWork backend 
+	  from github.  (Requires Go installation.).  
+	  The backend should run 
+	  in any Golang compatible environment.  Sw(written in C) 
+	  will run without installing github/tyoung3/StreamWork; 
+	  the generated Go code just won't work.
+	* Download the 'sw' executable from github to any 
+	  convenient location.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```.../sw -v``` to check that the version is at least v0.5.3.
-	* Change directory to $GOPATH/mod (create the directory if necessary).
+	* Run ```.../sw -v``` to check that the version is at least v0.6.0  
+	* Change directory to $GOPATH/mod (create the directory
+	  if necessary).
 	  This is usually ~/go/mod.  Go modules will fail in ~/go/src.
 	* Run go mod init fb/fb, unless go.mod already exists.  
 	  
@@ -139,12 +152,19 @@ Ex.  ```A<-B;``` expands to
 v0.5.3
 ------
 
-	*Reorganized development tree and fixed scripts 
+	* Reorganized development tree and fixed scripts 
 
 	* Cleaned up graphic.  
 		* Moved component info to tooltips.  
 		* Fixed up title.  
 		* Cleaned up URLs. Works with .SVG 
+		
+v0.6.0
+------
+	* Introduced stream chaining. 
+	  (A) <- (B) <- (C);  expands to: 
+	  (A) <- (B);
+	  (B) <- (C);		
 		
 Named Ports
 -----------
@@ -292,8 +312,9 @@ produces /tmp/collate.jpg  [copy may be in this directory]
 WARNING:
 --------
 
-	 std.Gen1 generates integer IPs. It is not the same as
-	 strings.Gen1, or default.Gen1.  
+	 std.Gen1 generates integer IPs. 
+	 Note that std.Gen1 is not the same as
+	 strings.Gen1, or def.Gen1.  
   
 BUGS:
 -----
