@@ -122,7 +122,7 @@ Integer visitArrow(Arrow _p_)
 static void linkPort(Process P, Port p) {  
 	Port p2;   
 	
-	if(P->port == NULL) {
+	if(!P->port) {
    		P->port = p;
     	p->next = p;
     	p->prev = p;
@@ -130,19 +130,23 @@ static void linkPort(Process P, Port p) {
 	}
 	  
 	p2 = P->port;
-	while(p2!=P->port) {
-		if(p->id < p2->id) {         
-			p->next = p2;
+	
+	do {
+		if(p->id < p2->id) {  
+			p->next = p2; 
 			p->prev = p2->prev;
+			if(P->port == p2) {
+				P->port=p;
+			}      
 			p->prev->next = p;
 			p->next->prev = p;
 			return;
 		}
 		p2 = p2->next;
-	}
+	} while(p2!=P->port);
 	
-    p->next = P->port;      //    p=9  p2=1
-    p->prev = P->port->prev;
+    p->next = P->port;      
+    p->prev = p2->prev;
     p->next->prev = p;
 	p->prev->next = p;
 }    
@@ -177,6 +181,82 @@ Stream visitS_tream(S_tream _p_)
   }
 }
 
+void visitExtPortIn(ExtPortIn _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Extin:
+    /* Code for Extin Goes Here */
+    visitSnk(_p_->u.extin_.snk_);
+    visitArrow(_p_->u.extin_.arrow_);
+    visitNumval(_p_->u.extin_.numval_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing ExtPortIn!\n");
+    exit(1);
+  }
+}
+
+void visitExtPortOut(ExtPortOut _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Extout:
+    /* Code for Extout Goes Here */
+    visitNumval(_p_->u.extout_.numval_);
+    visitArrow(_p_->u.extout_.arrow_);
+    visitSrce(_p_->u.extout_.srce_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing ExtPortOut!\n");
+    exit(1);
+  }
+}
+void visitSubnet(Subnet _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Snets:
+    /* Code for Snets Goes Here */
+    visitS_tream(_p_->u.snets_.s_tream_);
+    break;  case is_Snetin:
+    /* Code for Snetin Goes Here */
+    visitExtPortIn(_p_->u.snetin_.extportin_);
+    break;  case is_Snetout:
+    /* Code for Snetout Goes Here */
+    visitExtPortOut(_p_->u.snetout_.extportout_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Subnet!\n");
+    exit(1);
+  }
+}
+
+void visitListSubnet(ListSubnet listsubnet)
+{
+  while(listsubnet != 0)
+  {
+    /* Code For ListSubnet Goes Here */
+    visitSubnet(listsubnet->subnet_);
+    listsubnet = listsubnet->listsubnet_;
+  }
+}
+
+void visitSubdef(Subdef _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Snet:
+    /* Code for Snet Goes Here */
+    visitIdent(_p_->u.snet_.ident_);
+    visitListSubnet(_p_->u.snet_.listsubnet_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Subdef!\n");
+    exit(1);
+  }
+}
+
 void visitStm(Stm _p_) 
 {	
 	switch(_p_->kind)
@@ -191,7 +271,11 @@ void visitStm(Stm _p_)
   case is_Stms:
     /* Code for Stms Goes Here */
     visitStrassgn(_p_->u.stms_.strassgn_);
-    return ;
+    return ; 
+  case is_Stmnet:
+    /* Code for Stmnet Goes Here */
+    visitSubdef(_p_->u.stmnet_.subdef_);
+    break;
   default:
     fprintf(stderr, "Error: bad kind field when printing Stm!\n");
     exit(1);
@@ -382,10 +466,14 @@ Component visitComp(Comp _p_)
   case is_Compx:
      return MakeComponent(visitIdent(_p_->u.compx_.ident_), default_path);
    case is_Compy:
-    return MakeComponent( 
+     return MakeComponent( 
 	    visitIdent(_p_->u.compy_.ident_2),
     	visitIdent(_p_->u.compy_.ident_1)
     );
+  case is_Compnet:
+    /* Code for Compnet Goes Here */
+    visitIdent(_p_->u.compnet_.ident_);
+    return NULL;
   default:
     fprintf(stderr, "Error: bad kind field when printing Comp!\n");
     exit(1);
