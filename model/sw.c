@@ -643,7 +643,7 @@ Component visitComp(Comp _p_)
     	visitIdent(_p_->u.compy_.ident_1)
     );
   case is_Compn:
-    return MakeComponent( visitIdent(_p_->u.compn_.ident_),"");
+    return MakeComponent( visitIdent(_p_->u.compn_.ident_),"'");
   default:
     fprintf(stderr, "Error: bad kind field when visiting Comp!\n");
     exit(1);

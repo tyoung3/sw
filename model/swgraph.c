@@ -220,7 +220,10 @@ static void genLinks(Model m) {   // [label="C Miss"];
 		f=f->next;
 	}
 }
-	
+
+static char *genCompPath(Component c) {
+	return c->path;
+}					
 static void genProcs(Process p) {
     
 	while(p) {
