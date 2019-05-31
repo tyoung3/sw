@@ -234,10 +234,12 @@ Stream MakeStream(KINDOF k, Process src, Process snk, int bs, Model m) {
 	f->sink_id   = fixId(snk->sink_id);
 	f->next      = NULL;
 	f->prev      = NULL;
-	f->kind		 = k;  /* Defined w/ '<-'  */
+	f->state	 = k;  /* Defined w/ '<-'  */
+	if(k==IS_NET) {
+ 		m->nstreams++;
+	}
     f->next = m->stream;	
     m->stream=f;
- 	m->nstreams++;
     if(bs<1) bs=1;   
     if(bs>MAX_BUFFER)    
     	bs=MAX_BUFFER;
