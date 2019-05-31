@@ -160,7 +160,7 @@ Stream visitS_tream(S_tream _p_)
   switch(_p_->kind)
   {
   case is_Streamx:
-	return MakeStream(
+	return MakeStream(GOIP,
      visitSrce(_p_->u.streamx_.srce_),
      visitSnk(_p_->u.streamx_.snk_),
 	 visitArrow(_p_->u.streamx_.arrow_),
@@ -174,7 +174,7 @@ Stream visitS_tream(S_tream _p_)
     snk->sink_id   = pt->id;
     snk->nportsIn++;  
     linkPort( snk,pt);
-    return MakeStream(src, snk, bs, net_model);
+    return MakeStream(GOIP, src, snk, bs, net_model);
   default:
     fprintf(stderr, "Error: bad kind field when printing S_tream!\n");
     exit(1);

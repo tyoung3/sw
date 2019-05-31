@@ -15,7 +15,8 @@
 
 /*    MODEL  Structures   */
 
-typedef enum {NONE,GOIP,OTHER} STREAMTYPE;
+typedef enum {NONE,GOIP,SUBNET,OTHER} KINDOF;
+
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
@@ -57,7 +58,7 @@ struct Stream_ {
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	STREAMTYPE type;    /* Type of Stream GOGO, ORPHAN, etc*/
+	KINDOF kind;    /* Type of Stream GOIP, SUBNET,  etc*/
 	struct Stream_ *next;
 	struct Stream_ *prev;
 } Stream_;

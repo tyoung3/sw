@@ -219,7 +219,7 @@ static int fixId(int i) {
 	return i;
 }
 		    
-Stream MakeStream(Process src, Process snk, int bs, Model m) {
+Stream MakeStream(KINDOF k, Process src, Process snk, int bs, Model m) {
 	Stream f;
 	
 	f=(Stream)malloc(sizeof(Stream_)); 
@@ -235,7 +235,7 @@ Stream MakeStream(Process src, Process snk, int bs, Model m) {
 	f->sink_id   = fixId(snk->sink_id);
 	f->next      = NULL;
 	f->prev      = NULL;
-	f->type		 = GOIP;  /* Defined w/ '<-'  */
+	f->kind		 = k;  /* Defined w/ '<-'  */
     f->next = m->stream;	
     m->stream=f;
  	m->nstreams++;
