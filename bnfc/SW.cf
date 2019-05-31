@@ -6,17 +6,26 @@
 --     Note: There can be up to MAX_NESTING(currently=15) levels of INCLUDE files. 
 --	   Note: "EXIT" causes the SW parser to quit parsing the current file.  ??
 
-entrypoints		ValidSW; 
-Valid.	 	    ValidSW  	::= [Stm] ;
+entrypoints		ValidSW					 ; 
+Valid.	 	    ValidSW  	::= [Stm]    ;
 
-Stmx.			Stm			::= S_tream; 
+Stmx.			Stm			::= S_tream  ; 
 Stmn.			Stm			::= Numassgn ; 
-Stms.			Stm			::= Strassgn ;   
+Stms.			Stm			::= Strassgn ; 
+Stmnet.			Stm			::= Subdef	 ;  
 terminator	    Stm   ";" ;
+
+Snet.			Subdef	 ::= Ident "{" Subnet "}" ;
+
+Snets.			Subnet ::= S_tream;
+Snetin.			Subnet ::= ExtPortIn;
+Snetout.		Subnet ::= ExtPortOut;
+
+Extin.			ExtPortIn  ::=	Snk Arrow Numval;
+Extout.			ExtPortOut ::=	Numval Arrow Srce;
 
 Streamx.		S_tream	 ::= Snk         Arrow Srce;
 Streamy.		S_tream  ::= S_tream Prt Arrow Srce ;
---Streamz.		S_tream  ::= S_tream     Arrow Srce ;
 separator		S_tream	 ";" ;  
 
 Arrowx.			Arrow	 ::=  "<" Buffsize "-";
@@ -41,6 +50,7 @@ Porte.			Prt		::= ;
 
 Compx.			Comp	::= Ident;	
 Compy.			Comp	::= Ident "." Ident;	
+Compnet.		Comp	::= "sub." Ident;
 
 Argumentx.		Argument	::= Stringval;	
 separator	    Argument   ""; 	
