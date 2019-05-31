@@ -470,10 +470,8 @@ Component visitComp(Comp _p_)
 	    visitIdent(_p_->u.compy_.ident_2),
     	visitIdent(_p_->u.compy_.ident_1)
     );
-  case is_Compnet:
-    /* Code for Compnet Goes Here */
-    visitIdent(_p_->u.compnet_.ident_);
-    return NULL;
+  case is_Compn:
+    return MakeComponent( visitIdent(_p_->u.compn_.ident_),"");
   default:
     fprintf(stderr, "Error: bad kind field when printing Comp!\n");
     exit(1);

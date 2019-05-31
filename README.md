@@ -169,7 +169,20 @@ v0.6.0
 v0.6.1
 ------
 	* Fixed dataflow chaining problems
-
+	
+v0.7.0
+------
+	* Added subneting to NDs WITHOUT implementing.
+	  Subnets will be validated, then ignored for now.
+	  Ex.  
+	  	```SN { 
+	  			   1 <- 0(A Acomp);
+	  	        (A)1 <- 0;
+	  	        (A)2 <- (B b) <- (C c);
+	  	      };
+	  	    (X 'SN)1 <- (Y 'SN);
+	  	    (Y)1     <- (X);       	
+		```
 Named Ports
 -----------
 

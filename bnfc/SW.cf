@@ -51,7 +51,7 @@ Porte.			Prt		::= ;
 
 Compx.			Comp	::= Ident;	
 Compy.			Comp	::= Ident "." Ident;	
-Compnet.		Comp	::= "sub." Ident;
+Compn.		    Comp	::= "'" Ident;
 
 Argumentx.		Argument	::= Stringval;	
 separator	    Argument   ""; 	
