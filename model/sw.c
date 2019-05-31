@@ -6,22 +6,55 @@
 #include <stdio.h>
 #include "sw.h"
 #include "swsym.h"
+#include "model.h"
 
 #define NOBUFFERS
 
 #define defaultPath       "def"
 #define defaultSourceComp "Gen1"
+#define defaultFilterComp "Filter1"
 #define defaultSinkComp   "Print1"
 
+/* @TODO  Standardize error messages */
 
 STATE state=IS_NET; 
 
 static String default_path={"strings"};   /* ?? arg later */
 int bs,maxbfsz=1;		              /*  Buffer size */
 
-
 Model net_model=NULL;  
+Subnetm MakeSubnetm(Stream s, Extport in, Extport out ) {
+	Subnetm sn;   
+	
+	sn = (Subnetm)malloc(sizeof(Subnetm_));
+	sn->name = NULL;
+	sn->stream=s;
+	sn->extport=in;
+	if(in)
+		in->next=out;
+	return  sn;
+}; 
 
+Model MakeModel(Stream f) {
+	Model m;
+	
+	m=(Model)malloc(sizeof(Model_)); 
+    if (!m)
+    {
+        fprintf(stderr, "SW/MakeModel/FAIL: out of memory when allocating Process!\n");
+        exit(1);
+    }
+    
+	m->nstreams = 0;
+	m->ncomponents = 0;
+	m->nprocs	= 0;
+	m->stream=f;
+	m->proc = NULL;
+	//p->next = NULL;
+	//p->prev = NULL;
+	return m;
+	
+}	    
 
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
@@ -141,6 +174,89 @@ static Process MakeProcess( Model model,Ident name, Component comp, ListArgument
 	
 } 	
 
+static int fixId(int i) {
+	if (i<0) 
+		return 0;
+	return i;
+}
+	
+
+Port MakePort(int n, Ident id) {
+	Port p; 
+	
+	p=(Port)malloc(sizeof(Port_)); 
+    if (!p)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Port!\n");
+        exit(1);
+    }
+    
+    if(id) {
+    	p->name=id;
+    } else {
+    	p->name="";
+    }	
+	p->id = n;
+	p->match = NULL;
+	p->next = p;
+	p->prev = p;
+	p->match = NULL;
+	// p->owner = own;
+	return p;
+} 
+    
+
+
+Component MakeComponent(Ident name, String path) {
+	Component c; 
+	
+	c=(Component)malloc(sizeof(Component_)); 
+    if (!c)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Component!\n");
+        exit(1);
+    }
+    
+	c->name = name;
+	c->path = path;
+	c->nports = 0;
+	c->prev = NULL;
+	c->next = NULL;
+	return c;
+} 
+
+
+Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
+	Stream f;
+	
+	f=(Stream)malloc(sizeof(Stream_)); 
+    if (!f)
+    {
+        fprintf(stderr, "SWMAIN/MakeStream/FAIL: out of memory when allocating Stream!\n");
+        exit(1);
+    }
+    
+	f->source    = src;
+	f->sink      = snk;
+	f->source_id = fixId(src->source_id); 
+	f->sink_id   = fixId(snk->sink_id);
+	f->next      = NULL;
+	f->prev      = NULL;
+	f->state	 = state;  /* Defined w/ '<-'  */
+	if(state==IS_NET) {
+ 		m->nstreams++;
+	}
+    f->next = m->stream;	
+    m->stream=f;
+    if(bs<1) bs=1;   
+    if(bs>MAX_BUFFER)    
+    	bs=MAX_BUFFER;
+    if( bs > maxbfsz) 
+    		maxbfsz=bs;	
+	f->bufsz	 = bs;
+	return f;
+} 
+
 
 Numvar visitNumvar(Numvar p)
 {
@@ -160,7 +276,7 @@ String visitStringval(Stringval _p_)
     return visitStringvar(_p_->u.stringvalv_.stringvar_);
   
   default:
-    fprintf(stderr, "Error: bad kind field when printing Stringval!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Stringval!\n");
     exit(1);
   }
 }
@@ -177,7 +293,7 @@ Integer visitNumval(Numval _p_)
     visitNumvar(_p_->u.numvalv_.numvar_);
 	return 0;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Numval!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Numval!\n");
     exit(1);
   }
 }
@@ -192,7 +308,7 @@ void visitNumassgn(Numassgn _p_)
     visitNumval(_p_->u.numassgnv_.numval_);
     break;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Numassgn!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Numassgn!\n");
     exit(1);
   }
 } 
@@ -208,7 +324,7 @@ void visitStrassgn(Strassgn _p_)
     break;
   default:
     fprintf(stderr, 
-        "Error: bad kind field when printing Strassgn!\n");
+        "Error: bad kind field when visiting Strassgn!\n");
     exit(1);
   }
 }
@@ -223,7 +339,7 @@ Integer visitBuffsize(Buffsize _p_)
   case is_Bufsze:
     	return 1;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Buffsize!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Buffsize!\n");
     exit(1);
   }
 }
@@ -291,7 +407,7 @@ Stream visitS_tream(S_tream _p_)
     linkPort( snk,pt);
     return MakeStream(state, src, snk, bs, net_model);
   default:
-    fprintf(stderr, "Error: bad kind field when printing S_tream!\n");
+    fprintf(stderr, "Error: bad kind field when visiting S_tream!\n");
     exit(1);
   }
 }
@@ -315,27 +431,22 @@ Extport visitExtPortOut(ExtPortOut _p_)
 }
 
 
-MSubnet MakeMSubnet(Stream s, Extport in, Extport out ) {
-	MSubnet msn;  // allc
-	return  msn;
-}; 
-
-MSubnet visitSubnet(Subnet _p_)
+Subnetm visitSubnet(Subnet _p_)
 {
-	Stream s;
-	Extport eport;
+	Stream s=NULL;
+	Extport eport=NULL;
 	
   switch(_p_->kind)
   {
   case is_Snets:
-    return MakeMSubnet(
+    return MakeSubnetm(
     	visitS_tream(_p_->u.snets_.s_tream_),
     	eport,eport);
   case is_Snetin:
-    return MakeMSubnet(s,
+    return MakeSubnetm(s,
     	visitExtPortIn(_p_->u.snetin_.extportin_), eport);
   case is_Snetout:
-    return MakeMSubnet(
+    return MakeSubnetm(
     	s,eport,visitExtPortOut(_p_->u.snetout_.extportout_));
   default:
     fprintf(stderr, "Error: bad kind field when visiting Subnet!\n");
@@ -376,7 +487,7 @@ void visitStm(Stm _p_)
     visitSubdef(_p_->u.stmnet_.subdef_);
     break;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Stm!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Stm!\n");
     exit(1);
   }
 }
@@ -432,7 +543,7 @@ Process visitSrce(Srce _p_)
     linkPort(p,pt);
     return p;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Srce!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Srce!\n");
     exit(1);
   }
 }
@@ -465,7 +576,7 @@ Process visitSnk(Snk _p_)
     linkPort(p,pt);
     return p;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Snk!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Snk!\n");
     exit(1);
   }
   
@@ -515,7 +626,7 @@ Port visitPrt(Prt _p_)
     	return MakePort(-1,NULL);
   default:
     fprintf(stderr, 
-    	"Error: bad kind field when printing Prt!\n");
+    	"Error: bad kind field when visiting Prt!\n");
     exit(1);
   }
 }
@@ -534,7 +645,7 @@ Component visitComp(Comp _p_)
   case is_Compn:
     return MakeComponent( visitIdent(_p_->u.compn_.ident_),"");
   default:
-    fprintf(stderr, "Error: bad kind field when printing Comp!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Comp!\n");
     exit(1);
   }
 }
