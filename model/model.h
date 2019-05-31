@@ -15,6 +15,7 @@
 
 /*    MODEL  Structures   */
 
+typedef enum {IS_NET, IS_SUB} STATE;
 typedef enum {NONE,GOIP,SUBNET,OTHER} KINDOF;
 
 struct Component_ {
@@ -49,6 +50,7 @@ struct Process_ {
 		struct Process_ *next;
 		struct Process_ *prev;    
 		char **arg;		  /* An array of strings. */
+		STATE kind;	  /* In subnet or net */
 } Process_; 
 typedef struct Process_ *Process;
 
@@ -58,7 +60,7 @@ struct Stream_ {
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	KINDOF kind;    /* Type of Stream GOIP, SUBNET,  etc*/
+	STATE  state;    /* Type of Stream GOIP, SUBNET,  etc*/
 	struct Stream_ *next;
 	struct Stream_ *prev;
 } Stream_;

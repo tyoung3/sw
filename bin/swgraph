@@ -7,10 +7,16 @@ Die () {
 	exit 1
 }
 
-SW=$GOPATH/bin/sw
+Debug() {
+	a="a"
+	#echo "Debug: $*"
+}
+
+SW=~/go/mod/sw/bin/sw
 [ -e $SW     ] || Die $SW is missing 
 
-SearchFile() {
+SearchFile() { 
+	Debug SearchFIle $*
 	echo looking for $swfile
 	base=`basename $file`
 	swfile=${base}
@@ -23,9 +29,12 @@ SearchFile() {
 }
 
 GenRun() {
+	Debug GenRun  $file $*
+	swfile=$file
 	[ -f $file ] || searchFile  
 	
 	if [ -f $swfile ]; then
+		Debug Got $swfile
 		$SW -m 3 $swfile > /tmp/${base}.dot
 		dot -Tsvg /tmp/$base.dot > /tmp/${base}.svg
 		$BROWSER /tmp/${base}.svg	
@@ -42,5 +51,5 @@ Run() {
 
 case $1 in 
 	
-	*)echo aldkj ;Run $*;;
+	*)Run $*;;
 esac	

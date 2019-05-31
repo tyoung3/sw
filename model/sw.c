@@ -1,5 +1,5 @@
 /* SW.c
-
+    Create network model from parse tree 
 */
 
 #include <stdlib.h>
@@ -13,18 +13,133 @@
 #define defaultSourceComp "Gen1"
 #define defaultSinkComp   "Print1"
 
+
+STATE state=IS_NET; 
+
 static String default_path={"strings"};   /* ?? arg later */
 int bs,maxbfsz=1;		              /*  Buffer size */
 
 
 Model net_model=NULL;  
-	
+
+
 Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
 	 net_model=MakeModel(NULL);
      visitListStm(_p_->u.valid_.liststm_);
      return net_model;
 }
+
+
+
+static int countArg(char **arg) {
+	int i=0;
+	
+	while(arg[i++] != NULL) {
+	}
+	
+	return i;
+}
+
+static char **NewArg(char **arg, char **narg) {    			
+		char **a; 
+		int i,j,na;
+		
+		
+		na = countArg(arg) + countArg(narg) - 1;
+		a = (char**) malloc( na * sizeof(char*));
+		
+		while ( arg[i]  ) {
+			a[i] = arg[i];
+			i++;
+		}		
+		
+		j=1;
+		
+		while ( narg[j] ) {
+			a[i] = narg[j];
+			i++; j++;
+		} 
+		
+		free(arg);
+		free(narg);
+		return a;
+		
+}
+static char **MakeArg(ListArgument la, char *name) {
+	char **arg;   /* Pointer to array of string pointers. */
+	int i=1,narg=1;
+	ListArgument la2=la;
+	
+	while(la2) {
+		narg++;
+		la2     = la2->listargument_;
+	}
+	
+	arg = (char **) malloc((narg+1)*sizeof(char*)); 
+	arg[0] = name;
+	arg[narg] = NULL; 
+
+	i=narg-1;
+	while(la) {
+		arg[i--] = 
+		  visitStringval(la->argument_->u.argumentx_.stringval_);
+		la       = la->listargument_;
+	}
+	
+	return arg;
+}
+static Process MakeProcess( Model model,Ident name, Component comp, ListArgument la) {
+	Process p;
+	static int onone=1;
+	
+	if(onone) {
+		onone=0; 
+		tabinit(100000);
+	}
+	
+	p=getProc(name);
+	 
+	if(p==NULL) {
+		p=(Process)malloc(sizeof(Process_)); 
+    	if (!p)
+    	{
+    	    fprintf(stderr, "SW/MakeProcess/FAIL: out of memory when allocating Process!\n");
+    	    exit(1);
+    	}
+    	
+		p->comp = comp;
+		p->name = name;
+		p->nportsIn =0;
+		p->nportsOut=0;
+		p->port	= NULL;
+	    p->kind = state;
+		if(state == IS_NET) {
+			p->next = model->proc;
+			model->proc = p;
+			model->nprocs++;
+		}	else {
+			p->next = NULL;
+		}
+		p->prev = NULL;
+		p->arg  = MakeArg(la,name);
+    	addProc(name,p);
+    }	else {
+    	if(comp) {
+    		p->comp = comp;
+    	}
+    	if(la) {
+    		if( p->arg ) { 	
+    			p->arg  = NewArg(p->arg,MakeArg(la,name)); 
+    		} else {
+	    		p->arg  = MakeArg(la,name);
+	    	}	
+    	}	
+    }
+    
+	return p;
+	
+} 	
 
 
 Numvar visitNumvar(Numvar p)
@@ -160,7 +275,7 @@ Stream visitS_tream(S_tream _p_)
   switch(_p_->kind)
   {
   case is_Streamx:
-	return MakeStream(GOIP,
+	return MakeStream(state,
      visitSrce(_p_->u.streamx_.srce_),
      visitSnk(_p_->u.streamx_.snk_),
 	 visitArrow(_p_->u.streamx_.arrow_),
@@ -174,7 +289,7 @@ Stream visitS_tream(S_tream _p_)
     snk->sink_id   = pt->id;
     snk->nportsIn++;  
     linkPort( snk,pt);
-    return MakeStream(GOIP, src, snk, bs, net_model);
+    return MakeStream(state, src, snk, bs, net_model);
   default:
     fprintf(stderr, "Error: bad kind field when printing S_tream!\n");
     exit(1);
@@ -244,21 +359,20 @@ void visitSubdef(Subdef _p_)
 
 void visitStm(Stm _p_) 
 {	
+    state=IS_NET;
 	switch(_p_->kind)
   {
   case is_Stmx:
   	visitS_tream(_p_->u.stmx_.s_tream_);
   	return;
   case is_Stmn:
-    /* Code for Stmn Goes Here */
     visitNumassgn(_p_->u.stmn_.numassgn_);
     return ;
   case is_Stms:
-    /* Code for Stms Goes Here */
     visitStrassgn(_p_->u.stms_.strassgn_);
     return ; 
   case is_Stmnet:
-    /* Code for Stmnet Goes Here */
+    state=IS_SUB;
     visitSubdef(_p_->u.stmnet_.subdef_);
     break;
   default:

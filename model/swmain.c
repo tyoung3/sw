@@ -10,8 +10,7 @@
 #include "swsym.h"
 #include "swgraph.h"  
 
-char *version={VERSION};
-
+char *version={VERSION};  
 
 ValidSW pValidSW(FILE *inp);
 
@@ -248,111 +247,6 @@ Stream MakeStream(KINDOF k, Process src, Process snk, int bs, Model m) {
 	return f;
 } 
 
-static char **MakeArg(ListArgument la, char *name) {
-	char **arg;   /* Pointer to array of string pointers. */
-	int i=1,narg=1;
-	ListArgument la2=la;
-	
-	while(la2) {
-		narg++;
-		la2     = la2->listargument_;
-	}
-	
-	arg = (char **) malloc((narg+1)*sizeof(char*)); 
-	arg[0] = name;
-	arg[narg] = NULL; 
-
-	i=narg-1;
-	while(la) {
-		arg[i--] = 
-		  visitStringval(la->argument_->u.argumentx_.stringval_);
-		la       = la->listargument_;
-	}
-	
-	return arg;
-}
-
-static int countArg(char **arg) {
-	int i=0;
-	
-	while(arg[i++] != NULL) {
-	}
-	
-	return i;
-}
-
-static char **NewArg(char **arg, char **narg) {    			
-		char **a; 
-		int i,j,na;
-		
-		
-		na = countArg(arg) + countArg(narg) - 1;
-		a = (char**) malloc( na * sizeof(char*));
-		
-		while ( arg[i]  ) {
-			a[i] = arg[i];
-			i++;
-		}		
-		
-		j=1;
-		
-		while ( narg[j] ) {
-			a[i] = narg[j];
-			i++; j++;
-		} 
-		
-		free(arg);
-		free(narg);
-		return a;
-		
-}
-
-Process MakeProcess( Model model,Ident name, Component comp, ListArgument la) {
-	Process p;
-	static int onone=1;
-	
-	if(onone) {
-		onone=0; 
-		tabinit(100000);
-	}
-	
-	p=getProc(name);
-	
-	if(p==NULL) {
-		p=(Process)malloc(sizeof(Process_)); 
-    	if (!p)
-    	{
-    	    fprintf(stderr, "SW/MakeProcess/FAIL: out of memory when allocating Process!\n");
-    	    exit(1);
-    	}
-    	
-		p->comp = comp;
-		p->name = name;
-		p->nportsIn =0;
-		p->nportsOut=0;
-		p->port	= NULL;
-		p->next = model->proc;
-		model->proc = p;
-		model->nprocs++;
-		p->prev = NULL;
-		p->arg  = MakeArg(la,name);
-    	addProc(name,p);
-    }	else {
-    	if(comp) {
-    		p->comp = comp;
-    	}
-    	if(la) {
-    		if( p->arg ) { 	
-    			p->arg  = NewArg(p->arg,MakeArg(la,name)); 
-    		} else {
-	    		p->arg  = MakeArg(la,name);
-	    	}	
-    	}	
-    }
-    
-	return p;
-	
-} 
 
 Model MakeModel(Stream f) {
 	Model m;
@@ -447,7 +341,6 @@ int main(int argc, char ** argv)
   if (parse_tree)   {  
     model=visitValidSW(parse_tree);
     model->name = baseOf(fname) ;
-    // @TODO Free Parse tree storage
     if(verifyOK(model)) {
 		if(!model->proc) {
 			fprintf(stderr,"SWMAIN/FAIL: No processes found\n");

@@ -164,6 +164,31 @@ static int findChannel(Port p, int id) {
 	return -1;
 }
 
+#ifdef DFDLKJLKJF						
+static void showPorts2() {	
+
+#ifdef NO_PORTS	
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%i\",taillabel=\"%i\"", tooltip=\"%i[%i]\"];\n",
+#else
+				printf("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
+#endif				
+}
+#endif
+
+static void showPorts(Stream f, Process src, Process snk, int channel) {					
+#ifndef NO_PORTS			
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%i\",taillabel=\"%i\"", tooltip=\"%i[%i]\"];\n",
+#else
+				printf("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
+#endif		
+					src->name,  
+					snk->name,
+					channel,
+					f->sink_id,
+					f->source_id,
+					channel, f->bufsz); 	
+}
+
 static void genLinks(Model m) {   // [label="C Miss"];
 	Stream f;
 	Process src,snk;
@@ -171,6 +196,7 @@ static void genLinks(Model m) {   // [label="C Miss"];
 	
 	f=m->stream;
 	while(f) {
+	  if( f->state == IS_NET ) {
 		src=f->source;
 		snk=f->sink;
 			channel=findChannel(src->port,f->source_id); 
@@ -188,18 +214,9 @@ static void genLinks(Model m) {   // [label="C Miss"];
 					channel
 					); 		
 			} else {
-#ifndef NO_PORTS			
-				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%i\",taillabel=\"%i\"", tooltip=\"%i[%i]\"];\n",
-#else
-				printf("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
-#endif				
-					src->name,  
-					snk->name,
-					channel,
-					f->sink_id,
-					f->source_id,
-					channel, f->bufsz); 		
-			}		
+					showPorts(f,src,snk,channel);		
+			}	
+		}  // End if IS_NET		
 		f=f->next;
 	}
 }
@@ -207,6 +224,7 @@ static void genLinks(Model m) {   // [label="C Miss"];
 static void genProcs(Process p) {
     
 	while(p) {
+		if( p->kind == IS_NET ) {
 			printf("#(%s %s.%s) %d ports\n",
 				p->name, 			
 				p->comp->path,
@@ -215,7 +233,8 @@ static void genProcs(Process p) {
 			);
  
 		genProc(p->name,p->comp->name,p->comp->path,"taos_", p->arg);
-#ifndef NO_PORTS	
+		
+#ifdef SHOW_PORTS	
 	Port pt;			
 	    pt = p->port;
 			printf("|{");
@@ -230,11 +249,11 @@ static void genProcs(Process p) {
 #endif        
         printf(" }");
 		endProc(); 
-		
+	} // End if IS_NET	
 		p=p->next;
 	}	
 	
-		
+		 
 	printf("\n");
 }	
 
@@ -256,6 +275,7 @@ void genGraph(Model model) {
 	f=model->stream;
 
 	while(f) {
+		if(f->state == IS_NET ) {
 			printf("# (%s %s.%s)%d <- %d(%s %s.%s) \n", 
 				f->sink->name,
 				f->sink->comp->path,
@@ -266,7 +286,7 @@ void genGraph(Model model) {
 				f->source->comp->path,
 				f->source->comp->name
 			);
-				
+		}		
 		f=f->next;
 	}
 	
