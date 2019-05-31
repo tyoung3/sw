@@ -64,6 +64,26 @@ struct Stream_ {
 } Stream_;
 typedef struct Stream_ *Stream;
 
+typedef enum {SINK,SOURCE} PortType;
+struct Extport_ {
+	PortType type;
+	Process souce;
+	Process sink;
+	int source_id; 	
+	int sink_id; 	
+	struct Extport_ *next;
+} Extport_;
+typedef struct Extport_ *Extport;
+
+
+struct MSubnet_ {     /* Model Subnet */
+	char *name;
+	Stream  stream;	
+	Extport extport;
+	struct MSubnet_ *next;
+};
+typedef struct MSubnet_ *MSubnet;
+
 struct Model_ {
 	int nstreams;
 	int ncomponents;

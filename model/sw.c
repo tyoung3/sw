@@ -118,7 +118,7 @@ Integer visitArrow(Arrow _p_)
     return visitBuffsize(_p_->u.arrowx_.buffsize_);
 }
 
-/* Add port,p to port list at P->port */
+/* Add port,p to port list at P->port in order by port id*/
 static void linkPort(Process P, Port p) {  
 	Port p2;   
 	
@@ -181,80 +181,65 @@ Stream visitS_tream(S_tream _p_)
   }
 }
 
-void visitExtPortIn(ExtPortIn _p_)
+Extport visitExtPortIn(ExtPortIn _p_)
 {
-  switch(_p_->kind)
-  {
-  case is_Extin:
     /* Code for Extin Goes Here */
     visitSnk(_p_->u.extin_.snk_);
     visitArrow(_p_->u.extin_.arrow_);
     visitNumval(_p_->u.extin_.numval_);
-    break;
-  default:
-    fprintf(stderr, "Error: bad kind field when printing ExtPortIn!\n");
-    exit(1);
-  }
+    return (Extport) NULL;
 }
 
-void visitExtPortOut(ExtPortOut _p_)
+Extport visitExtPortOut(ExtPortOut _p_)
 {
-  switch(_p_->kind)
-  {
-  case is_Extout:
-    /* Code for Extout Goes Here */
     visitNumval(_p_->u.extout_.numval_);
     visitArrow(_p_->u.extout_.arrow_);
     visitSrce(_p_->u.extout_.srce_);
-    break;
-  default:
-    fprintf(stderr, "Error: bad kind field when printing ExtPortOut!\n");
-    exit(1);
-  }
+    
+    return (Extport) NULL;
 }
-void visitSubnet(Subnet _p_)
+
+
+MSubnet MakeMSubnet(Stream s, Extport in, Extport out ) {
+	MSubnet msn;  // allc
+	return  msn;
+}; 
+
+MSubnet visitSubnet(Subnet _p_)
 {
+	Stream s;
+	Extport eport;
+	
   switch(_p_->kind)
   {
   case is_Snets:
-    /* Code for Snets Goes Here */
-    visitS_tream(_p_->u.snets_.s_tream_);
-    break;  case is_Snetin:
-    /* Code for Snetin Goes Here */
-    visitExtPortIn(_p_->u.snetin_.extportin_);
-    break;  case is_Snetout:
-    /* Code for Snetout Goes Here */
-    visitExtPortOut(_p_->u.snetout_.extportout_);
-    break;
+    return MakeMSubnet(
+    	visitS_tream(_p_->u.snets_.s_tream_),
+    	eport,eport);
+  case is_Snetin:
+    return MakeMSubnet(s,
+    	visitExtPortIn(_p_->u.snetin_.extportin_), eport);
+  case is_Snetout:
+    return MakeMSubnet(
+    	s,eport,visitExtPortOut(_p_->u.snetout_.extportout_));
   default:
-    fprintf(stderr, "Error: bad kind field when printing Subnet!\n");
+    fprintf(stderr, "Error: bad kind field when visiting Subnet!\n");
     exit(1);
   }
 }
 
-void visitListSubnet(ListSubnet listsubnet)
+static void visitListSubnet(ListSubnet listsubnet)
 {
   while(listsubnet != 0)
   {
-    /* Code For ListSubnet Goes Here */
-    visitSubnet(listsubnet->subnet_);
+     (visitSubnet(listsubnet->subnet_) );
     listsubnet = listsubnet->listsubnet_;
   }
 }
 
 void visitSubdef(Subdef _p_)
 {
-  switch(_p_->kind)
-  {
-  case is_Snet:
-    /* Code for Snet Goes Here */
-    visitIdent(_p_->u.snet_.ident_);
     visitListSubnet(_p_->u.snet_.listsubnet_);
-    break;
-  default:
-    fprintf(stderr, "Error: bad kind field when printing Subdef!\n");
-    exit(1);
-  }
 }
 
 void visitStm(Stm _p_) 
@@ -305,44 +290,6 @@ void visitListStm(ListStm liststm)
     liststm = liststm->liststm_;
   }
 }
-
-#ifdef DSAWLKJ 
-Model visitListStm(ListStm liststm)
-{
-	Model m;
-    if( ! liststm)  
-    	return net_model;
-    
-    m=net_model;	    
-    m->proc = m->stream->source;
-  	m->proc->next = m->stream->sink;
-  	m->stream->sink->next = NULL;   
-	liststm = liststm->liststm_;
-	 
- while(liststm != 0) {
-  	Model m2;
-    m2 = visitStm(liststm->stm_);
-    
-    if(m2) { 
-  		//m2->stream->next=m->stream;
-  		//m->stream=m2->stream;
-  	
-  		if( notListed(m2->stream->source, m)) {
-  			m2->stream->source->next = m->proc;
-  			m->proc = m2->stream->source;
-  		} 
-  		if( notListed(m2->stream->sink, m)) {
-  			m->stream->sink->next = m->proc;
-  			m->proc = m2->stream->sink;
-  		} 
- 	}  	
-    liststm = liststm->liststm_;
-  }
-  
-  return m;
-}
-#endif
- 
 
 
 Process visitSrce(Srce _p_)
