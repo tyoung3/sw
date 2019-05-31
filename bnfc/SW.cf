@@ -15,14 +15,15 @@ Stms.			Stm			::= Strassgn ;
 Stmnet.			Stm			::= Subdef	 ;  
 terminator	    Stm   ";" ;
 
-Snet.			Subdef	 ::= Ident "{" Subnet "}" ;
+Snet.			Subdef	 ::= Ident "{" [Subnet] "}" ;
 
-Snets.			Subnet ::= S_tream;
-Snetin.			Subnet ::= ExtPortIn;
-Snetout.		Subnet ::= ExtPortOut;
+Snets.			Subnet ::= S_tream		;
+Snetin.			Subnet ::= ExtPortIn  	;
+Snetout.		Subnet ::= ExtPortOut  	;
+terminator	    Subnet  ";" ;
 
 Extin.			ExtPortIn  ::=	Snk Arrow Numval;
-Extout.			ExtPortOut ::=	Numval Arrow Srce;
+Extout.			ExtPortOut ::=	Numval Arrow Srce;  -- 0 <- (R);
 
 Streamx.		S_tream	 ::= Snk         Arrow Srce;
 Streamy.		S_tream  ::= S_tream Prt Arrow Srce ;
