@@ -541,20 +541,22 @@ void visitHermt(Hermt _p_)
   {
   case is_Hermtx:
     /* Code for Hermtx Goes Here */
-    visitIdent(_p_->u.hermtx_.ident_);
-    visitComp(_p_->u.hermtx_.comp_);
-    visitListArgument(_p_->u.hermtx_.listargument_);
-    break;  case is_Hermty:
+    MakeProcess(net_model,visitIdent(_p_->u.hermtx_.ident_),
+    		    visitComp(_p_->u.hermtx_.comp_),
+			    visitListArgument(_p_->u.hermtx_.listargument_));
+    break;  
+   case is_Hermty:
     /* Code for Hermty Goes Here */
-    visitIdent(_p_->u.hermty_.ident_);
-    visitListArgument(_p_->u.hermty_.listargument_);
+	    MakeProcess(
+	    	net_model,visitIdent(_p_->u.hermty_.ident_), NULL,
+    		visitListArgument(_p_->u.hermty_.listargument_));
     break;  case is_Hermtax:
     /* Code for Hermtax Goes Here */
-    visitComp(_p_->u.hermtax_.comp_);
-    visitListArgument(_p_->u.hermtax_.listargument_);
+    MakeProcess(net_model,"_",visitComp(_p_->u.hermtax_.comp_),
+    	visitListArgument(_p_->u.hermtax_.listargument_));
     break;  case is_Hermtay:
-    /* Code for Hermtay Goes Here */
-    visitListArgument(_p_->u.hermtay_.listargument_);
+   		MakeProcess(net_model,"_",NULL,
+   		visitListArgument(_p_->u.hermtay_.listargument_));
     break;
   default:
     fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
