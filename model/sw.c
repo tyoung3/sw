@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "sw.h"
 #include "swsym.h"
 #include "model.h"
@@ -24,11 +25,11 @@ int bs,maxbfsz=1;		              /*  Buffer size */
 
 Model net_model=NULL;  
 
-Subnetm MakeSubnetm(Stream s, Extport in, Extport out ) {
+Subnetm MakeSubnetm(Ident id,Stream s, Extport in, Extport out ) {
 	Subnetm sn,sn2;   
 	
 	sn = (Subnetm)malloc(sizeof(Subnetm_));
-	sn->name = NULL;
+	sn->name = id;
 	sn->stream=s;
 	sn->extport=in;
 	if(in)
@@ -438,7 +439,7 @@ Extport visitExtPortOut(ExtPortOut _p_)
 }
 
 
-Subnetm visitSubnet(Subnet _p_)
+Subnetm visitSubnet(Subnet _p_, Ident id)
 {
 	Stream s=NULL;
 	Extport eport=NULL;
@@ -446,14 +447,14 @@ Subnetm visitSubnet(Subnet _p_)
   switch(_p_->kind)
   {
   case is_Snets:
-    return MakeSubnetm(
+    return MakeSubnetm(id,
     	visitS_tream(_p_->u.snets_.s_tream_),
     	eport,eport);
   case is_Snetin:
-    return MakeSubnetm(s,
+    return MakeSubnetm(id,s,
     	visitExtPortIn(_p_->u.snetin_.extportin_), eport);
   case is_Snetout:
-    return MakeSubnetm(
+    return MakeSubnetm(id,
     	s,eport,visitExtPortOut(_p_->u.snetout_.extportout_));
   default:
     fprintf(stderr, "Error: bad kind field when visiting Subnet!\n");
@@ -461,18 +462,21 @@ Subnetm visitSubnet(Subnet _p_)
   }
 }
 
-static void visitListSubnet(ListSubnet listsubnet)
+static void visitListSubnet(
+	ListSubnet listsubnet,
+	Ident id)
 {
   while(listsubnet != 0)
   {
-     (visitSubnet(listsubnet->subnet_) );
+     (visitSubnet(listsubnet->subnet_,id) );
     listsubnet = listsubnet->listsubnet_;
   }
 }
 
 void visitSubdef(Subdef _p_)
 {
-    visitListSubnet(_p_->u.snet_.listsubnet_);
+    	visitListSubnet(_p_->u.snet_.listsubnet_,
+    	visitIdent(_p_->u.snet_.ident_));
 }
 
 void visitStm(Stm _p_) 
@@ -694,12 +698,34 @@ String visitString(String s)
 	return s;
 }
 
-	/* while some process contains a subnet component, 
+	
+static void Expand(Model m, Process p, Subnetm sn) {
+
+}
+
+	/* Expand a subnet component */
+static void expandSub(Model m, Process p) {
+	Subnetm sn;
+	
+	sn = m->subnetm;
+	while(sn) {   // find subnet for p
+		if(strncmp(sn->name, p->comp->name, 100)==0) {
+			Expand(m, p, sn);
+		}
+		sn=sn->next;
+	}	
+	
+	// expand p 
+	
+	free(p);   
+}
+
+
+	/* While some process contains a subnet component, 
 	   expand that component subnet. 
 	   Note any unexpanded subnets.
 	   Not implemented. 
     */   
-    
 void expandSubnets(Model model) {
 	Process p,pp;
 	int more=0;
@@ -709,15 +735,16 @@ void expandSubnets(Model model) {
 		pp=NULL;
 		more=0;
 		while(p) {
-			if(p->kind == IS_SUB) {
+			if(p->comp->path[0] == '\'') {  /* Is it a subnet */
 				more=1;
-				// delink p from process chain.
+				model->nprocs--;	
+				     // delink p from process chain.
 				if(pp) 
 					pp->next = p->next;
-				else
-					model->proc=p->next;
-				model->nprocs--;		
-				// Expand p
+				else {
+					model->proc=p->next;	
+				}	
+				expandSub(model, p ); 
 				break;
 			}
 			pp=p;  
