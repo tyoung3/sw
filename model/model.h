@@ -69,7 +69,7 @@ typedef struct Stream_ *Stream;
 typedef enum {SINK,SOURCE} PortType;
 struct Extport_ {
 	PortType type;
-	Process souce;
+	Process source;
 	Process sink;
 	int source_id; 	
 	int sink_id; 	

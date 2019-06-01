@@ -25,19 +25,53 @@ int bs,maxbfsz=1;		              /*  Buffer size */
 
 Model net_model=NULL;  
 
-Subnetm MakeSubnetm(Ident id,Stream s, Extport in, Extport out ) {
-	Subnetm sn,sn2;   
+static Subnetm linkSubnet(Model m, char *name) {
+	Subnetm sn2;
 	
-	sn = (Subnetm)malloc(sizeof(Subnetm_));
-	sn->name = id;
+	sn2=m->subnetm;	
+	if(!sn2) {
+		sn2 = (Subnetm)malloc(sizeof(Subnetm_));
+		sn2->name = name;
+		m->subnetm=sn2;
+		return sn2;
+	}	
+	
+	while(sn2) {	 
+		if(strncmp(name,sn2->name,100) == 0) {
+			return sn2;
+		}
+		sn2=sn2->next;
+	}
+	sn2 = (Subnetm)malloc(sizeof(Subnetm_));
+	sn2->name = name;
+	sn2->next=m->subnetm;		
+	m->subnetm = sn2;
+	return sn2;
+}	
+
+static void linkExt(Subnetm sn, Extport pt) {	
+	Extport pt2;
+	
+	pt2=sn->extport;
+	if(!pt2) {
+		sn->extport=pt;
+		return;
+	}
+	pt->next=pt2;
+	sn->extport=pt;
+}
+
+Subnetm MakeSubnetm(Ident name, Stream s, Extport in, Extport out ) {
+	Subnetm sn;   
+	
+	sn=linkSubnet(net_model, name);
 	sn->stream=s;
-	sn->extport=in;
-	if(in)
-		in->next=out;
 	
-	sn2=net_model->subnetm;
-	sn->next=sn2;
-	net_model->subnetm = sn;
+	if(in)
+		linkExt(sn,in);
+	if(out)
+		linkExt(sn,out);
+		
 	return  sn;
 }; 
 
@@ -418,22 +452,44 @@ Stream visitS_tream(S_tream _p_)
   }
 }
 
+Extport MakeExtport(
+		PortType type,
+	    Process p,
+    	int bs,
+    	int id) {
+
+  	Extport ep; 
+  	
+	ep = (Extport)malloc(sizeof(Extport_));  	
+  
+    ep->type=type;
+    if(type==SINK) {
+		ep->sink=p;
+		ep->sink_id=id; 	
+    }   else {
+		 ep->source=p;
+		 ep->source_id=id;
+	}
+	 	
+	ep->next=NULL;
+	return ep;
+}
+    	
 Extport visitExtPortIn(ExtPortIn _p_)
 {
-    /* Code for Extin Goes Here */
-    visitSnk(_p_->u.extin_.snk_);
-    visitArrow(_p_->u.extin_.arrow_);
-    visitNumval(_p_->u.extin_.numval_);
-    return (Extport) NULL;
+    return MakeExtport(SINK,
+	    visitSnk(_p_->u.extin_.snk_),
+    	visitArrow(_p_->u.extin_.arrow_),
+    	visitNumval(_p_->u.extin_.numval_));
+    
 }
 
 Extport visitExtPortOut(ExtPortOut _p_)
 {
-    visitNumval(_p_->u.extout_.numval_);
-    visitArrow(_p_->u.extout_.arrow_);
-    visitSrce(_p_->u.extout_.srce_);
-    
-    return (Extport) NULL;
+	return MakeExtport(SOURCE,
+	   	visitSrce(_p_->u.extout_.srce_),
+    	visitArrow(_p_->u.extout_.arrow_),
+    	visitNumval(_p_->u.extout_.numval_));
 }
 
 
@@ -445,9 +501,8 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
   switch(_p_->kind)
   {
   case is_Snets:
-    return MakeSubnetm(id,
-    	visitS_tream(_p_->u.snets_.s_tream_),
-    	eport,eport);
+    	s=visitS_tream(_p_->u.snets_.s_tream_);
+    	return MakeSubnetm(id,s,eport,eport);
   case is_Snetin:
     return MakeSubnetm(id,s,
     	visitExtPortIn(_p_->u.snetin_.extportin_), eport);
@@ -708,6 +763,8 @@ static char *makeName(char *pn, char *nn) {
 static void Expand2(Model m, Process p, Stream s, char *name) {
 	char *srcname,*snkname;  // Concatenated process name 
 	Process src,snk;
+	Port psrc,psnk;
+	Stream ns;              /* New Stream */
 	state=IS_NET;
 	
 	srcname=makeName(p->name, s->source->name); 
@@ -716,16 +773,46 @@ static void Expand2(Model m, Process p, Stream s, char *name) {
 	src->arg = s->source->arg;
 	snk=MakeProcess(m,snkname, s->sink->comp,NULL); 
 	snk->arg = s->sink->arg;
+	psrc=MakePort(s->source->port->id,s->source->port->name);
+	psnk=MakePort(s->sink->port->id,s->sink->port->name);
+	linkPort(src,psrc);
+	linkPort(snk,psnk);
+	src->nportsOut++;
+	snk->nportsIn++;
+	src->source_id=s->source->port->id;
+	snk->sink_id=s->sink->port->id;
+	bs=s->bufsz;
+	ns=MakeStream(state, src, snk, bs, m);
+	ns->sink_id=s->sink_id;
+	ns->source_id=s->source_id;
+	ns->bufsz=s->bufsz;
+	ns->state=state;
 }
-
 	/* Expand m for each stream in the subnet */
 static void Expand(Model m, Process p, Subnetm sn) {
 	Stream s;
+	Extport ep;
 	
 	s=sn->stream;
 	while(s) {
 		Expand2(m,p,s,sn->name);
 		s=s->next;
+	}
+	
+	ep=sn->extport;
+	while(ep) {
+		char *srcname="_";	
+		char *snkname="_";
+			if(ep->source)
+				srcname=ep->source->name;
+			if(ep->sink)
+				srcname=ep->sink->name;	
+	    fprintf(stderr,"EP: %d %s>%s,%d\n", 
+	    	ep->type, 
+	    	srcname,
+	    	snkname, 
+	    	ep->source_id);
+		ep=ep->next;
 	}
 	
 }
@@ -737,14 +824,17 @@ static void expandSub(Model m, Process p) {
 	sn = m->subnetm;
 	while(sn) {   // find subnet for p
 		if(strncmp(sn->name, p->comp->name, 100)==0) {
-			Expand(m, p, sn);
+			Expand(m, p, sn);		
+			free(p);   
+			return;
 		}
 		sn=sn->next;
 	}	
-	
-	// expand p 
-	
-	free(p);   
+	fprintf(stderr,
+		"SW/FAIL: Cannot find subnet %s for process %s\n",
+		sn->name,
+		p->name);
+	exit(1);	
 }
 
 
