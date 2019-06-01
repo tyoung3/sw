@@ -535,6 +535,32 @@ void visitSubdef(Subdef _p_)
     	visitIdent(_p_->u.snet_.ident_));
 }
 
+void visitHermt(Hermt _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Hermtx:
+    /* Code for Hermtx Goes Here */
+    visitIdent(_p_->u.hermtx_.ident_);
+    visitComp(_p_->u.hermtx_.comp_);
+    visitListArgument(_p_->u.hermtx_.listargument_);
+    break;  case is_Hermty:
+    /* Code for Hermty Goes Here */
+    visitIdent(_p_->u.hermty_.ident_);
+    visitListArgument(_p_->u.hermty_.listargument_);
+    break;  case is_Hermtax:
+    /* Code for Hermtax Goes Here */
+    visitComp(_p_->u.hermtax_.comp_);
+    visitListArgument(_p_->u.hermtax_.listargument_);
+    break;  case is_Hermtay:
+    /* Code for Hermtay Goes Here */
+    visitListArgument(_p_->u.hermtay_.listargument_);
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
+    exit(1);
+  }
+}
 void visitStm(Stm _p_) 
 {	
     state=IS_NET;
@@ -554,7 +580,7 @@ void visitStm(Stm _p_)
     visitSubdef(_p_->u.stmnet_.subdef_);
     break;
   case is_Stmh:
-    visitProc(_p_->u.stmh_.proc_);
+    visitHermt(_p_->u.stmh_.hermt_);
     break;
   default:
     fprintf(stderr, "Error: bad kind field when visiting Stm!\n");
