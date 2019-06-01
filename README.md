@@ -29,13 +29,15 @@ flow-based-programming(FBP) system.
 
 StreamWork reads and executes a StreamWork network definition(ND) file.
 Employing StreamWork, an ND becomes, in effect, an executable
-script. Sw launches collects go components(defined in go packages)  
-into one main.go program, launches them as goroutines, 
-and connects them via Go interface channels.  
+script. Sw generates import statements for Go components
+and builds a single main.go program which launches a goroutine
+for each process, and connects them via Go interface channels.  
 
-The ND consists of a list of streams(or dataflows). 
-Each stream definition consists of a sink process, 
-a sink port number, "<-", a source portnumber, and a source process followed by the statement terminator, ';'.   
+The network definition consists of a list of 
+streams(or dataflows).  Each stream definition consists 
+of a sink process, a sink port number, "<-", a source
+portnumber, and a source process followed by the 
+statement terminator, ';'.   
 
 Port numbers default to 0.
 
