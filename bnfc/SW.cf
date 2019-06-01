@@ -11,7 +11,8 @@ Valid.	 	    ValidSW  	::= [Stm]    ;
 
 Stmx.			Stm			::= S_tream  ; 
 Stmn.			Stm			::= Numassgn ; 
-Stms.			Stm			::= Strassgn ; 
+Stms.			Stm			::= Strassgn ;
+Stmh.			Stm			::= Hermits	 ; 
 Stmnet.			Stm			::= Subdef	 ;  
 terminator	    Stm   ";" ;
 
@@ -29,6 +30,8 @@ Streamx.		S_tream	 ::= Snk         Arrow Srce;
 Streamy.		S_tream  ::= S_tream Prt Arrow Srce ;
 separator		S_tream	 ";" ;  
 
+Hermit.			Hermits	 ::=  "(" Proc ")";
+ 
 Arrowx.			Arrow	 ::=  "<" Buffsize "-";
 
 Bufszi.			Buffsize ::= Numval;
