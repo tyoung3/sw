@@ -104,7 +104,6 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 }
 
 
-
 static int countArg(char **arg) {
 	int i=0;
 	
@@ -269,6 +268,10 @@ Component MakeComponent(Ident name, String path) {
 Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
 	Stream f;
 	
+	if(!src) {
+			fprintf(stderr, "SWMAIN/MakeStream/FAIL: Hermit?\n");
+			exit(0);
+	}
 	f=(Stream)malloc(sizeof(Stream_)); 
     if (!f)
     {
@@ -550,6 +553,9 @@ void visitStm(Stm _p_)
     state=IS_SUB;
     visitSubdef(_p_->u.stmnet_.subdef_);
     break;
+  case is_Stmh:
+    visitProc(_p_->u.stmh_.proc_);
+    break;
   default:
     fprintf(stderr, "Error: bad kind field when visiting Stm!\n");
     exit(1);
@@ -592,6 +598,8 @@ Process visitSrce(Srce _p_)
   {
   case is_Sourcex:
     p  = visitProc(_p_->u.sourcex_.proc_);
+    if(!p)
+    	return NULL;
     pt = visitPrt (_p_->u.sourcex_.prt_);  
     p->source_id = pt->id; 
     p->nportsOut++;
@@ -663,6 +671,14 @@ Process visitProc(Proc _p_)
     	NULL,
     	visitListArgument(_p_->u.processy_.listargument_) 
     );
+  case is_Processax: /* Anonymous process */
+    visitComp(_p_->u.processax_.comp_);
+    visitListArgument(_p_->u.processax_.listargument_);
+    break;  
+    
+  case is_Processay:  /* Anonymous process */
+    visitListArgument(_p_->u.processay_.listargument_);
+    break;
   default:
     fprintf(stderr, 
     "Error: bad kind field when visiting Proc!\n");

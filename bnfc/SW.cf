@@ -12,7 +12,7 @@ Valid.	 	    ValidSW  	::= [Stm]    ;
 Stmx.			Stm			::= S_tream  ; 
 Stmn.			Stm			::= Numassgn ; 
 Stms.			Stm			::= Strassgn ;
-Stmh.			Stm			::= Hermits	 ; 
+Stmh.			Stm			::= Proc	 ; 
 Stmnet.			Stm			::= Subdef	 ;  
 terminator	    Stm   ";" ;
 
@@ -30,7 +30,6 @@ Streamx.		S_tream	 ::= Snk         Arrow Srce;
 Streamy.		S_tream  ::= S_tream Prt Arrow Srce ;
 separator		S_tream	 ";" ;  
 
-Hermit.			Hermits	 ::=  "(" Proc ")";
  
 Arrowx.			Arrow	 ::=  "<" Buffsize "-";
 
@@ -45,6 +44,8 @@ Sinky.			Snk		::=  Ident;
 
 Processx.		Proc	::= "(" Ident  Comp [Argument] ")" ;
 Processy.		Proc	::= "(" Ident  [Argument] ")" ;
+Processax.		Proc	::= "(" "_"  Comp [Argument] ")" ;
+Processay.		Proc	::= "(" "_"  [Argument] ")" ;
 
 Portx.			Prt		::= Numval;
 Portni.         Prt     ::= Numval "." Ident; 
