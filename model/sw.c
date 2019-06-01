@@ -36,9 +36,7 @@ Subnetm MakeSubnetm(Ident id,Stream s, Extport in, Extport out ) {
 		in->next=out;
 	
 	sn2=net_model->subnetm;
-	if(sn2) {
-		 sn->next=sn2;	
-	}	
+	sn->next=sn2;
 	net_model->subnetm = sn;
 	return  sn;
 }; 
@@ -698,9 +696,38 @@ String visitString(String s)
 	return s;
 }
 
+static char *makeName(char *pn, char *nn) {
+	char bfr[1000];
 	
-static void Expand(Model m, Process p, Subnetm sn) {
+	strncpy( bfr,pn,500); 
+	strncat( bfr,"-",501);
+	strncat( bfr,nn,1000);
+	return(strdup(bfr)); 
+}
 
+static void Expand2(Model m, Process p, Stream s, char *name) {
+	char *srcname,*snkname;  // Concatenated process name 
+	Process src,snk;
+	state=IS_NET;
+	
+	srcname=makeName(p->name, s->source->name); 
+	snkname=makeName(p->name, s->sink->name);
+	src=MakeProcess(m,srcname, s->source->comp,NULL);
+	src->arg = s->source->arg;
+	snk=MakeProcess(m,snkname, s->sink->comp,NULL); 
+	snk->arg = s->sink->arg;
+}
+
+	/* Expand m for each stream in the subnet */
+static void Expand(Model m, Process p, Subnetm sn) {
+	Stream s;
+	
+	s=sn->stream;
+	while(s) {
+		Expand2(m,p,s,sn->name);
+		s=s->next;
+	}
+	
 }
 
 	/* Expand a subnet component */
