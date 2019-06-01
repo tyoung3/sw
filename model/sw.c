@@ -23,8 +23,9 @@ static String default_path={"strings"};   /* ?? arg later */
 int bs,maxbfsz=1;		              /*  Buffer size */
 
 Model net_model=NULL;  
+
 Subnetm MakeSubnetm(Stream s, Extport in, Extport out ) {
-	Subnetm sn;   
+	Subnetm sn,sn2;   
 	
 	sn = (Subnetm)malloc(sizeof(Subnetm_));
 	sn->name = NULL;
@@ -32,6 +33,12 @@ Subnetm MakeSubnetm(Stream s, Extport in, Extport out ) {
 	sn->extport=in;
 	if(in)
 		in->next=out;
+	
+	sn2=net_model->subnetm;
+	if(sn2) {
+		 sn->next=sn2;	
+	}	
+	net_model->subnetm = sn;
 	return  sn;
 }; 
 
@@ -686,4 +693,37 @@ String visitString(String s)
 {
 	return s;
 }
+
+	/* while some process contains a subnet component, 
+	   expand that component subnet. 
+	   Note any unexpanded subnets.
+	   Not implemented. 
+    */   
+    
+void expandSubnets(Model model) {
+	Process p,pp;
+	int more=0;
+	
+	do {
+		p=model->proc;
+		pp=NULL;
+		more=0;
+		while(p) {
+			if(p->kind == IS_SUB) {
+				more=1;
+				// delink p from process chain.
+				if(pp) 
+					pp->next = p->next;
+				else
+					model->proc=p->next;
+				model->nprocs--;		
+				// Expand p
+				break;
+			}
+			pp=p;  
+			p=p->next;
+		}
+	} while (more); 
+}	
+	
 

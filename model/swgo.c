@@ -49,12 +49,12 @@ static void genPaths(Model m) {
 	genPath(NULL);
 
 	p=m->proc;
-	do {
+	while (p) {
 		if( newPath(p->comp->path) ) {
 			genPath(p->comp->path);
 		}	
 		p=p->next;
- 	} while (p);
+ 	} ;
 
 	printf("\n\n");
 }	

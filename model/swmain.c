@@ -260,6 +260,7 @@ int main(int argc, char ** argv)
    				printf("%s\n\n", printValidSW(parse_tree)); //Print expanded network definition 
     			break;	
     		case GOMODE: 
+    			expandSubnets(model ); 
 	    	    genGo(model);	// Generate Go MAIN.GO
     			break;	
     		case CMODE: 
