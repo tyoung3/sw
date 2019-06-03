@@ -34,7 +34,7 @@ struct Port_ {
 	struct Port_ *match;
 	struct Port_ *next;
 	struct Port_ *prev;
-	//Process_ struct *owner;   ?? Circular
+	struct Stream_ *stream;
 } Port_;
 typedef struct Port_ *Port;
 		

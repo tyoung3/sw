@@ -164,11 +164,21 @@ static char **MakeArg(ListArgument la, char *name) {
 static Process MakeProcess( Model model,Ident name, Component comp, ListArgument la) {
 	Process p;
 	static int onone=1;
+	static int nanon=1;  /* Number of anonymous processes */
 	
 	if(onone) {
 		onone=0; 
 		tabinit(100000);
 	}
+	
+	if(name[0] == '_') {     // Anonymous process ?	
+		if(name[1] == 0) {   // not = = subnet process
+			char bfr[100];
+	
+			sprintf(bfr,"_%i",nanon++);
+			name=strndup(bfr,100); 
+		}
+	}	
 	
 	p=getProc(name);
 	 
@@ -430,15 +440,18 @@ Stream visitS_tream(S_tream _p_)
 	Process snk,src;
 	Port pt;
 	Stream s;
+	int bs;
 	
   switch(_p_->kind)
   {
   case is_Streamx:
-	return MakeStream(state,
-     visitSrce(_p_->u.streamx_.srce_),
-     visitSnk(_p_->u.streamx_.snk_),
-	 visitArrow(_p_->u.streamx_.arrow_),
-     net_model);
+     src=visitSrce(_p_->u.streamx_.srce_);
+     snk=visitSnk(_p_->u.streamx_.snk_);
+	 bs=visitArrow(_p_->u.streamx_.arrow_);
+     s=MakeStream(state,src,snk,bs,net_model);
+     s->source->port->stream=s;
+     s->sink->port  ->stream=s;
+     return s;
   case is_Streamy:    
     s=visitS_tream(_p_->u.streamy_.s_tream_);
     snk=s->source;   
@@ -496,6 +509,36 @@ Extport visitExtPortOut(ExtPortOut _p_)
 }
 
 
+void visitHermt(Hermt _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Hermtx:
+    /* Code for Hermtx Goes Here */
+    MakeProcess(net_model,
+    	visitIdent(_p_->u.hermtx_.ident_),
+    	visitComp(_p_->u.hermtx_.comp_),
+		visitListArgument(_p_->u.hermtx_.listargument_));
+    break;   
+   case is_Hermty:
+    /* Code for Hermty Goes Here */
+	    MakeProcess(
+	    	net_model,visitIdent(_p_->u.hermty_.ident_), NULL,
+    		visitListArgument(_p_->u.hermty_.listargument_));
+    break;  case is_Hermtax:
+    /* Code for Hermtax Goes Here */
+    MakeProcess(net_model,"_",visitComp(_p_->u.hermtax_.comp_),
+    	visitListArgument(_p_->u.hermtax_.listargument_));
+    break;  case is_Hermtay:
+   		MakeProcess(net_model,"_",NULL,
+   		visitListArgument(_p_->u.hermtay_.listargument_));
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
+    exit(1);
+  }
+}
+
 Subnetm visitSubnet(Subnet _p_, Ident id)
 {
 	Stream s=NULL;
@@ -503,6 +546,10 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 	
   switch(_p_->kind)
   {
+  case is_Sneth:
+    /* Code for Sneth Goes Here */
+    visitHermt(_p_->u.sneth_.hermt_);
+    return NULL;
   case is_Snets:
     	s=visitS_tream(_p_->u.snets_.s_tream_);
     	return MakeSubnetm(id,s,eport,eport);
@@ -535,34 +582,6 @@ void visitSubdef(Subdef _p_)
     	visitIdent(_p_->u.snet_.ident_));
 }
 
-void visitHermt(Hermt _p_)
-{
-  switch(_p_->kind)
-  {
-  case is_Hermtx:
-    /* Code for Hermtx Goes Here */
-    MakeProcess(net_model,visitIdent(_p_->u.hermtx_.ident_),
-    		    visitComp(_p_->u.hermtx_.comp_),
-			    visitListArgument(_p_->u.hermtx_.listargument_));
-    break;  
-   case is_Hermty:
-    /* Code for Hermty Goes Here */
-	    MakeProcess(
-	    	net_model,visitIdent(_p_->u.hermty_.ident_), NULL,
-    		visitListArgument(_p_->u.hermty_.listargument_));
-    break;  case is_Hermtax:
-    /* Code for Hermtax Goes Here */
-    MakeProcess(net_model,"_",visitComp(_p_->u.hermtax_.comp_),
-    	visitListArgument(_p_->u.hermtax_.listargument_));
-    break;  case is_Hermtay:
-   		MakeProcess(net_model,"_",NULL,
-   		visitListArgument(_p_->u.hermtay_.listargument_));
-    break;
-  default:
-    fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
-    exit(1);
-  }
-}
 void visitStm(Stm _p_) 
 {	
     state=IS_NET;
@@ -700,11 +719,13 @@ Process visitProc(Proc _p_)
     	visitListArgument(_p_->u.processy_.listargument_) 
     );
   case is_Processax: /* Anonymous process */
+    return NULL;
     visitComp(_p_->u.processax_.comp_);
     visitListArgument(_p_->u.processax_.listargument_);
     break;  
     
   case is_Processay:  /* Anonymous process */
+    return NULL;
     visitListArgument(_p_->u.processay_.listargument_);
     break;
   default:
@@ -832,6 +853,63 @@ static void Expand2(Model m, Process p, Stream s, char *name) {
 	ns->bufsz=s->bufsz;
 	ns->state=state;
 }
+		 
+static void Expand3(Model m, 
+					Process p,
+					Subnetm sn,
+					Extport ep) {
+					Port pt;
+		Stream s,ss;			//ss is 'subnet stream
+		Process pnew;
+		Component comp;
+		ListArgument la;
+		char *srcname;
+		char *snkname;
+			
+		if(ep->type==SOURCE) {
+				pt=p->port;
+				while(pt) {
+					if(pt->id == ep->source_id) {
+						pnew=MakeProcess(
+								m,
+								srcname, 
+								comp, 
+								la 
+							);
+						ss=pt->stream;
+						s=MakeStream(IS_NET,   
+							ep->source, 
+							ss->sink,  
+							ss->bufsz, m);
+						return;
+					}
+					pt=pt->next;
+				}
+		}else {   
+				pt=p->port;
+				while(pt) {
+					if(pt->id == ep->sink_id) {
+						ss=pt->stream;
+						pnew=MakeProcess(
+								m,
+								snkname, 
+								comp, 
+								la 
+							);	
+						s=MakeStream(IS_NET,   
+							ss->source, pnew,  
+							ss->bufsz, m);
+						return;
+					}
+					pt=pt->next;
+				}	
+		}
+			
+	fprintf(stderr,
+		"SW/EXPAND3/FAIL: cannot match process %s port %i", p->name,ep->sink_id);  
+	   
+}
+
 	/* Expand m for each stream in the subnet */
 static void Expand(Model m, Process p, Subnetm sn) {
 	Stream s;
@@ -845,21 +923,11 @@ static void Expand(Model m, Process p, Subnetm sn) {
 	
 	ep=sn->extport;
 	while(ep) {
-		char *srcname="_";	
-		char *snkname="_";
-			if(ep->source)
-				srcname=ep->source->name;
-			if(ep->sink)
-				srcname=ep->sink->name;	
-	    fprintf(stderr,"EP: %d %s>%s,%d\n", 
-	    	ep->type, 
-	    	srcname,
-	    	snkname, 
-	    	ep->source_id);
+		Expand3(m, p, sn, ep );			
 		ep=ep->next;
-	}
-	
+	}	
 }
+
 
 	/* Expand a subnet component */
 static void expandSub(Model m, Process p) {
@@ -874,10 +942,11 @@ static void expandSub(Model m, Process p) {
 		}
 		sn=sn->next;
 	}	
+	
 	fprintf(stderr,
-		"SW/FAIL: Cannot find subnet %s for process %s\n",
-		sn->name,
+		"SW/FAIL: Cannot find subnet for process %s\n",
 		p->name);
+
 	exit(1);	
 }
 

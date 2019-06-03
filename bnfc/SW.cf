@@ -16,8 +16,9 @@ Stmh.			Stm			::= Hermt	 ;
 Stmnet.			Stm			::= Subdef	 ;  
 terminator	    Stm   ";" ;
 
-Snet.			Subdef	 ::= Ident "{" [Subnet] "}" ;
+Snet.			Subdef	 ::= "'" Ident "{" [Subnet] "}" ;
 
+Sneth.			Subnet ::= Hermt    	;
 Snets.			Subnet ::= S_tream		;
 Snetin.			Subnet ::= ExtPortIn  	;
 Snetout.		Subnet ::= ExtPortOut  	;
