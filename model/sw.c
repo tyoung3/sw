@@ -161,25 +161,34 @@ static char **MakeArg(ListArgument la, char *name) {
 	
 	return arg;
 }
-static Process MakeProcess( Model model,Ident name, Component comp, ListArgument la) {
+
+static char *fixName(char *name) {	
+	char bfr[100];
+	static int nanon=1;  /* Number of anonymous processes */
+	
+	if(name[0] == '_') {     // Anonymous process ?	
+		if(name[1] == 0) {   // not = = subnet process
+			sprintf(bfr,"_%i",nanon++);
+			return strndup(bfr,100);
+		}
+	}
+	return name;	
+}	
+
+static Process MakeProcess( 
+		Model 		model,
+		Ident 		name, 
+		Component 	comp, 
+		char 		**arg) {
 	Process p;
 	static int onone=1;
-	static int nanon=1;  /* Number of anonymous processes */
 	
 	if(onone) {
 		onone=0; 
 		tabinit(100000);
 	}
 	
-	if(name[0] == '_') {     // Anonymous process ?	
-		if(name[1] == 0) {   // not = = subnet process
-			char bfr[100];
-	
-			sprintf(bfr,"_%i",nanon++);
-			name=strndup(bfr,100); 
-		}
-	}	
-	
+	name=fixName(name); 
 	p=getProc(name);
 	 
 	if(p==NULL) {
@@ -204,12 +213,14 @@ static Process MakeProcess( Model model,Ident name, Component comp, ListArgument
 			p->next = NULL;
 		}
 		p->prev = NULL;
-		p->arg  = MakeArg(la,name);
+		p->arg  = arg;
+    	p->arg[0]=name;
     	addProc(name,p);
     }	else {
     	if(comp) {
     		p->comp = comp;
     	}
+/*    	
     	if(la) {
     		if( p->arg ) { 	
     			p->arg  = NewArg(p->arg,MakeArg(la,name)); 
@@ -217,6 +228,7 @@ static Process MakeProcess( Model model,Ident name, Component comp, ListArgument
 	    		p->arg  = MakeArg(la,name);
 	    	}	
     	}	
+*/
     }
     
 	return p;
@@ -486,7 +498,7 @@ Extport MakeExtport(
 		 ep->source=p;
 		 ep->source_id=id;
 	}
-	 	
+	ep->bufsz = bs; 	
 	ep->next=NULL;
 	return ep;
 }
@@ -511,27 +523,42 @@ Extport visitExtPortOut(ExtPortOut _p_)
 
 void visitHermt(Hermt _p_)
 {
+  Process p;
+  char *name;
+  
   switch(_p_->kind)
   {
   case is_Hermtx:
-    /* Code for Hermtx Goes Here */
+    name = visitIdent(_p_->u.hermtx_.ident_);
     MakeProcess(net_model,
-    	visitIdent(_p_->u.hermtx_.ident_),
+    	name,
     	visitComp(_p_->u.hermtx_.comp_),
-		visitListArgument(_p_->u.hermtx_.listargument_));
+		MakeArg(
+		   visitListArgument(_p_->u.hermtx_.listargument_),
+		   name));
     break;   
    case is_Hermty:
     /* Code for Hermty Goes Here */
 	    MakeProcess(
-	    	net_model,visitIdent(_p_->u.hermty_.ident_), NULL,
-    		visitListArgument(_p_->u.hermty_.listargument_));
-    break;  case is_Hermtax:
+	    	net_model,
+	    	visitIdent(_p_->u.hermty_.ident_), NULL,
+    		MakeArg(visitListArgument(
+    		    _p_->u.hermty_.listargument_),
+    		    NULL)) ;
+    	break;  
+    case is_Hermtax:
     /* Code for Hermtax Goes Here */
-    MakeProcess(net_model,"_",visitComp(_p_->u.hermtax_.comp_),
-    	visitListArgument(_p_->u.hermtax_.listargument_));
-    break;  case is_Hermtay:
+    	MakeProcess(
+    	  net_model,"_",visitComp(_p_->u.hermtax_.comp_),
+    	  MakeArg(visitListArgument(
+    	    _p_->u.hermtax_.listargument_),NULL));
+    	break;  
+    case is_Hermtay:
    		MakeProcess(net_model,"_",NULL,
-   		visitListArgument(_p_->u.hermtay_.listargument_));
+   		MakeArg(
+   			visitListArgument(
+   			   _p_->u.hermtay_.listargument_),
+   			NULL));
     break;
   default:
     fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
@@ -655,7 +682,7 @@ Process visitSrce(Srce _p_)
   case is_Sourcey:
     s=visitIdent(_p_->u.sourcey_.ident_);
     c=MakeComponent(defaultSourceComp,defaultPath);
-    p=MakeProcess(net_model,s,c,NULL);
+    p=MakeProcess(net_model,s,c,MakeArg(NULL,NULL));
     pt=MakePort(-2,"");
     p->source_id=-2;
     p->nportsOut++;
@@ -688,7 +715,7 @@ Process visitSnk(Snk _p_)
     /* Code for Sinky Goes Here */
     s=visitIdent(_p_->u.sinky_.ident_);
     c=MakeComponent(defaultSinkComp,defaultPath);
-    p=MakeProcess(net_model,s,c,NULL);
+    p=MakeProcess(net_model,s,c,MakeArg(NULL,NULL));
     pt=MakePort(-2,"");
     p->sink_id=-2;
     p->nportsIn++;
@@ -709,15 +736,20 @@ Process visitProc(Proc _p_)
     return MakeProcess(net_model,
     	visitIdent(_p_->u.processx_.ident_), 
     	visitComp(_p_->u.processx_.comp_),
-    	visitListArgument(_p_->u.processx_.listargument_)
-    );   
+    	MakeArg(visitListArgument(
+    		_p_->u.processx_.listargument_),
+    	    NULL));
       
   case is_Processy:   
-    return MakeProcess(net_model,
+    return MakeProcess(
+    	net_model,
     	visitIdent(_p_->u.processy_.ident_), 
     	NULL,
-    	visitListArgument(_p_->u.processy_.listargument_) 
-    );
+    	MakeArg(
+    		visitListArgument(_p_->u.processy_.listargument_),
+      		NULL)
+     ); 
+     
   case is_Processax: /* Anonymous process */
     return NULL;
     visitComp(_p_->u.processax_.comp_);
@@ -834,9 +866,11 @@ static void Expand2(Model m, Process p, Stream s, char *name) {
 	
 	srcname=makeName(p->name, s->source->name); 
 	snkname=makeName(p->name, s->sink->name);
-	src=MakeProcess(m,srcname, s->source->comp,NULL);
+	src=MakeProcess(m,srcname, 
+		s->source->comp,MakeArg(NULL,NULL));
 	src->arg = s->source->arg;
-	snk=MakeProcess(m,snkname, s->sink->comp,NULL); 
+	snk=MakeProcess(m,snkname, 
+		s->sink->comp,MakeArg(NULL,NULL)); 
 	snk->arg = s->sink->arg;
 	psrc=MakePort(s->source->port->id,s->source->port->name);
 	psnk=MakePort(s->sink->port->id,s->sink->port->name);
@@ -859,7 +893,7 @@ static void Expand3(Model m,
 					Subnetm sn,
 					Extport ep) {
 					Port pt;
-		Stream s,ss;			//ss is 'subnet stream
+		Stream s;			//ss is the stream
 		Process pnew;
 		Component comp;
 		ListArgument la;
@@ -870,35 +904,42 @@ static void Expand3(Model m,
 				pt=p->port;
 				while(pt) {
 					if(pt->id == ep->source_id) {
+						s=pt->stream;
+						srcname=makeName(p->name,
+								 fixName(ep->source->name));
 						pnew=MakeProcess(
 								m,
 								srcname, 
-								comp, 
-								la 
+								ep->source->comp, 
+								ep->source->arg 
 							);
-						ss=pt->stream;
-						s=MakeStream(IS_NET,   
-							ep->source, 
-							ss->sink,  
-							ss->bufsz, m);
+						s->source=pnew;
+						if(ep->bufsz > s->bufsz)
+							s->bufsz=ep->bufsz;
+						pnew->nportsOut=1;
+						pnew->port=pt;	
 						return;
 					}
 					pt=pt->next;
-				}
+				}	
 		}else {   
 				pt=p->port;
 				while(pt) {
 					if(pt->id == ep->sink_id) {
-						ss=pt->stream;
+						s=pt->stream;
+						snkname=makeName(p->name,
+								 fixName(ep->sink->name));
 						pnew=MakeProcess(
 								m,
 								snkname, 
-								comp, 
-								la 
-							);	
-						s=MakeStream(IS_NET,   
-							ss->source, pnew,  
-							ss->bufsz, m);
+								ep->sink->comp, 
+								ep->sink->arg 
+							);
+						s->sink=pnew;
+						if(ep->bufsz > s->bufsz)
+							s->bufsz=ep->bufsz;
+						pnew->nportsIn=1;
+						pnew->port=pt;	
 						return;
 					}
 					pt=pt->next;

@@ -72,7 +72,8 @@ struct Extport_ {
 	Process source;
 	Process sink;
 	int source_id; 	
-	int sink_id; 	
+	int sink_id; 
+	int bufsz;	
 	struct Extport_ *next;
 } Extport_;
 typedef struct Extport_ *Extport;
