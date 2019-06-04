@@ -12,8 +12,10 @@ Debug() {
 	#echo "Debug: $*"
 }
 
-SW=~/go/mod/sw/bin/sw
+SW=/usr/local/bin/sw
 [ -e $SW     ] || Die $SW is missing 
+
+$SW -v 
 
 SearchFile() { 
 	Debug SearchFIle $*

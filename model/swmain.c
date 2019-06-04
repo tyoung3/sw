@@ -10,11 +10,11 @@
 #include "swsym.h"
 #include "swgraph.h"  
 
-char *version={VERSION};  
-
-ValidSW pValidSW(FILE *inp);
-
 typedef enum{ GOMODE=0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE=7 }   MODE;
+
+char *version={VERSION};  
+static MODE mode=GOMODE;
+static char *fname={"stdin"};ValidSW pValidSW(FILE *inp);
 
 static int badProc(Process p) {
 			int i;
@@ -200,40 +200,41 @@ char *baseOf(char *s) {
 		return sr;
 }
 
+static int BadArg(int argc, char **argv) {   
+	int i=1;
+	
+	while(i<argc) {
+	   if(strncmp(argv[i],"-m",30) == 0) { 
+	   		if(i==argc-1)
+	   				return 1;
+	   		mode=atoi(argv[i+1]);
+	   		i+=2;
+	   } else {
+	   if( strncmp(argv[i],"-v",4) == 0) {
+  			printf("StreamWork/sw-%s\n", version);
+  			i++;
+  			exit(0);
+  	   } else {
+  	   		input=openFile(argv[i]);
+  			fname=argv[i];
+  			i++;
+  	   }}				
+	}
+	return 0;
+}
+  
 int main(int argc, char ** argv)
 {
   ValidSW parse_tree;
   Model model;    /* Network Model */
-  MODE mode=GOMODE;
-  char *fname={"stdin"};
   
   input = stdin;
+
+  if(BadArg(argc,argv)) {
+  	Usage();
+  	exit(1);
+  }	 
   
-  if (argc > 1)  {
-  	if(argc>2) {
-  		if(strncmp(argv[1],"-m",30) == 0) {  
-  			mode=atoi(argv[2]);
-  		} else {
-  			Usage(); 
-  			exit(1);
-  		}	
-  		if(argc>4) {
-  			Usage();
-  			exit(1);
-  		} 
-  		if(argc>3) {
-  			input=openFile(argv[3]);
-  			fname=argv[3];
-  		} 
-  	}	else {
-  			if( strncmp(argv[1],"-v",4) == 0) {
-  				printf("StreamWork/sw-%s\n", version);
-  				exit(0);
-  			} else {
-  				input=openFile(argv[1]);
-  			}	
-  	}			
-  }
   	
   parse_tree = pValidSW(input);
   

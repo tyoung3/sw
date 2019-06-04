@@ -181,7 +181,7 @@ static Process MakeProcess(
 		Component 	comp, 
 		char 		**arg) {
 	Process p;
-	static int onone=1;
+	static int onone=1,onone2=1;
 	
 	if(onone) {
 		onone=0; 
@@ -269,6 +269,7 @@ Port MakePort(int n, Ident id) {
 
 Component MakeComponent(Ident name, String path) {
 	Component c; 
+	int onone=1;
 	
 	c=(Component)malloc(sizeof(Component_)); 
     if (!c)
@@ -279,6 +280,12 @@ Component MakeComponent(Ident name, String path) {
     
 	c->name = name;
 	c->path = path;
+    if(onone && path) {
+     			onone=0;
+     			defaultPath=path;
+     			//defaultSourceComp=src->comp->name;
+     			//defaultSinkComp=snk->comp->name;
+    }
 	return c;
 } 
 
@@ -455,7 +462,6 @@ Stream visitS_tream(S_tream _p_)
 	Port pt;
 	Stream s,s2;
 	int bs;
-	static int onone=1;
 	
   switch(_p_->kind)
   {
@@ -466,12 +472,6 @@ Stream visitS_tream(S_tream _p_)
      s=MakeStream(state,src,snk,bs,net_model);
      setStream(src->port,s); 
      setStream(snk->port,s);
-     if(onone) {
-     	onone=0;
-     	defaultPath=snk->comp->path;
-     	defaultSourceComp=src->comp->name;
-     	defaultSinkComp=snk->comp->name;
-     }
      return s;
   case is_Streamy:    
     s=visitS_tream(_p_->u.streamy_.s_tream_);
