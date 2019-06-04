@@ -10,10 +10,12 @@ extern char *version;
 #define MAX_BUFFER  1000000
 
 /* sw.c  */
+extern char *defaultPath;
 extern int maxbfsz;
-void expandSubnets(Model model);
 
-Model 	visitValidSW(ValidSW p);
+void visitDouble(Double d);
+void visitChar(Char c);
+void expandSubnets(Model model);
 void	visitStm(Stm p);
 void 	visitListStm(ListStm p);
 Stream	visitS_tream(S_tream p);
@@ -24,12 +26,10 @@ Port    visitPrt(Prt p);
 Component visitComp(Comp p);
 Argument visitArgument(Argument p);
 ListArgument visitListArgument(ListArgument p);
-
+Model 	visitValidSW(ValidSW p);
 
 Ident visitIdent(Ident i);
 Integer visitInteger(Integer i);
-void visitDouble(Double d);
-void visitChar(Char c);
 String visitString(String s);
 String visitStringval(Stringval p);
 

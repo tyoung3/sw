@@ -210,6 +210,13 @@ static int BadArg(int argc, char **argv) {
 	   		mode=atoi(argv[i+1]);
 	   		i+=2;
 	   } else {
+	   
+	   if(strncmp(argv[i],"-d",30) == 0) { 
+	   		if(i==argc-1)
+	   				return 1;
+	   		defaultPath=argv[i+1];
+	   		i+=2;
+	   } else {
 	   if( strncmp(argv[i],"-v",4) == 0) {
   			printf("StreamWork/sw-%s\n", version);
   			i++;
@@ -218,7 +225,7 @@ static int BadArg(int argc, char **argv) {
   	   		input=openFile(argv[i]);
   			fname=argv[i];
   			i++;
-  	   }}				
+  	   }}}				
 	}
 	return 0;
 }
