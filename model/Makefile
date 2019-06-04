@@ -62,7 +62,7 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 
 
 svg:  .phsvg 
-	dot -Tsvg  /tmp/collate.do[Inferior 1 (process 21934) exited not > /tmp/collate.svg
+	dot -Tsvg  /tmp/collate.dot > /tmp/collate.svg
 
 .phsvg: /tmp/collate.dot
 		
