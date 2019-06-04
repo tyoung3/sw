@@ -11,10 +11,10 @@
 
 #define NOBUFFERS
 
-#define defaultPath       "def"
-#define defaultSourceComp "Gen1"
-#define defaultFilterComp "Filter1"
-#define defaultSinkComp   "Print1"
+static char *defaultPath={"def"};
+static char *defaultSourceComp={"Gen1"};
+static char *defaultFilterComp={"Filter1"};
+static char *defaultSinkComp={"Print1"};
 
 /* @TODO  Standardize error messages */
 
@@ -455,6 +455,7 @@ Stream visitS_tream(S_tream _p_)
 	Port pt;
 	Stream s,s2;
 	int bs;
+	static int onone=1;
 	
   switch(_p_->kind)
   {
@@ -465,6 +466,12 @@ Stream visitS_tream(S_tream _p_)
      s=MakeStream(state,src,snk,bs,net_model);
      setStream(src->port,s); 
      setStream(snk->port,s);
+     if(onone) {
+     	onone=0;
+     	defaultPath=snk->comp->path;
+     	defaultSourceComp=src->comp->name;
+     	defaultSinkComp=snk->comp->name;
+     }
      return s;
   case is_Streamy:    
     s=visitS_tream(_p_->u.streamy_.s_tream_);

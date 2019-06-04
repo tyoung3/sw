@@ -177,7 +177,10 @@ v0.7.0
 	* Added subneting to NDs; BUGGY
 -----------
 
-	 
+v0.7.1
+------
+	* Fixed collate example
+	
 SW.cf Language Notes
 --------------------
 Statements in the network definition language, SW.cf, are 
