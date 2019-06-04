@@ -85,10 +85,10 @@ ${PGM}: ${OBJS} ${SWOBJS}
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
 		
-sw.o: sw.c sw.h swsym.h ${HEADERS}
+sw.o: sw.c sw.h swsym.h ${HEADERS} model.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
-swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h ${HEADERS} Makefile
+swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h ${HEADERS} Makefile  model.h
 	${CC} ${CCFLAGS} -DVERSION=${VERSION} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h swsym.h sw.h model.h ${HEADERS}

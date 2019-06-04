@@ -6,11 +6,14 @@
 #include "../bnfc/Printer.h"
 
 /*          Network  Model
- 
+
+               |<--------------------------------
+               |                         ^      ^ 
+               v                         |      |
 	 Model > Stream > Source_Process > Port > Port 
-	 			 	Sink_Process   > Port > Port
-	                Process        > Component
-				    Process        > Process
+	 			 	Sink_Process     > Port > Port
+	                Process          > Component
+				    Process          > Process
 */
 
 /*    MODEL  Structures   */
@@ -21,9 +24,6 @@ typedef enum {IS_NET, IS_SUB} STATE;
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
-		int    nports;
-		struct Component_ *next;
-		struct Component_ *prev;	
 } Component_;
 typedef struct Component_ *Component;
 
@@ -32,9 +32,9 @@ struct Port_ {
 	int channel;  /* Go Channel Number */	
 	String name;
 	struct Port_ *match;
+	struct Stream_ *stream;
 	struct Port_ *next;
 	struct Port_ *prev;
-	struct Stream_ *stream;
 } Port_;
 typedef struct Port_ *Port;
 		
@@ -48,7 +48,6 @@ struct Process_ {
 		int  sink_id;
 		int  source_id;
 		struct Process_ *next;
-		struct Process_ *prev;    
 		char **arg;		  /* An array of strings. */
 		STATE kind;	  /* In subnet or net */
 } Process_; 
@@ -62,7 +61,6 @@ struct Stream_ {
 	int bufsz; 
 	STATE  state;    /* Type of Stream IS_SUB or IS_NET  */
 	struct Stream_ *next;
-	struct Stream_ *prev;
 } Stream_;
 typedef struct Stream_ *Stream;
 

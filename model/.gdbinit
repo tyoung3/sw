@@ -1,3 +1,3 @@
 #break visitValidSW
-break Expand3
-run */si*
+break genGo
+run ../nds/colla*.sw
