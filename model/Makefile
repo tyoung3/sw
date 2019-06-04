@@ -5,11 +5,14 @@ CCFLAGS = -g -W -Wall
 
 VERSION = \"0.7.0\"
 
+LATEX = latex
+DVIPS = dvips
+
 OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o
 HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 
-all:  ../bin/sw tags 
+all:  ../bin/sw tags SW.pdf
 
 install: ${PGM}
 	sudo cp ${PGM} /usr/local/bin 
@@ -24,6 +27,16 @@ poc:	.phony
 	../sw.sh poc 
 
 .phony:  ${PGM} ../sw.sh
+
+SW.ps: SW.dvi
+	${DVIPS} SW.dvi -o SW.ps
+	
+SW.dvi: ../bnfc/SW.tex
+	${LATEX} ../bnfc/SW.tex
+        
+SW.pdf:  SW.ps
+	ps2pdf SW.ps
+            
 
 check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
 	${PGM}  -v 

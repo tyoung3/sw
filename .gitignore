@@ -5,6 +5,9 @@ Parser.?
 Printer.?
 SW.l
 SW.y
+SW.tex
+SW.dvi
+SW.ps
 Skeleton.?
 /Test.c
 *.o

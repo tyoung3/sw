@@ -174,27 +174,9 @@ v0.6.1
 	
 v0.7.0
 ------
-	* Added subneting to NDs WITHOUT implementing.
-	  Subnets will be validated, then ignored for now.
-	  Ex.  
-	  	```SN { 
-	  			   1 <- 0(A Acomp);
-	  	        (A)1 <- 0;
-	  	        (A)2 <- (B b) <- (C c);
-	  	      };
-	  	    (X 'SN)1 <- (Y 'SN);
-	  	    (Y)1     <- (X);       	
-		```
-Named Ports
+	* Added subneting to NDs; BUGGY
 -----------
 
-Ex.  (A a)FOO <- FOO(B b);  expands to (A a)0 <- 0(B b);
-	 (A a)FOO <- BAR(B b);  fails with a name mismatch, but 
-	 (A a)IN  <- OUT(B b);  succeeds, as do
-	 (X1 a)0.SOCKET  <- PLUG.0(Y1 b); and
-	 (X2 a)0.SLOT    <- TAB.0(Y2 b);
-	 
-	 
 	 
 SW.cf Language Notes
 --------------------
@@ -339,8 +321,7 @@ BUGS:
 -----
 	 std.Gen1 fails unless all three arguments are present.
 	 
-	 Re-ordering streams in the ND, sometimes causes sw to
-	 fail for multi-port components. 
+	 Some Subnets failing.
 
 Author
 ------
