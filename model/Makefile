@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.6.1\"
+VERSION = \"0.7.0\"
 
 OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o
