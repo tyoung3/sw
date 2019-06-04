@@ -12,7 +12,7 @@ RunCollate () {
 	[ -d bin ] || pushd ../
 	[ -x bin/sw ]|| Die Cannot find bin/sw -- run make ? 
 	[ -d $temp/sw/collate ] || mkdir -p $temp/sw/collate 
-	bin/sw nds/collate.sw >  $temp/sw/collate/main.go
+	bin/sw nds/collate.sw |gofmt >  $temp/sw/collate/main.go
 	pushd $temp/sw/collate
 	[ -f go.mod ] || go mod init collate/collate
 	go run main.go 	| sort -r

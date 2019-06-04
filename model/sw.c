@@ -212,7 +212,6 @@ static Process MakeProcess(
 		}	else {
 			p->next = NULL;
 		}
-		p->prev = NULL;
 		p->arg  = arg;
     	p->arg[0]=name;
     	addProc(name,p);
@@ -280,9 +279,6 @@ Component MakeComponent(Ident name, String path) {
     
 	c->name = name;
 	c->path = path;
-	c->nports = 0;
-	c->prev = NULL;
-	c->next = NULL;
 	return c;
 } 
 
@@ -306,7 +302,6 @@ Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
 	f->source_id = fixId(src->source_id); 
 	f->sink_id   = fixId(snk->sink_id);
 	f->next      = NULL;
-	f->prev      = NULL;
 	f->state	 = state;  /* Defined w/ '<-'  */
 	if(state==IS_NET) {
  		m->nstreams++;
