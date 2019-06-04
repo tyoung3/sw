@@ -447,11 +447,18 @@ static void linkPort(Process P, Port p) {
 	p->prev->next = p;
 }    
 
+static void setStream(Port pt, Stream s) {      
+     while(pt->stream) {
+     	pt=pt->next;
+     }	
+     pt->stream=s;
+}     
+
 Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
 	Port pt;
-	Stream s;
+	Stream s,s2;
 	int bs;
 	
   switch(_p_->kind)
@@ -461,8 +468,8 @@ Stream visitS_tream(S_tream _p_)
      snk=visitSnk(_p_->u.streamx_.snk_);
 	 bs=visitArrow(_p_->u.streamx_.arrow_);
      s=MakeStream(state,src,snk,bs,net_model);
-     s->source->port->stream=s;
-     s->sink->port  ->stream=s;
+     setStream(src->port,s); 
+     setStream(snk->port,s);
      return s;
   case is_Streamy:    
     s=visitS_tream(_p_->u.streamy_.s_tream_);
@@ -473,7 +480,10 @@ Stream visitS_tream(S_tream _p_)
     snk->sink_id   = pt->id;
     snk->nportsIn++;  
     linkPort( snk,pt);
-    return MakeStream(state, src, snk, bs, net_model);
+    s2=MakeStream(state, src, snk, bs, net_model); 
+     setStream(src->port,s2); 
+     setStream(snk->port,s2);   
+    return s2;
   default:
     fprintf(stderr, "Error: bad kind field when visiting S_tream!\n");
     exit(1);
@@ -582,10 +592,12 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
     	return MakeSubnetm(id,s,eport,eport);
   case is_Snetin:
     return MakeSubnetm(id,s,
-    	visitExtPortIn(_p_->u.snetin_.extportin_), eport);
+    	visitExtPortIn(_p_->u.snetin_.extportin_), 
+    	eport);
   case is_Snetout:
-    return MakeSubnetm(id,
-    	s,eport,visitExtPortOut(_p_->u.snetout_.extportout_));
+    return MakeSubnetm(id,s,
+    	visitExtPortOut(_p_->u.snetout_.extportout_),
+    	eport);
   default:
     fprintf(stderr, "Error: bad kind field when visiting Subnet!\n");
     exit(1);
