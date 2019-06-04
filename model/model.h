@@ -15,7 +15,9 @@
 
 /*    MODEL  Structures   */
 
-typedef enum {NONE,GOIP,OTHER} STREAMTYPE;
+typedef enum {IS_NET, IS_SUB} STATE;
+// typedef enum {NONE,GOIP,SUBNET,OTHER} KINDOF;
+
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
@@ -32,7 +34,7 @@ struct Port_ {
 	struct Port_ *match;
 	struct Port_ *next;
 	struct Port_ *prev;
-	//Process_ struct *owner;   ?? Circular
+	struct Stream_ *stream;
 } Port_;
 typedef struct Port_ *Port;
 		
@@ -48,6 +50,7 @@ struct Process_ {
 		struct Process_ *next;
 		struct Process_ *prev;    
 		char **arg;		  /* An array of strings. */
+		STATE kind;	  /* In subnet or net */
 } Process_; 
 typedef struct Process_ *Process;
 
@@ -57,17 +60,38 @@ struct Stream_ {
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	STREAMTYPE type;    /* Type of Stream GOGO, ORPHAN, etc*/
+	STATE  state;    /* Type of Stream IS_SUB or IS_NET  */
 	struct Stream_ *next;
 	struct Stream_ *prev;
 } Stream_;
 typedef struct Stream_ *Stream;
+
+typedef enum {SINK,SOURCE} PortType;
+struct Extport_ {
+	PortType type;
+	Process source;
+	Process sink;
+	int source_id; 	
+	int sink_id; 
+	int bufsz;	
+	struct Extport_ *next;
+} Extport_;
+typedef struct Extport_ *Extport;
+
+struct Subnetm_ {     /* Model Subnet: a list of Subnets */
+	char *name;
+	Stream  stream;		/* First SN stream in this subnet */
+	Extport extport;
+	struct Subnetm_ *next;
+} Subnetm_;
+typedef struct Subnetm_ *Subnetm;
 
 struct Model_ {
 	int nstreams;
 	int ncomponents;
 	int nprocs; 		/* number of processes */
 	Stream stream;			/* pointer to first stream*/
+	Subnetm subnetm;     /* Pointer to first subnet */
 	Process proc;		/* First Process */
 	char *name;			/* Model Name */
 } Model_;

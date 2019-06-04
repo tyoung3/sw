@@ -32,7 +32,6 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	../sw.sh poc     
 	${PGM}       ../nds/locusts.sw  >/dev/null
 	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
@@ -44,10 +43,13 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/ad.sw  >/dev/null
 	${PGM}  tests/ae.sw  >/dev/null
 	${PGM}  tests/aef.sw  >/dev/null
+	${PGM}  tests/sisub.sw   >/dev/null
+	../sw.sh poc     
+	${PGM} -m 2 tests/subnet1.sw   >/dev/null
 
 
 svg:  .phsvg 
-	dot -Tsvg  /tmp/collate.dot > /tmp/collate.svg
+	dot -Tsvg  /tmp/collate.do[Inferior 1 (process 21934) exited not > /tmp/collate.svg
 
 .phsvg: /tmp/collate.dot
 		

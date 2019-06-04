@@ -11,6 +11,7 @@ extern char *version;
 
 /* sw.c  */
 extern int maxbfsz;
+void expandSubnets(Model model);
 
 Model 	visitValidSW(ValidSW p);
 void	visitStm(Stm p);

@@ -10,8 +10,7 @@
 #include "swsym.h"
 #include "swgraph.h"  
 
-char *version={VERSION};
-
+char *version={VERSION};  
 
 ValidSW pValidSW(FILE *inp);
 
@@ -169,212 +168,6 @@ static int verifyOK(Model model) { 						/*expand and check model*/
 	
 };  		
 
-Port MakePort(int n, Ident id) {
-	Port p; 
-	
-	p=(Port)malloc(sizeof(Port_)); 
-    if (!p)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Port!\n");
-        exit(1);
-    }
-    
-    if(id) {
-    	p->name=id;
-    } else {
-    	p->name="";
-    }	
-	p->id = n;
-	p->match = NULL;
-	p->next = p;
-	p->prev = p;
-	p->match = NULL;
-	// p->owner = own;
-	return p;
-} 
-    
-
-
-Component MakeComponent(Ident name, String path) {
-	Component c; 
-	
-	c=(Component)malloc(sizeof(Component_)); 
-    if (!c)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Component!\n");
-        exit(1);
-    }
-    
-	c->name = name;
-	c->path = path;
-	c->nports = 0;
-	c->prev = NULL;
-	c->next = NULL;
-	return c;
-} 
-
-static int fixId(int i) {
-	if (i<0) 
-		return 0;
-	return i;
-}
-		    
-Stream MakeStream(Process src, Process snk, int bs, Model m) {
-	Stream f;
-	
-	f=(Stream)malloc(sizeof(Stream_)); 
-    if (!f)
-    {
-        fprintf(stderr, "SWMAIN/MakeStream/FAIL: out of memory when allocating Stream!\n");
-        exit(1);
-    }
-    
-	f->source    = src;
-	f->sink      = snk;
-	f->source_id = fixId(src->source_id); 
-	f->sink_id   = fixId(snk->sink_id);
-	f->next      = NULL;
-	f->prev      = NULL;
-	f->type		 = GOIP;  /* Defined w/ '<-'  */
-    f->next = m->stream;	
-    m->stream=f;
- 	m->nstreams++;
-    if(bs<1) bs=1;   
-    if(bs>MAX_BUFFER)    
-    	bs=MAX_BUFFER;
-    if( bs > maxbfsz) 
-    		maxbfsz=bs;	
-	f->bufsz	 = bs;
-	return f;
-} 
-
-static char **MakeArg(ListArgument la, char *name) {
-	char **arg;   /* Pointer to array of string pointers. */
-	int i=1,narg=1;
-	ListArgument la2=la;
-	
-	while(la2) {
-		narg++;
-		la2     = la2->listargument_;
-	}
-	
-	arg = (char **) malloc((narg+1)*sizeof(char*)); 
-	arg[0] = name;
-	arg[narg] = NULL; 
-
-	i=narg-1;
-	while(la) {
-		arg[i--] = 
-		  visitStringval(la->argument_->u.argumentx_.stringval_);
-		la       = la->listargument_;
-	}
-	
-	return arg;
-}
-
-static int countArg(char **arg) {
-	int i=0;
-	
-	while(arg[i++] != NULL) {
-	}
-	
-	return i;
-}
-
-static char **NewArg(char **arg, char **narg) {    			
-		char **a; 
-		int i,j,na;
-		
-		
-		na = countArg(arg) + countArg(narg) - 1;
-		a = (char**) malloc( na * sizeof(char*));
-		
-		while ( arg[i]  ) {
-			a[i] = arg[i];
-			i++;
-		}		
-		
-		j=1;
-		
-		while ( narg[j] ) {
-			a[i] = narg[j];
-			i++; j++;
-		} 
-		
-		free(arg);
-		free(narg);
-		return a;
-		
-}
-
-Process MakeProcess( Model model,Ident name, Component comp, ListArgument la) {
-	Process p;
-	static int onone=1;
-	
-	if(onone) {
-		onone=0; 
-		tabinit(100000);
-	}
-	
-	p=getProc(name);
-	
-	if(p==NULL) {
-		p=(Process)malloc(sizeof(Process_)); 
-    	if (!p)
-    	{
-    	    fprintf(stderr, "SW/MakeProcess/FAIL: out of memory when allocating Process!\n");
-    	    exit(1);
-    	}
-    	
-		p->comp = comp;
-		p->name = name;
-		p->nportsIn =0;
-		p->nportsOut=0;
-		p->port	= NULL;
-		p->next = model->proc;
-		model->proc = p;
-		model->nprocs++;
-		p->prev = NULL;
-		p->arg  = MakeArg(la,name);
-    	addProc(name,p);
-    }	else {
-    	if(comp) {
-    		p->comp = comp;
-    	}
-    	if(la) {
-    		if( p->arg ) { 	
-    			p->arg  = NewArg(p->arg,MakeArg(la,name)); 
-    		} else {
-	    		p->arg  = MakeArg(la,name);
-	    	}	
-    	}	
-    }
-    
-	return p;
-	
-} 
-
-Model MakeModel(Stream f) {
-	Model m;
-	
-	m=(Model)malloc(sizeof(Model_)); 
-    if (!m)
-    {
-        fprintf(stderr, "SW/MakeModel/FAIL: out of memory when allocating Process!\n");
-        exit(1);
-    }
-    
-	m->nstreams = 0;
-	m->ncomponents = 0;
-	m->nprocs	= 0;
-	m->stream=f;
-	m->proc = NULL;
-	//p->next = NULL;
-	//p->prev = NULL;
-	return m;
-	
-}
-
 
 static void Usage() {
     fprintf(stderr,"Usage:\tsw [-m MODE [ SW_FILE ]\n");
@@ -447,7 +240,6 @@ int main(int argc, char ** argv)
   if (parse_tree)   {  
     model=visitValidSW(parse_tree);
     model->name = baseOf(fname) ;
-    // @TODO Free Parse tree storage
     if(verifyOK(model)) {
 		if(!model->proc) {
 			fprintf(stderr,"SWMAIN/FAIL: No processes found\n");
@@ -468,6 +260,7 @@ int main(int argc, char ** argv)
    				printf("%s\n\n", printValidSW(parse_tree)); //Print expanded network definition 
     			break;	
     		case GOMODE: 
+    			expandSubnets(model ); 
 	    	    genGo(model);	// Generate Go MAIN.GO
     			break;	
     		case CMODE: 

@@ -49,20 +49,22 @@ static void genPaths(Model m) {
 	genPath(NULL);
 
 	p=m->proc;
-	do {
+	while (p) {
 		if( newPath(p->comp->path) ) {
 			genPath(p->comp->path);
 		}	
 		p=p->next;
- 	} while (p);
+ 	} ;
 
 	printf("\n\n");
 }	
 
 
 
-static Port findPort(Port pt, int id) {
+static Port findPort(Process p, int id) {
+	Port pt=p->port;
 	Port pt0=pt;
+	
 	
 	do  {
 		if(pt->id == id) {					
@@ -71,7 +73,9 @@ static Port findPort(Port pt, int id) {
 		pt=pt->next;
 	} 	while(pt != pt0);
 	 
-	return NULL;
+	fprintf(stderr,"SWGO/FAIL: Process %s Port %i mismatch\n",
+		p->name, id);
+	exit(1); 
 }
 
 static void showArgs(Process p) {
@@ -126,8 +130,8 @@ static void showSource(Process p, int id, int bfsz) {
 
 static int assign_channel(int ch, Stream f) {
 		
-		findPort(f->source->port,f->source_id)->channel=ch;
-		findPort(f->sink->port,  f->sink_id) ->channel=ch;
+		findPort(f->source,f->source_id)->channel=ch;
+		findPort(f->sink,  f->sink_id) ->channel=ch;
 		return ch;
 }
 	
