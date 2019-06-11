@@ -177,6 +177,10 @@ Ex.  ```A<-B;``` expands to
 -----
     * 
 
+0.7.5
+-----
+	* Fixed some subnet port id problems. 
+	* Worked on options to display comp name and arguments in graphs  
 	
 SW.cf Language Notes
 --------------------
