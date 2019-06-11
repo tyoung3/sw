@@ -59,16 +59,26 @@ static void linkExt(Subnetm sn, Extport pt) {
 	sn->extport=pt;
 }
 
-Subnetm MakeSubnetm(Ident name, Stream s, Extport in, Extport out ) {
+Subnetm MakeSubnetm(Ident name, 
+					Stream s, 
+					Extport in, 
+					Extport out ) {
 	Subnetm sn;   
 	
 	sn=linkSubnet(net_model, name);
-	sn->stream=s;
 	
-	if(in)
+	if(s) {
+		s->next=sn->stream;
+		sn->stream=s;
+	}
+
+	if(in) {
 		linkExt(sn,in);
-	if(out)
+	} else {	
+	if(out) {
 		linkExt(sn,out);
+	}
+	}
 		
 	return  sn;
 }; 
@@ -497,13 +507,17 @@ Extport MakeExtport(
     ep->type=type;
     if(type==SINK) {
 		ep->sink=p;
-		ep->sink_id=id; 	
+		ep->sink_id=id; 
+		ep->source_id=p->sink_id;	
     }   else {
 		 ep->source=p;
 		 ep->source_id=id;
+		 ep->sink_id=p->source_id;
 	}
 	ep->bufsz = bs; 	
 	ep->next=NULL;
+    ep->sink_id=fixId(ep->sink_id);
+    ep->source_id=fixId(ep->source_id);
 	return ep;
 }
     	
@@ -578,7 +592,6 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
   switch(_p_->kind)
   {
   case is_Sneth:
-    /* Code for Sneth Goes Here */
     visitHermt(_p_->u.sneth_.hermt_);
     return NULL;
   case is_Snets:
@@ -865,7 +878,7 @@ static char *makeName(char *pn, char *nn) {
 }
 
 static void Expand2(Model m, Process p, Stream s, char *name) {
-	char *srcname,*snkname;  // Concatenated process name 
+	char *srcname,*snkname;  // Concatenated process names 
 	Process src,snk;
 	Port psrc,psnk;
 	Stream ns;              /* New Stream */
@@ -879,8 +892,8 @@ static void Expand2(Model m, Process p, Stream s, char *name) {
 	snk=MakeProcess(m,snkname, 
 		s->sink->comp,MakeArg(NULL,NULL)); 
 	snk->arg = s->sink->arg;
-	psrc=MakePort(s->source->port->id,s->source->port->name);
-	psnk=MakePort(s->sink->port->id,s->sink->port->name);
+	psrc=MakePort(s->source_id,s->source->port->name);
+	psnk=MakePort(s->sink_id,s->sink->port->name);
 	linkPort(src,psrc);
 	linkPort(snk,psnk);
 	src->nportsOut++;
@@ -899,8 +912,9 @@ static void Expand3(Model m,
 					Process p,
 					Subnetm sn,
 					Extport ep) {
-					Port pt;
-		Stream s;			//ss is the stream
+					
+		Port pt;
+		Stream s;			 
 		Process pnew;
 		Component comp;
 		ListArgument la;
@@ -923,8 +937,10 @@ static void Expand3(Model m,
 						s->source=pnew;
 						if(ep->bufsz > s->bufsz)
 							s->bufsz=ep->bufsz;
-						pnew->nportsOut=1;
+						pnew->nportsOut++;
 						pnew->port=pt;	
+						pnew->port->id = 
+							s->source_id = ep->sink_id;
 						return;
 					}
 					pt=pt->next;
@@ -945,8 +961,10 @@ static void Expand3(Model m,
 						s->sink=pnew;
 						if(ep->bufsz > s->bufsz)
 							s->bufsz=ep->bufsz;
-						pnew->nportsIn=1;
-						pnew->port=pt;	
+						pnew->nportsIn++;
+						pnew->port=pt;
+						pnew->port->id =  
+							s->sink_id = ep->source_id;	
 						return;
 					}
 					pt=pt->next;
@@ -963,26 +981,27 @@ static void Expand(Model m, Process p, Subnetm sn) {
 	Stream s;
 	Extport ep;
 	
-	s=sn->stream;
-	while(s) {
-		Expand2(m,p,s,sn->name);
-		s=s->next;
-	}
-	
 	ep=sn->extport;
 	while(ep) {
 		Expand3(m, p, sn, ep );			
 		ep=ep->next;
 	}	
+	
+	s=sn->stream;
+	while(s) {
+		Expand2(m,p,s,sn->name);
+		s=s->next;
+	}
 }
 
 
-	/* Expand a subnet component */
+	/* Expand a subnet process, i.e. replace this process
+	with its subnet*/
 static void expandSub(Model m, Process p) {
 	Subnetm sn;
 	
 	sn = m->subnetm;
-	while(sn) {   // find subnet for p
+	while(sn) {   // find the subnet for p
 		if(strncmp(sn->name, p->comp->name, 100)==0) {
 			Expand(m, p, sn);		
 			free(p);   
@@ -992,8 +1011,8 @@ static void expandSub(Model m, Process p) {
 	}	
 	
 	fprintf(stderr,
-		"SW/FAIL: Cannot find subnet for process %s\n",
-		p->name);
+		"SW/FAIL: Cannot find subnet %s for process %s\n",
+		p->comp->name, p->name);
 
 	exit(1);	
 }

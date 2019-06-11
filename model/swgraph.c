@@ -3,7 +3,6 @@
 		  
 TODO:   
 	* Title 
-	* head,taillabels
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,23 +13,24 @@ TODO:
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s,\n",(#s));
 
-// Define to remove process ports
+// Define to remove process ports from graph
 #define NO_PORTS
-// Define COMP_TIPS to move COMP info into tooltips for svg/html 
-#define COMP_TIPS 
-// Define NO_COMP_LABEL to hide component info
-#define NO_COMP_LABELS
-#define EDGE_LABELS
-/////////////////  Dupes code in swgo.c  //////////////////////////////
+
+typedef enum {NOCOMP,COMPNAME,WITHPATH} SHOWC;
+static SHOWC showcomp=COMPNAME;
+static char *twoline="";
+
 static Port findPort(Port pt, int id) {
+	Port pt0=pt;
 	
-	while(pt) {
+	do  {
 		if(pt->id == id) {					
 			return pt;
 		}	
 		pt=pt->next;
-	}
-	return NULL;
+	} while(pt!=pt0);
+	
+	return NULL;   // @TODO  error message ??
 }
 static int assign_channel(int ch, Stream f) {
 		
@@ -112,7 +112,6 @@ static char *makeURL(char *comp) {
 		return strndup(bfr,sizeof(bfr) -1);
 }
 
-
 	/* EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */
 static void genProc(char *name, char *comp, char *path,  char *host, char **args) {
 
@@ -125,13 +124,20 @@ static void genProc(char *name, char *comp, char *path,  char *host, char **args
      printf(" tooltip=\"%s.%s ",path,comp);
      genArgs(args);
      printf("\"\n");
-     // ? Generate args for tip
-#ifdef NO_COMP_LABELS
-     printf("label=\"{<P> %s ",name);
-#else
-     printf("label=\"{<P> %s %s",name,comp);
-     genArgs(args); 
-#endif 
+     
+     switch (showcomp) {
+	 case NOCOMP:
+	     printf("label=\"{<P> %s ",name);
+ 		 break;	
+	 case COMPNAME:	 
+			printf("label=\"{<P> %s %s %s",name,twoline,comp);
+    		genArgs(args); 
+ 		 	break;
+ 	case WITHPATH:	 
+		   	printf("label=\"{<P> %s %s %s.%s",
+		   			name,twoline,path,comp);
+    		genArgs(args); 	 
+	 } 
 
 }  	 
 
@@ -163,17 +169,6 @@ static int findChannel(Port p, int id) {
 	
 	return -1;
 }
-
-#ifdef DFDLKJLKJF						
-static void showPorts2() {	
-
-#ifdef NO_PORTS	
-				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%i\",taillabel=\"%i\"", tooltip=\"%i[%i]\"];\n",
-#else
-				printf("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
-#endif				
-}
-#endif
 
 static void showPorts(Stream f, Process src, Process snk, int channel) {					
 #ifndef NO_PORTS			
@@ -263,8 +258,6 @@ static void genProcs(Process p) {
 void genGraph(Model model) {
 	Stream f;
 	Process p;
-	
-	
 	
 	if (!model) {
 			fprintf(stderr,"swgo/FAIL: Missing model\n");

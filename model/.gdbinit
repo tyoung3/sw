@@ -1,3 +1,4 @@
 #break visitValidSW
-break genGraph
-run -m 3 */sub*1*.sw
+break sw.c:929
+break sw.c:952
+run -m 3 */si*.sw
