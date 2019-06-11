@@ -11,7 +11,7 @@
 
 #define NOBUFFERS
 
-char *defaultPath={"def"};
+char *defaultPath={"strings"};
 static char *defaultSourceComp={"Gen1"};
 static char *defaultFilterComp={"Filter1"};
 static char *defaultSinkComp={"Print1"};
@@ -19,10 +19,8 @@ static char *defaultSinkComp={"Print1"};
 /* @TODO  Standardize error messages */
 
 STATE state=IS_NET; 
-
-static String default_path={"strings"};   /* ?? arg later */
+  
 int bs,maxbfsz=1;		              /*  Buffer size */
-
 Model net_model=NULL;  
 
 static Subnetm linkSubnet(Model m, char *name) {
@@ -280,12 +278,6 @@ Component MakeComponent(Ident name, String path) {
     
 	c->name = name;
 	c->path = path;
-    if(onone && path) {
-     			onone=0;
-     			defaultPath=path;
-     			//defaultSourceComp=src->comp->name;
-     			//defaultSinkComp=snk->comp->name;
-    }
 	return c;
 } 
 
@@ -811,7 +803,8 @@ Component visitComp(Comp _p_)
   switch(_p_->kind)
   {
   case is_Compx:
-     return MakeComponent(visitIdent(_p_->u.compx_.ident_), default_path);
+     return MakeComponent(visitIdent(
+     	_p_->u.compx_.ident_), defaultPath);
    case is_Compy:
      return MakeComponent( 
 	    visitIdent(_p_->u.compy_.ident_2),

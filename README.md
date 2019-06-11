@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.7.3 - STREAMWORK/FrontEnd
+SW-0.7.4 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -64,17 +64,12 @@ standard, default components, without
 arguments; the network definition can be simplified to 
  ```Hello <- World;```
  
-IPs are designed as nil(empty) interfaces.   The interface
-data type is determined by the sending component.  IPs
-may or may not cause a type mis-match, depending 
-on the sink component coding.  Components can be coded to
-handle any type(including user-defined types), 
+IPs are designed as nil(empty) interfaces whose
+data type is determined by the sending component. A type 
+mis-match will be reported by incompatable receiving components.  Components can be coded to handle any
+ type(including user-defined types), 
 a few types(Print1 can process strings and integers), 
-or just one type; on each receiving port.    
- 
-The ND language is defined in less than 50 statements. 
-Progams developed using this simple system, 
-however, are highly capable.  
+or just one type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
 version(currently v0).  
@@ -101,58 +96,52 @@ QuickStart (on Linux)
 	  will run without installing github/tyoung3/StreamWork; 
 	  the generated Go code just won't work.
 	* Download the 'sw' executable from github to any 
-	  convenient location.
+	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```.../sw -v``` to check that the version is at least v0.6.1  
-	* Change directory to $GOPATH/mod (create the directory
-	  if necessary).
-	  This is usually ~/go/mod.  Go modules will fail in ~/go/src.
-	* Run go mod init fb/fb, unless go.mod already exists.  
-	  
+	* Run ```sw -v``` to check that the version is at least v0.7.4  
+	 
 ```	
 echo "Foo <- Bar;" | sw > /tmp/fb.go 
 ```
 	* Run 'go run /tmp/fb.go'
 
 OUTPUT: 
-Foo Bar
-```
 
-```go: finding github.com/tyoung3/streamwork/def latest```
+```
+Foo Bar-1
+Foo Bar-2
+Foo Bar-3
+Foo Bar-4
+Foo Bar-5
+Foo Bar-6
+Foo Bar-7
+
+go: finding github.com/tyoung3/streamwork/def latest```
  may appear the first time the program is run.
  
-	* Examine /tmp/fb.go  
+	* Examine fb.go  
 
 Release Notes
 =============
 
-V0.4.0
-------
+0.4
+--- 
 
 Enabled buffer size specification. 
 Ex. (A a)0 <NNN- 0(B b); will allocate NNN buffers to this stream.
 
-v0.5.0
-------
+0.5
+--- 
 
 Port numbers default to zero.  
 Ex. (A a) <- (B b); expands to (A a)0 <- 0(B b);
 
-v0.5.1
------- 
-
 Introduces variables into the language, but are ignored for now.
-
-v0.5.2
-------
 
 Enabled default components. 
 Ex.  ```A<-B;``` expands to 
 ```(a def.Print1 )0  <- 0(b def.Gen1);
 ```
-
-v0.5.3
-------
 
 	* Reorganized development tree and fixed scripts 
 
@@ -161,29 +150,33 @@ v0.5.3
 		* Fixed up title.  
 		* Cleaned up URLs. Works with .SVG 
 		
-v0.6.0
-------
+0.6
+---
+
 	* Introduced stream chaining. 
 	  (A) <- (B) <- (C);  expands to: 
 	  (A) <- (B);
 	  (B) <- (C);		
 		
-v0.6.1
-------
 	* Fixed dataflow chaining problems
 	
-v0.7.0
+0.7.0
 ------
 	* Added subneting to NDs; BUGGY
 -----------
 
-v0.7.1
+0.7.1
 ------
 	* Fixed collate example
 	
-v0.7.3
+0.7.3
 ------
 	* Default path from first component.	
+	
+0.7.4	
+-----
+    * 
+
 	
 SW.cf Language Notes
 --------------------
@@ -193,8 +186,8 @@ periods at the end of English statements --
 they tell the reader (and the interpreter) when
 you have reached the end; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
-Without semi-colons, line breaks become
-necessary  and awkward syntax rules evolve.  
+Without semi-colons, line breaks become part of the language 
+definition leading to awkward syntax rules.  
 
 In the future, there may be some, very few exceptions to the 
 semi-colon rule for special pre-interpreter commands, like INCLUDE.
@@ -315,7 +308,7 @@ Running:
 	sw -m 4 < /tmp/collate.sw > /tmp/collate.dot
 	dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg
 ```
-produces /tmp/collate.jpg  [copy may be in this directory]
+produces /tmp/collate.jpg   
 
 WARNING:
 --------

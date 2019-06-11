@@ -1,3 +1,3 @@
 #break visitValidSW
-break genGo
-run ../nds/colla*.sw
+break genGraph
+run -m 3 */sub*1*.sw

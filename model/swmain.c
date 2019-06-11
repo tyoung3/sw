@@ -254,12 +254,6 @@ int main(int argc, char ** argv)
 			exit(1);
 		}
     	switch (mode) {
-	    	case GRAPHMODE:       
-    			genGraph(model);  	// Generate GraphViz .DOT file
-    			break;
-    		case JAVAFBP:
-    			genJavaFBP(model); 	// Generate JavaFBP 
-    			break;
 	    	case ASTMODE:       // Abstract Syntax 			
     			printf("%s\n\n", showValidSW(parse_tree));  //Print abstract syntax tree
     			break;
@@ -267,16 +261,25 @@ int main(int argc, char ** argv)
     			printf("[Linearized Tree]\n");
    				printf("%s\n\n", printValidSW(parse_tree)); //Print expanded network definition 
     			break;	
-    		case GOMODE: 
-    			expandSubnets(model ); 
-	    	    genGo(model);	// Generate Go MAIN.GO
-    			break;	
-    		case CMODE: 
-	    	    genC(model);    // Generate C source
-    			break;	
     		default:
-    			Usage();
-	    	    break;	
+	    		expandSubnets(model );  
+    			switch (mode) {
+   // Options w/wo/subs w|wo expanded subnets.     				
+	    		case GRAPHMODE: 
+    				genGraph(model);  	// Generate .DOT file
+    				break;
+    			case JAVAFBP:   
+    				genJavaFBP(model); 	// Generate JavaFBP 
+    				break;
+    			case GOMODE: 
+	    	    	genGo(model);	// Generate Go MAIN.GO
+    				break;	
+    			case CMODE:   
+	    	   	 	genC(model);    // Generate C source
+    				break;	
+    			default:
+    					Usage();
+	    	    }
 	    } 	    	
     } else {
     	fprintf(stderr,"SW/VerfyOK/FAIL:  failed.\n");

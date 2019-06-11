@@ -15,4 +15,6 @@ Skeleton.?
 tags
 IGNORE*
 *.OLD
-
+*.dot
+testdata/
+.idea/
