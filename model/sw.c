@@ -906,6 +906,7 @@ static void Expand2(Model m, Process p, Stream s, char *name) {
 	ns->source_id=s->source_id;
 	ns->bufsz=s->bufsz;
 	ns->state=state;
+	psrc->stream = psnk->stream=ns;
 }
 		 
 static void Expand3(Model m, 
