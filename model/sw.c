@@ -11,7 +11,7 @@
 
 #define NOBUFFERS
 
-char *defaultPath={"strings"};
+char *defaultPath={"poc"};
 static char *defaultSourceComp={"Gen1"};
 static char *defaultFilterComp={"Filter1"};
 static char *defaultSinkComp={"Print1"};
