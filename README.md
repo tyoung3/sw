@@ -98,7 +98,7 @@ QuickStart (on Linux)
 	* Download the 'sw' executable from github to any 
 	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```sw -v``` to check that the version is at least v0.7.4  
+	* Run ```sw -v``` to check that the version is at least v0.7.7  
 	 
 ```	
 echo "Foo <- Bar;" | sw > /tmp/fb.go 

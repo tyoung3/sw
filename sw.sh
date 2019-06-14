@@ -23,7 +23,7 @@ RunPoC() {
 	[ -x bin/sw  ] || pushd ../ 
 	[ -x bin/sw  ] || Die  bin/sw is missing.  Run make 
 	[ -d $temp/sw/poc ] || mkdir -p $temp/sw/poc
-	echo "(Hello strings.Print1)0 <- 0(World strings.Gen1\"3\"); " 	\
+	echo "(Hello Print1)0 <- 0(World Gen2\"3\"); " 	\
 	 | bin/sw >  $temp/sw/poc/main.go 
 	pushd $temp/sw/poc
 	[ -f go.mod ] || go mod init poc/poc

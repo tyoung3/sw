@@ -2,8 +2,6 @@
 		  Greate StreamWork Go program 
 		  
 TODO: 
-	. fix argument strings
-	. Make collate work 		  
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -25,7 +23,7 @@ static void genPath(char *s) {
 	char *importPath={"github.com/tyoung3/streamwork"};	
 
 	if(s==NULL) {
-		printf("import \"%s\"\n",importPath);
+		printf("import \"%s/fbp\"\n",importPath);
 	} else {	
 		printf("import \"%s/%s\"\n",importPath,s);
 	}
@@ -348,9 +346,8 @@ package  main
 
 import "fmt"
 import "sync"
-import "github.com/tyoung3/streamwork"
-import "github.com/tyoung3/streamwork/std"
-import "github.com/tyoung3/streamwork/strings"
+import "github.com/tyoung3/streamwork/fbp"
+import "github.com/tyoung3/streamwork/poc"
 
 
 func main() {
@@ -360,8 +357,8 @@ func main() {
 	fmt.Println("Testgo Start")
 	cs = append(cs, make(chan interface{}))
 
-	fbp.Launch(&wg, []string{"Testgo"}, strings.Print1, cs)
-	fbp.Launch(&wg, []string{"Comp1","11"}, strings.Gen1, cs)
+	fbp.Launch(&wg, []string{"Testgo"}, poc.Print1, cs)
+	fbp.Launch(&wg, []string{"Comp1","11"}, pod.Gen1, cs)
 	wg.Wait()
 	fmt.Println("Testgo end")
 }
