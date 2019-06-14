@@ -182,6 +182,12 @@ Ex.  ```A<-B;``` expands to
 	* Fixed some subnet port id problems. 
 	* Worked on options to display comp name and arguments in graphs  
 	
+0.7.7
+-----
+	* Fixed subnet extra stream problem	
+	* Introduced anonymous processes. 
+	  Ex.  ```...(_  path.comp)...```
+	
 SW.cf Language Notes
 --------------------
 Statements in the network definition language, SW.cf, are 
