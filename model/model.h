@@ -47,6 +47,7 @@ struct Process_ {
 		int  ch;			/* Low channel number */
 		int  sink_id;
 		int  source_id;
+		int  depth;			/* Subnet depth */
 		struct Process_ *next;
 		char **arg;		  /* An array of strings. */
 		STATE kind;	  /* In subnet or net */

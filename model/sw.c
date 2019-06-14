@@ -13,7 +13,7 @@
 
 char *defaultPath={"poc"};
 static char *defaultSourceComp={"Gen1"};
-static char *defaultFilterComp={"Filter1"};
+// static char *defaultFilterComp={"Filter1"};
 static char *defaultSinkComp={"Print1"};
 
 /* @TODO  Standardize error messages */
@@ -111,7 +111,7 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
      return net_model;
 }
 
-
+#ifdef OLD_STUFF
 static int countArg(char **arg) {
 	int i=0;
 	
@@ -146,6 +146,8 @@ static char **NewArg(char **arg, char **narg) {
 		return a;
 		
 }
+#endif 
+
 static char **MakeArg(ListArgument la, char *name) {
 	char **arg;   /* Pointer to array of string pointers. */
 	int i=1,narg=1;
@@ -189,7 +191,7 @@ static Process MakeProcess(
 		Component 	comp, 
 		char 		**arg) {
 	Process p;
-	static int onone=1,onone2=1;
+	static int onone=1 ;
 	
 	if(onone) {
 		onone=0; 
@@ -213,6 +215,7 @@ static Process MakeProcess(
 		p->nportsOut=0;
 		p->port	= NULL;
 	    p->kind = state;
+	    p->depth = 0;
 		if(state == IS_NET) {
 			p->next = model->proc;
 			model->proc = p;
@@ -277,7 +280,6 @@ Port MakePort(int n, Ident id) {
 
 Component MakeComponent(Ident name, String path) {
 	Component c; 
-	int onone=1;
 	
 	c=(Component)malloc(sizeof(Component_)); 
     if (!c)
@@ -541,7 +543,6 @@ Extport visitExtPortOut(ExtPortOut _p_)
 
 void visitHermt(Hermt _p_)
 {
-  Process p;
   char *name;
   
   switch(_p_->kind)
@@ -655,6 +656,8 @@ void visitStm(Stm _p_)
   }
 }
 
+
+#ifdef OLD_STUFF
 static int notListed(Process p, Model m) {
 	Process a;
 	
@@ -668,6 +671,7 @@ static int notListed(Process p, Model m) {
 		    
 	return 1;
 }
+#endif
 
 void visitListStm(ListStm liststm)
 {
@@ -747,8 +751,21 @@ Process visitSnk(Snk _p_)
   
 }
 
-Process visitProc(Proc _p_)
-{
+static char *MakeAnon(Component c) {
+	static char  bfr[100];
+	
+	if(c==NULL) 
+		return bfr;
+		
+	sprintf(bfr,"_%s",c->name);  // @BUG too many dupes
+	return strndup(bfr,99);
+	
+};
+
+Process visitProc(Proc _p_) {
+  Component c;
+  char *name;
+  	
   switch(_p_->kind) {
   
   case is_Processx:  
@@ -770,15 +787,28 @@ Process visitProc(Proc _p_)
      ); 
      
   case is_Processax: /* Anonymous process */
-    return NULL;
-    visitComp(_p_->u.processax_.comp_);
-    visitListArgument(_p_->u.processax_.listargument_);
+    c = visitComp(_p_->u.processax_.comp_);
+    name = MakeAnon(c);
+    return MakeProcess( 
+    	net_model,
+    	name,
+    	c,
+    	MakeArg(
+    	  visitListArgument(_p_->u.processax_.listargument_),
+    	  name)
+    );
     break;  
     
   case is_Processay:  /* Anonymous process */
-    return NULL;
-    visitListArgument(_p_->u.processay_.listargument_);
-    break;
+    name = MakeAnon(NULL);
+    return MakeProcess( 
+    	net_model,
+    	name,
+    	NULL,
+        MakeArg(
+          visitListArgument(_p_->u.processay_.listargument_),
+          name)
+    );
   default:
     fprintf(stderr, 
     "Error: bad kind field when visiting Proc!\n");
@@ -877,7 +907,7 @@ static char *makeName(char *pn, char *nn) {
 	return(strdup(bfr)); 
 }
 
-static void Expand2(Model m, Process p, Stream s, char *name) {
+static void Expand2(Model m, Process p, Stream s ) {
 	char *srcname,*snkname;  // Concatenated process names 
 	Process src,snk;
 	Port psrc,psnk;
@@ -906,9 +936,21 @@ static void Expand2(Model m, Process p, Stream s, char *name) {
 	ns->source_id=s->source_id;
 	ns->bufsz=s->bufsz;
 	ns->state=state;
+	ns->source->depth = s->source->depth+1;
+	ns->sink->depth   = s->sink->depth+1;
 	psrc->stream = psnk->stream=ns;
 }
 		 
+static Port copyPort(Port p0) {
+		Port p1;
+		p1 = MakePort(p0->id, p0->name);
+		*p1=*p0;
+		return p1;
+}		 
+		 
+   /* Expand process,p, subnet component.  
+      Match ep to a port,pt in p.
+      Update existing stream,s, in pt */		 
 static void Expand3(Model m, 
 					Process p,
 					Subnetm sn,
@@ -917,14 +959,12 @@ static void Expand3(Model m,
 		Port pt;
 		Stream s;			 
 		Process pnew;
-		Component comp;
-		ListArgument la;
 		char *srcname;
 		char *snkname;
 			
 		if(ep->type==SOURCE) {
 				pt=p->port;
-				while(pt) {
+				do {
 					if(pt->id == ep->source_id) {
 						s=pt->stream;
 						srcname=makeName(p->name,
@@ -939,16 +979,17 @@ static void Expand3(Model m,
 						if(ep->bufsz > s->bufsz)
 							s->bufsz=ep->bufsz;
 						pnew->nportsOut++;
-						pnew->port=pt;	
+						linkPort(pnew, copyPort(pt));
 						pnew->port->id = 
 							s->source_id = ep->sink_id;
+						pnew->depth = p->depth+1;	
 						return;
 					}
 					pt=pt->next;
-				}	
+				} while(pt!= p->port); 	 
 		}else {   
 				pt=p->port;
-				while(pt) {
+				do {
 					if(pt->id == ep->sink_id) {
 						s=pt->stream;
 						snkname=makeName(p->name,
@@ -963,19 +1004,45 @@ static void Expand3(Model m,
 						if(ep->bufsz > s->bufsz)
 							s->bufsz=ep->bufsz;
 						pnew->nportsIn++;
-						pnew->port=pt;
+						linkPort(pnew, copyPort(pt));
 						pnew->port->id =  
 							s->sink_id = ep->source_id;	
+						pnew->depth = p->depth+1;	
 						return;
 					}
 					pt=pt->next;
-				}	
+				} while(pt!=p->port);	
 		}
 			
 	fprintf(stderr,
 		"SW/EXPAND3/FAIL: cannot match process %s port %i", p->name,ep->sink_id);  
 	   
 }
+
+static Stream delStream(Model m, Stream s) {
+	Stream ps;   			// previous stream
+	Stream cs=m->stream;   	// current stream 
+	
+	if (cs==s) {
+		m->stream = s->next;
+		m->nstreams--;
+		free( s );    		// @BUG  also should free comps,etc.
+		return m->stream;
+	}	
+	
+	ps=cs; cs=cs->next;
+	while(cs) {
+		if( cs==s ) {
+			ps->next = s->next;
+			m->nstreams--;
+			free(s);
+			return ps->next;
+		}
+		ps=cs;
+		cs=cs->next;
+	}
+}
+
 
 	/* Expand m for each stream in the subnet */
 static void Expand(Model m, Process p, Subnetm sn) {
@@ -990,9 +1057,10 @@ static void Expand(Model m, Process p, Subnetm sn) {
 	
 	s=sn->stream;
 	while(s) {
-		Expand2(m,p,s,sn->name);
+		Expand2(m,p,s );
 		s=s->next;
 	}
+	
 }
 
 
@@ -1021,12 +1089,11 @@ static void expandSub(Model m, Process p) {
 
 	/* While some process contains a subnet component, 
 	   expand that component subnet. 
-	   Note any unexpanded subnets.
-	   Not implemented. 
     */   
 void expandSubnets(Model model) {
 	Process p,pp;
-	int more=0;
+	int more;
+	int maxnets=250;
 	
 	do {
 		p=model->proc;
@@ -1034,6 +1101,11 @@ void expandSubnets(Model model) {
 		more=0;
 		while(p) {
 			if(p->comp->path[0] == '\'') {  /* Is it a subnet */
+				if(!maxnets) {
+					fprintf(stderr,
+						"SW/FAIL: Too many subnets.\n");
+					exit(1);
+				}
 				more=1;
 				model->nprocs--;	
 				     // delink p from process chain.
@@ -1043,12 +1115,28 @@ void expandSubnets(Model model) {
 					model->proc=p->next;	
 				}	
 				expandSub(model, p ); 
+				maxnets--;
 				break;
 			}
 			pp=p;  
 			p=p->next;
 		}
 	} while (more); 
+	
+	// Remove any streams with subnet components 
+	{
+		Stream s;
+		
+		s=model->stream; 
+		while(s) {
+			if ( s->sink->comp->path[0] == '\''  ||
+			   s->source->comp->path[0] == '\'') {
+					   s=delStream(model,s);
+			} else {
+				s=s->next;
+			}	
+		}
+	}
 }	
 	
 

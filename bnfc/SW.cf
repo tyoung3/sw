@@ -6,6 +6,8 @@
 --     Note: There can be up to MAX_NESTING(currently=15) levels of INCLUDE files. 
 --	   Note: "EXIT" causes the SW parser to quit parsing the current file.  ??
 
+--  See: https://github.com/flowbased/fbp#readme  
+
 entrypoints		ValidSW					 ; 
 Valid.	 	    ValidSW  	::= [Stm]    ;
 
