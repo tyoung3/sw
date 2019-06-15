@@ -26,8 +26,11 @@ Snetin.			Subnet ::= ExtPortIn  	;
 Snetout.		Subnet ::= ExtPortOut  	;
 terminator	    Subnet  ";" ;
 
-Extin.			ExtPortIn  ::=	Snk Arrow Numval;
-Extout.			ExtPortOut ::=	Numval Arrow Srce;  -- 0 <- (R);
+Extin.			ExtPortIn  ::=	Snk Arrow Tab;
+Extout.			ExtPortOut ::=	Tab Arrow Srce;  -- IN <- (R);
+
+Tabn.			Tab		 ::= Numval;
+Tabs.			Tab		 ::= Symval;
 
 Streamx.		S_tream	 ::= Snk         Arrow Srce;
 Streamy.		S_tream  ::= S_tream Prt Arrow Srce ;
@@ -40,10 +43,10 @@ Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 
 
 Sourcex.		Srce     ::= Prt Proc; 
-Sourcey.		Srce     ::= Ident;	
+#Sourcey.		Srce     ::= Ident;	
 
 Sinkx.			Snk		::=  Proc Prt; 		
-Sinky.			Snk		::=  Ident;
+#Sinky.			Snk		::=  Ident;
 
 
 Hermtx.		Hermt	::=   Ident  Comp [Argument] ;
@@ -57,9 +60,9 @@ Processax.		Proc	::= "(" "_"  Comp [Argument] ")" ;
 Processay.		Proc	::= "(" "_"  [Argument] ")" ;
 
 Portx.			Prt		::= Numval;
-Portni.         Prt     ::= Numval "." Ident; 
-Portin.         Prt     ::= Ident "." Numval; 
-Portn.          Prt     ::= Ident; 
+Portni.         Prt     ::= Numval "." Symval; 
+Portin.         Prt     ::= Symval "." Numval; 
+Portn.          Prt     ::= Symval; 
 Porte.			Prt		::= ;		
 
 Compx.			Comp	::= Ident;	
@@ -79,9 +82,14 @@ NumValv.		Numval	   ::= Numvar;
 StringVals.		Stringval  ::= String;
 StringValv.		Stringval  ::= Stringvar;
 
+Symbol.			Symval		::= SYMBOL;
+Symvar.			Symval		::= SYMVAR;
+Sstrng.			Symval		::= "&("  Sexpr ")" ;  
+
 token   Numvar	  '%' letter  ( letter | digit  )*;		
 token	Stringvar '$' letter  ( letter | digit  )*;
 token	SYMVAR    '&' letter  ( letter | digit | '_' )* ;	
+token	SYMBOL	      letter  ( letter | digit | '_' | '.' )* ;
 
 comment "#";
 comment "{#" "#}";	

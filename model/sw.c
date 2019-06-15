@@ -16,6 +16,8 @@ static char *defaultSourceComp={"Gen1"};
 // static char *defaultFilterComp={"Filter1"};
 static char *defaultSinkComp={"Print1"};
 
+static int maxdepth=20;
+
 /* @TODO  Standardize error messages */
 
 STATE state=IS_NET; 
@@ -907,6 +909,17 @@ static char *makeName(char *pn, char *nn) {
 	return(strdup(bfr)); 
 }
 
+static int CheckDepth(int d) {
+	if( d > maxdepth) {
+	  fprintf(
+		 stderr,
+		 "SW/FAIL: Exceeded maximum subnet expansion depth, %d. Loop maybe?\n",
+			maxdepth);
+		 exit(1);
+	}
+	return d+1;
+}
+
 static void Expand2(Model m, Process p, Stream s ) {
 	char *srcname,*snkname;  // Concatenated process names 
 	Process src,snk;
@@ -936,9 +949,9 @@ static void Expand2(Model m, Process p, Stream s ) {
 	ns->source_id=s->source_id;
 	ns->bufsz=s->bufsz;
 	ns->state=state;
-	ns->source->depth = s->source->depth+1;
-	ns->sink->depth   = s->sink->depth+1;
 	psrc->stream = psnk->stream=ns;
+	ns->source->depth = ns->sink->depth = CheckDepth(p->depth);
+
 }
 		 
 static Port copyPort(Port p0) {
@@ -1034,7 +1047,7 @@ static Stream delStream(Model m, Stream s) {
 	while(cs) {
 		if( cs==s ) {
 			ps->next = s->next;
-			m->nstreams--;
+			//m->nstreams--;
 			free(s);
 			return ps->next;
 		}
@@ -1093,7 +1106,6 @@ static void expandSub(Model m, Process p) {
 void expandSubnets(Model model) {
 	Process p,pp;
 	int more;
-	int maxnets=250;
 	
 	do {
 		p=model->proc;
@@ -1101,21 +1113,14 @@ void expandSubnets(Model model) {
 		more=0;
 		while(p) {
 			if(p->comp->path[0] == '\'') {  /* Is it a subnet */
-				if(!maxnets) {
-					fprintf(stderr,
-						"SW/FAIL: Too many subnets.\n");
-					exit(1);
-				}
 				more=1;
 				model->nprocs--;	
-				     // delink p from process chain.
-				if(pp) 
-					pp->next = p->next;
+				if(pp)    // delink p from process chain.     
+					pp->next = p->next; 
 				else {
 					model->proc=p->next;	
 				}	
 				expandSub(model, p ); 
-				maxnets--;
 				break;
 			}
 			pp=p;  

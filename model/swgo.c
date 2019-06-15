@@ -106,14 +106,14 @@ static void showSink(Process p, int id) {
 static void showSource(Process p, int id, int bfsz) {		
 		
 		if(bfsz<2) {
-			printf(" <- %d(%s %s.%s", 
+			printf("\t\t<- %d(%s %s.%s", 
 				id, 
 				p->name,
 				p->comp->path,
 				p->comp->name
 			);
 		} else {
-			printf("<%d- %d(%s %s.%s",
+			printf("\t\t<%d- %d(%s %s.%s",
 				bfsz, 
 				id, 
 				p->name,
@@ -151,8 +151,10 @@ static void showND(Model model) {
 	assignChannels(model);
 	
 	while(f) {
-		showSink(f->sink, f->sink_id);	
-		showSource(f->source,f->source_id,f->bufsz);
+		if( f->source->kind==IS_NET) {
+			showSink(f->sink, f->sink_id);	
+			showSource(f->source,f->source_id,f->bufsz);
+		}	
 		f=f->next;
 	}
 	

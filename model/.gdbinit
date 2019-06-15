@@ -1,4 +1,4 @@
 #break visitValidSW
-break sw.c:929
+#break sw.c:929
 break main
-run  */anon*.sw
+run  */si*.sw

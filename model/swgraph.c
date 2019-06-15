@@ -272,7 +272,7 @@ void genGraph(Model model) {
 
 	while(f) {
 		if(f->state == IS_NET ) {
-			printf("# (%s %s.%s)%d <- %d(%s %s.%s) \n", 
+			printf("# (%s %s.%s)%d\t\t<- %d(%s %s.%s) \n", 
 				f->sink->name,
 				f->sink->comp->path,
 				f->sink->comp->name,
