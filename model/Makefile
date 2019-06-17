@@ -67,7 +67,7 @@ svg:  .phsvg
 .phsvg: /tmp/collate.dot
 		
 /tmp/collate.dot: ../bin/sw  ../nds/collate.sw
-	../bin/sw -m 3 ../nds/collate.sw > /tmp/collate.dot
+	../bin/sw -m 3 ../nds/collate2.sw > /tmp/collate.dot
 	
 jpeg:  /tmp/collate.jpg
 
