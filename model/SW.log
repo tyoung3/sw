@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=latex 2018.10.12)  3 JUN 2019 22:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/Debian) (preloaded format=latex 2018.10.12)  17 JUN 2019 09:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -23,8 +23,7 @@ File: size11.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
-)
-No file SW.aux.
+) (./SW.aux)
 \openout1 = `SW.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 9.
@@ -57,12 +56,6 @@ sion $[][]([] \OMS/cmsy/m/n/10.95 j
 Overfull \hbox (3.6622pt too wide) in paragraph at lines 42--44
 []\OT1/cmr/m/n/10.95 Stringvar lit-er-als are rec-og-nized by the reg-u-lar ex-
 pres-sion $[][]([] \OMS/cmsy/m/n/10.95 j
- []
-
-
-Overfull \hbox (10.13974pt too wide) in paragraph at lines 45--47
-[]\OT1/cmr/m/n/10.95 SYMVAR lit-er-als are rec-og-nized by the reg-u-lar ex-pre
-s-sion $[][]([] \OMS/cmsy/m/n/10.95 j
  []
 
 
@@ -146,17 +139,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 115--119
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 120--125
+Underfull \hbox (badness 10000) in paragraph at lines 120--124
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 126--129
+Underfull \hbox (badness 10000) in paragraph at lines 125--130
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 130--134
+Underfull \hbox (badness 10000) in paragraph at lines 131--134
 
  []
 
@@ -166,57 +159,67 @@ Underfull \hbox (badness 10000) in paragraph at lines 135--139
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 140--144
+Underfull \hbox (badness 10000) in paragraph at lines 140--143
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 145--151
+Underfull \hbox (badness 10000) in paragraph at lines 144--147
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 152--158
+Underfull \hbox (badness 10000) in paragraph at lines 148--154
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 159--166
+Underfull \hbox (badness 10000) in paragraph at lines 155--161
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 167--172
+Underfull \hbox (badness 10000) in paragraph at lines 162--169
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 173--176
+Underfull \hbox (badness 10000) in paragraph at lines 170--175
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 177--181
+Underfull \hbox (badness 10000) in paragraph at lines 176--179
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 182--185
+Underfull \hbox (badness 10000) in paragraph at lines 180--184
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 186--189
+Underfull \hbox (badness 10000) in paragraph at lines 185--188
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 189--192
 
  []
 
 [3]
-Underfull \hbox (badness 10000) in paragraph at lines 190--194
+Underfull \hbox (badness 10000) in paragraph at lines 193--197
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 195--199
+Underfull \hbox (badness 10000) in paragraph at lines 198--202
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 203--207
 
  []
 
@@ -226,12 +229,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 251 strings out of 494924
- 2696 string characters out of 6180767
+ 253 strings out of 494924
+ 2710 string characters out of 6180767
  59209 words of memory out of 5000000
  3640 multiletter control sequences out of 15000+600000
  9370 words of font info for 33 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  21i,9n,19p,379b,185s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on SW.dvi (4 pages, 7716 bytes).
+Output written on SW.dvi (4 pages, 7904 bytes).

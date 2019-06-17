@@ -11,6 +11,8 @@ extern char *version;
 
 /* sw.c  */
 extern char *defaultPath;
+char *defaultSourceComp;
+char *defaultSinkComp;
 extern int maxbfsz;
 
 void visitDouble(Double d);
@@ -32,6 +34,7 @@ Ident visitIdent(Ident i);
 Integer visitInteger(Integer i);
 String visitString(String s);
 String visitStringval(Stringval p);
+Component MakeComponent(Ident name, String path);
 
 	/* swjafafbp.c */
 void genJavaFBP(Model model);

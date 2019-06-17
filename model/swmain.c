@@ -137,6 +137,21 @@ static int NameMisMatch(Process src, int source_id, Process snk, int sink_id) {
     	    
 }
 
+static void FixComp(Process p, char *cn, char *path) {
+
+
+	p->comp = MakeComponent(cn,path);
+}
+
+static void FixComps(Stream s) {
+	if(!s->source->comp) {
+	    FixComp(s->source,defaultSourceComp, defaultPath);
+	}
+	if(!s->sink->comp) {
+	    FixComp(s->sink,defaultSinkComp, defaultPath);
+	}
+}	
+
 static int verifyOK(Model model) { 						/*expand and check model*/
 	Stream f;
 	
@@ -156,6 +171,7 @@ static int verifyOK(Model model) { 						/*expand and check model*/
 	
 	f=model->stream;
 	while(f) {
+		FixComps(f);	
 		if( badProc(f->sink) || badProc(f->source) ) {
 			fprintf(stderr,"SW/verify: failed.");
 			exit(1);
@@ -248,6 +264,7 @@ int main(int argc, char ** argv)
   if (parse_tree)   {  
     model=visitValidSW(parse_tree);
     model->name = baseOf(fname) ;
+	expandSubnets(model );  
     if(verifyOK(model)) {
 		if(!model->proc) {
 			fprintf(stderr,"SWMAIN/FAIL: No processes found\n");
@@ -262,7 +279,6 @@ int main(int argc, char ** argv)
    				printf("%s\n\n", printValidSW(parse_tree)); //Print expanded network definition 
     			break;	
     		default:
-	    		expandSubnets(model );  
     			switch (mode) {
    // Options w/wo/subs w|wo expanded subnets.     				
 	    		case GRAPHMODE: 

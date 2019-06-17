@@ -11,10 +11,10 @@
 
 #define NOBUFFERS
 
-char *defaultPath={"poc"};
-static char *defaultSourceComp={"Gen1"};
-// static char *defaultFilterComp={"Filter1"};
-static char *defaultSinkComp={"Print1"};
+char *defaultPath={"def"};
+char *defaultSourceComp={"Gen1"};
+// char *defaultFilterComp={"Filter1"};
+char *defaultSinkComp={"Print1"};
 
 static int maxdepth=20;
 
@@ -279,7 +279,7 @@ Port MakePort(int n, Ident id) {
 } 
     
 
-
+//  @BUG Lookup existing component first
 Component MakeComponent(Ident name, String path) {
 	Component c; 
 	
@@ -525,21 +525,68 @@ Extport MakeExtport(
 	return ep;
 }
     	
+
+//String visitSymbol(Symbol p)
+//{
+//  return NULL; // ??
+// }
+
+String visitSymvar(Symvar p)
+{
+  return NULL; // ??
+}
+
+String visitSymval(Symval _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Symvalv:
+    /* Code for Symvalv Goes Here */
+    return(visitSymvar(_p_->u.symvalv_.symvar_));
+    break;  
+    case is_Symvali:
+    /* Code for Symvali Goes Here */
+    return(visitIdent(_p_->u.symvali_.ident_));
+    break;
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Symval!\n");
+    exit(1);
+  }
+}
+
+Integer visitTab(Tab _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_Tabn:
+    /* Code for Tabn Goes Here */
+    visitNumval(_p_->u.tabn_.numval_);
+   return 0; 
+  case is_Tabs:
+    /* Code for Tabs Goes Here */
+    visitSymval(_p_->u.tabs_.symval_);
+   return 0; 
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Tab!\n");
+    exit(1);
+  }
+}
+
 Extport visitExtPortIn(ExtPortIn _p_)
 {
     return MakeExtport(SINK,
-	    visitSnk(_p_->u.extin_.snk_),
-    	visitArrow(_p_->u.extin_.arrow_),
-    	visitNumval(_p_->u.extin_.numval_));
-    
+    visitSnk(_p_->u.extin_.snk_),
+    visitArrow(_p_->u.extin_.arrow_),
+    visitTab(_p_->u.extin_.tab_));
 }
 
 Extport visitExtPortOut(ExtPortOut _p_)
 {
+    	
 	return MakeExtport(SOURCE,
-	   	visitSrce(_p_->u.extout_.srce_),
-    	visitArrow(_p_->u.extout_.arrow_),
-    	visitNumval(_p_->u.extout_.numval_));
+    visitSrce(_p_->u.extout_.srce_),
+    visitArrow(_p_->u.extout_.arrow_),
+    visitTab(_p_->u.extout_.tab_));
 }
 
 
@@ -690,12 +737,7 @@ Process visitSrce(Srce _p_)
 {
 	Process p;
 	Port pt;
-	String s;
-	Component c;
 	
-  switch(_p_->kind)
-  {
-  case is_Sourcex:
     p  = visitProc(_p_->u.sourcex_.proc_);
     if(!p)
     	return NULL;
@@ -704,52 +746,19 @@ Process visitSrce(Srce _p_)
     p->nportsOut++;
     linkPort(p,pt);
     return p;
-  case is_Sourcey:
-    s=visitIdent(_p_->u.sourcey_.ident_);
-    c=MakeComponent(defaultSourceComp,defaultPath);
-    p=MakeProcess(net_model,s,c,MakeArg(NULL,NULL));
-    pt=MakePort(-2,"");
-    p->source_id=-2;
-    p->nportsOut++;
-    linkPort(p,pt);
-    return p;
-  default:
-    fprintf(stderr, "Error: bad kind field when visiting Srce!\n");
-    exit(1);
-  }
 }
     
 Process visitSnk(Snk _p_)
 {
 	Process p;
 	Port pt;
-	String s;
-	Component c;
 	
-  switch(_p_->kind)
-  {
-  case is_Sinkx:
-    /* Code for Sinkx Goes Here */
     p =visitProc(_p_->u.sinkx_.proc_);
     pt=visitPrt(_p_->u.sinkx_.prt_);
     p->sink_id = pt->id;
     p->nportsIn++;  
     linkPort(p,pt);
     return p;  
-  case is_Sinky:
-    /* Code for Sinky Goes Here */
-    s=visitIdent(_p_->u.sinky_.ident_);
-    c=MakeComponent(defaultSinkComp,defaultPath);
-    p=MakeProcess(net_model,s,c,MakeArg(NULL,NULL));
-    pt=MakePort(-2,"");
-    p->sink_id=-2;
-    p->nportsIn++;
-    linkPort(p,pt);
-    return p;
-  default:
-    fprintf(stderr, "Error: bad kind field when visiting Snk!\n");
-    exit(1);
-  }
   
 }
 
@@ -828,12 +837,12 @@ Port visitPrt(Prt _p_)
   			NULL));
     case is_Portni:   		
     	return MakePort(visitNumval(_p_->u.portni_.numval_),
-   		visitIdent(_p_->u.portni_.ident_));
+   		visitSymval(_p_->u.portni_.symval_));
     case is_Portin:
     		return MakePort(visitNumval(_p_->u.portin_.numval_),
-    		visitIdent(_p_->u.portin_.ident_));
+    		visitSymval(_p_->u.portin_.symval_));
     case is_Portn:
-    	return MakePort(-1,visitIdent(_p_->u.portn_.ident_));
+    	return MakePort(-1,visitSymval(_p_->u.portn_.symval_));
     case is_Porte:
     	return MakePort(-1,NULL);
   default:
@@ -966,7 +975,6 @@ static Port copyPort(Port p0) {
       Update existing stream,s, in pt */		 
 static void Expand3(Model m, 
 					Process p,
-					Subnetm sn,
 					Extport ep) {
 					
 		Port pt;
@@ -978,6 +986,7 @@ static void Expand3(Model m,
 		if(ep->type==SOURCE) {
 				pt=p->port;
 				do {
+					pt->id = fixId(pt->id);
 					if(pt->id == ep->source_id) {
 						s=pt->stream;
 						srcname=makeName(p->name,
@@ -1003,6 +1012,7 @@ static void Expand3(Model m,
 		}else {   
 				pt=p->port;
 				do {
+					pt->id = fixId(pt->id);
 					if(pt->id == ep->sink_id) {
 						s=pt->stream;
 						snkname=makeName(p->name,
@@ -1028,7 +1038,8 @@ static void Expand3(Model m,
 		}
 			
 	fprintf(stderr,
-		"SW/EXPAND3/FAIL: cannot match process %s port %i", p->name,ep->sink_id);  
+		"SW/EXPAND3/FAIL: cannot match process %s port %i\n", p->name,ep->sink_id);  
+	exit(1);	
 	   
 }
 
@@ -1054,6 +1065,7 @@ static Stream delStream(Model m, Stream s) {
 		ps=cs;
 		cs=cs->next;
 	}
+	return NULL;  // remove warning
 }
 
 
@@ -1064,7 +1076,7 @@ static void Expand(Model m, Process p, Subnetm sn) {
 	
 	ep=sn->extport;
 	while(ep) {
-		Expand3(m, p, sn, ep );			
+		Expand3(m, p,   ep );			
 		ep=ep->next;
 	}	
 	
@@ -1112,7 +1124,9 @@ void expandSubnets(Model model) {
 		pp=NULL;
 		more=0;
 		while(p) {
-			if(p->comp->path[0] == '\'') {  /* Is it a subnet */
+			if(p->comp) {
+			  if(p->comp->path[0] == '\'') {  
+					/* Is a subnet */
 				more=1;
 				model->nprocs--;	
 				if(pp)    // delink p from process chain.     
@@ -1122,7 +1136,8 @@ void expandSubnets(Model model) {
 				}	
 				expandSub(model, p ); 
 				break;
-			}
+			  }
+			}  
 			pp=p;  
 			p=p->next;
 		}
@@ -1134,12 +1149,16 @@ void expandSubnets(Model model) {
 		
 		s=model->stream; 
 		while(s) {
-			if ( s->sink->comp->path[0] == '\''  ||
-			   s->source->comp->path[0] == '\'') {
-					   s=delStream(model,s);
-			} else {
-				s=s->next;
-			}	
+			if(    s->sink->comp 
+			    && s->sink->comp->path[0] == '\'') {
+		  		s=delStream(model,s);  
+		  	} else {	
+			if(   s->source->comp 
+			   && s->source->comp->path[0] == '\'') { 
+				  s=delStream(model,s);
+			}}	  
+			 
+			s=s->next; 
 		}
 	}
 }	
