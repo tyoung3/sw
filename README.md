@@ -52,11 +52,16 @@ Hello World
 
 A process is defined by its process name, its component identifier,
 and component arguments surrounded by parens. 
+The component identifier and arguments may be omitted.  
 
-A stream definition consists of a sink component,
-the channel pointer, and a source component, ended by a ```;```. 
+A component identifier consists of its import path identifier, 
+a period, '.', and the component name.  If  the path is omitted, 
+'def' is assumed.  If the component name is also ommited, Print1 
+is assumed for sink processes and Gen1 is assumed 
+for source processes.   These defaults can be overridden by 
+arguments to sw. 
  
-Channel pointers consist of ```<```, an optional
+Channel arrows consist of ```<```, an optional
 buffersize integer, and ```-```. Example: ```<100-```
  
 IPs are designed as nil(empty) interfaces whose
@@ -65,10 +70,10 @@ mis-match will be reported by incompatible receiving
 components.  Components can be coded to handle any
 type(including user-defined types), 
 a few types(Print1 can process strings and integers), 
-or just one type; on each receiving port.   
+or just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
-version(currently v0).  
+version(currently v0).    
 
 Sw builds a network model in memory, then optionally generates
 either an abstract syntax tree, 
@@ -227,7 +232,7 @@ Running:
 	sw -m 3 <  sw/nds/collate.sw | dot -Tsvg > /tmp/collate.svg
 ```
 produces /tmp/collate.svg, an image of the collate 
-network definition. 
+network definition.   
   
 BUGS:
 -----
