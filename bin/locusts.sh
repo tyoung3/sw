@@ -2,15 +2,18 @@
 
 # locusts.sh
 
+Die() {
+	echo "Locusts.sh/DIE: $*"
+	exit 1
+}
 
 RunLocusts () {
 	temp=/tmp
 	dir=$temp/sw/locusts
-	[ -d bin ] || pushd ..
-	[ -d /tmp/x/ ] || mkdir /tmp/x || exit 1
+	[ -d /tmp/x/ ] || mkdir /tmp/x || Die Cannot mkdir /tmp/x/
 	mv $dir/* /tmp/x/ 2>&1 >/dev/null
-	[ -d $dir ] || mkdir -p  
-	./bin/sw model/nds/locusts.sw >  $dir/main.go
+	[ -d $dir ] || mkdir -p  $dir || Die Cannot mkdir $dir
+	bin/sw nds/locusts.sw >  $dir/main.go
 	pushd $dir
 	[ -f go.mod ] || go mod init locusts/locusts
 	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 

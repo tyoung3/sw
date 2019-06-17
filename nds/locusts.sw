@@ -9,7 +9,7 @@
 
 #              Partition I 
 # Broods IV and XIX in Missouri in 2019   ?
-(C std.Collate  )0 			  <- 0(IV_MO    poc.Gen1 "108" "910" "17" );
+(C  poc.Collate  )0 			  <- 0(IV_MO   poc.Gen1 "108" "910" "17" );
 (C)1 	     	    		  <- 0(XIX_MO   poc.Gen1 "140" "919" "13" );
 
 (MISSOURI_IV poc.Print1) <- 2(C);
@@ -18,8 +18,8 @@
 (MISS_XIX    poc.Print1) <- 5(C);
 
 #              Partition II 
-(C2 poc.Collate  )0 		 <- 0(X_WASH  poc.Gen1 "108" "916" "17" );
-(C2)1 	     	          	 <- 0(XIX2_MO poc.Gen1 "140" "919" "13" );
+(C2 poc.Collate  )0 		 <- 0(X_WASH   poc.Gen1 "108" "916" "17" );
+(C2)1 	     	          	 <- 0(XIX2_MO  poc.Gen1 "140" "919" "13" );
 
 (WASH_X      poc.Print1) <- 2(C2);
 (MATCH_XIX_2 poc.Print1) <- 3(C2);
