@@ -11,14 +11,20 @@ OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
 .PHONY: clean distclean
 
-all: TestSW
+all: Skeleton.c TestSW  SW.tex
 
 clean:
 	rm -f *.o TestSW SW.aux SW.log SW.pdf SW.dvi SW.ps SW
 
 distclean: clean
-	rm -f Absyn.h Absyn.c Test.c Parser.c Parser.h Lexer.c Skeleton.c Skeleton.h Printer.c Printer.h Makefile SW.l SW.y SW.tex 
+	rm -f Absyn.h Absyn.c Test.c Parser.c Parser.h Lexer.c Skeleton.c Skeleton.h Printer.c Printer.h  SW.l SW.y SW.tex 
 
+SW.tex:  SW.cf
+	bnfc --latex SW.cf
+	
+Skeleton.c: SW.cf
+	bnfc --c SW.cf
+	
 TestSW: ${OBJS} Test.o
 	@echo "Linking TestSW..."
 	${CC} ${CCFLAGS} ${OBJS} Test.o -o TestSW

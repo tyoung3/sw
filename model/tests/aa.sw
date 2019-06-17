@@ -1,14 +1,6 @@
-#  DEFAULT_IMPORT_PATH = "strings";
+#  DEFAULT_IMPORT_PATH  
 
-(A std.Comp1)0<-0(B strings.Comp2);
+(A  Comp1)0<-0(B poc.Comp2);
 
-Hello <- World; 
-
-#   Later:
-
-#%sw_maxbfr_
-#%sw_bufsize_ = 0,1,n
-#$sw_import_  = "std";
-#$myi = "foo";
-#(A Comp1)0<-0(B $myi.Comp2);
+(Hello) <- (World); 
 
