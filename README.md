@@ -185,7 +185,12 @@ Ex.  ```A<-B;``` expands to
 	  
 0.8.0
 -----
-	* Introduced subnet tabs	  
+	* Introduced subnet tabs	 
+	
+0.8.2
+-----
+	* Updated for StreamWork-0.4.0 
+	* Updated collate.sw	 
 	
 SW.cf Language Notes
 --------------------
