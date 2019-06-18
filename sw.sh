@@ -15,7 +15,7 @@ RunCollate () {
 	bin/sw nds/collate.sw |gofmt >  $temp/sw/collate/main.go
 	pushd $temp/sw/collate
 	[ -f go.mod ] || go mod init collate/collate
-	go run main.go 	| sort -r
+	go run main.go 	 
 }
 
 RunPoC() {
