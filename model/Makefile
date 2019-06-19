@@ -57,6 +57,7 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/ae.sw  >/dev/null
 	${PGM}  tests/aef.sw  >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
+	${PGM}  tests/tag.sw   >/dev/null
 	../sw.sh poc     
 	${PGM} -m 2 tests/subnet1.sw   >/dev/null
 

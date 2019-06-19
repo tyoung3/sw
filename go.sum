@@ -3,3 +3,5 @@ github.com/tyoung3/streamwork v0.3.0 h1:gaMjzQKpzJcdMMWnXerwiuxufyIEblQodXHnrMFa
 github.com/tyoung3/streamwork v0.3.0/go.mod h1:XXRNRGlThey+YSX9+gJc11TrkoPKLZezoBXDhK0lSCI=
 github.com/tyoung3/streamwork v0.4.3 h1:x7483/rdPmpNgImSm2/3ZB6e8wCRDvv/JCQp4zNXEEQ=
 github.com/tyoung3/streamwork v0.4.3/go.mod h1:XXRNRGlThey+YSX9+gJc11TrkoPKLZezoBXDhK0lSCI=
+github.com/tyoung3/streamwork v0.5.0 h1:Tv+GJ489K5tn0xk7GFBNbn5v7a+nE17rYVPpG9636J0=
+github.com/tyoung3/streamwork v0.5.0/go.mod h1:XXRNRGlThey+YSX9+gJc11TrkoPKLZezoBXDhK0lSCI=
