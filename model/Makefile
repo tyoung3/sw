@@ -15,7 +15,7 @@ HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 all:  ../bin/sw tags SW.pdf
 
 install: ${PGM}
-	sudo cp ${PGM} /usr/local/bin 
+	sudo cp ${PGM} ${GOPATH}/bin
 
 tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h model.h sw.h  swmain.h  swsym.h
 	ctags *.c *.h
