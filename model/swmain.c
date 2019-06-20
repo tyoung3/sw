@@ -143,6 +143,7 @@ static void FixComp(Process p, char *cn, char *path) {
 	p->comp = MakeComponent(cn,path);
 }
 
+/* Insert default components if necessary. */
 static void FixComps(Stream s) {
 	if(!s->source->comp) {
 	    FixComp(s->source,defaultSourceComp, defaultPath);
@@ -152,7 +153,9 @@ static void FixComps(Stream s) {
 	}
 }	
 
-static int verifyOK(Model model) { 						/*expand and check model*/
+
+/* verifyOK will expand and check model*/
+static int verifyOK(Model model) { 						
 	Stream f;
 	
 	if(!model) {
@@ -258,11 +261,10 @@ int main(int argc, char ** argv)
   	exit(1);
   }	 
   
-  	
-  parse_tree = pValidSW(input);
+  parse_tree = pValidSW(input);  /* Parse network definition */
   
   if (parse_tree)   {  
-    model=visitValidSW(parse_tree);
+    model=visitValidSW(parse_tree);  /* Build model */
     model->name = baseOf(fname) ;
 	expandSubnets(model );  
     if(verifyOK(model)) {

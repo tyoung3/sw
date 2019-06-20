@@ -106,12 +106,6 @@ Model MakeModel(Stream f) {
 	
 }	    
 
-Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
-	
-	 net_model=MakeModel(NULL);
-     visitListStm(_p_->u.valid_.liststm_);
-     return net_model;
-}
 
 #ifdef OLD_STUFF
 static int countArg(char **arg) {
@@ -1163,4 +1157,117 @@ void expandSubnets(Model model) {
 	}
 }	
 	
+	
+/* Fix source port for this stream */	
+static void fixStream(Stream s2) {	
+	Process p;
+	Port pt;
+	
+	p=s2->source;
+	pt=p->port;
+	
+	do {
+		pt->id = fixId(pt->id);
+		if (pt->id == s2->source_id) { 
+			pt->stream = s2;
+			return;
+		}	
+		pt=pt->next; 
 
+	} while (pt!=p->port); 	 
+}	 
+	 
+static void fixFan2(Model m, Process p, Port pt0, Port pt) {  
+	Process j;   // New anonymous join process 
+	Component c; 
+	Port   pt1,pt2 ;   
+	Stream s0, s1, s2;
+	
+	/*   		BEFORE 
+		(A)id <- x(B);    [ s0 pt0]
+		(A)id <- y(C);    [ s1 pt ]  */ 
+	c=MakeComponent("Join","poc");
+	j=MakeProcess(m,"_",c, MakeArg(NULL,NULL));
+	j->depth=p->depth+1;
+	/*        	AFTER
+		(A)id <- 0(_ poc.Join);  [ s0 pt0]  
+	   	(j)1  <- y(C); 			 [ s1    ] 
+	   	(j)2  <- x(B);           [ s2    ]  */
+
+	
+	s0=pt0->stream;
+	
+	s2=MakeStream(IS_NET, pt0->stream->source, j, 
+			pt0->stream->bufsz, 
+			m); 
+	
+	s2->sink_id=2;
+	s2->source_id=pt0->id;	
+	
+	s1=pt->stream;
+	s1->sink=j;
+	s1->sink_id=1;
+	
+	s0->source=j;
+	s0->source_id = 0;
+	
+	pt->next->prev=pt0;   // Delink pt
+	pt0->next = pt->next;
+	p->nportsIn--;
+	
+	
+			/* Fix j ports */
+	j->port=pt;	 pt->id = 0; pt->stream=s0; pt->name="";
+	pt1=MakePort(1,"");
+	pt2=MakePort(2,"");
+	pt->next=pt1;  pt1->next=pt2; pt2->next=pt;
+	pt2->prev=pt1;pt1->prev=pt;pt->prev=pt2;
+	pt1->stream=s1;
+	pt2->stream=s2;
+	j->nportsIn=2; j->nportsOut=1;
+	fixStream(s2);
+	fixStream(s1);
+	
+}
+
+static void fixFan(Model m, Process p) {
+	Port pt,pt0;
+	int id=-999;
+	
+	pt=p->port;
+	
+	do {
+		pt->id=fixId(pt->id); 
+		if(pt->id == id 
+			&& pt0->stream->sink == p
+			&&  pt->stream->sink == p) {
+			fixFan2(m, p, pt0, pt);
+			pt=p->port;  /* Go back to first port */  	
+		}	
+		id=pt->id;
+		pt0=pt;
+		pt=pt->next;		
+	} while(pt != p->port);
+}
+
+/* Insert poc.Join process wherever fanin occurs. */
+static void fixFanin(Model m) {
+	Port pt;
+	Process p;
+	
+	p=m->proc;
+	
+	while(p)  {
+		fixFan(m, p);
+		p=p->next;
+	}
+
+}
+
+Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
+	
+	 net_model=MakeModel(NULL);
+     visitListStm(_p_->u.valid_.liststm_);
+	 fixFanin(net_model);
+     return net_model;
+}

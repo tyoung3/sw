@@ -12,7 +12,7 @@ Debug() {
 	#echo "Debug: $*"
 }
 
-SW=/usr/local/bin/sw
+SW=$GOPATH/bin/sw
 [ -e $SW     ] || Die $SW is missing 
 
 $SW -v 

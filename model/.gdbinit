@@ -1,4 +1,4 @@
 #break visitValidSW
 #break sw.c:929
-break main
-run  */si*.sw
+break fixFan2
+run  */aj.sw
