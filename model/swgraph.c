@@ -172,9 +172,9 @@ static int findChannel(Port p, int id) {
 
 static void showPorts(Stream f, Process src, Process snk, int channel) {					
 #ifndef NO_PORTS			
-				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%i\",taillabel=\"%i\"", tooltip=\"%i[%i]\"];\n",
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.i\",taillabel=\"%.i\"", tooltip=\"%i[%i]\"];\n",
 #else
-				printf("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
+				printf("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%.i\",taillabel=\"%.i\",	tooltip=\"%i[%i]\"];\n",
 #endif		
 					src->name,  
 					snk->name,
@@ -197,9 +197,9 @@ static void genLinks(Model m) {   // [label="C Miss"];
 			channel=findChannel(src->port,f->source_id); 
 			if(f->bufsz<2) { 
 #ifndef NO_PORTS			
-				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+				printf("\"%s\":%i -> \"%s\":%i [label=\"%i\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
 #else
-				printf("\"%s\"  -> \"%s\"  [label=\"%i\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+				printf("\"%s\"  -> \"%s\"  [label=\"%i\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
 #endif				
 					src->name,  
 					snk->name,
