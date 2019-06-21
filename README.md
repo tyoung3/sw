@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.8.0 - STREAMWORK/FrontEnd
+SW-0.9.0 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -27,9 +27,12 @@ Description
 StreamWork is the prototype for a Go language,
 flow-based-programming(FBP) system.  
 
-StreamWork reads and executes a StreamWork network definition(ND) file.
+StreamWork reads, analyzes, and executes a StreamWork network 
+definition(ND) file.
 Employing StreamWork, an ND becomes, in effect, an executable
-script. Sw generates import statements for Go components
+script. 
+
+By default, sw generates import statements for Go components
 and builds a single main.go program which launches a goroutine
 for each process, and connects them via Go interface channels.  
 
@@ -43,7 +46,7 @@ Port numbers default to 0.
 
 Ex.  
 ```
-    (Hello)0 <- 0(World); 
+    (Hello) <- (World); 
 ```
 produces:
 ```
@@ -68,8 +71,8 @@ IPs are designed as nil(empty) interfaces whose
 data type is determined by the sending component. A type 
 mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
-type(including user-defined types), 
-a few types(Print1 can process strings and integers), 
+type(including user-defined types); 
+a few types(Print1 can process strings and integers); 
 or just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
@@ -191,6 +194,12 @@ Ex.  ```A<-B;``` expands to
 -----
 	* Updated for StreamWork-0.4.0 
 	* Updated collate.sw	 
+	
+0.9.0
+-----
+	* Introducted 'AutoJoin'.  If two processes are sending 
+	  to the same sink port, sw will create an anonymous 
+	  poc.Join process to combine the two streams first.	
 	
 SW.cf Language Notes
 --------------------
