@@ -22,7 +22,7 @@ static int maxdepth=20;
 
 STATE state=IS_NET; 
   
-int bs,maxbfsz=1;		              /*  Buffer size */
+int bs,maxbfsz=0;		              /*  Buffer size */
 Model net_model=NULL;  
 
 static Subnetm linkSubnet(Model m, char *name) {
@@ -1177,6 +1177,7 @@ static void fixStream(Stream s2) {
 	} while (pt!=p->port); 	 
 }	 
 	 
+	 
 static void fixFan2(Model m, Process p, Port pt0, Port pt) {  
 	Process j;   // New anonymous join process 
 	Component c; 
@@ -1227,6 +1228,59 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt) {
 	j->nportsIn=2; j->nportsOut=1;
 	fixStream(s2);
 	fixStream(s1);
+}
+
+	
+	 
+static void fixFanOut(Model m, Process p, Port pt0, Port pt) {  
+	Process j;   // New anonymous split process 
+	Component c; 
+	Port   pt1,pt2 ;   
+	Stream s0, s1, s2;
+	
+	/*   		BEFORE 
+		(B)x <- id(A);  [ s0 pt0]
+		(C)y <- id(A);  [ s1 pt ]  */ 
+	c=MakeComponent("Split","poc");
+	j=MakeProcess(m,"_",c, MakeArg(NULL,NULL));
+	j->depth=p->depth+1;
+	/*        	AFTER
+		(B)x <-  1(j);  [ s0 pt0]  
+	   	(C)y <-  2(j; 	[ s1    ] 
+	   	(j)0 <- id(A);  [ s2    ]  */
+
+	
+	s0=pt0->stream;
+	
+	s2=MakeStream(IS_NET, pt0->stream->source, j, 
+			pt0->stream->bufsz, 
+			m); 
+	
+	s2->sink_id=0;
+	s2->source_id=pt0->id;	
+	
+	s1=pt->stream;
+	s1->source=j;
+	s1->source_id=2;
+	
+	s0->source=j;
+	s0->source_id = 1;
+	
+	pt->next->prev=pt0;   // Delink pt
+	pt0->next = pt->next;
+	p->nportsOut--;
+	
+	
+			/* Fix j ports */
+	j->port=pt;	 pt->id = 0; pt->stream=s2; pt->name="";
+	pt1=MakePort(1,"");
+	pt2=MakePort(2,"");
+	pt->next=pt1;  pt1->next=pt2; pt2->next=pt;
+	pt2->prev=pt1;pt1->prev=pt;pt->prev=pt2;
+	pt1->stream=s0;
+	pt2->stream=s1;
+	j->nportsIn=1; j->nportsOut=2;
+	fixStream(s2);
 	
 }
 
@@ -1238,11 +1292,17 @@ static void fixFan(Model m, Process p) {
 	
 	do {
 		pt->id=fixId(pt->id); 
-		if(pt->id == id 
-			&& pt0->stream->sink == p
-			&&  pt->stream->sink == p) {
-			fixFan2(m, p, pt0, pt);
-			pt=p->port;  /* Go back to first port */  	
+		if(pt->id == id) { 
+			if(  pt0->stream->sink == p
+			   && pt->stream->sink == p) {
+				fixFan2(m, p, pt0, pt);
+				pt=p->port;  /* Go back to first port */ 
+			}	else {
+			if(  pt0->stream->source == p
+			   && pt->stream->source == p) {
+				fixFanOut(m, p, pt0, pt);
+				pt=p->port;  /* Go back to first port*/			
+			}} 	
 		}	
 		id=pt->id;
 		pt0=pt;
@@ -1251,7 +1311,7 @@ static void fixFan(Model m, Process p) {
 }
 
 /* Insert poc.Join process wherever fanin occurs. */
-static void fixFanin(Model m) {
+static void fixFanInOut(Model m) {
 	Port pt;
 	Process p;
 	
@@ -1268,6 +1328,6 @@ Model visitValidSW(ValidSW _p_) {   /* Parse visit root */
 	
 	 net_model=MakeModel(NULL);
      visitListStm(_p_->u.valid_.liststm_);
-	 fixFanin(net_model);
+	 fixFanInOut(net_model);
      return net_model;
 }

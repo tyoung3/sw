@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.9.0\"
+VERSION = \"0.9.1\"
 
 LATEX = latex
 DVIPS = dvips
@@ -15,7 +15,7 @@ HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 all:  ../bin/sw tags SW.pdf
 
 install: ${PGM}
-	sudo cp ${PGM} ${GOPATH}/bin
+	sudo cp ${PGM} ../bin/swgraph ../bin/swgo ${GOPATH}/bin
 
 tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h model.h sw.h  swmain.h  swsym.h
 	ctags *.c *.h
@@ -58,6 +58,8 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/tag.sw   >/dev/null
 	${PGM}  tests/aj.sw   >/dev/null
+	${PGM}  tests/aj2.sw   >/dev/null
+	${PGM}  tests/as.sw   >/dev/null
 	../sw.sh poc     
 	${PGM} -m 2 tests/subnet1.sw   >/dev/null
 
