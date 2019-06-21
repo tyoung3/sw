@@ -169,14 +169,12 @@ static char **MakeArg(ListArgument la, char *name) {
 }
 
 static char *fixName(char *name) {	
-	char bfr[100];
+	char bfr[101];
 	static int nanon=1;  /* Number of anonymous processes */
 	
 	if(name[0] == '_') {     // Anonymous process ?	
-		if(name[1] == 0) {   // not = = subnet process
 			sprintf(bfr,"_%i",nanon++);
 			return strndup(bfr,100);
-		}
 	}
 	return name;	
 }	
@@ -194,7 +192,8 @@ static Process MakeProcess(
 		tabinit(100000);
 	}
 	
-	name=fixName(name); 
+	if(name[0] == '_' && name[1]== 0) 
+		name=fixName(name); 
 	p=getProc(name);
 	 
 	if(p==NULL) {
@@ -520,14 +519,10 @@ Extport MakeExtport(
 }
     	
 
-//String visitSymbol(Symbol p)
-//{
-//  return NULL; // ??
-// }
-
 String visitSymvar(Symvar p)
 {
-  return NULL; // ??
+  p=p;
+  return  NULL; // ??
 }
 
 String visitSymval(Symval _p_)
@@ -906,6 +901,9 @@ String visitString(String s)
 static char *makeName(char *pn, char *nn) {
 	char bfr[1000];
 	
+	//if(nn[0] == '_') {   /* Breaks subnets */
+	//	return fixName("_");
+	//}
 	strncpy( bfr,pn,500); 
 	strncat( bfr,"-",501);
 	strncat( bfr,nn,1000);
@@ -971,7 +969,7 @@ static void Expand3(Model m,
 					Process p,
 					Extport ep) {
 					
-		Port pt;
+		Port pt,ptc;
 		Stream s;			 
 		Process pnew;
 		char *srcname;
@@ -981,7 +979,7 @@ static void Expand3(Model m,
 				pt=p->port;
 				do {
 					pt->id = fixId(pt->id);
-					if(pt->id == ep->source_id) {
+					if(pt->id == ep->sink_id) {
 						s=pt->stream;
 						srcname=makeName(p->name,
 								 fixName(ep->source->name));
@@ -995,10 +993,10 @@ static void Expand3(Model m,
 						if(ep->bufsz > s->bufsz)
 							s->bufsz=ep->bufsz;
 						pnew->nportsOut++;
-						linkPort(pnew, copyPort(pt));
-						pnew->port->id = 
-							s->source_id = ep->sink_id;
-						pnew->depth = p->depth+1;	
+						pnew->depth = p->depth+1;
+						ptc=copyPort(pt);
+						ptc->id = s->source_id = ep->sink_id;
+						linkPort(pnew, ptc);	
 						return;
 					}
 					pt=pt->next;
@@ -1007,7 +1005,7 @@ static void Expand3(Model m,
 				pt=p->port;
 				do {
 					pt->id = fixId(pt->id);
-					if(pt->id == ep->sink_id) {
+					if(pt->id == ep->source_id) {
 						s=pt->stream;
 						snkname=makeName(p->name,
 								 fixName(ep->sink->name));
@@ -1021,9 +1019,9 @@ static void Expand3(Model m,
 						if(ep->bufsz > s->bufsz)
 							s->bufsz=ep->bufsz;
 						pnew->nportsIn++;
-						linkPort(pnew, copyPort(pt));
-						pnew->port->id =  
-							s->sink_id = ep->source_id;	
+						ptc=copyPort(pt);
+						ptc->id =  s->sink_id = ep->source_id;	
+						linkPort(pnew, ptc);
 						pnew->depth = p->depth+1;	
 						return;
 					}
@@ -1054,7 +1052,7 @@ static Stream delStream(Model m, Stream s) {
 			ps->next = s->next;
 			//m->nstreams--;
 			free(s);
-			return ps->next;
+			return m->stream;
 		}
 		ps=cs;
 		cs=cs->next;
@@ -1151,7 +1149,6 @@ void expandSubnets(Model model) {
 			   && s->source->comp->path[0] == '\'') { 
 				  s=delStream(model,s);
 			}}	  
-			 
 			s=s->next; 
 		}
 	}
@@ -1312,7 +1309,6 @@ static void fixFan(Model m, Process p) {
 
 /* Insert poc.Join process wherever fanin occurs. */
 static void fixFanInOut(Model m) {
-	Port pt;
 	Process p;
 	
 	p=m->proc;

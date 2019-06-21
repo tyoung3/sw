@@ -188,7 +188,12 @@ Ex.  ```A<-B;``` expands to
 	  
 0.8.0
 -----
-	* Introduced subnet tabs	 
+	* Introduced subnet tabs.  In subnet definitions,
+	  tags may be used to refer to external ports.  
+	  Ex. ```'sn { (A) <- IN; }; (B 'sn)IN <- (C);```  
+	  IN is an external reference tag.  The expanded 
+	  network will be: ```(B-A def.Print1 )0 <- 0(C def.Gen1);  ``` 	
+	 
 	
 0.8.2
 -----
@@ -197,9 +202,17 @@ Ex.  ```A<-B;``` expands to
 	
 0.9.0
 -----
-	* Introducted 'AutoJoin'.  If two processes are sending 
+	* Introduced the AutoJoin feature.  If two processes 
+	  are sending 
 	  to the same sink port, sw will create an anonymous 
 	  poc.Join process to combine the two streams first.	
+	  
+0.9.1
+-----
+	* Introduced the AutoSplit feature.  If a process is 
+	  sending to two sinks from the same port, sw will 
+	  create an anonymous poc.Split process to send the 
+	  data to both sink processes. 	  
 	
 SW.cf Language Notes
 --------------------
