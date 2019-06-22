@@ -1,9 +1,9 @@
 
-SUBDIRS = bnfc model
+SUBDIRS = model bnfc 
 
 .PHONY : all $(SUBDIRS)
 
 all : $(SUBDIRS) 
 	
 $(SUBDIRS) :
-	$(MAKE) -C $@
+	$(MAKE) check -C $@
