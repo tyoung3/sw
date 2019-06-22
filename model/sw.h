@@ -9,6 +9,14 @@ extern char *version;
 #define ID_UNKNOWN 9999999
 #define MAX_BUFFER  1000000
 
+#define FAIL(F,S) { 						\
+	fprintf(stderr,							\
+		"\033[31mSW/%s/FAIL: %s\033[39m\n",	\
+		(#F),								\
+		(S)   );							\
+		exit(1);							\
+	}	
+	
 /* sw.c  */
 extern char *defaultPath;
 char *defaultSourceComp;
@@ -41,5 +49,8 @@ void genJavaFBP(Model model);
 
 	/* swc.c       */
 void genC(Model model); 
+
+	/* swmain.c */
+extern char fbfr[]; 	
 #endif   // SW_H_
 

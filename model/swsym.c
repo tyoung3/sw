@@ -7,18 +7,17 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include <memory.h>
 #include <string.h>
-#include <errno.h>
 #include "swsym.h"
-
-// #define TEST_MAIN
-
+#include "sw.h"
 
 struct bucket {
 	union {
-		Stream  stream; 
-		Process proc; 
+		Stream  	stream; 
+		Process 	proc; 
+		Component 	comp; 
 	} u;
 	char *tag;
 	int nrefs;  // Number of references to this symbol
@@ -30,10 +29,6 @@ typedef struct bucket *bucketp;
 bucketp *symtable;  /* Array of bucket pointers */
 
 int TABLESIZE = 100000;
-
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
 
 #define FREE(x)      free((char *) (x))
 #define NEW(t)      ((t *) alloca((unsigned) sizeof(t)))
@@ -52,9 +47,6 @@ int nsyms;
 static bucketp firstsymbol;
 static bucketp lastsymbol;
 
-
-#define PERR1(S) fprintf(stderr,"SWSYM/FAIL: %s\n",(S) );
-
 void tabinit(int nvar) {
 	TABLESIZE=nvar;
 	int i;
@@ -62,8 +54,7 @@ void tabinit(int nvar) {
 	symtable = (bucketp *) malloc(TABLESIZE * sizeof( bucketp) );
 
     if (symtable == NULL) {
-		PERR1("Too many variables for memory.");
-		exit(1);
+		FAIL(tabinit,"Too many variables for memory.");
     }
 
     /* Set all symtable pointers to NULL */
@@ -123,14 +114,16 @@ static bucketp lookup(char *key)
     if (found == 0) {
 		nsyms++;
 		if (nsyms > TABLESIZE) {
-	   	 	fprintf(stderr, "%i variables not enough for this job.\n",
+	   	 	sprintf(fbfr, 
+	   	 		"%i variables exceeds symtable size.\n",
 		    TABLESIZE);
-	    	exit(1);
+	    	FAIL(lookup,fbfr);
 		}
 		bp = (bucketp) malloc(sizeof(bucket));
 		bp->link = symtable[hashval];
 		bp->next = NULL;
 		bp->tag = strdup(key);
+		bp->u.comp = NULL;
 		if (firstsymbol == NULL) {
 	   	 	firstsymbol = bp;
 	    	lastsymbol = bp;
@@ -158,6 +151,31 @@ void free_symtab()
 	    bp = bptmp;
 	}
     }
+}
+
+Component addComponent(char *name, char *path, Component c) {
+	bucketp b;
+	char key[1000]; 
+	
+	key[0]='^'; key[1]=0;
+	strncat(key,path,999);	
+	strncat(key,".",999);
+	strncat(key,name,999);
+	b=lookup(key);
+	b->u.comp = c;
+	return b->u.comp;
+}
+
+Component getComponent(char *name, char *path) {
+	bucketp b;
+	char key[1000]; 
+	
+	key[0]='^'; key[1]=0;
+	strncat(key,path,999);	
+	strncat(key,".",999);
+	strncat(key,name,999);
+	b=lookup(key);
+	return b->u.comp;
 }
 
 Process addProc(char *key, Process p) {

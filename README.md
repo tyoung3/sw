@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.9.0 - STREAMWORK/FrontEnd
+SW-0.9.3 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -213,6 +213,14 @@ Ex.  ```A<-B;``` expands to
 	  sending to two sinks from the same port, sw will 
 	  create an anonymous poc.Split process to send the 
 	  data to both sink processes. 	  
+	  
+0.9.3
+-----
+	* Standardized FAIL messages. 
+	* Show number processes, etc. statistics in 
+	  network definition. 
+	  Number of partitions equals number of disconnected 
+	  process groups. 	  
 	
 SW.cf Language Notes
 --------------------

@@ -10,6 +10,8 @@
 #include "swsym.h"
 #include "swgraph.h"  
 
+char fbfr[100];
+	
 typedef enum{ GOMODE=0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE=7 }   MODE;
 
 char *version={VERSION};  
@@ -21,10 +23,10 @@ static int badProc(Process p) {
 			Port port;
 			
 			if(!p->comp) {
-				fprintf(stderr,
-				  "SW/badProc/FAIL: missing component for process: (%s)\n", 
-						p->name
-				);
+				sprintf(fbfr,
+					"missing component for process: (%s)",
+					p->name);
+				FAIL(badProc,fbfr);	
 				return 1;
 			}
 			
@@ -37,18 +39,16 @@ static int badProc(Process p) {
 			}	
 			for(;i < (p->nportsIn + p->nportsOut); i++) {
 				if( port->id != i ) {
-					fprintf(stderr,
-						"SWMAIN/badProc/FAIL: (%s) port[%i] is %i, should be = %i\n", 
+					sprintf(fbfr,
+						"(%s) port[%i] is %i, should be = %i.\n",
 						p->name, 
 						i, 
 						port->id,
-						i); 
-					fprintf(stderr,"\t port numbers for (%s)  need to be 0,1,2,... \n",p->name);	
-					return 1;
+						i);  
+					FAIL(badProc,fbfr);	
 				}
 				port = port->next;
 			}
-			
 			
 			return 0;
 }
@@ -77,13 +77,13 @@ static int eqs(char *s1, char *s2) {
 
 static int nameFail(char *psnkname, char *nsnk, char *nsrc, char *psrcname) {    	    	
 				
-				fprintf(stderr,"SWMAIN/NameMisMatch/FAIL: (%s)%s <- %s(%s) \n",
+				sprintf(fbfr,"(%s)%s <- %s(%s)",
 						psnkname,
 						nsnk,
 						nsrc,
 						psrcname
 				);
-    			exit(1);
+				FAIL(nameFail,fbfr);		
 }    			
 
 static int NameMisMatch(Process src, int source_id, Process snk, int sink_id) {
@@ -159,25 +159,13 @@ static int verifyOK(Model model) {
 	Stream f;
 	
 	if(!model) {
-		fprintf(stderr,"SWMAIN/verifyOK/FAIL: network model is missing!");
-		return(0);
+		FAIL(verifyOK,"network model is missing!");
 	}	
-
-#ifdef VERIFY_VERBOSE	
-	fprintf(stderr,
-		"SWMAIN/VerifyOK/model: %d/%d/%d Stream/procs/components.\n", 
-			model->nstreams, 
-			model->nprocs, 
-			model->ncomponents
-	);
-#endif	
 	
 	f=model->stream;
 	while(f) {
 		FixComps(f);	
 		if( badProc(f->sink) || badProc(f->source) ) {
-			fprintf(stderr,"SW/verify: failed.");
-			exit(1);
 		}	
 		if(NameMisMatch(f->source,f->source_id,f->sink,f->sink_id))	
 				return 1;
@@ -200,8 +188,8 @@ FILE *input;
 static FILE *openFile(char *fname) {
     input = fopen(fname, "r");
     if (!input)   {
-      fprintf(stderr, "SW/openFile/FAIL Error opening input file: %s.\n", fname);
-      exit(1);
+      sprintf(fbfr,"Error opening input file: %s.", fname);
+      FAIL(openFile,fbfr);
     } 
     return input;
 }
@@ -264,12 +252,13 @@ int main(int argc, char ** argv)
   parse_tree = pValidSW(input);  /* Parse network definition */
   
   if (parse_tree)   {  
+    tabinit(100000);             /* set symbol table */
     model=visitValidSW(parse_tree);  /* Build model */
     model->name = baseOf(fname) ;
 	expandSubnets(model );  
     if(verifyOK(model)) {
 		if(!model->proc) {
-			fprintf(stderr,"SWMAIN/FAIL: No processes found\n");
+			FAIL(swmain,"No processes found.");
 			exit(1);
 		}
     	switch (mode) {
@@ -300,8 +289,7 @@ int main(int argc, char ** argv)
 	    	    }
 	    } 	    	
     } else {
-    	fprintf(stderr,"SW/VerfyOK/FAIL:  failed.\n");
-    	exit(1);
+    	FAIL(VerfyOK,"Verify failed!");
     }	
     return 0;
   }

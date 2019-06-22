@@ -6,6 +6,7 @@ TODO:
 #include <stdio.h>
 #include <stdlib.h>
 #include "model.h"
+#include "sw.h"
 
 #define P(s) printf("// %s\n",(#s));
 static void genSuffix() {
@@ -48,14 +49,9 @@ void genC(Model model) {
 				//* Generate Prefix code */
 	genPrefix(model->nstreams);
 	
-	if (!model) {
-			fprintf(stderr,"SWC/FAIL: Missing model\n");
-			exit(1);
-	}
-	
 				
-			//* Generate commented Reconstructed Network Definition */
-	printf("/*******  Expanded Network Definition   *****/\n");
+		//* Generate commented Reconstructed Network Definition */
+	printf("/*********  Expanded Network Definition   ********/\n");
 	f=model->stream;
 
 	while(f) {

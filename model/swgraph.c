@@ -259,11 +259,6 @@ void genGraph(Model model) {
 	Stream f;
 	Process p;
 	
-	if (!model) {
-			fprintf(stderr,"swgo/FAIL: Missing model\n");
-			exit(1);
-	}
-	
 	assignChannels(model);
 		
 			//* Generate commented Reconstructed Network Definition */

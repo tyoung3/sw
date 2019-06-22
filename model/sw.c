@@ -91,8 +91,8 @@ Model MakeModel(Stream f) {
 	m=(Model)malloc(sizeof(Model_)); 
     if (!m)
     {
-        fprintf(stderr, "SW/MakeModel/FAIL: out of memory when allocating Process!\n");
-        exit(1);
+        FAIL(MakeModel,
+        	"Out of memory when allocating Process!\n");
     }
     
 	m->nstreams = 0;
@@ -185,12 +185,7 @@ static Process MakeProcess(
 		Component 	comp, 
 		char 		**arg) {
 	Process p;
-	static int onone=1 ;
 	
-	if(onone) {
-		onone=0; 
-		tabinit(100000);
-	}
 	
 	if(name[0] == '_' && name[1]== 0) 
 		name=fixName(name); 
@@ -200,8 +195,8 @@ static Process MakeProcess(
 		p=(Process)malloc(sizeof(Process_)); 
     	if (!p)
     	{
-    	    fprintf(stderr, "SW/MakeProcess/FAIL: out of memory when allocating Process!\n");
-    	    exit(1);
+    	    FAIL(MakeProcess,
+    	    	"Out of memory when allocating Process!\n");
     	}
     	
 		p->comp = comp;
@@ -276,13 +271,19 @@ Port MakePort(int n, Ident id) {
 Component MakeComponent(Ident name, String path) {
 	Component c; 
 	
-	c=(Component)malloc(sizeof(Component_)); 
+	c = getComponent(name,path);
+	
+	if(c==NULL) {
+		c=(Component)malloc(sizeof(Component_));
+    	net_model->ncomponents++;
+	}	 
     if (!c)
     {
         fprintf(stderr, "Error: out of memory when allocating Component!\n");
         exit(1);
     }
     
+    addComponent(name,path,c);   /* Add to symbol table */
 	c->name = name;
 	c->path = path;
 	return c;
@@ -293,14 +294,16 @@ Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
 	Stream f;
 	
 	if(!src) {
-			fprintf(stderr, "SWMAIN/MakeStream/FAIL: Hermit?\n");
+			FAIL(MakeStream,"No source for stream. Hermit?\n");
 			exit(0);
 	}
+	
 	f=(Stream)malloc(sizeof(Stream_)); 
+	
     if (!f)
     {
-        fprintf(stderr, "SWMAIN/MakeStream/FAIL: out of memory when allocating Stream!\n");
-        exit(1);
+        FAIL(MakeStream,
+        	"Out of memory when allocating Stream!\n");
     }
     
 	f->source    = src;
@@ -694,23 +697,6 @@ void visitStm(Stm _p_)
   }
 }
 
-
-#ifdef OLD_STUFF
-static int notListed(Process p, Model m) {
-	Process a;
-	
-	a=m->proc;
-	while(a) {
-		if( getProc(p->name) == 
-		    getProc(a->name) )
-		return 0;
-		a=a->next;
-	};
-		    
-	return 1;
-}
-#endif
-
 void visitListStm(ListStm liststm)
 {
   
@@ -912,11 +898,11 @@ static char *makeName(char *pn, char *nn) {
 
 static int CheckDepth(int d) {
 	if( d > maxdepth) {
-	  fprintf(
-		 stderr,
-		 "SW/FAIL: Exceeded maximum subnet expansion depth, %d. Loop maybe?\n",
+	  sprintf(
+		 fbfr,
+		 "Exceeded maximum subnet expansion depth, %d. Loop maybe?\n",
 			maxdepth);
-		 exit(1);
+		 FAIL(CheckDepth,fbfr);
 	}
 	return d+1;
 }
@@ -1029,9 +1015,10 @@ static void Expand3(Model m,
 				} while(pt!=p->port);	
 		}
 			
-	fprintf(stderr,
-		"SW/EXPAND3/FAIL: cannot match process %s port %i\n", p->name,ep->sink_id);  
-	exit(1);	
+	sprintf(fbfr,
+		"Cannot match process %s port %i\n", 
+		p->name,ep->sink_id);  
+	FAIL(Expand3,fbfr);	
 	   
 }
 
@@ -1096,11 +1083,10 @@ static void expandSub(Model m, Process p) {
 		sn=sn->next;
 	}	
 	
-	fprintf(stderr,
-		"SW/FAIL: Cannot find subnet %s for process %s\n",
+	sprintf(fbfr,
+		"Cannot find subnet %s for process %s\n",
 		p->comp->name, p->name);
-
-	exit(1);	
+	FAIL(expandSub,fbfr);
 }
 
 

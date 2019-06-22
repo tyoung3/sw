@@ -7,6 +7,7 @@ TODO:
 #include <stdio.h>
 #include <stdlib.h>
 #include "model.h"
+#include "sw.h"
 
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s,\n",(#s));
@@ -133,14 +134,6 @@ static void genProcs(Process p) {
 void genJavaFBP(Model model) {
 	Stream f;
 	Process p;
-	
-	
-	
-	if (!model) {
-			fprintf(stderr,"swgo/FAIL: Missing model\n");
-			exit(1);
-	}
-	
 		
 			//* Generate commented Reconstructed Network Definition */
 	// printf("#########   Expanded Network Definition   ######### \n");
