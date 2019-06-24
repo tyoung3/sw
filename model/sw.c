@@ -13,16 +13,15 @@
 
 char *defaultPath={"def"};
 char *defaultSourceComp={"Gen1"};
-// char *defaultFilterComp={"Filter1"};
+// char *defaultFilterComp={"Filter1"};  @TODO
 char *defaultSinkComp={"Print1"};
-
+int defBufferSize=1;   /* One may prevent accidental deadlocks.*/
 static int maxdepth=20;
 
-/* @TODO  Standardize error messages */
 
 STATE state=IS_NET; 
   
-int bs,maxbfsz=0;		              /*  Buffer size */
+int bs=1,maxbfsz=0;		              /*  Buffer size */
 Model net_model=NULL;  
 
 static Subnetm linkSubnet(Model m, char *name) {
@@ -317,7 +316,7 @@ Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
 	}
     f->next = m->stream;	
     m->stream=f;
-    if(bs<1) bs=1;   
+    if(bs<0) bs=0;   
     if(bs>MAX_BUFFER)    
     	bs=MAX_BUFFER;
     if( bs > maxbfsz) 
@@ -406,7 +405,7 @@ Integer visitBuffsize(Buffsize _p_)
   case is_Bufszi:
     	return( visitNumval(_p_->u.bufszi_.numval_)) ;
   case is_Bufsze:
-    	return 1;
+    	return defBufferSize;
   default:
     fprintf(stderr, "Error: bad kind field when visiting Buffsize!\n");
     exit(1);

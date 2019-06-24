@@ -21,6 +21,7 @@ extern char *version;
 extern char *defaultPath;
 char *defaultSourceComp;
 char *defaultSinkComp;
+extern int defBufferSize;
 extern int maxbfsz;
 
 void visitDouble(Double d);

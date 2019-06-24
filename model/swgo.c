@@ -105,7 +105,7 @@ static void showSink(Process p, int id) {
 
 static void showSource(Process p, int id, int bfsz) {		
 		
-		if(bfsz<2) {
+		if(bfsz == defBufferSize) {
 			printf("\t\t<- %d(%s %s.%s", 
 				id, 
 				p->name,
@@ -197,16 +197,15 @@ void genPrefix(Model m) {
 		f=f->next;
 	}	
 	i=0;
-	f=m->stream;
+	f=m->stream;  
 	while(i<nstreams) {
-		if(bfrtbl[i]>1) {
+		if(bfrtbl[i]>0) {
 			printf("cs = append(cs,make(chan interface{},%i))\n",
 					bfrtbl[i]);
 		} else {
 			printf("cs = append(cs,make(chan interface{}))\n");
 		}		
 		i++;
-		f=f->next;
 	}		
 	printf("\n");
 }
