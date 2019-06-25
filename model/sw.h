@@ -17,13 +17,18 @@ extern char *version;
 		exit(1);							\
 	}	
 	
-/* sw.c  */
-extern char *defaultPath;
-char *defaultSourceComp;
-char *defaultSinkComp;
-extern int defBufferSize;
-extern int maxbfsz;
 
+struct cfg_ {
+	int   defBufferSize;
+	int   maxbfsz;
+	char *defaultPath;
+	char *defaultSourceComp;
+	char *defaultSinkComp;
+	char *defaultFilterComp;
+} ;	
+
+	
+/* sw.c  */
 void visitDouble(Double d);
 void visitChar(Char c);
 void expandSubnets(Model model);
@@ -52,6 +57,7 @@ void genJavaFBP(Model model);
 void genC(Model model); 
 
 	/* swmain.c */
+extern struct cfg_ cfg;
 extern char fbfr[]; 	
 #endif   // SW_H_
 

@@ -10,6 +10,15 @@
 #include "swsym.h"
 #include "swgraph.h"  
 
+	int   defBufferSize;
+	int   maxbfsz;
+	char *defaultPath;
+	char *defaultSourceComp;
+	char *defaultSinkComp;
+	char *defaultFilterComp;
+
+struct cfg_ cfg={1,10000,"def","Gen1","Print1","Filter1"};
+
 char fbfr[100];
 	
 typedef enum{ GOMODE=0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE=7 }   MODE;
@@ -146,10 +155,10 @@ static void FixComp(Process p, char *cn, char *path) {
 /* Insert default components if necessary. */
 static void FixComps(Stream s) {
 	if(!s->source->comp) {
-	    FixComp(s->source,defaultSourceComp, defaultPath);
+	    FixComp(s->source,cfg.defaultSourceComp, cfg.defaultPath);
 	}
 	if(!s->sink->comp) {
-	    FixComp(s->sink,defaultSinkComp, defaultPath);
+	    FixComp(s->sink,cfg.defaultSinkComp, cfg.defaultPath);
 	}
 }	
 
@@ -221,7 +230,7 @@ static int BadArg(int argc, char **argv) {
 	   if(strncmp(argv[i],"-d",30) == 0) { 
 	   		if(i==argc-1)
 	   				return 1;
-	   		defaultPath=argv[i+1];
+	   		cfg.defaultPath=argv[i+1];
 	   		i+=2;
 	   } else {
 	   if( strncmp(argv[i],"-v",4) == 0) {

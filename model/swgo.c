@@ -105,7 +105,7 @@ static void showSink(Process p, int id) {
 
 static void showSource(Process p, int id, int bfsz) {		
 		
-		if(bfsz == defBufferSize) {
+		if(bfsz == cfg.defBufferSize) {
 			printf("\t\t<- %d(%s %s.%s", 
 				id, 
 				p->name,
