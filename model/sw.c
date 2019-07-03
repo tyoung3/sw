@@ -21,7 +21,7 @@ static int maxdepth=20;
 
 STATE state=IS_NET; 
   
-int bs=1,maxbfsz=0;		              /*  Buffer size */
+int bs=1;		              /*  Buffer size */
 Model net_model=NULL;  
 
 static Subnetm linkSubnet(Model m, char *name) {
@@ -317,10 +317,8 @@ Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
     f->next = m->stream;	
     m->stream=f;
     if(bs<0) bs=0;   
-    if(bs>MAX_BUFFER)    
-    	bs=MAX_BUFFER;
-    if( bs > maxbfsz) 
-    		maxbfsz=bs;	
+    if( bs > cfg.maxbfsz) 
+    	  bs=cfg.maxbfsz;	
 	f->bufsz	 = bs;
 	return f;
 } 

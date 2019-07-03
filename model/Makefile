@@ -78,9 +78,9 @@ jpeg:  /tmp/collate.jpg
 	./sw -m 3 ../nds/collate.sw  > /tmp/collate.dot		\
 	&& dot -Tjpg  /tmp/collate.dot > /tmp/collate.jpg 
 	
-/tmp/sw/locusts.jpg: ../nds/locusts.sw
+/tmp/sw/locusts.png: ../nds/locusts.sw
 	./sw -m 3 ../nds/locusts.sw  > /tmp/sw/locusts.dot		\
-	&& dot -Tjpg  /tmp/sw/locusts.dot > /tmp/sw/locusts.jpg 
+	&& dot -Tpng /tmp/sw/locusts.dot > /tmp/sw/locusts.png
 	
 ${PGM}: ${OBJS} ${SWOBJS}  
 	${CC} ${CCFLAGS} ${OBJS}  ${SWOBJS}  -o ../bin/sw

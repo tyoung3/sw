@@ -5,10 +5,10 @@
 #include "swmain.h"
 #include "model.h"
 
-extern char *version;
-#define ID_UNKNOWN 9999999
-#define MAX_BUFFER  1000000
+extern char *version;  /* In swmain.c from Makefile $VERSION */
 
+
+		/* Abort message */
 #define FAIL(F,S) { 						\
 	fprintf(stderr,							\
 		"\033[31mSW/%s/FAIL: %s\033[39m\n",	\
@@ -29,9 +29,9 @@ struct cfg_ {
 
 	
 /* sw.c  */
-void visitDouble(Double d);
-void visitChar(Char c);
-void expandSubnets(Model model);
+void 	expandSubnets(Model model);
+void 	visitDouble(Double d);
+void 	visitChar(Char c);
 void	visitStm(Stm p);
 void 	visitListStm(ListStm p);
 Stream	visitS_tream(S_tream p);

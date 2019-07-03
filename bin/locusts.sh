@@ -30,7 +30,7 @@ RunLocusts () {
 		# Create  .jpg 		
 GenJPG() {  
 	pushd model
-	make /tmp/sw/locusts.jpg && gimp /tmp/sw/locusts.jpg &
+	make /tmp/sw/locusts.png  && gimp /tmp/sw/locusts.png &
 }	
 
 
