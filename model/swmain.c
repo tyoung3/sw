@@ -261,7 +261,7 @@ int main(int argc, char ** argv)
   parse_tree = pValidSW(input);  /* Parse network definition */
   
   if (parse_tree)   {  
-    tabinit(100000);             /* set symbol table */
+    tabinit(2000000);             /* set symbol table */
     model=visitValidSW(parse_tree);  /* Build model */
     model->name = baseOf(fname) ;
 	expandSubnets(model );  

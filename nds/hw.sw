@@ -1,6 +1,7 @@
+#!/usr/local/bin/swgo
 # Hello World Example
-Hello <- World;
+(Hello) <- (World);
 
-{# Produces 
+{# Produces: 
 Hello World 
 #}

@@ -28,7 +28,7 @@ typedef struct bucket *bucketp;
 
 bucketp *symtable;  /* Array of bucket pointers */
 
-int TABLESIZE = 100000;
+int TABLESIZE = 2000000;
 
 #define FREE(x)      free((char *) (x))
 #define NEW(t)      ((t *) alloca((unsigned) sizeof(t)))
