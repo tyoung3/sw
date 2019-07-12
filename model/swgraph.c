@@ -59,11 +59,10 @@ static void genSuffix() {
 
 static void genPrefix(char *gname, int nstreams) {
 
-
 	printf("#Prefix here. %d streams\n",nstreams);
 	printf("digraph \"%s\" {",gname);
 	 
-	P(graph [);
+		printf("URL=\"https://github.com/tyoung3/sw/blob/master/nds/%s\" graph [",gname);
 		printf("\tname=\"Streamwork/swgraph:  v%s\",\n",  
         		version);
         C(	fontcolor=black);

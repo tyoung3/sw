@@ -1,9 +1,9 @@
 # COLLATE.sw
  
-(C)1  					<-  (M   poc.Merge);       
-(C poc.Collate) 	    <-  (G0  poc.Gen1 "12" "1" "2" );    
-(M)2	    			<-  (G1  poc.Gen1 "5"  "5" "1" );
-(M)IN.1				   	<- 	(G2  poc.Gen1 "8"  "2" "3" );
+(C)1	    		<- (M   poc.Merge);       
+(C poc.Collate) 	<- (G0  poc.Gen1 "12" "1" "2" );    
+(M)2	    		<- (G1  poc.Gen1 "5"  "5" "1" );
+(M)IN.1		    	<- (G2  poc.Gen1 "8"  "2" "3" );
 
 (Match0 poc.Print1) 	<- 2(C poc.Collate  );
 (Match1 poc.Print1) 	<- 3(C);
