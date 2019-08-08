@@ -72,19 +72,23 @@ EOF
 
 case $1 in	
 	c) pushd ./model&& make check && echo Success! || echo Check Failed.;;
+	cl) ShowCheck;;
 	j) GenSVG;;
-	l) ShowCheck;;
+	jl) bin/locusts.sh j ;;	#Display locusts map;
 	poc) RunPoC;;
 	r) RunCollate;;
+	rl) bin/locusts.sh r ;;
 	x) $EDITOR nds/collate.sw sw.sh;;
 	*) cat << EOF 
 	
 USAGE: 
 		c		. Make check
-		j		. Generate collate jpeg
-		l       . Show release check list. 
+		cl       	. Show release check list. 
+		j		. Generate collate .SVT
+		jl		. Generage locusts .SVG
 		poc		. Build and run Proof of Concept 
 		r		. Build and run Collate program 
+		rl		. Run locusts program
 		x		. Edit this script
 		--help	. Display this help
 		
