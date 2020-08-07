@@ -42,6 +42,7 @@ GenSVG() {
 ShowCheck() {
 	cat << EOF
 
+		* git add -u 
 On Branch:	
 					Release Checklist 
     	 	* git pull origin master	
@@ -59,14 +60,15 @@ New version?:
 		* git tag	
 		* [git tag -a  New_VERSION ] 
 		* git commit -m "v0.0.?"
-		* git push origin VERSION (Ex. git push origin v.0.0.2 )
+		* git push origin VERSION (Ex. git push origin v0.10.0 )
 					OR
 		  git push origin --tags  (Pushes all tags to remote)
 
 Remove Branch:		
 	  * git branch -d branchname 
 	       * git push origin --delete branchname
-		   * git branch	       	  
+		   * git branch	 
+			* git checkout NEWBRANCH      	  
 EOF
 }
 
