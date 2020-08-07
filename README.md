@@ -1,4 +1,4 @@
-Copyright (C) 2019 Thomas W. Young, streamwork@twyoung.com 
+Copyright (C) 2019,2020 Thomas W. Young, streamwork@twyoung.com 
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.9.3 - STREAMWORK/FrontEnd
+SW-0.10.0 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -32,16 +32,22 @@ definition(ND) file.
 Employing StreamWork, an ND becomes, in effect, an executable
 script. 
 
-By default, sw generates import statements for Go components
-and builds a single main.go program which launches a goroutine
-for each process, and connects them via Go interface channels.  
+By default, sw generates 
+and builds a single main.go program which imports the StreamWork backend
+to launch a goroutine 
+for each process,  connect these processes via Go interface channels,
+and wait for all processes to finish.  
 
 The network definition consists of a list of 
 streams(or dataflows).  Each stream definition consists 
 of a sink process, a sink port number, "<-", a source
 portnumber, and a source process followed by the 
-statement terminator, ';'.   
-
+statement terminator, ';'; or a source process, a source portnumber, 
+"->", a sink portnumber, and a sink process followed by the terminator. 
+The arrows ("<-" and "->")
+may include a stream buffer size: e.g. "<10-" and "-2>".  If not included,
+buffer size defaults to zero.
+  
 Port numbers default to 0.
 
 Ex.  
@@ -220,7 +226,11 @@ Ex.  ```A<-B;``` expands to
 	* Show number processes, etc. statistics in 
 	  network definition. 
 	  Number of partitions equals number of disconnected 
-	  process groups. 	  
+	  process groups. 	 
+
+0.10.0
+------
+	* Implemented right arrow in network definition language
 	
 SW.cf Language Notes
 --------------------
@@ -237,7 +247,8 @@ In the future, there may be some, very few exceptions to the
 semi-colon rule for special pre-interpreter commands, like INCLUDE.
 
 The, ```<-```,  token is used to be consistent with its 
-usage in the Go language.     
+usage in the Go language.  The ```->``` token is also available:
+"(A)->(B)1<-(C);"  is valid.   
 
 Comments in the SW.cf file provide 
 clues to possible future language additions.  

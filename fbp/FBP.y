@@ -156,6 +156,20 @@ Compn pCompn(FILE *inp)
   }
 }
 
+Meta YY_RESULT_Meta_ = 0;
+Meta pMeta(FILE *inp)
+{
+  initialize_lexer(inp);
+  if (yyparse())
+  { /* Failure */
+    return 0;
+  }
+  else
+  { /* Success */
+    return YY_RESULT_Meta_;
+  }
+}
+
 
 ListStm reverseListStm(ListStm l)
 {
@@ -189,6 +203,7 @@ ListStm reverseListStm(ListStm l)
   Prt prt_;
   Comp comp_;
   Compn compn_;
+  Meta meta_;
 
 }
 
@@ -197,11 +212,13 @@ ListStm reverseListStm(ListStm l)
 %token _SYMB_1    /*   =   */
 %token _SYMB_2    /*   .   */
 %token _SYMB_3    /*   :   */
-%token _SYMB_4    /*   ,   */
-%token _SYMB_5    /*   (   */
-%token _SYMB_6    /*   )   */
-%token _SYMB_7    /*   INPORT   */
-%token _SYMB_8    /*   OUTPORT   */
+%token _SYMB_4    /*   @   */
+%token _SYMB_5    /*   ,   */
+%token _SYMB_6    /*   (   */
+%token _SYMB_7    /*   )   */
+%token _SYMB_8    /*   -   */
+%token _SYMB_9    /*   INPORT   */
+%token _SYMB_10    /*   OUTPORT   */
 
 %type <validfbp_> ValidFBP
 %type <stm_> Stm
@@ -213,6 +230,7 @@ ListStm reverseListStm(ListStm l)
 %type <prt_> Prt
 %type <comp_> Comp
 %type <compn_> Compn
+%type <meta_> Meta
 
 %token<string_> _STRING_
 %token<string_> _IDENT_
@@ -223,28 +241,37 @@ ValidFBP : ListStm { $$ = make_Valid($1); YY_RESULT_ValidFBP_= $$; }
 ;
 Stm : _STRING_ _SYMB_0 Prt Prcss Comp { $$ = make_Stma($1, $3, $4, $5);  } 
   | Flow { $$ = make_Stmf($1);  }
-  | _SYMB_7 _SYMB_1 _IDENT_ _SYMB_2 _IDENT_ _SYMB_3 _IDENT_ { $$ = make_Stmi($3, $5, $7);  }
-  | _SYMB_8 _SYMB_1 _IDENT_ _SYMB_2 _IDENT_ _SYMB_3 _IDENT_ { $$ = make_Stmo($3, $5, $7);  }
+  | _SYMB_9 _SYMB_1 _IDENT_ _SYMB_2 _IDENT_ _SYMB_3 _IDENT_ { $$ = make_Stmi($3, $5, $7);  }
+  | _SYMB_10 _SYMB_1 _IDENT_ _SYMB_2 _IDENT_ _SYMB_3 _IDENT_ { $$ = make_Stmo($3, $5, $7);  }
+  | _SYMB_4 _IDENT_ Meta { $$ = make_Stmx($2, $3);  }
 ;
 ListStm : /* empty */ { $$ = 0;  } 
   | Stm { $$ = make_ListStm($1, 0);  }
-  | Stm _SYMB_4 ListStm { $$ = make_ListStm($1, $3);  }
+  | Stm _SYMB_5 ListStm { $$ = make_ListStm($1, $3);  }
 ;
 Flow : Srce _SYMB_0 Snk { $$ = make_Flowa($1, $3);  } 
-  | Flow _SYMB_0 Snk { $$ = make_FLowb($1, $3);  }
+  | Flow Prt _SYMB_0 Snk { $$ = make_FLowb($1, $2, $4);  }
 ;
 Srce : Prcss Comp Prt { $$ = make_Srca($1, $2, $3);  } 
+  | Prcss Prt { $$ = make_Srcb($1, $2);  }
 ;
 Snk : Prt Prcss Comp { $$ = make_Snka($1, $2, $3);  } 
+  | Prt Prcss { $$ = make_Snkb($1, $2);  }
 ;
 Prcss : _IDENT_ { $$ = make_Prcssa($1);  } 
 ;
 Prt : _IDENT_ { $$ = make_Prta($1);  } 
 ;
-Comp : _SYMB_5 Compn _SYMB_6 { $$ = make_Compa($2);  } 
+Comp : _SYMB_6 Compn _SYMB_7 { $$ = make_Compa($2);  } 
 ;
 Compn : _IDENT_ { $$ = make_Compma($1);  } 
-  | _IDENT_ _SYMB_3 _STRING_ { $$ = make_Compmb($1, $3);  }
+  | _IDENT_ _SYMB_3 Meta { $$ = make_Compmb($1, $3);  }
   | /* empty */ { $$ = make_Compme();  }
+;
+Meta : _IDENT_ { $$ = make_Metai($1);  } 
+  | _STRING_ { $$ = make_Metas($1);  }
+  | Meta _SYMB_1 Meta { $$ = make_Metae($1, $3);  }
+  | Meta _SYMB_8 Meta { $$ = make_Metad($1, $3);  }
+  | Meta _SYMB_5 Meta { $$ = make_Metac($1, $3);  }
 ;
 

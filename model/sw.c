@@ -18,7 +18,7 @@ char *defaultSinkComp={"Print1"};
 int defBufferSize=1;   /* One may prevent accidental deadlocks.*/
 static int maxdepth=20;
 
-
+Port LatestPort=NULL, LatestSrcPort=NULL;
 STATE state=IS_NET; 
   
 int bs=1;		              /*  Buffer size */
@@ -31,6 +31,8 @@ static Subnetm linkSubnet(Model m, char *name) {
 	if(!sn2) {
 		sn2 = (Subnetm)malloc(sizeof(Subnetm_));
 		sn2->name = name;
+		sn2->stream = NULL;
+		sn2->extport = NULL;
 		m->subnetm=sn2;
 		return sn2;
 	}	
@@ -43,6 +45,8 @@ static Subnetm linkSubnet(Model m, char *name) {
 	}
 	sn2 = (Subnetm)malloc(sizeof(Subnetm_));
 	sn2->name = name;
+	sn2->stream = NULL;
+	sn2->extport = NULL;
 	sn2->next=m->subnetm;		
 	m->subnetm = sn2;
 	return sn2;
@@ -86,21 +90,21 @@ Subnetm MakeSubnetm(Ident name,
 
 Model MakeModel(Stream f) {
 	Model m;
-	
+		
 	m=(Model)malloc(sizeof(Model_)); 
-    if (!m)
-    {
-        FAIL(MakeModel,
+
+    	if (!m)  {
+       		FAIL(MakeModel,
         	"Out of memory when allocating Process!\n");
-    }
+    	}
     
 	m->nstreams = 0;
 	m->ncomponents = 0;
 	m->nprocs	= 0;
 	m->stream=f;
 	m->proc = NULL;
-	//p->next = NULL;
-	//p->prev = NULL;
+	m->subnetm=NULL;
+	m->name="SW";
 	return m;
 	
 }	    
@@ -171,7 +175,7 @@ static char *fixName(char *name) {
 	char bfr[101];
 	static int nanon=1;  /* Number of anonymous processes */
 	
-	if(name[0] == '_') {     // Anonymous process ?	
+	if(name[0] == '_') {     // Anonymous process Q
 			sprintf(bfr,"_%i",nanon++);
 			return strndup(bfr,100);
 	}
@@ -197,8 +201,8 @@ static Process MakeProcess(
     	    FAIL(MakeProcess,
     	    	"Out of memory when allocating Process!\n");
     	}
-    	
-		p->comp = comp;
+    		p->comp=NULL;
+		if(comp) p->comp = comp;
 		p->name = name;
 		p->nportsIn =0;
 		p->nportsOut=0;
@@ -257,7 +261,9 @@ Port MakePort(int n, Ident id) {
     	p->name="";
     }	
 	p->id = n;
-	p->match = NULL;
+	p->channel=-1;
+	p->match  = NULL;
+	p->stream = NULL;
 	p->next = p;
 	p->prev = p;
 	p->match = NULL;
@@ -410,19 +416,27 @@ Integer visitBuffsize(Buffsize _p_)
   }
 }
 
-Integer visitArrow(Arrow _p_)
+Integer visitLarrow(Larrow _p_)
 {
     return visitBuffsize(_p_->u.arrowx_.buffsize_);
 }
 
+Integer visitRarrow(Rarrow _p_)
+{
+    /* Code for Arrowr Goes Here */
+    return visitBuffsize(_p_->u.arrowr_.buffsize_);
+}
 /* Add port,p to port list at P->port in order by port id*/
 static void linkPort(Process P, Port p) {  
 	Port p2;   
 	
+	
+    	// LatestPort = p;   /* Save for later stream update */
+
 	if(!P->port) {
    		P->port = p;
-    	p->next = p;
-    	p->prev = p;
+    		p->next = p;
+    		p->prev = p;
 		return;
 	}
 	  
@@ -448,6 +462,16 @@ static void linkPort(Process P, Port p) {
 	p->prev->next = p;
 }    
 
+#if 0
+Process MakeMyProc(Process p, Port pt) {
+    /*p->source_id = pt->id; 
+    p->nportsOut++;
+    */
+    linkPort(p,pt);
+    return p;  
+}
+#endif
+
 static void setStream(Port pt, Stream s) {      
      while(pt->stream) {
      	pt=pt->next;
@@ -455,36 +479,96 @@ static void setStream(Port pt, Stream s) {
      pt->stream=s;
 }     
 
+static void SetSource(Process p) {
+
+    p->source_id = p->port->id; 
+    p->nportsOut++;
+}
+
+static void SetSink(Process p)   {
+
+    // p->port->id = fixId(p->port->id);	  /* ? */
+    p->sink_id = p->port->id;
+    p->nportsIn++;  
+}
+
 Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
-	Port pt;
+	Port pt,src_pt;
 	Stream s,s2;
 	int bs;
 	
   switch(_p_->kind)
   {
   case is_Streamx:
-     src=visitSrce(_p_->u.streamx_.srce_);
-     snk=visitSnk(_p_->u.streamx_.snk_);
-	 bs=visitArrow(_p_->u.streamx_.arrow_);
+     bs=visitLarrow(_p_->u.streamx_.larrow_);
+     src=visitProc(_p_->u.streamx_.proc_2);
+     snk=visitProc(_p_->u.streamx_.proc_1); 
+     pt=visitPrt(_p_->u.streamx_.prt_2);
+     linkPort( src,pt);
+     SetSource(src);
+     LatestPort=visitPrt(_p_->u.streamx_.prt_1);
+     linkPort( snk,LatestPort);
+     SetSink(snk);
      s=MakeStream(state,src,snk,bs,net_model);
-     setStream(src->port,s); 
-     setStream(snk->port,s);
+     setStream(pt,s);
+     setStream(LatestPort,s); 
+     snk->sink_id=s->sink_id=LatestPort->id=fixId(LatestPort->id);
+     src->source_id=s->source_id=pt->id=fixId(pt->id);
      return s;
+  case is_Streamrx:
+    src=visitProc(_p_->u.streamrx_.proc_1); 
+    LatestSrcPort=visitPrt(_p_->u.streamrx_.prt_1);
+    linkPort( src,LatestSrcPort);
+    SetSource(src);  
+    snk=visitProc(_p_->u.streamrx_.proc_2);
+    LatestPort=visitPrt(_p_->u.streamrx_.prt_2);
+    linkPort(snk,LatestPort);
+    SetSink(snk);
+    bs=visitRarrow(_p_->u.streamrx_.rarrow_);
+    s=MakeStream(state,src,snk,bs,net_model);
+    setStream(LatestSrcPort,s); 
+    setStream(LatestPort,s);
+    s->sink_id=LatestPort->id=fixId(LatestPort->id);
+    s->source_id=LatestSrcPort->id=fixId(LatestSrcPort->id);
+    return s;  
+    
   case is_Streamy:    
     s=visitS_tream(_p_->u.streamy_.s_tream_);
-    snk=s->source;   
-    bs=visitArrow(_p_->u.streamy_.arrow_);
-    src=visitSrce(_p_->u.streamy_.srce_);
-    pt=visitPrt(_p_->u.streamy_.prt_);
-    snk->sink_id   = pt->id;
-    snk->nportsIn++;  
+    snk=s->source; 
+    LatestPort=pt=visitPrt(_p_->u.streamy_.prt_1);
+    bs=visitLarrow(_p_->u.streamy_.larrow_);
+    LatestSrcPort=visitPrt(_p_->u.streamy_.prt_2);
+    src=visitProc(_p_->u.streamy_.proc_);
+    linkPort(src,LatestSrcPort);
+    SetSource(src);
     linkPort( snk,pt);
+    SetSink(snk);
     s2=MakeStream(state, src, snk, bs, net_model); 
-     setStream(src->port,s2); 
-     setStream(snk->port,s2);   
+     setStream(LatestSrcPort,s2); 
+     setStream(LatestPort,s2);  
+    s2->sink_id=LatestPort->id=fixId(LatestPort->id);
+    s2->source_id=LatestSrcPort->id=fixId(LatestSrcPort->id);
     return s2;
+   case is_Streamry:    /* Code for Streamry Goes Here */
+    s=visitS_tream(_p_->u.streamry_.s_tream_);
+    snk=visitProc(_p_->u.streamry_.proc_);
+    bs=visitRarrow(_p_->u.streamry_.rarrow_);
+    src=s->sink;
+    src_pt=visitPrt(_p_->u.streamry_.prt_1);   /* Source Port */ 
+    linkPort(src,src_pt);
+    SetSource(src);
+    pt=visitPrt(_p_->u.streamry_.prt_2);    /* Sink Port */
+    linkPort( snk,pt); 
+    SetSink(snk);
+    s2=MakeStream(state, src, snk, bs, net_model);
+    setStream(src_pt,s2); 
+    setStream(pt,s2);    
+    s2->sink_id=snk->sink_id ;
+    s2->source_id=src->source_id;
+    return s2;
+
   default:
     fprintf(stderr, "Error: bad kind field when visiting S_tream!\n");
     exit(1);
@@ -492,8 +576,9 @@ Stream visitS_tream(S_tream _p_)
 }
 
 Extport MakeExtport(
-		PortType type,
-	    Process p,
+	PortType type,
+	Process p,
+	Port prt,
     	int bs,
     	int id) {
 
@@ -501,21 +586,25 @@ Extport MakeExtport(
   	
 	ep = (Extport)malloc(sizeof(Extport_));  	
   
-    ep->type=type;
+    ep->type=type;  
+    linkPort(p,prt);
     if(type==SINK) {
-		ep->sink=p;
+		ep->sink=p; ep->source=NULL; 
 		ep->sink_id=id; 
-		ep->source_id=p->sink_id;	
+		ep->source_id=prt->id;
+		SetSink(p);
     }   else {
-		 ep->source=p;
+		 ep->source=p; ep->sink=NULL;  
 		 ep->source_id=id;
-		 ep->sink_id=p->source_id;
-	}
-	ep->bufsz = bs; 	
-	ep->next=NULL;
+		 ep->sink_id=prt->id;
+		 SetSource(p);
+    }
+   
+    ep->bufsz = bs; 	
+    ep->next=NULL;
     ep->sink_id=fixId(ep->sink_id);
     ep->source_id=fixId(ep->source_id);
-	return ep;
+    return ep;
 }
     	
 
@@ -548,12 +637,12 @@ Integer visitTab(Tab _p_)
   switch(_p_->kind)
   {
   case is_Tabn:
-    /* Code for Tabn Goes Here */
+    /* Code for Tabn Goes Here ??? */
     visitNumval(_p_->u.tabn_.numval_);
    return 0; 
   case is_Tabs:
     /* Code for Tabs Goes Here */
-    visitSymval(_p_->u.tabs_.symval_);
+    visitSymval(_p_->u.tabs_.symval_);  /* @todo fix named ports ??? */
    return 0; 
   default:
     fprintf(stderr, "Error: bad kind field when printing Tab!\n");
@@ -561,21 +650,51 @@ Integer visitTab(Tab _p_)
   }
 }
 
-Extport visitExtPortIn(ExtPortIn _p_)
-{
-    return MakeExtport(SINK,
-    visitSnk(_p_->u.extin_.snk_),
-    visitArrow(_p_->u.extin_.arrow_),
-    visitTab(_p_->u.extin_.tab_));
+Extport visitExtPortIn(ExtPortIn _p_) {
+  switch(_p_->kind)  {
+  case is_Extin:
+    return MakeExtport(
+	SINK,
+    	visitProc(_p_->u.extin_.proc_),
+    	visitPrt(_p_->u.extin_.prt_),
+    	visitLarrow(_p_->u.extin_.larrow_),
+    	visitTab(_p_->u.extin_.tab_));
+
+  case is_ExtinR:
+       return MakeExtport(
+       		SINK,
+   		visitProc(_p_->u.extinr_.proc_),
+    		visitPrt(_p_->u.extinr_.prt_),
+      	 	visitRarrow(_p_->u.extinr_.rarrow_),
+       		visitTab(_p_->u.extinr_.tab_));
+  default:
+    fprintf(stderr, "Error: bad kind field at visitExtPortIn!\n");
+    exit(1);
+  }
+	
 }
 
-Extport visitExtPortOut(ExtPortOut _p_)
-{
-    	
+Extport visitExtPortOut(ExtPortOut _p_)  {
+    
+switch(_p_->kind)
+  {
+  case is_Extout:	
 	return MakeExtport(SOURCE,
-    visitSrce(_p_->u.extout_.srce_),
-    visitArrow(_p_->u.extout_.arrow_),
+    visitProc(_p_->u.extout_.proc_),
+    visitPrt(_p_->u.extout_.prt_),
+    visitLarrow(_p_->u.extout_.larrow_),
     visitTab(_p_->u.extout_.tab_));
+  case is_Extoutr:
+	return MakeExtport(
+		SOURCE,
+    		visitProc(_p_->u.extoutr_.proc_),
+    		visitPrt(_p_->u.extoutr_.prt_),
+    		visitRarrow(_p_->u.extoutr_.rarrow_),
+    		visitTab(_p_->u.extoutr_.tab_));
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
+    exit(1);
+   }   
 }
 
 
@@ -702,36 +821,6 @@ void visitListStm(ListStm liststm)
     visitStm(liststm->stm_);
     liststm = liststm->liststm_;
   }
-}
-
-
-Process visitSrce(Srce _p_)
-{
-	Process p;
-	Port pt;
-	
-    p  = visitProc(_p_->u.sourcex_.proc_);
-    if(!p)
-    	return NULL;
-    pt = visitPrt (_p_->u.sourcex_.prt_);  
-    p->source_id = pt->id; 
-    p->nportsOut++;
-    linkPort(p,pt);
-    return p;
-}
-    
-Process visitSnk(Snk _p_)
-{
-	Process p;
-	Port pt;
-	
-    p =visitProc(_p_->u.sinkx_.proc_);
-    pt=visitPrt(_p_->u.sinkx_.prt_);
-    p->sink_id = pt->id;
-    p->nportsIn++;  
-    linkPort(p,pt);
-    return p;  
-  
 }
 
 static char *MakeAnon(Component c) {
@@ -948,9 +1037,9 @@ static Port copyPort(Port p0) {
    /* Expand process,p, subnet component.  
       Match ep to a port,pt in p.
       Update existing stream,s, in pt */		 
-static void Expand3(Model m, 
-					Process p,
-					Extport ep) {
+static void Expand3(	Model   m, 
+			Process p,
+			Extport ep) {
 					
 		Port pt,ptc;
 		Stream s;			 
@@ -1005,7 +1094,7 @@ static void Expand3(Model m,
 						ptc=copyPort(pt);
 						ptc->id =  s->sink_id = ep->source_id;	
 						linkPort(pnew, ptc);
-						pnew->depth = p->depth+1;	
+						pnew->depth = p->depth+1;
 						return;
 					}
 					pt=pt->next;
@@ -1045,20 +1134,20 @@ static Stream delStream(Model m, Stream s) {
 }
 
 
-	/* Expand m for each stream in the subnet */
+	/* Expand the model for each external port and stream in the subnet */
 static void Expand(Model m, Process p, Subnetm sn) {
 	Stream s;
 	Extport ep;
 	
 	ep=sn->extport;
 	while(ep) {
-		Expand3(m, p,   ep );			
+		Expand3(m,p,ep);			
 		ep=ep->next;
 	}	
 	
 	s=sn->stream;
 	while(s) {
-		Expand2(m,p,s );
+		Expand2(m,p,s);
 		s=s->next;
 	}
 	
@@ -1073,8 +1162,7 @@ static void expandSub(Model m, Process p) {
 	sn = m->subnetm;
 	while(sn) {   // find the subnet for p
 		if(strncmp(sn->name, p->comp->name, 100)==0) {
-			Expand(m, p, sn);		
-			free(p);   
+			Expand(m, p, sn);
 			return;
 		}
 		sn=sn->next;
@@ -1085,13 +1173,29 @@ static void expandSub(Model m, Process p) {
 		p->comp->name, p->name);
 	FAIL(expandSub,fbfr);
 }
+	
+static void FreeLater(Process *fl, Process p) {
+	p->next=*fl;
+	*fl=p;
+}
 
+static void FreeExpandedProcesses(Process *fl) {
+	Process pn;
+
+	while(*fl) {
+		pn=(*fl)->next;
+		free(*fl);
+		*fl=pn;	
+	}
+}
 
 	/* While some process contains a subnet component, 
 	   expand that component subnet. 
     */   
 void expandSubnets(Model model) {
-	Process p,pp;
+	Process p,pp,ps;	
+	Process fl=NULL;  /* List of processes to free */
+
 	int more;
 	
 	do {
@@ -1103,13 +1207,16 @@ void expandSubnets(Model model) {
 			  if(p->comp->path[0] == '\'') {  
 					/* Is a subnet */
 				more=1;
-				model->nprocs--;	
+				model->nprocs--; 
+				ps=p;	
 				if(pp)    // delink p from process chain.     
 					pp->next = p->next; 
 				else {
 					model->proc=p->next;	
 				}	
-				expandSub(model, p ); 
+				p=pp;
+				expandSub(model, ps );
+				FreeLater(&fl,ps); /* Pointers to ps still exist. */
 				break;
 			  }
 			}  
@@ -1120,10 +1227,11 @@ void expandSubnets(Model model) {
 	
 	// Remove any streams with subnet components 
 	{
-		Stream s;
+		Stream s,sn;
 		
 		s=model->stream; 
 		while(s) {
+			sn=s->next;
 			if(    s->sink->comp 
 			    && s->sink->comp->path[0] == '\'') {
 		  		s=delStream(model,s);  
@@ -1131,10 +1239,13 @@ void expandSubnets(Model model) {
 			if(   s->source->comp 
 			   && s->source->comp->path[0] == '\'') { 
 				  s=delStream(model,s);
-			}}	  
-			s=s->next; 
+			}}	
+			s=sn;  
 		}
 	}
+
+	FreeExpandedProcesses(&fl);
+	// assert(fl==NULL);
 }	
 	
 	
@@ -1268,8 +1379,9 @@ static void fixFan(Model m, Process p) {
 	Port pt,pt0;
 	int id=-999;
 	
-	pt=p->port;
+	pt=p->port; /* pt may be = 0 */
 	
+     if(pt!=0) {
 	do {
 		pt->id=fixId(pt->id); 
 		if(pt->id == id) { 
@@ -1288,6 +1400,7 @@ static void fixFan(Model m, Process p) {
 		pt0=pt;
 		pt=pt->next;		
 	} while(pt != p->port);
+     }
 }
 
 /* Insert poc.Join process wherever fanin occurs. */

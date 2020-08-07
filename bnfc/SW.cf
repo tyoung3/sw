@@ -16,42 +16,40 @@ Stmn.			Stm			::= Numassgn ;
 Stms.			Stm			::= Strassgn ;
 Stmh.			Stm			::= Hermt	 ; 
 Stmnet.			Stm			::= Subdef	 ;  
-terminator	    Stm   ";" ;
+terminator	   	Stm   ";" ;
 
 Snet.			Subdef	 ::= "'" Ident "{" [Subnet] "}" ;
 
 Sneth.			Subnet ::= Hermt    	;
-Snets.			Subnet ::= S_tream		;
+Snets.			Subnet ::= S_tream	;
 Snetin.			Subnet ::= ExtPortIn  	;
 Snetout.		Subnet ::= ExtPortOut  	;
-terminator	    Subnet  ";" ;
+terminator	    	Subnet  ";" ;
 
-Extin.			ExtPortIn  ::=	Snk Arrow Tab;
+Extin.			ExtPortIn  ::=	Proc Prt Larrow Tab;
+ExtinR.			ExtPortIn  ::=	Tab      Rarrow Prt Proc;
 
-Extout.			ExtPortOut ::=	Tab Arrow Srce;  -- IN <- (R);
+Extout.			ExtPortOut ::=	Tab      Larrow Prt Proc;  
+Extoutr.		ExtPortOut ::=	Proc Prt Rarrow Tab;
 
 Tabn.			Tab		 ::= Numval;
 Tabs.			Tab		 ::= Symval;
 
-Streamx.		S_tream	 ::= Snk         Arrow Srce;
-Streamy.		S_tream  ::= S_tream Prt Arrow Srce ;
-separator		S_tream	 ";" ;  
+Streamx.		S_tream	 ::= Proc Prt 	 Larrow Prt Proc;
+Streamrx.		S_tream  ::= Proc Prt     Rarrow Prt Proc;
+Streamy.		S_tream  ::= S_tream Prt Larrow Prt Proc ;
+Streamry.		S_tream  ::= S_tream Prt Rarrow Prt Proc; 
+--separator		S_tream	 ";" ;  
 
- 
-Arrowx.			Arrow	 ::=  "<" Buffsize "-";
+Arrowx.			Larrow	 ::=  "<" Buffsize "-";
+
+Arrowr.			Rarrow	 ::=  "-" Buffsize ">"; 
 
 Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 
 
-Sourcex.		Srce     ::= Prt Proc; 
---Sourcey.		Srce     ::= Ident;	
-
-Sinkx.			Snk		::=  Proc Prt; 		
---Sinky.			Snk		::=  Ident;
-
-
-Hermtx.		Hermt	::=   Ident  Comp [Argument] ;
-Hermty.		Hermt	::=   Ident  [Argument]  	 ;
+Hermtx.			Hermt	::=   Ident  Comp [Argument] ;
+Hermty.			Hermt	::=   Ident  [Argument]  	 ;
 Hermtax.		Hermt	::=   "_"  Comp [Argument]   ;
 Hermtay.		Hermt	::=   "_"  [Argument]   	 ;
 
@@ -60,22 +58,22 @@ Processy.		Proc	::= "(" Ident  [Argument] ")" ;
 Processax.		Proc	::= "(" "_"  Comp [Argument] ")" ;
 Processay.		Proc	::= "(" "_"  [Argument] ")" ;
 
-Portx.			Prt		::= Numval;
-Portni.         Prt     ::= Numval "." Symval; 
-Portin.         Prt     ::= Symval "." Numval; 
-Portn.          Prt     ::= Symval; 
-Porte.			Prt		::= ;		
+Portx.			Prt	::= Numval;
+Portni.         	Prt     ::= Numval "." Symval; 
+Portin.         	Prt     ::= Symval "." Numval; 
+Portn.          	Prt     ::= Symval; 
+Porte.			Prt	::= ;		
 
 Compx.			Comp	::= Ident;	
 Compy.			Comp	::= Ident "." Ident;	
-Compn.		    Comp	::= "'" Ident;
+Compn.		    	Comp	::= "'" Ident;
 
-Argumentx.		Argument	::= Stringval;	
-separator	    Argument   ""; 	
+Argumentx.		Argument ::= Stringval;	
+separator	    	Argument   ""; 	
 
 NumAssgnv.		Numassgn   ::= Numvar "=" Numval;
 
-StrAssgnv.		Strassgn 	::= Stringvar "=" Stringval;
+StrAssgnv.		Strassgn   ::= Stringvar "=" Stringval;
 
 NumVali.		Numval     ::= Integer;
 NumValv.		Numval	   ::= Numvar;
@@ -83,9 +81,9 @@ NumValv.		Numval	   ::= Numvar;
 StringVals.		Stringval  ::= String;
 StringValv.		Stringval  ::= Stringvar;
 
-Symvalv.			Symval		::= Symvar;
-Symvali.		Symval		::= Ident; 
---Sstrng.		Symval		::= "&("  Sexpr ")" ;  
+Symvalv.		Symval	   ::= Symvar;
+Symvali.		Symval	   ::= Ident; 
+--Sstrng.		Symval	   ::= "&("  Sexpr ")" ;  
 
 token   Numvar	  '%' letter  ( letter | digit  )*;		
 token	Stringvar '$' letter  ( letter | digit  )*;

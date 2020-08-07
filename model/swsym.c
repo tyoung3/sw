@@ -57,25 +57,16 @@ void tabinit(int nvar) {
 		FAIL(tabinit,"Too many variables for memory.");
     }
 
-    /* Set all symtable pointers to NULL */
-#define MEMMOVE    
-#ifdef MEMMOVE
+    /* Set all symtable pointers to NULL 
+    [REPLACED by loop, below, to eliminate Valgrind errors.]
     symtable[0] = NULL;
     i = sizeof(*symtable);
     i *= TABLESIZE - 1;
     memmove(&symtable[1], &symtable[0], i);
-#else
-    for (j = 0; j < TABLESIZE;) {
-	symtable[j++] = NULL;
-    }
-#endif
+    */
 
-#ifndef MAKESMALL
-    assert(symtable[2] == NULL);
-    assert(symtable[TABLESIZE - 1] == NULL);
-#endif
 
-    /* for( i=0; i < TABLESIZE; i++ ) { symtable[ i ] = NULL; }; */
+    for( i=0; i < TABLESIZE; i++ ) { symtable[ i ] = NULL; };  
 
     firstsymbol = NULL;
     lastsymbol = NULL;

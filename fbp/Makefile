@@ -11,7 +11,13 @@ OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
 .PHONY: clean distclean
 
-all: TestFBP
+all:  check
+
+check: FBP.y TestFBP
+	echo 'A(Component1:abc=def,gh="ij") X -> Y B,' | ./TestFBP
+
+FBP.y:  FBP.cf
+	bnfc -c FBP.cf 
 
 clean:
 	rm -f *.o TestFBP FBP.aux FBP.log FBP.pdf FBP.dvi FBP.ps FBP
@@ -19,7 +25,7 @@ clean:
 distclean: clean
 	rm -f Absyn.h Absyn.c Test.c Parser.c Parser.h Lexer.c Skeleton.c Skeleton.h Printer.c Printer.h Makefile FBP.l FBP.y FBP.tex 
 
-TestFBP: ${OBJS} Test.o
+TestFBP: ${OBJS} Test.o 
 	@echo "Linking TestFBP..."
 	${CC} ${CCFLAGS} ${OBJS} Test.o -o TestFBP
 

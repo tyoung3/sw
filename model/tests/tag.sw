@@ -3,7 +3,7 @@
 };
 
 'b {
-OUT      <- (_);
+OUT      <- (_ x);
 };
 
-(_ 'a)IN <- OUT(World 'b);
+(_ 'a)0 <- OUT(World 'b);

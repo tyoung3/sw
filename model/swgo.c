@@ -144,12 +144,14 @@ static void assignChannels(Model m) {
 }
 static void showND(Model m) {	
 	Stream f;
+	char plural[]="s";
 				
 			//* Generate commented Reconstructed Network Definition */
-	printf("/***********   Expanded Network Definition   **********   \n");
+	printf("/***********   Expanded %s Network Definition   **********   \n",m->name );
 	f=m->stream;
 	assignChannels(m);
-	
+	int nparts;	/* Number of partitions */
+
 	while(f) {
 		if( f->source->kind==IS_NET) {
 			showSink(f->sink, f->sink_id);	
@@ -158,12 +160,19 @@ static void showND(Model m) {
 		f=f->next;
 	}
 	
+	nparts=m->nprocs - m->nstreams;
+
+	if(nparts<2) {
+	   plural[0]=0;
+	}
+
 	printf(
-	  "# %d streams, %d processes, %d components, %d partitions.\n",
+	  "# %d streams, %d processes, %d components, %d partition%s.\n",
 			m->nstreams, 
 			m->nprocs, 
 			m->ncomponents,
-			m->nprocs - m->nstreams);
+			nparts,
+			plural);
 	printf(
 	"*********************************************/\n");
 }	

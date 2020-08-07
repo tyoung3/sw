@@ -33,7 +33,7 @@ RunPoC() {
 		# Create collate.jpg 		
 GenSVG() { 
 	pushd model 
-	make svg && $BROWSER /tmp/collate.svg &
+	make svg && $BROWSER --nosandbox /tmp/collate.svg &
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.JPG
 	#gimp /tmp/collate_SW.JPG
@@ -70,9 +70,16 @@ Remove Branch:
 EOF
 }
 
+RunDocker() {
+	myapp=sw
+	docker build -t  $myapp . &&  	\
+	docker run -it --rm --name SWdemo  $myapp ./sw.sh $*
+}
+
 case $1 in	
 	c) pushd ./model&& make check && echo Success! || echo Check Failed.;;
 	cl) ShowCheck;;
+	d) shift ; RunDocker $*;;
 	j) GenSVG;;
 	jl) bin/locusts.sh j ;;	#Display locusts map;
 	poc) RunPoC;;
@@ -84,6 +91,7 @@ case $1 in
 USAGE: 
 		c		. Make check
 		cl       	. Show release check list. 
+		d  OPT		. Build and run this script in docker. 
 		j		. Generate collate .SVT
 		jl		. Generage locusts .SVG
 		poc		. Build and run Proof of Concept 

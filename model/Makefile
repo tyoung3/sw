@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.9.4\"
+VERSION = \"0.10.0\"
 
 LATEX = latex
 DVIPS = dvips
@@ -40,28 +40,29 @@ SW.pdf:  SW.ps
 
 check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
 	${PGM}  -v 
-	! ${PGM} tests/nds/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	#! ${PGM} tests/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	${PGM}  tests/aa.sw  >/dev/null
+	${PGM}  tests/ab.sw  >/dev/null
+	${PGM}  tests/ad.sw  >/dev/null
+	${PGM}  tests/ae.sw  >/dev/null
+	${PGM}  tests/aef.sw  >/dev/null
+	${PGM}  tests/tag.sw   >/dev/null
+	${PGM}  tests/aj.sw   >/dev/null
+	${PGM}  tests/aj2.sw   >/dev/null
+	${PGM}  tests/asj.sw   >/dev/null
 	${PGM}       ../nds/locusts.sw  >/dev/null
 	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 4 tests/java.sw     >/dev/null
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
-	${PGM}  tests/aa.sw  >/dev/null
-	${PGM}  tests/ab.sw  >/dev/null
-	${PGM}  tests/ad.sw  >/dev/null
-	${PGM}  tests/ae.sw  >/dev/null
-	${PGM}  tests/aef.sw  >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
-	${PGM}  tests/tag.sw   >/dev/null
-	${PGM}  tests/aj.sw   >/dev/null
-	${PGM}  tests/aj2.sw   >/dev/null
-	${PGM}  tests/asj.sw   >/dev/null
-	../sw.sh poc     
 	${PGM} -m 2 tests/subnet1.sw   >/dev/null
+	${PGM}  tests/lr.sw   >/dev/null
+	../sw.sh poc     
 
 
 svg:  .phsvg 
