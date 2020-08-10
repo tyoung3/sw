@@ -7,18 +7,27 @@
 
 /*          Network  Model
 
-               |<--------------------------------
+               |<-------------------------------- 
                |                         ^      ^ 
                v                         |      |
 	 Model > Stream > Source_Process > Port > Port 
 	 			 	Sink_Process     > Port > Port
 	                Process          > Component
 				    Process          > Process
+
+
+               |<--------------------------------
+               |                         ^      ^ 
+               v                         |      |
+	 Model > Stream > SinkPort   -> SinkProcess    -> Component
+                        > SourcePort -> SourceProcess  -> Component
+
+	 Process->port->port....
 */
 
 /*    MODEL  Structures   */
 
-typedef enum {IS_NET, IS_SUB} STATE;
+typedef enum {IS_NET, IS_SUB, IS_DEAD} STATE;
 // typedef enum {NONE,GOIP,SUBNET,OTHER} KINDOF;
 
 struct Component_ {
@@ -45,8 +54,8 @@ struct Process_ {
 		int  nportsIn;
 		int  nportsOut;
 		int  ch;			/* Low channel number */
-		int  sink_id;
-		int  source_id;
+		// int  sink_id;
+		// int  source_id;
 		int  depth;			/* Subnet depth */
 		struct Process_ *next;
 		char **arg;		  /* An array of strings. */
@@ -56,11 +65,13 @@ typedef struct Process_ *Process;
 
 struct Stream_ {
 	Process source;
-	Process sink;
+	Process sink;      
+	Port  SourcePort; 
+	Port  SinkPort; 		      
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	STATE  state;    /* Type of Stream IS_SUB or IS_NET  */
+	STATE  state;    /* Type of Stream IS_SUB or IS_NET or IS_DEAD */
 	struct Stream_ *next;
 } Stream_;
 typedef struct Stream_ *Stream;

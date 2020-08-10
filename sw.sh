@@ -35,7 +35,7 @@ GenSVG() {
 	pushd model 
 	make svg && $BROWSER --nosandbox /tmp/collate.svg &
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
-	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.JPG
+	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.Jnetwork_languagePG
 	#gimp /tmp/collate_SW.JPG
 }	
 
@@ -68,7 +68,7 @@ Remove Branch:
 	  * git branch -d branchname 
 	       * git push origin --delete branchname
 		   * git branch	 
-			* git checkout NEWBRANCH      	  
+			* git checkout -b NEWBRANCH      	  
 EOF
 }
 

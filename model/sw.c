@@ -9,6 +9,8 @@
 #include "swsym.h"
 #include "model.h"
 
+#include <assert.h>
+
 #define NOBUFFERS
 
 char *defaultPath={"def"};
@@ -24,8 +26,34 @@ STATE state=IS_NET;
 int bs=1;		              /*  Buffer size */
 Model net_model=NULL;  
 
+#ifdef PARANOID
+static int  VerifyStream(Stream s) {   /* Check proper Stream connections */
+	Process src,snk;
+	Port   psrc,psnk;
+
+	src=s->source;
+	snk=s->sink;
+	assert( src && snk);
+	psrc=s->SourcePort;
+	psnk=s->SinkPort;
+	assert(psrc && psnk);	
+	assert(psrc->id==s->source_id);
+	assert(psnk->id==s->sink_id);
+	assert(psrc->stream == s);
+	assert(psnk->stream == s);
+	assert(src != snk);     /*  ?? May allow */
+	if(psrc->match) {
+		assert(psnk->match == psrc);
+		assert(psrc->match == psnk);
+	}
+	return 1;
+}
+#else
+	#define VerifyStream(S)
+#endif
+
 static Subnetm linkSubnet(Model m, char *name) {
-	Subnetm sn2;
+	Subnetm sn2=m->subnetm;
 	
 	sn2=m->subnetm;	
 	if(!sn2) {
@@ -108,7 +136,6 @@ Model MakeModel(Stream f) {
 	return m;
 	
 }	    
-
 
 #ifdef OLD_STUFF
 static int countArg(char **arg) {
@@ -295,7 +322,8 @@ Component MakeComponent(Ident name, String path) {
 } 
 
 
-Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
+Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m, 
+		Port SourcePort, Port SinkPort) {
 	Stream f;
 	
 	if(!src) {
@@ -310,11 +338,12 @@ Stream MakeStream(STATE  state, Process src, Process snk, int bs, Model m) {
         FAIL(MakeStream,
         	"Out of memory when allocating Stream!\n");
     }
-    
+        f->SourcePort	= SourcePort;
+	f->SinkPort	= SinkPort;
 	f->source    = src;
 	f->sink      = snk;
-	f->source_id = fixId(src->source_id); 
-	f->sink_id   = fixId(snk->sink_id);
+	f->source_id = fixId(SourcePort->id); 
+	f->sink_id   = fixId(SinkPort->id);
 	f->next      = NULL;
 	f->state	 = state;  /* Defined w/ '<-'  */
 	if(state==IS_NET) {
@@ -460,17 +489,8 @@ static void linkPort(Process P, Port p) {
     p->prev = p2->prev;
     p->next->prev = p;
 	p->prev->next = p;
+    
 }    
-
-#if 0
-Process MakeMyProc(Process p, Port pt) {
-    /*p->source_id = pt->id; 
-    p->nportsOut++;
-    */
-    linkPort(p,pt);
-    return p;  
-}
-#endif
 
 static void setStream(Port pt, Stream s) {      
      while(pt->stream) {
@@ -481,21 +501,18 @@ static void setStream(Port pt, Stream s) {
 
 static void SetSource(Process p) {
 
-    p->source_id = p->port->id; 
     p->nportsOut++;
 }
 
 static void SetSink(Process p)   {
 
-    // p->port->id = fixId(p->port->id);	  /* ? */
-    p->sink_id = p->port->id;
     p->nportsIn++;  
 }
 
 Stream visitS_tream(S_tream _p_)
 {
 	Process snk,src;
-	Port pt,src_pt;
+	Port pt,src_pt,snk_pt;
 	Stream s,s2;
 	int bs;
 	
@@ -505,17 +522,18 @@ Stream visitS_tream(S_tream _p_)
      bs=visitLarrow(_p_->u.streamx_.larrow_);
      src=visitProc(_p_->u.streamx_.proc_2);
      snk=visitProc(_p_->u.streamx_.proc_1); 
-     pt=visitPrt(_p_->u.streamx_.prt_2);
-     linkPort( src,pt);
+     src_pt=visitPrt(_p_->u.streamx_.prt_2);
+     snk_pt=visitPrt(_p_->u.streamx_.prt_1);  
+     linkPort( snk,snk_pt);
+     SetSink(snk); 
+     linkPort( src,src_pt);  
      SetSource(src);
-     LatestPort=visitPrt(_p_->u.streamx_.prt_1);
-     linkPort( snk,LatestPort);
-     SetSink(snk);
-     s=MakeStream(state,src,snk,bs,net_model);
-     setStream(pt,s);
-     setStream(LatestPort,s); 
-     snk->sink_id=s->sink_id=LatestPort->id=fixId(LatestPort->id);
-     src->source_id=s->source_id=pt->id=fixId(pt->id);
+     s=MakeStream(state,src,snk,bs,net_model,src_pt,snk_pt);
+     setStream(src_pt,s);
+     setStream(snk_pt,s); 
+     s->sink_id=snk_pt->id=fixId(snk_pt->id);
+     s->source_id=src_pt->id=fixId(src_pt->id);
+     VerifyStream(s);
      return s;
   case is_Streamrx:
     src=visitProc(_p_->u.streamrx_.proc_1); 
@@ -527,11 +545,12 @@ Stream visitS_tream(S_tream _p_)
     linkPort(snk,LatestPort);
     SetSink(snk);
     bs=visitRarrow(_p_->u.streamrx_.rarrow_);
-    s=MakeStream(state,src,snk,bs,net_model);
+    s=MakeStream(state,src,snk,bs,net_model,LatestSrcPort,LatestPort);
     setStream(LatestSrcPort,s); 
     setStream(LatestPort,s);
     s->sink_id=LatestPort->id=fixId(LatestPort->id);
     s->source_id=LatestSrcPort->id=fixId(LatestSrcPort->id);
+    VerifyStream(s);
     return s;  
     
   case is_Streamy:    
@@ -545,11 +564,12 @@ Stream visitS_tream(S_tream _p_)
     SetSource(src);
     linkPort( snk,pt);
     SetSink(snk);
-    s2=MakeStream(state, src, snk, bs, net_model); 
+    s2=MakeStream(state, src, snk, bs, net_model,LatestSrcPort,pt); 
      setStream(LatestSrcPort,s2); 
      setStream(LatestPort,s2);  
     s2->sink_id=LatestPort->id=fixId(LatestPort->id);
     s2->source_id=LatestSrcPort->id=fixId(LatestSrcPort->id);
+     VerifyStream(s2);
     return s2;
    case is_Streamry:    /* Code for Streamry Goes Here */
     s=visitS_tream(_p_->u.streamry_.s_tream_);
@@ -557,16 +577,16 @@ Stream visitS_tream(S_tream _p_)
     bs=visitRarrow(_p_->u.streamry_.rarrow_);
     src=s->sink;
     src_pt=visitPrt(_p_->u.streamry_.prt_1);   /* Source Port */ 
-    linkPort(src,src_pt);
+    linkPort(src,src_pt); 
     SetSource(src);
     pt=visitPrt(_p_->u.streamry_.prt_2);    /* Sink Port */
-    linkPort( snk,pt); 
     SetSink(snk);
-    s2=MakeStream(state, src, snk, bs, net_model);
+    s2=MakeStream(state, src, snk, bs, net_model,src_pt,pt);
     setStream(src_pt,s2); 
     setStream(pt,s2);    
-    s2->sink_id=snk->sink_id ;
-    s2->source_id=src->source_id;
+    s2->sink_id=snk_pt->id ;
+    s2->source_id=src_pt->id;
+    VerifyStream(s2);
     return s2;
 
   default:
@@ -973,11 +993,8 @@ String visitString(String s)
 static char *makeName(char *pn, char *nn) {
 	char bfr[1000];
 	
-	//if(nn[0] == '_') {   /* Breaks subnets */
-	//	return fixName("_");
-	//}
 	strncpy( bfr,pn,500); 
-	strncat( bfr,"-",501);
+	strncat( bfr,"_",501);
 	strncat( bfr,nn,1000);
 	return(strdup(bfr)); 
 }
@@ -992,6 +1009,39 @@ static int CheckDepth(int d) {
 	}
 	return d+1;
 }
+
+
+#ifdef PARANOID
+static Stream nsiset=NULL;
+static void SetNS(Stream s) {
+	if(nsiset==NULL)
+		nsiset=s;
+}
+
+static void CheckNS(Model m, char *a) {
+	Stream s;
+	int d=0;
+
+	if(nsiset!=NULL && m->stream != nsiset) {
+		s=m->stream->next;
+		while(s) {
+			d++;
+			if(s==nsiset) {
+				if(nsiset->bufsz!=5) {
+					fprintf("bufsz error. %s\n",nsiset->source->name);
+				}
+				return;
+			}
+			s=s->next;
+		}
+		fprintf(stderr,"CheckNS failed at %s\n",a);
+		exit (1);
+	}
+}
+#else
+	#define CheckNS(M,S)
+	#define SetNS(S)
+#endif
 
 static void Expand2(Model m, Process p, Stream s ) {
 	char *srcname,*snkname;  // Concatenated process names 
@@ -1014,16 +1064,18 @@ static void Expand2(Model m, Process p, Stream s ) {
 	linkPort(snk,psnk);
 	src->nportsOut++;
 	snk->nportsIn++;
-	src->source_id=s->source->port->id;
-	snk->sink_id=s->sink->port->id;
 	bs=s->bufsz;
-	ns=MakeStream(state, src, snk, bs, m);
+	ns=MakeStream(state, src, snk, bs, m,psrc,psnk);
 	ns->sink_id=s->sink_id;
 	ns->source_id=s->source_id;
 	ns->bufsz=s->bufsz;
 	ns->state=state;
 	psrc->stream = psnk->stream=ns;
 	ns->source->depth = ns->sink->depth = CheckDepth(p->depth);
+	SetNS(ns);  /* Debug lost stream */
+	CheckNS(m,"Expand2");
+        VerifyStream(ns);
+        
 
 }
 		 
@@ -1047,6 +1099,7 @@ static void Expand3(	Model   m,
 		char *srcname;
 		char *snkname;
 			
+		CheckNS(m,"Expand3");
 		if(ep->type==SOURCE) {
 				pt=p->port;
 				do {
@@ -1069,6 +1122,7 @@ static void Expand3(	Model   m,
 						ptc=copyPort(pt);
 						ptc->id = s->source_id = ep->sink_id;
 						linkPort(pnew, ptc);	
+						CheckNS(m,"Expand3_1");
 						return;
 					}
 					pt=pt->next;
@@ -1095,6 +1149,7 @@ static void Expand3(	Model   m,
 						ptc->id =  s->sink_id = ep->source_id;	
 						linkPort(pnew, ptc);
 						pnew->depth = p->depth+1;
+						CheckNS(m,"Expand3_2");
 						return;
 					}
 					pt=pt->next;
@@ -1108,32 +1163,6 @@ static void Expand3(	Model   m,
 	   
 }
 
-static Stream delStream(Model m, Stream s) {
-	Stream ps;   			// previous stream
-	Stream cs=m->stream;   	// current stream 
-	
-	if (cs==s) {
-		m->stream = s->next;
-		m->nstreams--;
-		free( s );    		// @BUG  also should free comps,etc.
-		return m->stream;
-	}	
-	
-	ps=cs; cs=cs->next;
-	while(cs) {
-		if( cs==s ) {
-			ps->next = s->next;
-			//m->nstreams--;
-			free(s);
-			return m->stream;
-		}
-		ps=cs;
-		cs=cs->next;
-	}
-	return NULL;  // remove warning
-}
-
-
 	/* Expand the model for each external port and stream in the subnet */
 static void Expand(Model m, Process p, Subnetm sn) {
 	Stream s;
@@ -1141,18 +1170,21 @@ static void Expand(Model m, Process p, Subnetm sn) {
 	
 	ep=sn->extport;
 	while(ep) {
-		Expand3(m,p,ep);			
+		CheckNS(m,"Expand_a");
+		Expand3(m,p,ep);
+		CheckNS(m,"Expand_a2");			
 		ep=ep->next;
 	}	
 	
 	s=sn->stream;
 	while(s) {
+		CheckNS(m,"Expand_b");
 		Expand2(m,p,s);
 		s=s->next;
 	}
 	
+	CheckNS(m,"Expand exit");
 }
-
 
 	/* Expand a subnet process, i.e. replace this process
 	with its subnet*/
@@ -1163,6 +1195,7 @@ static void expandSub(Model m, Process p) {
 	while(sn) {   // find the subnet for p
 		if(strncmp(sn->name, p->comp->name, 100)==0) {
 			Expand(m, p, sn);
+			CheckNS(m,"ExpandSub_c");
 			return;
 		}
 		sn=sn->next;
@@ -1182,40 +1215,42 @@ static void FreeLater(Process *fl, Process p) {
 static void FreeExpandedProcesses(Process *fl) {
 	Process pn;
 
-	while(*fl) {
+	while(*fl!=NULL) {
 		pn=(*fl)->next;
 		free(*fl);
 		*fl=pn;	
 	}
+	*fl=NULL;
 }
 
 	/* While some process contains a subnet component, 
 	   expand that component subnet. 
     */   
-void expandSubnets(Model model) {
+void expandSubnets(Model m) {
 	Process p,pp,ps;	
 	Process fl=NULL;  /* List of processes to free */
 
 	int more;
 	
 	do {
-		p=model->proc;
+		p=m->proc;
 		pp=NULL;
 		more=0;
 		while(p) {
+			CheckNS(m,"ExpandSubnets exit");
 			if(p->comp) {
 			  if(p->comp->path[0] == '\'') {  
 					/* Is a subnet */
 				more=1;
-				model->nprocs--; 
+				m->nprocs--; 
 				ps=p;	
 				if(pp)    // delink p from process chain.     
 					pp->next = p->next; 
 				else {
-					model->proc=p->next;	
+					m->proc=p->next;	
 				}	
 				p=pp;
-				expandSub(model, ps );
+				expandSub(m, ps );
 				FreeLater(&fl,ps); /* Pointers to ps still exist. */
 				break;
 			  }
@@ -1223,33 +1258,16 @@ void expandSubnets(Model model) {
 			pp=p;  
 			p=p->next;
 		}
+		CheckNS(m,"expandSubNets");
+		FreeExpandedProcesses(&fl);
 	} while (more); 
-	
-	// Remove any streams with subnet components 
-	{
-		Stream s,sn;
-		
-		s=model->stream; 
-		while(s) {
-			sn=s->next;
-			if(    s->sink->comp 
-			    && s->sink->comp->path[0] == '\'') {
-		  		s=delStream(model,s);  
-		  	} else {	
-			if(   s->source->comp 
-			   && s->source->comp->path[0] == '\'') { 
-				  s=delStream(model,s);
-			}}	
-			s=sn;  
-		}
-	}
 
-	FreeExpandedProcesses(&fl);
-	// assert(fl==NULL);
+
+	CheckNS(m,"expandSubNets exit");
 }	
 	
 	
-/* Fix source port for this stream */	
+		/* Fix  port stream pointers for this stream */	
 static void fixStream(Stream s2) {	
 	Process p;
 	Port pt;
@@ -1266,59 +1284,96 @@ static void fixStream(Stream s2) {
 		pt=pt->next; 
 
 	} while (pt!=p->port); 	 
+
+		/*  Fix Sink port for this stream */
+	p=s2->sink;
+	pt=p->port;
+	
+	do {
+		pt->id = fixId(pt->id);
+		if (pt->id == s2->sink_id) { 
+			pt->stream = s2;
+			return;
+		}	
+		pt=pt->next; 
+
+	} while (pt!=p->port); 	
+
+
 }	 
 	 
-	 
-static void fixFan2(Model m, Process p, Port pt0, Port pt) {  
+	 		/* Fix Fan in */
+static void fixFan2(Model m, Process p, Port pt0, Port pt) {    
 	Process j;   // New anonymous join process 
 	Component c; 
-	Port   pt1,pt2 ;   
+	Port   pt1,pt2,ptn;   
 	Stream s0, s1, s2;
 	
 	/*   		BEFORE 
-		(A)id <- x(B);    [ s0 pt0]
-		(A)id <- y(C);    [ s1 pt ]  */ 
+		(A)id <- x(B);    [ s0 pt0 ?psnk0]
+		(A)id <- y(C);    [ s1 pt  ?psnk1]  */ 
 	c=MakeComponent("Join","poc");
 	j=MakeProcess(m,"_",c, MakeArg(NULL,NULL));
 	j->depth=p->depth+1;
 	/*        	AFTER
-		(A)id <- 0(_ poc.Join);  [ s0 pt0]  
-	   	(j)1  <- y(C); 			 [ s1    ] 
-	   	(j)2  <- x(B);           [ s2    ]  */
+		(A)id <- 0(_ poc.Join);  [ s0 pt0 ptn]  
+	   	(j)1  <- y(C); 		 [ s1 pt1   ] 
+	   	(j)2  <- x(B);           [ s2 pt2    ]  */
 
-	
-	s0=pt0->stream;
-	
-	s2=MakeStream(IS_NET, pt0->stream->source, j, 
-			pt0->stream->bufsz, 
-			m); 
-	
-	s2->sink_id=2;
-	s2->source_id=pt0->id;	
+	pt1=MakePort(1,"");
+	pt2=MakePort(2,"");
+	ptn=MakePort(0,"");   /*Join output */
 	
 	s1=pt->stream;
+	s0=pt0->stream;   
+
+	s2=MakeStream(IS_NET, pt0->stream->source, j, 
+			pt0->stream->bufsz, 
+			m, pt0, pt); 
+	s2->SourcePort=s0->SourcePort;   
+
+	s0->source=j;  
+	s0->SourcePort=ptn;  
+	s0->SourcePort->stream = s0;  
+	s0->source_id = 0;
+	pt->stream=s0;  
+
+	
+	s2->sink_id=2;
+	assert(s0->SinkPort->stream == s0);
+	s2->source_id=s2->SourcePort->id; 
+	CheckNS(m,"Expand2");
+	s2->SinkPort=pt2;
+	s2->SourcePort->stream=s2;    
+	pt2->stream=s2;
+	
 	s1->sink=j;
 	s1->sink_id=1;
+	assert(s2->SourcePort->stream == s2);
 	
-	s0->source=j;
-	s0->source_id = 0;
-	
+
 	pt->next->prev=pt0;   // Delink pt
 	pt0->next = pt->next;
 	p->nportsIn--;
 	
 	
 			/* Fix j ports */
-	j->port=pt;	 pt->id = 0; pt->stream=s0; pt->name="";
-	pt1=MakePort(1,"");
-	pt2=MakePort(2,"");
-	pt->next=pt1;  pt1->next=pt2; pt2->next=pt;
+	j->port=pt;	 pt->id = 0; 
+	pt->name="";
+	pt->next=pt1;  
+	pt1->next=pt2; 
+	pt2->next=pt;
 	pt2->prev=pt1;pt1->prev=pt;pt->prev=pt2;
 	pt1->stream=s1;
 	pt2->stream=s2;
+	s1->SinkPort=pt1; 
 	j->nportsIn=2; j->nportsOut=1;
 	fixStream(s2);
 	fixStream(s1);
+	
+     VerifyStream(s0);
+     VerifyStream(s1);
+     VerifyStream(s2);
 }
 
 	
@@ -1328,7 +1383,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt) {
 	Component c; 
 	Port   pt1,pt2 ;   
 	Stream s0, s1, s2;
-	
+	 
 	/*   		BEFORE 
 		(B)x <- id(A);  [ s0 pt0]
 		(C)y <- id(A);  [ s1 pt ]  */ 
@@ -1341,21 +1396,26 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt) {
 	   	(j)0 <- id(A);  [ s2    ]  */
 
 	
+	pt1=MakePort(1,"");
+	pt2=MakePort(2,"");
 	s0=pt0->stream;
 	
 	s2=MakeStream(IS_NET, pt0->stream->source, j, 
 			pt0->stream->bufsz, 
-			m); 
+			m, pt0,pt); 
 	
 	s2->sink_id=0;
 	s2->source_id=pt0->id;	
 	
 	s1=pt->stream;
+	s1->SourcePort=pt2;
 	s1->source=j;
 	s1->source_id=2;
 	
 	s0->source=j;
-	s0->source_id = 1;
+	s0->source_id = 1;  s0->SourcePort=pt1;
+	s0->SinkPort->match = s0->SourcePort;
+	s0->SourcePort->match = s0->SinkPort;
 	
 	pt->next->prev=pt0;   // Delink pt
 	pt0->next = pt->next;
@@ -1364,14 +1424,24 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt) {
 	
 			/* Fix j ports */
 	j->port=pt;	 pt->id = 0; pt->stream=s2; pt->name="";
-	pt1=MakePort(1,"");
-	pt2=MakePort(2,"");
 	pt->next=pt1;  pt1->next=pt2; pt2->next=pt;
 	pt2->prev=pt1;pt1->prev=pt;pt->prev=pt2;
 	pt1->stream=s0;
 	pt2->stream=s1;
 	j->nportsIn=1; j->nportsOut=2;
-	fixStream(s2);
+	s0->SourcePort->stream=s0;
+	s1->SourcePort->stream=s1;
+	s2->SourcePort->stream=s2;
+	s0->SinkPort->stream=s0;
+	s1->SinkPort->stream=s1;
+	s2->SinkPort->stream=s2;
+     assert(s1->SourcePort != s2->SinkPort);
+     s0->source_id=s0->SourcePort->id;     
+     s1->source_id=s1->SourcePort->id;
+     s2->source_id=s2->SourcePort->id;
+     VerifyStream(s0);
+     VerifyStream(s1);
+     VerifyStream(s2);
 	
 }
 
@@ -1403,13 +1473,13 @@ static void fixFan(Model m, Process p) {
      }
 }
 
-/* Insert poc.Join process wherever fanin occurs. */
+			/* Insert poc.Join process wherever fanin occurs. */
 static void fixFanInOut(Model m) {
 	Process p;
 	
 	p=m->proc;
 	
-	while(p)  {
+	while(p)  {   /* For all processes(p) Fix fan in and fan out. */
 		fixFan(m, p);
 		p=p->next;
 	}

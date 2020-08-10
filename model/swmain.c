@@ -248,8 +248,8 @@ static int BadArg(int argc, char **argv) {
   
 int main(int argc, char ** argv)
 {
-  ValidSW parse_tree;
-  Model model;    /* Network Model */
+  ValidSW parse_tree=NULL;
+  Model model=NULL;    /* Network Model */
   
   input = stdin;
 

@@ -10,3 +10,7 @@
 #run -m 2 tests/subnet1.sw
 run tests/sisub.sw
 #run tests/lr.sw 
+#run tests/ae.sw 
+#run tests/aj2.sw 
+#run tests/join.sw 
+#run tests/asj.sw 

@@ -1,6 +1,6 @@
 # AJ.sw: AutoJoin 
 
-(N)	 <- (A);
+(N)  <- (A);
 (N)  <- (B);
 
 (P)  <- (C);
