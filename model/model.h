@@ -27,8 +27,7 @@
 
 /*    MODEL  Structures   */
 
-typedef enum {IS_NET, IS_SUB, IS_DEAD} STATE;
-// typedef enum {NONE,GOIP,SUBNET,OTHER} KINDOF;
+typedef enum {IS_NET, IS_SUB} STATE;   /* Type of Stream */
 
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
@@ -38,7 +37,7 @@ typedef struct Component_ *Component;
 
 struct Port_ {
 	int id; 
-	int channel;  /* Go Channel Number */	
+	int channel;  /* Assigned Go Channel Number */	
 	String name;
 	struct Port_ *match;
 	struct Stream_ *stream;
@@ -54,8 +53,6 @@ struct Process_ {
 		int  nportsIn;
 		int  nportsOut;
 		int  ch;			/* Low channel number */
-		// int  sink_id;
-		// int  source_id;
 		int  depth;			/* Subnet depth */
 		struct Process_ *next;
 		char **arg;		  /* An array of strings. */
@@ -71,7 +68,7 @@ struct Stream_ {
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	STATE  state;    /* Type of Stream IS_SUB or IS_NET or IS_DEAD */
+	STATE  state;    /* Type of Stream IS_SUB or IS_NET */
 	struct Stream_ *next;
 } Stream_;
 typedef struct Stream_ *Stream;
@@ -81,6 +78,7 @@ struct Extport_ {
 	PortType type;
 	Process source;
 	Process sink;
+	String  name;   /* Port name */
 	int source_id; 	
 	int sink_id; 
 	int bufsz;	
@@ -88,7 +86,7 @@ struct Extport_ {
 } Extport_;
 typedef struct Extport_ *Extport;
 
-struct Subnetm_ {     /* Model Subnet: a list of Subnets */
+struct Subnetm_ {     /*  Subnetm: a list of external ports and streams*/
 	char *name;
 	Stream  stream;		/* First SN stream in this subnet */
 	Extport extport;
@@ -100,10 +98,10 @@ struct Model_ {
 	int nstreams;
 	int ncomponents;
 	int nprocs; 		/* number of processes */
-	Stream stream;			/* pointer to first stream*/
-	Subnetm subnetm;     /* Pointer to first subnet */
-	Process proc;		/* First Process */
-	char *name;			/* Model Name */
+	Stream stream;		/* pointer to first stream*/
+	Subnetm subnetm;     	/* Pointer to first subnet */
+	Process proc;		/* Pointer to First Process */
+	char *name;		/* Model Name */
 } Model_;
 typedef struct Model_ *Model;
 

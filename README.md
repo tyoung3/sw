@@ -231,6 +231,10 @@ Ex.  ```A<-B;``` expands to
 0.10.0
 ------
 	* Implemented right arrow in network definition language
+
+0.10.1
+------
+	* Refactored and fixed expansion logic
 	
 SW.cf Language Notes
 --------------------
@@ -238,8 +242,9 @@ Statements in the network definition language, SW.cf, are
 terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
 they tell the reader (and the interpreter) when
-you have reached the end; making reading the statements easier. 
+you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
+
 Without semi-colons, line breaks become part of the language 
 definition leading to awkward syntax rules.  
 

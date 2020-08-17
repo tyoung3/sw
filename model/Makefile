@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.10.0\"
+VERSION = \"0.10.1\"
 
 LATEX = latex
 DVIPS = dvips
@@ -49,19 +49,19 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/ad.sw  >/dev/null
 	${PGM}  tests/ae.sw  >/dev/null
 	${PGM}  tests/aef.sw  >/dev/null
-	${PGM}  tests/tag.sw   >/dev/null
-	${PGM}  tests/aj.sw   >/dev/null
-	${PGM}  tests/aj2.sw   >/dev/null
-	${PGM}  tests/asj.sw   >/dev/null
 	${PGM}       ../nds/locusts.sw  >/dev/null
 	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 4 tests/java.sw     >/dev/null
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
-	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM} -m 2 tests/subnet1.sw   >/dev/null
+	${PGM}  tests/tag.sw   >/dev/null
+	${PGM}  tests/aj.sw   >/dev/null
+	${PGM}  tests/asj.sw   >/dev/null
+	${PGM}  tests/aj2.sw   >/dev/null
 	${PGM}  tests/lr.sw   >/dev/null
+	${PGM}  tests/sisub.sw   >/dev/null
 	../sw.sh poc     
 
 

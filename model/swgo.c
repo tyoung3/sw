@@ -9,6 +9,8 @@ TODO:
 #include "model.h"
 #include "sw.h"
 
+#include <assert.h>
+
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s",(#s));
 
@@ -203,6 +205,7 @@ void genPrefix(Model m) {
 	i=0;
 	while(f) {
 		bfrtbl[nstreams - i++ - 1 ] = f->bufsz;
+		assert(f->sink->comp->path != 0);
 		f=f->next;
 	}	
 	i=0;

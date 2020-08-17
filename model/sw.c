@@ -12,6 +12,7 @@
 #include <assert.h>
 
 #define NOBUFFERS
+// #define PARANOID 1
 
 char *defaultPath={"def"};
 char *defaultSourceComp={"Gen1"};
@@ -27,6 +28,23 @@ int bs=1;		              /*  Buffer size */
 Model net_model=NULL;  
 
 #ifdef PARANOID
+static int checkSource(Stream s) {
+	Port pt0;
+	Process p;
+	int id;
+
+	p=s->source; id=s->source_id;
+	pt0=p->port;
+	do {
+		if(pt0->id==id) {
+			assert(pt0->stream==s);			//FAILS on fanout??
+			assert(pt0==s->SourcePort);
+		}
+		pt0=pt0->next;
+	} while (pt0!=p->port);
+	return 1;	
+}
+
 static int  VerifyStream(Stream s) {   /* Check proper Stream connections */
 	Process src,snk;
 	Port   psrc,psnk;
@@ -36,16 +54,20 @@ static int  VerifyStream(Stream s) {   /* Check proper Stream connections */
 	assert( src && snk);
 	psrc=s->SourcePort;
 	psnk=s->SinkPort;
+			
 	assert(psrc && psnk);	
 	assert(psrc->id==s->source_id);
 	assert(psnk->id==s->sink_id);
 	assert(psrc->stream == s);
 	assert(psnk->stream == s);
-	assert(src != snk);     /*  ?? May allow */
-	if(psrc->match) {
+	assert(src != snk);     /*  ?? May allow  later*/
+	assert(s->SourcePort->stream->SourcePort== s->SourcePort);
+	assert(s->SinkPort->stream->SinkPort==s->SinkPort);
+	if(src->kind == IS_NET) {
 		assert(psnk->match == psrc);
 		assert(psrc->match == psnk);
 	}
+	/// return checkSource(s);  // Verify process source and sink ports
 	return 1;
 }
 #else
@@ -458,9 +480,6 @@ Integer visitRarrow(Rarrow _p_)
 /* Add port,p to port list at P->port in order by port id*/
 static void linkPort(Process P, Port p) {  
 	Port p2;   
-	
-	
-    	// LatestPort = p;   /* Save for later stream update */
 
 	if(!P->port) {
    		P->port = p;
@@ -526,13 +545,17 @@ Stream visitS_tream(S_tream _p_)
      snk_pt=visitPrt(_p_->u.streamx_.prt_1);  
      linkPort( snk,snk_pt);
      SetSink(snk); 
-     linkPort( src,src_pt);  
      SetSource(src);
+     linkPort( src,src_pt);  
      s=MakeStream(state,src,snk,bs,net_model,src_pt,snk_pt);
-     setStream(src_pt,s);
-     setStream(snk_pt,s); 
+          //src_pt->stream=snk_pt->stream=s;
+     s->SourcePort=src_pt;
+     s->SinkPort=snk_pt;
+     s->SourcePort->stream=s->SinkPort->stream=s;
      s->sink_id=snk_pt->id=fixId(snk_pt->id);
      s->source_id=src_pt->id=fixId(src_pt->id);
+     s->SinkPort->match   = s->SourcePort;
+     s->SourcePort->match = s->SinkPort;
      VerifyStream(s);
      return s;
   case is_Streamrx:
@@ -550,6 +573,8 @@ Stream visitS_tream(S_tream _p_)
     setStream(LatestPort,s);
     s->sink_id=LatestPort->id=fixId(LatestPort->id);
     s->source_id=LatestSrcPort->id=fixId(LatestSrcPort->id);
+     s->SinkPort->match   = s->SourcePort;
+     s->SourcePort->match = s->SinkPort;
     VerifyStream(s);
     return s;  
     
@@ -564,11 +589,15 @@ Stream visitS_tream(S_tream _p_)
     SetSource(src);
     linkPort( snk,pt);
     SetSink(snk);
-    s2=MakeStream(state, src, snk, bs, net_model,LatestSrcPort,pt); 
-     setStream(LatestSrcPort,s2); 
-     setStream(LatestPort,s2);  
+    s2=MakeStream(state, src, snk, bs, net_model,LatestSrcPort,LatestPort);
+    s2->SourcePort->stream=s2->SinkPort->stream=s2; 
+    s2->SourcePort=LatestSrcPort;
+    s2->SinkPort=LatestPort;
+    s2->SourcePort->stream=s2->SinkPort->stream=s2;
     s2->sink_id=LatestPort->id=fixId(LatestPort->id);
     s2->source_id=LatestSrcPort->id=fixId(LatestSrcPort->id);
+     s2->SinkPort->match   = s2->SourcePort;
+     s2->SourcePort->match = s2->SinkPort;
      VerifyStream(s2);
     return s2;
    case is_Streamry:    /* Code for Streamry Goes Here */
@@ -584,8 +613,10 @@ Stream visitS_tream(S_tream _p_)
     s2=MakeStream(state, src, snk, bs, net_model,src_pt,pt);
     setStream(src_pt,s2); 
     setStream(pt,s2);    
-    s2->sink_id=snk_pt->id ;
+    s2->sink_id=s->SinkPort->id ;
     s2->source_id=src_pt->id;
+     s2->SinkPort->match   = s2->SourcePort;
+     s2->SourcePort->match = s2->SinkPort;
     VerifyStream(s2);
     return s2;
 
@@ -595,6 +626,7 @@ Stream visitS_tream(S_tream _p_)
   }
 }
 
+String saves=NULL;
 Extport MakeExtport(
 	PortType type,
 	Process p,
@@ -620,6 +652,7 @@ Extport MakeExtport(
 		 SetSource(p);
     }
    
+    ep->name=saves;
     ep->bufsz = bs; 	
     ep->next=NULL;
     ep->sink_id=fixId(ep->sink_id);
@@ -641,11 +674,11 @@ String visitSymval(Symval _p_)
   case is_Symvalv:
     /* Code for Symvalv Goes Here */
     return(visitSymvar(_p_->u.symvalv_.symvar_));
-    break;  
+    
     case is_Symvali:
     /* Code for Symvali Goes Here */
     return(visitIdent(_p_->u.symvali_.ident_));
-    break;
+     
   default:
     fprintf(stderr, "Error: bad kind field when printing Symval!\n");
     exit(1);
@@ -658,12 +691,11 @@ Integer visitTab(Tab _p_)
   {
   case is_Tabn:
     /* Code for Tabn Goes Here ??? */
-    visitNumval(_p_->u.tabn_.numval_);
-   return 0; 
+    return visitNumval(_p_->u.tabn_.numval_);
   case is_Tabs:
     /* Code for Tabs Goes Here */
-    visitSymval(_p_->u.tabs_.symval_);  /* @todo fix named ports ??? */
-   return 0; 
+    saves=visitSymval(_p_->u.tabs_.symval_);  /* @todo fix named ports ????? */
+   return -2; 
   default:
     fprintf(stderr, "Error: bad kind field when printing Tab!\n");
     exit(1);
@@ -1026,9 +1058,11 @@ static void CheckNS(Model m, char *a) {
 		s=m->stream->next;
 		while(s) {
 			d++;
+			//assert(s->sink->comp != NULL);
+			//assert(s->source->comp != NULL);
 			if(s==nsiset) {
-				if(nsiset->bufsz!=5) {
-					fprintf("bufsz error. %s\n",nsiset->source->name);
+				if(nsiset->bufsz>1000) {   // ???
+					fprintf(stderr,"bufsz error. %s\n",nsiset->source->name);
 				}
 				return;
 			}
@@ -1073,8 +1107,11 @@ static void Expand2(Model m, Process p, Stream s ) {
 	psrc->stream = psnk->stream=ns;
 	ns->source->depth = ns->sink->depth = CheckDepth(p->depth);
 	SetNS(ns);  /* Debug lost stream */
+	ns->SinkPort->match   = ns->SourcePort;
+	ns->SourcePort->match = ns->SinkPort;
 	CheckNS(m,"Expand2");
         VerifyStream(ns);
+        VerifyStream(s);
         
 
 }
@@ -1090,7 +1127,7 @@ static Port copyPort(Port p0) {
       Match ep to a port,pt in p.
       Update existing stream,s, in pt */		 
 static void Expand3(	Model   m, 
-			Process p,
+			Process p,			/* _b */
 			Extport ep) {
 					
 		Port pt,ptc;
@@ -1100,12 +1137,14 @@ static void Expand3(	Model   m,
 		char *snkname;
 			
 		CheckNS(m,"Expand3");
-		if(ep->type==SOURCE) {
-				pt=p->port;
-				do {
+		if(ep->type==SOURCE) {       /*  (E 'w)  -11>  0;*/
+				pt=p->port;  /* Find matching source port  */
+				do {    /* pt->stream->SourcePort != pt??  */
 					pt->id = fixId(pt->id);
-					if(pt->id == ep->sink_id) {
-						s=pt->stream;
+					if(pt->id == ep->source_id) {
+						s=pt->stream;   /* _b_U_D.0 'v > .1_B_T t */
+						VerifyStream(s);
+						assert(pt==s->SourcePort);
 						srcname=makeName(p->name,
 								 fixName(ep->source->name));
 						pnew=MakeProcess(
@@ -1120,19 +1159,25 @@ static void Expand3(	Model   m,
 						pnew->nportsOut++;
 						pnew->depth = p->depth+1;
 						ptc=copyPort(pt);
+						ptc->stream=s;
 						ptc->id = s->source_id = ep->sink_id;
 						linkPort(pnew, ptc);	
-						CheckNS(m,"Expand3_1");
+						s->SourcePort=ptc;
+						s->SinkPort->match   = s->SourcePort;
+						s->SourcePort->match = s->SinkPort;
+						VerifyStream(s);
 						return;
 					}
 					pt=pt->next;
 				} while(pt!= p->port); 	 
 		}else {   
-				pt=p->port;
+				pt=p->port;    /*x=sisub.sw  *p=_b/'b */
 				do {
-					pt->id = fixId(pt->id);
-					if(pt->id == ep->source_id) {
-						s=pt->stream;
+					pt->id = fixId(pt->id);  /*x id=1 ep->sink =T */
+						/* Find matching source port for ep*/
+					if(pt->id == ep->sink_id) {
+						s=pt->stream;  /*x  s->source=_a; 'sink='b*/
+						assert(pt==s->SinkPort);
 						snkname=makeName(p->name,
 								 fixName(ep->sink->name));
 						pnew=MakeProcess(
@@ -1146,10 +1191,25 @@ static void Expand3(	Model   m,
 							s->bufsz=ep->bufsz;
 						pnew->nportsIn++;
 						ptc=copyPort(pt);
+						ptc->stream=s;
 						ptc->id =  s->sink_id = ep->source_id;	
 						linkPort(pnew, ptc);
 						pnew->depth = p->depth+1;
+						if(s->sink->comp == NULL) {	
+							s->sink->comp =
+							  MakeComponent(defaultSinkComp,defaultPath);
+						}
+						if(s->source->comp == NULL) {	
+							s->source->comp =
+							 MakeComponent(defaultSourceComp,defaultPath);
+						}
+						// assert(s->sink->comp != NULL);
+						// assert(s->source->comp != NULL);
+						s->SinkPort=ptc;	
+						s->SinkPort->match   = s->SourcePort;
+						s->SourcePort->match = s->SinkPort;
 						CheckNS(m,"Expand3_2");
+						VerifyStream(s);
 						return;
 					}
 					pt=pt->next;
@@ -1336,7 +1396,7 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt) {
 	s0->SourcePort=ptn;  
 	s0->SourcePort->stream = s0;  
 	s0->source_id = 0;
-	pt->stream=s0;  
+	ptn->stream=s0;  
 
 	
 	s2->sink_id=2;
@@ -1358,12 +1418,12 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt) {
 	
 	
 			/* Fix j ports */
-	j->port=pt;	 pt->id = 0; 
-	pt->name="";
-	pt->next=pt1;  
+	j->port=ptn;	 ptn->id = 0; 
+	ptn->name="";
+	ptn->next=pt1;  
 	pt1->next=pt2; 
-	pt2->next=pt;
-	pt2->prev=pt1;pt1->prev=pt;pt->prev=pt2;
+	pt2->next=ptn;
+	pt2->prev=pt1;pt1->prev=ptn;ptn->prev=pt2;
 	pt1->stream=s1;
 	pt2->stream=s2;
 	s1->SinkPort=pt1; 
@@ -1371,6 +1431,12 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt) {
 	fixStream(s2);
 	fixStream(s1);
 	
+	s0->SinkPort->match = s0->SourcePort;
+	s0->SourcePort->match = s0->SinkPort;
+	s1->SinkPort->match = s1->SourcePort;
+	s1->SourcePort->match = s1->SinkPort;
+	s2->SinkPort->match = s2->SourcePort;
+	s2->SourcePort->match = s2->SinkPort;
      VerifyStream(s0);
      VerifyStream(s1);
      VerifyStream(s2);
@@ -1439,6 +1505,12 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt) {
      s0->source_id=s0->SourcePort->id;     
      s1->source_id=s1->SourcePort->id;
      s2->source_id=s2->SourcePort->id;
+	s0->SinkPort->match = s0->SourcePort;
+	s0->SourcePort->match = s0->SinkPort;
+	s1->SinkPort->match = s1->SourcePort;
+	s1->SourcePort->match = s1->SinkPort;
+	s2->SinkPort->match = s2->SourcePort;
+	s2->SourcePort->match = s2->SinkPort;
      VerifyStream(s0);
      VerifyStream(s1);
      VerifyStream(s2);
