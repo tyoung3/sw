@@ -15,4 +15,4 @@
 #run tests/join.sw 
 #run tests/asj.sw 
 #run tests/aj.sw 
-run tests/lr.sw 
+run tests/n1.sw 

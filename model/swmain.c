@@ -267,7 +267,7 @@ int main(int argc, char ** argv)
 	expandSubnets(model );  
     if(verifyOK(model)) {
 		if(!model->proc) {
-			FAIL(swmain,"No processes found.");
+			FAIL(swmain/main,"No processes found.");
 			exit(1);
 		}
     	switch (mode) {

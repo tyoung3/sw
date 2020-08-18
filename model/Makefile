@@ -62,6 +62,8 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/aj2.sw   >/dev/null
 	${PGM}  tests/lr.sw   >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
+	${PGM}  tests/aaR.sw  >/dev/null
+	${PGM}  tests/lrR.sw   >/dev/null
 	../sw.sh poc     
 
 

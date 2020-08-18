@@ -12,13 +12,13 @@
 #include <assert.h>
 
 #define NOBUFFERS
-// #define PARANOID 1
+// Use Makefile #define PARANOID 1
 
 char *defaultPath={"def"};
 char *defaultSourceComp={"Gen1"};
 // char *defaultFilterComp={"Filter1"};  @TODO
 char *defaultSinkComp={"Print1"};
-int defBufferSize=1;   /* One may prevent accidental deadlocks.*/
+int defBufferSize=1;   /* Size one may prevent deadlock on occasion.*/
 static int maxdepth=20;
 
 Port LatestPort=NULL, LatestSrcPort=NULL;
@@ -27,7 +27,7 @@ STATE state=IS_NET;
 int bs=1;		              /*  Buffer size */
 Model net_model=NULL;  
 
-#ifdef PARANOID
+#if 0
 static int checkSource(Stream s) {
 	Port pt0;
 	Process p;
@@ -44,7 +44,9 @@ static int checkSource(Stream s) {
 	} while (pt0!=p->port);
 	return 1;	
 }
+#endif
 
+#ifdef PARANOID
 static int  VerifyStream(Stream s) {   /* Check proper Stream connections */
 	Process src,snk;
 	Port   psrc,psnk;
@@ -72,6 +74,7 @@ static int  VerifyStream(Stream s) {   /* Check proper Stream connections */
 }
 #else
 	#define VerifyStream(S)
+	#define checkSource(S)
 #endif
 
 static Subnetm linkSubnet(Model m, char *name) {
@@ -753,7 +756,8 @@ switch(_p_->kind)
 void visitHermt(Hermt _p_)
 {
   char *name;
-  
+  // Process p;
+
   switch(_p_->kind)
   {
   case is_Hermtx:
