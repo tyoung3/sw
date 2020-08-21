@@ -39,7 +39,7 @@ GenRun() {
 		Debug Got $swfile
 		$SW -m 3 $swfile > /tmp/${base}.dot
 		dot -Tsvg /tmp/$base.dot > /tmp/${base}.svg
-		$BROWSER /tmp/${base}.svg	
+		$BROWSER --new-window /tmp/${base}.svg	
 	else 
 		DIE $swfile missing
 	fi

@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.10.1 - STREAMWORK/FrontEnd
+SW-0.10.2 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -235,6 +235,10 @@ Ex.  ```A<-B;``` expands to
 0.10.1
 ------
 	* Refactored and fixed expansion logic
+
+0.10.2
+------
+	* Fixed some hermit logic
 	
 SW.cf Language Notes
 --------------------
