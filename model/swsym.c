@@ -84,6 +84,7 @@ static int hash(char *key)
     return (k % TABLESIZE);
 }
 
+/** bucketp structure */
 static bucketp lookup(char *key)
 {
     register int hashval;

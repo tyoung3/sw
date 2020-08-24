@@ -17,7 +17,7 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 		exit(1);							\
 	}	
 	
-
+/** Configure structure */
 struct cfg_ {
 	int   defBufferSize;
 	int   maxbfsz;

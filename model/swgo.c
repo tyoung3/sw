@@ -152,6 +152,32 @@ static void assignChannels(Model m) {
 		f=f->next;
 	}	
 }
+
+/**  Count number of streams connecting identical nodes */
+static int nbrMultiples(Model m) {
+	Stream s,s2;
+	Process p1,p2,p3,p4;
+	int n=0;
+
+	s=m->stream;
+	while(s) {
+		s2=s->next;
+		p1=s->source; p2=s->sink;
+		while(s2) {
+			p3=s2->source; p4=s2->sink;
+			if( (p1==p3 && p2==p4) || (p1==p4 && p2==p3) ) {
+				n++;
+			}
+			s2=s2->next;
+		}
+		s=s->next;
+	}
+
+	return n;
+};
+  
+
+/** Show Network definition */
 static void showND(Model m) {	
 	Stream f;
 	char plural[]="s";
@@ -171,7 +197,7 @@ static void showND(Model m) {
 	}
 	
 			 ///@bug nparts too low if multiple streams between same processes.
-	nparts=m->nprocs - m->nstreams;  
+	nparts=m->nprocs - m->nstreams + nbrMultiples(m);  
 
 	if(nparts<2) {
 	   plural[0]=0;

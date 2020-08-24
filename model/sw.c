@@ -11,9 +11,6 @@
 
 #include <assert.h>
 
-#define NOBUFFERS
-// Use Makefile #define PARANOID 1
-
 char *defaultPath = { "def" };
 char *defaultSourceComp = { "Gen1" };
 
@@ -120,6 +117,7 @@ linkExt (Subnetm sn, Extport pt)
   sn->extport = pt;
 }
 
+/** Make subnet definition */
 Subnetm
 MakeSubnetm (Ident name, Stream s, Extport in, Extport out)
 {
@@ -148,6 +146,7 @@ MakeSubnetm (Ident name, Stream s, Extport in, Extport out)
   return sn;
 };
 
+/** Make Model structure */
 Model
 MakeModel (Stream f)
 {
@@ -326,7 +325,7 @@ fixId (int i)
   return i;
 }
 
-
+/** Make Port structure */
 Port
 MakePort (int n, Ident id)
 {
@@ -358,7 +357,7 @@ MakePort (int n, Ident id)
   return p;
 }
 
-
+/** Make Component structure */
 //  @BUG Lookup existing component first
 Component
 MakeComponent (Ident name, String path)
@@ -386,6 +385,7 @@ MakeComponent (Ident name, String path)
 }
 
 
+/** Make Stream structure */
 Stream
 MakeStream (STATE state, Process src, Process snk, int bs, Model m,
 	    Port SourcePort, Port SinkPort)

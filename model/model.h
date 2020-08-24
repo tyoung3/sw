@@ -33,12 +33,15 @@
 
 typedef enum {IS_NET, IS_SUB, IS_ORPHAN} STATE;   /* Type of Stream */
 
+/** Component structure */
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
 } Component_;
 typedef struct Component_ *Component;
 
+
+/** Port structure */
 struct Port_ {
 	int id; 
 	int channel;  /* Assigned Go Channel Number */	
@@ -49,7 +52,8 @@ struct Port_ {
 	struct Port_ *prev;
 } Port_;
 typedef struct Port_ *Port;
-		
+	
+/** Process structure */
 struct Process_ {
 		String name;
 		Component comp;    		  
@@ -64,6 +68,7 @@ struct Process_ {
 } Process_; 
 typedef struct Process_ *Process;
 
+/** Stream structure */
 struct Stream_ {
 	Process source;
 	Process sink;      
@@ -78,6 +83,8 @@ struct Stream_ {
 typedef struct Stream_ *Stream;
 
 typedef enum {SINK,SOURCE} PortType;
+
+/** Extport structure */
 struct Extport_ {
 	PortType type;
 	Process source;
@@ -90,6 +97,7 @@ struct Extport_ {
 } Extport_;
 typedef struct Extport_ *Extport;
 
+/** Subnetm structure */
 struct Subnetm_ {     /*  Subnetm: a list of external ports and streams*/
 	char *name;
 	Stream  stream;		/* First SN stream in this subnet */
@@ -98,6 +106,7 @@ struct Subnetm_ {     /*  Subnetm: a list of external ports and streams*/
 } Subnetm_;
 typedef struct Subnetm_ *Subnetm;
 
+/** Model structure */
 struct Model_ {
 	int nstreams;
 	int ncomponents;
