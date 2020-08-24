@@ -79,7 +79,7 @@ RunDocker() {
 }
 
 case $1 in	
-	c) pushd ./model&& make check && echo Success! || echo Check Failed.;;
+	c) pushd ./model&& make -j8 check && echo Success! || echo Check Failed.;;
 	cl) ShowCheck;;
 	d) shift ; RunDocker $*;;
 	j) GenSVG;;

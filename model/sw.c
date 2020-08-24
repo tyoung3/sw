@@ -1,4 +1,4 @@
-/* SW.c
+/** @file SW.c
     Create network model from parse tree 
 */
 
@@ -17,8 +17,9 @@
 char *defaultPath = { "def" };
 char *defaultSourceComp = { "Gen1" };
 
-// char *defaultFilterComp={"Filter1"};  @TODO
+/** @todo char *defaultFilterComp={"Filter1"};    */
 char *defaultSinkComp = { "Print1" };
+
 /* Default hermit component = process name. */
 
 int defBufferSize = 1;		/* Size one may prevent deadlock on occasion. */
@@ -30,30 +31,6 @@ STATE state = IS_NET;
 int bs = 1;			/*  Buffer size */
 Model net_model = NULL;
 
-#if 0
-static int
-checkSource (Stream s)
-{
-  Port pt0;
-  Process p;
-  int id;
-
-  p = s->source;
-  id = s->source_id;
-  pt0 = p->port;
-  do
-    {
-      if (pt0->id == id)
-	{
-	  assert (pt0->stream == s);	//FAILS on fanout??
-	  assert (pt0 == s->SourcePort);
-	}
-      pt0 = pt0->next;
-    }
-  while (pt0 != p->port);
-  return 1;
-}
-#endif
 
 #ifdef PARANOID
 static int
@@ -73,15 +50,21 @@ VerifyStream (Stream s)
   assert (psnk->id == s->sink_id);
   assert (psrc->stream == s);
   assert (psnk->stream == s);
-  assert (src != snk);		/*  ?? May allow  later */
+
+/** @todo
+	May allow src==snk later 
+*/
+  assert (src != snk);		
+
   assert (s->SourcePort->stream->SourcePort == s->SourcePort);
   assert (s->SinkPort->stream->SinkPort == s->SinkPort);
+ 
   if (src->kind == IS_NET)
     {
       assert (psnk->match == psrc);
       assert (psrc->match == psnk);
     }
-  /// return checkSource(s);  // Verify process source and sink ports
+
   return 1;
 }
 #else
@@ -411,7 +394,7 @@ MakeStream (STATE state, Process src, Process snk, int bs, Model m,
 
   if (!src)
     {
-      FAIL (MakeStream, "No source for stream. Hermit?\n");
+      FAIL (MakeStream, "No source for stream. Hermit maybe.\n");
       exit (0);
     }
 
@@ -760,7 +743,7 @@ String
 visitSymvar (Symvar p)
 {
   p = p;
-  return NULL;			// ??
+  return NULL;			/** @todo implement variable substitution */
 }
 
 String
@@ -788,11 +771,10 @@ visitTab (Tab _p_)
   switch (_p_->kind)
     {
     case is_Tabn:
-      /* Code for Tabn Goes Here ??? */
       return visitNumval (_p_->u.tabn_.numval_);
     case is_Tabs:
       /* Code for Tabs Goes Here */
-      saves = visitSymval (_p_->u.tabs_.symval_);	/* @todo fix named ports ????? */
+      saves = visitSymval (_p_->u.tabs_.symval_);	/** @todo fix named ports */
       return -2;
     default:
       fprintf (stderr, "Error: bad kind field when printing Tab!\n");
@@ -1142,55 +1124,13 @@ CheckDepth (int d)
   if (d > maxdepth)
     {
       sprintf (fbfr,
-	       "Exceeded maximum subnet expansion depth, %d. Loop maybe?\n",
+	       "Exceeded maximum subnet expansion depth, %d. Loop maybe.\n",
 	       maxdepth);
       FAIL (CheckDepth, fbfr);
     }
   return d + 1;
 }
 
-
-#ifdef PARANOID
-static Stream nsiset = NULL;
-static void
-SetNS (Stream s)
-{
-  if (nsiset == NULL)
-    nsiset = s;
-}
-
-static void
-CheckNS (Model m, char *a)
-{
-  Stream s;
-  int d = 0;
-
-  if (nsiset != NULL && m->stream != nsiset)
-    {
-      s = m->stream->next;
-      while (s)
-	{
-	  d++;
-	  //assert(s->sink->comp != NULL);
-	  //assert(s->source->comp != NULL);
-	  if (s == nsiset)
-	    {
-	      if (nsiset->bufsz > 1000)
-		{		// ???
-		  fprintf (stderr, "bufsz error. %s\n", nsiset->source->name);
-		}
-	      return;
-	    }
-	  s = s->next;
-	}
-      fprintf (stderr, "CheckNS failed at %s\n", a);
-      exit (1);
-    }
-}
-#else
-#define CheckNS(M,S)
-#define SetNS(S)
-#endif
 
 static void
 Expand2 (Model m, Process p, Stream s)
@@ -1221,13 +1161,10 @@ Expand2 (Model m, Process p, Stream s)
   ns->state = state;
   psrc->stream = psnk->stream = ns;
   ns->source->depth = ns->sink->depth = CheckDepth (p->depth);
-  SetNS (ns);			/* Debug lost stream */
   ns->SinkPort->match = ns->SourcePort;
   ns->SourcePort->match = ns->SinkPort;
-  CheckNS (m, "Expand2");
   VerifyStream (ns);
   VerifyStream (s);
-
 
 }
 
@@ -1240,31 +1177,67 @@ copyPort (Port p0)
   return p1;
 }
 
+/**  Add external port to list of unmatched external ports.
+     Match ports later
+*/
+Extport extprtList=NULL;
+static int findAmatchingPort(Model m, Process p, Extport ep) {
+	Extport ep2=NULL;
+	Port pt;
+	Process p2;
+	// Component c=NULL;
+  	char *srcname;
+  	char *snkname;
+	
+	state=IS_ORPHAN;  
+
+	if(ep->type==SOURCE) {
+	        srcname = makeName (p->name, fixName (ep->source->name));
+		p2=getProc(srcname);
+		if(!p2) {
+			p2=MakeProcess(m, srcname, ep->source->comp, ep->source->arg);
+		}
+		pt=MakePort(ep->sink_id,ep->name);
+	} else {
+	        snkname = makeName (p->name, fixName (ep->sink->name));
+		p2=getProc(snkname);
+		if(!p2) {
+			 p2=MakeProcess(m, snkname, ep->sink->comp, ep->sink->arg);
+		}
+		pt=MakePort(ep->source_id,ep->name);
+	}
+	p2->depth = p->depth + 1;
+	ep2=MakeExtport(ep->type, p2, pt, 0, -1);
+	ep2->next=extprtList;
+	ep2->source_id=ep->source_id;
+	ep2->sink_id=ep->sink_id;
+	extprtList=ep2;
+	return 1;
+}
+
    /* Expand process,p, subnet component.  
       Match ep to a port,pt in p.
       Update existing stream,s, in pt */
 static void
-Expand3 (Model m, Process p,	/* _b */
-	 Extport ep)
-{
+Expand3 (Model m, Process p,	 
+	 Extport ep)  {
 
-  Port pt, ptc;
+  Port pt=NULL,ptc=NULL;
   Stream s;
   Process pnew;
   char *srcname;
   char *snkname;
 
-  CheckNS (m, "Expand3");
   if (ep->type == SOURCE)
-    {				/*  (E 'w)  -11>  0; */
+    {				 
       pt = p->port;		/* Find matching source port  */
       while(pt) {
        do
-	{			/* pt->stream->SourcePort != pt??  */
+	{			
 	  pt->id = fixId (pt->id);
 	  if (pt->id == ep->source_id)
 	    {
-	      s = pt->stream;	/* _b_U_D.0 'v > .1_B_T t */
+	      s = pt->stream;	 
 	      VerifyStream (s);
 	      assert (pt == s->SourcePort);
 	      srcname = makeName (p->name, fixName (ep->source->name));
@@ -1292,15 +1265,14 @@ Expand3 (Model m, Process p,	/* _b */
     }
   else
     {
-      pt = p->port;		/*x=sisub.sw  *p=_b/'b */
+      pt = p->port;		  
       while(pt) {
        do
 	{
-	  pt->id = fixId (pt->id);	/*x id=1 ep->sink =T */
-	  /* Find matching source port for ep */
-	  if (pt->id == ep->sink_id)
+	  pt->id = fixId (pt->id);	 
+	  if (pt->id == ep->sink_id)  	 /* Find matching source port for ep */
 	    {
-	      s = pt->stream;	/*x  s->source=_a; 'sink='b */
+	      s = pt->stream;	 
 	      assert (pt == s->SinkPort);
 	      snkname = makeName (p->name, fixName (ep->sink->name));
 	      pnew = MakeProcess (m, snkname, ep->sink->comp, ep->sink->arg);
@@ -1323,12 +1295,9 @@ Expand3 (Model m, Process p,	/* _b */
 		  s->source->comp =
 		    MakeComponent (defaultSourceComp, defaultPath);
 		}
-	      // assert(s->sink->comp != NULL);
-	      // assert(s->source->comp != NULL);
 	      s->SinkPort = ptc;
 	      s->SinkPort->match = s->SourcePort;
 	      s->SourcePort->match = s->SinkPort;
-	      CheckNS (m, "Expand3_2");
 	      VerifyStream (s);
 	      return;
 	    }
@@ -1338,8 +1307,9 @@ Expand3 (Model m, Process p,	/* _b */
      }
     }
 
-  // ???sprintf (fbfr, "Cannot match process %s port %i\n", p->name, ep->sink_id);
-  // ???FAIL (Expand3, fbfr);
+    findAmatchingPort(m,p,ep); 
+  //sprintf (fbfr, "Cannot match process %s port %i\n", p->name, ep->sink_id);
+  //FAIL (Expand3, fbfr);
 
 }
 
@@ -1353,21 +1323,17 @@ Expand (Model m, Process p, Subnetm sn)
   ep = sn->extport;
   while (ep)
     {
-      CheckNS (m, "Expand_a");
       Expand3 (m, p, ep);
-      CheckNS (m, "Expand_a2");
       ep = ep->next;
     }
 
   s = sn->stream;
   while (s)
     {
-      CheckNS (m, "Expand_b");
       Expand2 (m, p, s);
       s = s->next;
     }
 
-  CheckNS (m, "Expand exit");
 }
 
 	/* Expand a subnet process, i.e. replace this process
@@ -1383,7 +1349,6 @@ expandSub (Model m, Process p)
       if (strncmp (sn->name, p->comp->name, 100) == 0)
 	{
 	  Expand (m, p, sn);
-	  CheckNS (m, "ExpandSub_c");
 	  return;
 	}
       sn = sn->next;
@@ -1433,7 +1398,6 @@ expandSubnets (Model m)
       more = 0;
       while (p)
 	{
-	  CheckNS (m, "ExpandSubnets exit");
 	  if (p->comp)
 	    {
 	      if (p->comp->path[0] == '\'')
@@ -1457,13 +1421,10 @@ expandSubnets (Model m)
 	  pp = p;
 	  p = p->next;
 	}
-      CheckNS (m, "expandSubNets");
       FreeExpandedProcesses (&fl);
     }
   while (more);
 
-
-  CheckNS (m, "expandSubNets exit");
 }
 
 
@@ -1520,8 +1481,8 @@ fixFan2 (Model m, Process p, Port pt0, Port pt)
   Stream s0, s1, s2;
 
   /*              BEFORE 
-     (A)id <- x(B);    [ s0 pt0 ?psnk0]
-     (A)id <- y(C);    [ s1 pt  ?psnk1]  */
+     (A)id <- x(B);    [ s0 pt0 psnk0]
+     (A)id <- y(C);    [ s1 pt  psnk1]  */
   c = MakeComponent ("Join", "poc");
   j = MakeProcess (m, "_", c, MakeArg (NULL, NULL));
   j->depth = p->depth + 1;
@@ -1551,7 +1512,6 @@ fixFan2 (Model m, Process p, Port pt0, Port pt)
   s2->sink_id = 2;
   assert (s0->SinkPort->stream == s0);
   s2->source_id = s2->SourcePort->id;
-  CheckNS (m, "Expand2");
   s2->SinkPort = pt2;
   s2->SourcePort->stream = s2;
   pt2->stream = s2;
@@ -1594,8 +1554,6 @@ fixFan2 (Model m, Process p, Port pt0, Port pt)
   VerifyStream (s1);
   VerifyStream (s2);
 }
-
-
 
 static void
 fixFanOut (Model m, Process p, Port pt0, Port pt)
@@ -1733,6 +1691,86 @@ fixFanInOut (Model m)
 
 }
 
+static void linkProc(Model m,  Process p) {
+	Process p2;
+
+	p->kind=IS_NET;
+	p2=m->proc;
+	while(p2) {
+		if(strcmp(p2->name,p->name)==0) {
+			return;
+		}
+		p2=p2->next;
+	};
+
+ 	
+	p->next=m->proc;
+	m->proc=p;
+	m->nprocs++;
+	 
+}
+
+static void createStream(Model m, Extport ep, Extport ep2) {
+	Stream s;
+	Port snkpt,srcpt;
+
+	srcpt=ep->source->port;
+	snkpt=ep2->sink->port;
+	while(srcpt->id!=ep->sink_id) {
+			srcpt=srcpt->next;
+			if(!srcpt) {
+				abort();
+			}
+		}
+	while(snkpt->id!=ep2->source_id) {
+			snkpt=snkpt->next;
+			if(!snkpt) {
+				abort();
+			}
+	}
+	s=MakeStream(IS_NET, ep->source, ep2->sink, 0, m, srcpt, snkpt);
+	linkProc(m,ep->source);
+	linkProc(m,ep2->sink);
+	s->SourcePort->match=s->SinkPort;
+	s->SinkPort->match=s->SourcePort;
+	s->SourcePort->stream=s;
+	s->SinkPort->stream=s;
+	VerifyStream(s);
+}
+
+static void findSink(Model m, Extport ep) {
+	Extport ep2;
+	Process p;
+
+	ep2=extprtList;
+	while(ep2) {
+	    if(ep2->type==SINK) {
+		p=ep2->sink;
+		if(p != ep->source) {
+			if(ep2->sink_id==ep->source_id) {
+				createStream(m,ep,ep2);
+				return;
+			}
+		}
+ 	    }
+	    ep2=ep2->next;
+	}
+}
+
+	/** Match source ports */ 
+static void autolink(Model m) {
+	Extport ep;
+
+	ep=extprtList;
+	state=IS_NET;
+	while(ep) {
+		if(ep->type==SOURCE) {
+			findSink(m,ep);
+		}
+		ep=ep->next;
+	}
+}
+
 Model
 visitValidSW (ValidSW _p_)
 {				/* Parse visit root */
@@ -1740,5 +1778,7 @@ visitValidSW (ValidSW _p_)
   net_model = MakeModel (NULL);
   visitListStm (_p_->u.valid_.liststm_);
   fixFanInOut (net_model);
+  expandSubnets(net_model);
+  autolink(net_model);
   return net_model;
 }

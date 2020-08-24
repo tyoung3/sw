@@ -1,7 +1,6 @@
-/* SWGO.C 
+/** @file SWGO.C 
 		  Greate StreamWork Go program 
-		  
-TODO: 
+	
 */
 #include <stdio.h>
 #include <stdlib.h>

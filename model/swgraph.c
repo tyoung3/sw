@@ -1,9 +1,7 @@
-/* SWGRAPH.C 
-		  Generate Graphviz input 
-		  
-TODO:   
-	* Title 
+/** @file SWGRAPH.C 
+		  Generate Graphviz input(.dot file)  
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,8 +28,9 @@ static Port findPort(Port pt, int id) {
 		pt=pt->next;
 	} while(pt!=pt0);
 	
-	return NULL;   // @TODO  error message ??
+	return NULL;   /** @todo error message   */
 }
+
 static int assign_channel(int ch, Stream f) {
 		
 		findPort(f->source->port,f->source_id)->channel=ch;

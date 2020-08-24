@@ -1,9 +1,9 @@
 /* SWjavafbp.C 
 		  Generate JavaFBP Network Definition
-		  
-TODO: 
-	. Everything  	  
 */
+
+///@todo    . Everything  	  
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "model.h"

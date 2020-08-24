@@ -38,6 +38,7 @@ SW.log
 Skeleton.?
 /Test.c
 *.o
+*~
 *.bak
 tags
 IGNORE*
@@ -46,3 +47,14 @@ IGNORE*
 testdata/
 .idea/
 vdfdcp2
+fbp/DocFBP.txt
+fbp/LexFBP.x	
+fbp/ParFBP.y
+fbp/README
+fbp/run
+fbp/LexFBP.x
+model/tests/.gdbinit
+model/tests/mashup.sw
+model/tests/n1.sw
+PORTNAMES.md
+

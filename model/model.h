@@ -1,3 +1,7 @@
+/** @file model.h 
+	StreamWork Structures and includes
+*/
+
 #ifndef MODEL_H
 #define MODEL_H
 
@@ -27,7 +31,7 @@
 
 /*    MODEL  Structures   */
 
-typedef enum {IS_NET, IS_SUB} STATE;   /* Type of Stream */
+typedef enum {IS_NET, IS_SUB, IS_ORPHAN} STATE;   /* Type of Stream */
 
 struct Component_ {
 		String name;   // First letter Upper Case. No slashes    

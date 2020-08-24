@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.10.2\"
+VERSION = \"0.10.3\"
 
 LATEX = latex
 DVIPS = dvips
@@ -61,10 +61,15 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/aj2.sw   >/dev/null
 	${PGM}  tests/aaR.sw  >/dev/null
 	${PGM}  tests/h1.sw   >/dev/null
+	${PGM}  tests/h2.sw   >/dev/null
 	${PGM} -m 2 tests/subnet1.sw   >/dev/null
+	${PGM} -m 2 tests/sn2.sw   >/dev/null
 	${PGM}  tests/lr.sw   >/dev/null
-	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/lrR.sw   >/dev/null
+	${PGM}  tests/sisub.sw   >/dev/null
+	${PGM}  tests/n1.sw   >/dev/null
+	${PGM}  tests/n2.sw   >/dev/null
+	${PGM}  tests/n3.sw   >/dev/null
 	../sw.sh poc     
 
 

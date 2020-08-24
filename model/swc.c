@@ -1,8 +1,7 @@
-/* SWC.C 
+/** @file SWC.C 
 		  Generate C code  
-		  
-TODO:   
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "model.h"

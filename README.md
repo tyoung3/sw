@@ -239,6 +239,10 @@ Ex.  ```A<-B;``` expands to
 0.10.2
 ------
 	* Fixed some hermit logic
+
+0.10.3
+------
+	* Fixed hermit logic.  Initial autoconnect logic. See n2.sw. 
 	
 SW.cf Language Notes
 --------------------

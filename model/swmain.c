@@ -1,4 +1,4 @@
-/* SWMAIN.C 
+/** @file SWMAIN.C 
 
 */
 #include <stdio.h>
@@ -36,7 +36,7 @@ badProc (Process p)
 {
   int i;
   Port port;
-  int portmode=0;  /*  0-sink ports; 1-source ports */
+  //int portmode=0;  /*  0-sink ports; 1-source ports */
 
   if (!p->comp)
     {
@@ -63,8 +63,8 @@ badProc (Process p)
 		   p->name, i);
 	  FAIL (badProc, fbfr);
       }		
-      if(port->stream->SourcePort==port) 
-	 portmode=1;
+      if(port->stream->SourcePort==port) {}
+	 //portmode=1;
       if (port->id != i)
 	{
 	  sprintf (fbfr,
@@ -229,7 +229,7 @@ verifyOK (Model model)
     {
       if (badProc (p))
 	{
-	  FAIL (verifyOK, "bad process definition. Missing component?");
+	  FAIL (verifyOK, "bad process definition. Missing component maybe.");
 	}
       p = p->next;
     }
@@ -345,7 +345,7 @@ main (int argc, char **argv)
       tabinit (2000000);	/* set symbol table */
       model = visitValidSW (parse_tree);	/* Build model */
       model->name = baseOf (fname);
-      expandSubnets (model);
+      // expandSubnets (model);
       if (verifyOK (model))
 	{
 	  if (!model->proc)

@@ -15,4 +15,8 @@
 #run tests/join.sw 
 #run tests/asj.sw 
 #run tests/aj.sw 
-run tests/n1.sw 
+#break findAmatc#hingPort
+##break swmain.c:43
+#break autolink
+break createStream
+run tests/n3.sw
