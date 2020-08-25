@@ -887,7 +887,8 @@ visitSubnet (Subnet _p_, Ident id)
       p=visitHermt (_p_->u.sneth_.hermt_);
       if(!p->comp) 
 	p->comp= MakeComponent (p->name, defaultPath);
-      return NULL;
+       return MakeSubnetm (id, NULL,
+			  eport, eport);
     case is_Snets:
       s = visitS_tream (_p_->u.snets_.s_tream_);
       return MakeSubnetm (id, s, eport, eport);
@@ -1738,6 +1739,18 @@ static void createStream(Model m, Extport ep, Extport ep2) {
 	VerifyStream(s);
 }
 
+/** match external ports */
+static int isaMatch(Extport ep2, Extport ep) {
+
+	if(ep2->sink_id==ep->source_id) 
+		return 1;
+
+	if(ep->name==NULL) 
+		return 0;
+
+	return 0;
+}
+
 static void findSink(Model m, Extport ep) {
 	Extport ep2;
 	Process p;
@@ -1747,7 +1760,7 @@ static void findSink(Model m, Extport ep) {
 	    if(ep2->type==SINK) {
 		p=ep2->sink;
 		if(p != ep->source) {
-			if(ep2->sink_id==ep->source_id) {
+			if(isaMatch(ep2,ep)) {
 				createStream(m,ep,ep2);
 				return;
 			}

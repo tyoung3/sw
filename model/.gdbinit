@@ -18,5 +18,6 @@
 #break findAmatc#hingPort
 ##break swmain.c:43
 #break autolink
-break createStream
-run tests/n3.sw
+#break createStream
+break visitHermt
+run tests/n4.sw
