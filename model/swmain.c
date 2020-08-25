@@ -61,7 +61,7 @@ badProc (Process p)
 	sprintf (fbfr,
 		   "(%s) port[%i] is disconnected(has no ->stream).\n",
 		   p->name, i);
-	  FAIL (badProc, fbfr);
+	  // ?? ignore for now FAIL (badProc, fbfr);
       }		
       if(port->stream->SourcePort==port) {}
 	 //portmode=1;

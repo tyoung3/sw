@@ -8,14 +8,16 @@
 
 --  See: https://github.com/flowbased/fbp#readme  
 
-entrypoints		ValidSW					 ; 
+entrypoints		ValidSW		     ; 
 Valid.	 	    ValidSW  	::= [Stm]    ;
 
-Stmx.			Stm			::= S_tream  ; 
-Stmn.			Stm			::= Numassgn ; 
-Stms.			Stm			::= Strassgn ;
-Stmh.			Stm			::= Hermt	 ; 
-Stmnet.			Stm			::= Subdef	 ;  
+Stmx.			Stm	::= S_tream  ; 
+--Stmein.			Stm	::= ExtPortIn  	;
+--Stmeout.			Stm  	::= ExtPortOut  ; 
+Stmn.			Stm	::= Numassgn ; 
+Stms.			Stm	::= Strassgn ;
+Stmh.			Stm	::= Hermt    ; 
+Stmnet.			Stm	::= Subdef   ;  
 terminator	   	Stm   ";" ;
 
 Snet.			Subdef	 ::= "'" Ident "{" [Subnet] "}" ;

@@ -36,6 +36,7 @@ VerifyStream (Stream s)
   Process src, snk;
   Port psrc, psnk;
 
+  assert(s);
   src = s->source;
   snk = s->sink;
   assert (src && snk);
@@ -719,6 +720,7 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
       ep->source = NULL;
       ep->sink_id = id;
       ep->source_id = prt->id;
+      ep->bufsz=bs;	
       SetSink (p);
     }
   else
@@ -930,6 +932,14 @@ visitStm (Stm _p_)
   state = IS_NET;
   switch (_p_->kind)
     {
+#if 0
+    case is_Stmein:
+   	 visitExtPortIn(_p_->u.stmein_.extportin_);
+    	 return;  
+    case is_Stmeout:
+  	  visitExtPortOut(_p_->u.stmeout_.extportout_);
+	  return;
+#endif
     case is_Stmx:
       visitS_tream (_p_->u.stmx_.s_tream_);
       return;
@@ -1208,7 +1218,7 @@ static int findAmatchingPort(Model m, Process p, Extport ep) {
 		pt=MakePort(ep->source_id,ep->name);
 	}
 	p2->depth = p->depth + 1;
-	ep2=MakeExtport(ep->type, p2, pt, 0, -1);
+	ep2=MakeExtport(ep->type, p2, pt, ep->bufsz, -1);
 	ep2->next=extprtList;
 	ep2->source_id=ep->source_id;
 	ep2->sink_id=ep->sink_id;
@@ -1240,7 +1250,7 @@ Expand3 (Model m, Process p,
 	    {
 	      s = pt->stream;	 
 	      VerifyStream (s);
-	      assert (pt == s->SourcePort);
+	      assert (s && pt == s->SourcePort);
 	      srcname = makeName (p->name, fixName (ep->source->name));
 	      pnew = MakeProcess (m,
 				  srcname, ep->source->comp, ep->source->arg);
@@ -1274,7 +1284,7 @@ Expand3 (Model m, Process p,
 	  if (pt->id == ep->sink_id)  	 /* Find matching source port for ep */
 	    {
 	      s = pt->stream;	 
-	      assert (pt == s->SinkPort);
+	      assert (s && pt == s->SinkPort);
 	      snkname = makeName (p->name, fixName (ep->sink->name));
 	      pnew = MakeProcess (m, snkname, ep->sink->comp, ep->sink->arg);
 	      s->sink = pnew;
@@ -1711,6 +1721,8 @@ static void linkProc(Model m,  Process p) {
 	 
 }
 
+#define MAX(A,B) ( (A>B)? A: B)
+
 static void createStream(Model m, Extport ep, Extport ep2) {
 	Stream s;
 	Port snkpt,srcpt;
@@ -1729,7 +1741,8 @@ static void createStream(Model m, Extport ep, Extport ep2) {
 				abort();
 			}
 	}
-	s=MakeStream(IS_NET, ep->source, ep2->sink, 0, m, srcpt, snkpt);
+	s=MakeStream(IS_NET, ep->source, ep2->sink, 
+		MAX(ep->bufsz,ep2->bufsz), m, srcpt, snkpt);
 	linkProc(m,ep->source);
 	linkProc(m,ep2->sink);
 	s->SourcePort->match=s->SinkPort;
