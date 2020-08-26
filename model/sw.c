@@ -703,6 +703,14 @@ visitS_tream (S_tream _p_)
     }
 }
 
+static int setID(int id, char **name) {
+	
+	if(name!=NULL) 
+		return -2;
+	return fixId(id);
+}
+
+/** Make External port */
 String saves = NULL;
 Extport
 MakeExtport (PortType type, Process p, Port prt, int bs, int id)
@@ -714,12 +722,15 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
 
   ep->type = type;
   linkPort (p, prt);
+  ep->name = saves;
+  prt->name = saves;
+  saves=NULL;
   if (type == SINK)
     {
       ep->sink = p;
       ep->source = NULL;
-      ep->sink_id = id;
-      ep->source_id = prt->id;
+      ep->sink_id = fixId(id);
+      ep->source_id = setID(prt->id,saves);
       ep->bufsz=bs;	
       SetSink (p);
     }
@@ -727,16 +738,15 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
     {
       ep->source = p;
       ep->sink = NULL;
-      ep->source_id = id;
-      ep->sink_id = prt->id;
+      ep->source_id = fixId(id);
+      ep->sink_id = setID(prt->id,saves);
       SetSource (p);
     }
 
-  ep->name = saves;
   ep->bufsz = bs;
   ep->next = NULL;
-  ep->sink_id = fixId (ep->sink_id);
-  ep->source_id = fixId (ep->source_id);
+  // ep->sink_id = fixId (ep->sink_id);
+  // ep->source_id = fixId (ep->source_id);
   return ep;
 }
 
@@ -1752,8 +1762,35 @@ static void createStream(Model m, Extport ep, Extport ep2) {
 	VerifyStream(s);
 }
 
-/** match external ports */
+#define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) 	\
+			  if(eqs(snkn,#SNK))	\
+				return 1;	\
+			  else			\
+				return 0;
+
+static int MatchName(String srcn, String snkn) {
+
+	MATCH(OUT,IN);
+	MATCH(TAB,SLOT);
+	MATCH(PLUG,SOCKET);
+	MATCH(out,in);
+	MATCH(tab,slot);
+	MATCH(plug,socket);
+
+	if(eqs(srcn,snkn)) 
+		return 1; 	
+
+	return 0;
+}
+
+/** match external ports: ep2 is sink port*/
 static int isaMatch(Extport ep2, Extport ep) {
+
+	if(ep2->source_id < 0) {
+		if( MatchName(ep->name,ep2->name))
+			return 1;
+		return 0;
+	}
 
 	if(ep2->sink_id==ep->source_id) 
 		return 1;
@@ -1765,7 +1802,7 @@ static int isaMatch(Extport ep2, Extport ep) {
 }
 
 static void findSink(Model m, Extport ep) {
-	Extport ep2;
+	Extport ep2;  /* sink port */
 	Process p;
 
 	ep2=extprtList;

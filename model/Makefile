@@ -55,7 +55,6 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 4 tests/java.sw     >/dev/null
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
-	${PGM}  tests/tag.sw   >/dev/null
 	${PGM}  tests/aj.sw   >/dev/null
 	${PGM}  tests/asj.sw   >/dev/null
 	${PGM}  tests/aj2.sw   >/dev/null
@@ -70,6 +69,9 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/n1.sw   >/dev/null
 	${PGM}  tests/n2.sw   >/dev/null
 	${PGM}  tests/n3.sw   >/dev/null
+	${PGM}  tests/n4.sw   >/dev/null
+	${PGM}  tests/n5.sw   >/dev/null
+	${PGM}  tests/tag.sw   >/dev/null
 	../sw.sh poc     
 
 

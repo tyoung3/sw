@@ -5,7 +5,7 @@ COPY  .  /go/mod/sw
 RUN echo "deb http://ftp.us.debian.org/debian buster main" >>  /etc/apt/sources.list
 RUN apt-get -y update
 RUN apt-get -y upgrade	
-RUN apt-get -y install gdb valgrind
+#RUN apt-get -y install gdb valgrind
 RUN echo "set auto-load safe-path /" >> /root/.gdbinit
 #RUN go install -v ./...
 
