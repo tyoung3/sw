@@ -30,7 +30,6 @@ fbp/run
 fbp/LexFBP.x
 model/tests/.gdbinit
 model/tests/mashup.sw
-model/tests/n1.sw
 PORTNAMES.md
 doxy/*
 
