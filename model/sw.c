@@ -703,7 +703,7 @@ visitS_tream (S_tream _p_)
     }
 }
 
-static int setID(int id, char **name) {
+static int setID(int id, String name) {
 	
 	if(name!=NULL) 
 		return -2;
@@ -1762,11 +1762,13 @@ static void createStream(Model m, Extport ep, Extport ep2) {
 	VerifyStream(s);
 }
 
-#define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) 	\
-			  if(eqs(snkn,#SNK))	\
+#define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) {	\
+			  if(eqs(snkn,#SNK)) {	\
 				return 1;	\
-			  else			\
-				return 0;
+			  } else {		\
+				return 0;	\
+			  }			\
+		       }	
 
 static int MatchName(String srcn, String snkn) {
 

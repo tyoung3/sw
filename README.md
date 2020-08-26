@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.10.2 - STREAMWORK/FrontEnd
+SW-0.11.0 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -87,7 +87,9 @@ version(currently v0).
 Sw builds a network model in memory, then optionally generates
 either an abstract syntax tree, 
 a linearized tree(an ND recronstruction), 
-a GraphViz .dot file, or Go source code from this model.
+a GraphViz .dot file, 
+or Go source code from this model.
+
 C and other languages could also be generated.  
 JavaFBP is possible.   
 
@@ -104,7 +106,7 @@ QuickStart (on Linux)
 	  The backend should run 
 	  in any Golang compatible environment.  Sw(written in C) 
 	  will run without installing github/tyoung3/StreamWork; 
-	  the generated Go code just won't work.
+	  the generated Go code just won't work properly without it.
 	* Download the 'sw' executable from github to any 
 	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
 	* Run 'chmod a+x sw' if necessary. 
@@ -242,11 +244,15 @@ Ex.  ```A<-B;``` expands to
 
 0.10.3
 ------
-	* Fixed hermit logic.  Initial autoconnect logic. See n2.sw.
+	* Fixed hermit logic.  Initial autoconnect logic. 
 
 0.10.4
 ------
-	* Implemented more hermit logic.  See n3.sw.  
+	* Implemented more hermit logic.   
+
+0.11.0
+------
+	* Implemented port name matching.
 	
 SW.cf Language Notes
 --------------------
