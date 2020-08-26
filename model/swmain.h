@@ -7,4 +7,6 @@ void SendPrefix();
 void SendSuffix(); 
 
 void GenChan(int nchannels); 
+
+int eqs (char *s1, char *s2);
 #endif 

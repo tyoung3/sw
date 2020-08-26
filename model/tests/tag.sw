@@ -1,9 +1,9 @@
 'a {
-(Hello Print1)0 <- IN;
+(Hello Print1)0 <- 0;
 };
 
 'b {
-OUT      <- (_ x);
+0     <- (_);
 };
 
-(_ 'a)0 <- OUT(World 'b);
+(_ 'a)0 <- 0(World 'b);

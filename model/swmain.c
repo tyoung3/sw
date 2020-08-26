@@ -104,8 +104,7 @@ findPrt (Process p, int id)
   return p->port;
 }
 
-static int
-eqs (char *s1, char *s2)
+int eqs (char *s1, char *s2)
 {
 
   if (strncmp (s1, s2, 40) == 0)
@@ -133,6 +132,10 @@ NameMisMatch (Process src, int source_id, Process snk, int sink_id)
 
   psnk = findPrt (snk, sink_id);
   nsnk = psnk->name;
+
+  if(!nsnk) {
+	return 0;
+  }
 
   if (eqs (nsnk, "IN") && eqs (nsrc, "OUT"))
     {
