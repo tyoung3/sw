@@ -20,5 +20,6 @@
 #break autolink
 #break createStream
 #break visitHermt
-break isaMatch
-run tests/n3.sw
+#break createStream
+break sw.c:1299
+run tests/n1.sw

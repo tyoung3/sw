@@ -703,12 +703,14 @@ visitS_tream (S_tream _p_)
     }
 }
 
+/*
 static int setID(int id, String name) {
 	
 	if(name!=NULL) 
 		return -2;
 	return fixId(id);
 }
+*/
 
 /** Make External port */
 String saves = NULL;
@@ -722,15 +724,14 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
 
   ep->type = type;
   linkPort (p, prt);
-  ep->name = saves;
-  prt->name = saves;
-  saves=NULL;
+  ep->name = prt->name = saves;
   if (type == SINK)
     {
       ep->sink = p;
       ep->source = NULL;
-      ep->sink_id = fixId(id);
-      ep->source_id = setID(prt->id,saves);
+      //ep->sink_id = setID(prt->id,saves);
+      ep->sink_id = fixId(prt->id);
+      ep->source_id = id;
       ep->bufsz=bs;	
       SetSink (p);
     }
@@ -738,11 +739,13 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
     {
       ep->source = p;
       ep->sink = NULL;
-      ep->source_id = fixId(id);
-      ep->sink_id = setID(prt->id,saves);
+      // ep->source_id = setID(prt->id,saves);
+      ep->source_id = fixId(prt->id);
+      ep->sink_id = id;
       SetSource (p);
     }
 
+  saves=NULL;
   ep->bufsz = bs;
   ep->next = NULL;
   // ep->sink_id = fixId (ep->sink_id);
@@ -1232,11 +1235,12 @@ static int findAmatchingPort(Model m, Process p, Extport ep) {
 	ep2->next=extprtList;
 	ep2->source_id=ep->source_id;
 	ep2->sink_id=ep->sink_id;
+	ep2->name=ep->name;
 	extprtList=ep2;
 	return 1;
 }
 
-   /* Expand process,p, subnet component.  
+/** Expand process,p, subnet component.  
       Match ep to a port,pt in p.
       Update existing stream,s, in pt */
 static void
@@ -1251,12 +1255,12 @@ Expand3 (Model m, Process p,
 
   if (ep->type == SOURCE)
     {				 
-      pt = p->port;		/* Find matching source port  */
+      pt = p->port;		/** Find matching source port  */
       while(pt) {
        do
 	{			
 	  pt->id = fixId (pt->id);
-	  if (pt->id == ep->source_id)
+	  if (pt->id == ep->sink_id)
 	    {
 	      s = pt->stream;	 
 	      VerifyStream (s);
@@ -1271,7 +1275,7 @@ Expand3 (Model m, Process p,
 	      pnew->depth = p->depth + 1;
 	      ptc = copyPort (pt);
 	      ptc->stream = s;
-	      ptc->id = s->source_id = ep->sink_id;
+	      ptc->id = s->source_id = ep->source_id;
 	      linkPort (pnew, ptc);
 	      s->SourcePort = ptc;
 	      s->SinkPort->match = s->SourcePort;
@@ -1284,14 +1288,14 @@ Expand3 (Model m, Process p,
       while (pt != p->port);
      }
     }
-  else
+  else  /* type is SINK */
     {
       pt = p->port;		  
-      while(pt) {
+      if(pt) {
        do
 	{
 	  pt->id = fixId (pt->id);	 
-	  if (pt->id == ep->sink_id)  	 /* Find matching source port for ep */
+	  if (pt->id == ep->source_id)  	 /* Find matching source port for ep */
 	    {
 	      s = pt->stream;	 
 	      assert (s && pt == s->SinkPort);
@@ -1303,7 +1307,7 @@ Expand3 (Model m, Process p,
 	      pnew->nportsIn++;
 	      ptc = copyPort (pt);
 	      ptc->stream = s;
-	      ptc->id = s->sink_id = ep->source_id;
+	      ptc->id = s->sink_id = ep->sink_id;
 	      linkPort (pnew, ptc);
 	      pnew->depth = p->depth + 1;
 	      if (s->sink->comp == NULL)
@@ -1733,24 +1737,68 @@ static void linkProc(Model m,  Process p) {
 
 #define MAX(A,B) ( (A>B)? A: B)
 
+static void SortPorts(Process p) {   /* Slow, bubble sort */
+	Port pt0, pt1, pt2,ptw;
+	int more=1;
+
+	pt0=p->port;
+	if(!pt0->next) 
+		return;
+	
+	while(more) {
+		pt1=pt0;
+		pt2=pt0->next;
+		more=0;
+		while(pt2!=pt0) {
+			if(pt1->id > pt2->id) {
+				more=1;
+				if(p->port == pt1) {
+					pt1->next=pt2;
+					pt1->prev->next=pt2;
+					pt2->prev=pt1;
+					pt2->next=pt1;
+					pt1->prev=pt2;
+					ptw=pt1; pt1=pt2; pt2=ptw;
+					pt0=p->port=pt1;
+				} else {
+					pt1->next=pt2->next;
+					pt1->prev->next=pt2;
+					pt2->prev=pt1->prev;
+					pt2->next=pt1;
+					pt1->prev=pt2;
+					ptw=pt1; pt1=pt2; pt2=ptw; 
+				}
+			}
+			pt1=pt2; pt2=pt1->next;
+		}
+	}
+		
+		
+	
+}
+
 static void createStream(Model m, Extport ep, Extport ep2) {
 	Stream s;
-	Port snkpt,srcpt;
+	Port snkpt,srcpt,pt;
 
 	srcpt=ep->source->port;
-	snkpt=ep2->sink->port;
+
+	pt=ep2->sink->port;
+	while(pt->id!=ep2->source_id)  {
+		pt=pt->next;
+		if(pt == ep2->sink->port) {
+			abort();
+		}
+	} 
+	snkpt=pt;
+
 	while(srcpt->id!=ep->sink_id) {
 			srcpt=srcpt->next;
-			if(!srcpt) {
-				abort();
-			}
-		}
-	while(snkpt->id!=ep2->source_id) {
-			snkpt=snkpt->next;
-			if(!snkpt) {
+			if(srcpt==ep->source->port) {
 				abort();
 			}
 	}
+
 	s=MakeStream(IS_NET, ep->source, ep2->sink, 
 		MAX(ep->bufsz,ep2->bufsz), m, srcpt, snkpt);
 	linkProc(m,ep->source);
@@ -1759,6 +1807,16 @@ static void createStream(Model m, Extport ep, Extport ep2) {
 	s->SinkPort->match=s->SourcePort;
 	s->SourcePort->stream=s;
 	s->SinkPort->stream=s;
+	
+	if(1) {
+		s->SourcePort->id=s->source_id=fixId(ep->source_id);
+		s->SinkPort->id=s->sink_id=fixId(ep2->sink_id);
+	} else {
+		s->SourcePort->id=ep->sink_id;
+		s->SinkPort->id=ep2->source_id;
+	}
+	SortPorts(s->source);
+	SortPorts(s->sink);
 	VerifyStream(s);
 }
 
@@ -1794,7 +1852,7 @@ static int isaMatch(Extport ep2, Extport ep) {
 		return 0;
 	}
 
-	if(ep2->sink_id==ep->source_id) 
+	if(ep->sink_id==ep2->source_id) 
 		return 1;
 
 	if(ep->name==NULL) 

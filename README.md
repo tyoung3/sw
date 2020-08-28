@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.11.0 - STREAMWORK/FrontEnd
+SW-0.11.1 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -38,8 +38,10 @@ to launch a goroutine
 for each process,  connect these processes via Go interface channels,
 and wait for all processes to finish.  
 
+On option, sw will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree.
+
 The network definition consists of a list of 
-streams(or dataflows).  Each stream definition consists 
+streams(or dataflows) and subnet definitions.  Each stream definition consists 
 of a sink process, a sink port number, "<-", a source
 portnumber, and a source process followed by the 
 statement terminator, ';'; or a source process, a source portnumber, 
@@ -60,7 +62,7 @@ Hello World
 ```
 
 A process is defined by its process name, its component identifier,
-and component arguments surrounded by parens. 
+and component arguments; all surrounded by parens. 
 The component identifier and arguments may be omitted.  
 
 A component identifier consists of its import path identifier, 
@@ -253,6 +255,12 @@ Ex.  ```A<-B;``` expands to
 0.11.0
 ------
 	* Implemented port name matching.
+
+0.11.1
+------
+	* Fixed External port errors
+	* Commented heading of linearized tree output
+	
 	
 SW.cf Language Notes
 --------------------
@@ -296,8 +304,8 @@ Match0 Int: 17
 Match0 Int: 23
 ```
 
-Running:
-```	 
+Running:(HELLO)->(WORLD)
+```	 (HELLO)->(WORLD)
 	sw -m 3 <  sw/nds/collate.sw | dot -Tsvg > /tmp/collate.svg
 ```
 produces /tmp/collate.svg, an image of the collate 

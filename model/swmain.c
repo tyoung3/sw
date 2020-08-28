@@ -133,7 +133,7 @@ NameMisMatch (Process src, int source_id, Process snk, int sink_id)
   psnk = findPrt (snk, sink_id);
   nsnk = psnk->name;
 
-  if(!nsnk) {
+  if(!nsnk || !nsrc) {
 	return 0;
   }
 
@@ -362,7 +362,7 @@ main (int argc, char **argv)
 	      printf ("%s\n\n", showValidSW (parse_tree));	//Print abstract syntax tree
 	      break;
 	    case GENTREE:
-	      printf ("[Linearized Tree]\n");
+	      printf ("#          [Linearized Tree]\n");
 	      printf ("%s\n\n", printValidSW (parse_tree));	//Print expanded network
 	      break;
 	    case GRAPHMODE:

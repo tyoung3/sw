@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.11.0\"
+VERSION = \"0.11.1\"
 
 LATEX = latex
 DVIPS = dvips
@@ -41,8 +41,6 @@ SW.pdf:  SW.ps
 check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
 	${PGM}  -v 
 	#! ${PGM} tests/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	${PGM}  tests/aa.sw  >/dev/null
 	${PGM}  tests/ab.sw  >/dev/null
@@ -61,17 +59,19 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/aaR.sw  >/dev/null
 	${PGM}  tests/h1.sw   >/dev/null
 	${PGM}  tests/h2.sw   >/dev/null
-	${PGM} -m 2 tests/subnet1.sw   >/dev/null
-	${PGM} -m 2 tests/sn2.sw   >/dev/null
-	${PGM}  tests/lr.sw   >/dev/null
-	${PGM}  tests/lrR.sw   >/dev/null
-	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/n1.sw   >/dev/null
 	${PGM}  tests/n2.sw   >/dev/null
 	${PGM}  tests/n3.sw   >/dev/null
 	${PGM}  tests/n4.sw   >/dev/null
 	${PGM}  tests/n5.sw   >/dev/null
 	${PGM}  tests/tag.sw   >/dev/null
+	${PGM} -m 2 tests/subnet1.sw   >/dev/null
+	${PGM} -m 2 tests/sn2.sw   >/dev/null
+	${PGM}  tests/lr.sw   >/dev/null
+	${PGM}  tests/lrR.sw   >/dev/null
+	${PGM}  tests/sisub.sw   >/dev/null
+	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	../sw.sh poc     
 
 
