@@ -17,7 +17,7 @@ char *defaultSourceComp = { "Gen1" };
 /** @todo char *defaultFilterComp={"Filter1"};    */
 char *defaultSinkComp = { "Print1" };
 
-/* Default hermit component = process name. */
+/** Default hermit component = process name. */
 
 int defBufferSize = 1;		/* Size one may prevent deadlock on occasion. */
 static int maxdepth = 20;
@@ -28,8 +28,7 @@ STATE state = IS_NET;
 int bs = 1;			/*  Buffer size */
 Model net_model = NULL;
 
-
-#ifdef PARANOID
+#ifdef DEBUGGING
 static int
 VerifyStream (Stream s)
 {				/* Check proper Stream connections */
@@ -48,12 +47,6 @@ VerifyStream (Stream s)
   assert (psnk->id == s->sink_id);
   assert (psrc->stream == s);
   assert (psnk->stream == s);
-
-/** @todo
-	May allow src==snk later 
-*/
-  assert (src != snk);		
-
   assert (s->SourcePort->stream->SourcePort == s->SourcePort);
   assert (s->SinkPort->stream->SinkPort == s->SinkPort);
  
@@ -171,51 +164,6 @@ MakeModel (Stream f)
 
 }
 
-#ifdef OLD_STUFF
-static int
-countArg (char **arg)
-{
-  int i = 0;
-
-  while (arg[i++] != NULL)
-    {
-    }
-
-  return i;
-}
-
-static char **
-NewArg (char **arg, char **narg)
-{
-  char **a;
-  int i, j, na;
-
-
-  na = countArg (arg) + countArg (narg) - 1;
-  a = (char **) malloc (na * sizeof (char *));
-
-  while (arg[i])
-    {
-      a[i] = arg[i];
-      i++;
-    }
-
-  j = 1;
-
-  while (narg[j])
-    {
-      a[i] = narg[j];
-      i++;
-      j++;
-    }
-
-  free (arg);
-  free (narg);
-  return a;
-
-}
-#endif
-
 static char **
 MakeArg (ListArgument la, char *name)
 {
@@ -303,15 +251,6 @@ MakeProcess (Model model, Ident name, Component comp, char **arg)
 	{
 	  p->comp = comp;
 	}
-/*    	
-    	if(la) {
-    		if( p->arg ) { 	
-    			p->arg  = NewArg(p->arg,MakeArg(la,name)); 
-    		} else {
-	    		p->arg  = MakeArg(la,name);
-	    	}	
-    	}	
-*/
     }
 
   return p;
@@ -354,7 +293,6 @@ MakePort (int n, Ident id)
   p->next = p;
   p->prev = p;
   p->match = NULL;
-  // p->owner = own;
   return p;
 }
 
@@ -437,7 +375,7 @@ visitNumvar (Numvar p)
 String
 visitStringvar (Stringvar p)
 {
-  return p;
+  return p;   /** @todo implement visitStringvar */
 }
 
 String
@@ -462,10 +400,8 @@ visitNumval (Numval _p_)
   switch (_p_->kind)
     {
     case is_NumVali:
-      /* Code for NumVali Goes Here */
       return (visitInteger (_p_->u.numvali_.integer_));
     case is_NumValv:
-      /* Code for NumValv Goes Here */
       visitNumvar (_p_->u.numvalv_.numvar_);
       return 0;
     default:
@@ -480,7 +416,6 @@ visitNumassgn (Numassgn _p_)
   switch (_p_->kind)
     {
     case is_NumAssgnv:
-      /* Code for NumAssgnv Goes Here */
       visitNumvar (_p_->u.numassgnv_.numvar_);
       visitNumval (_p_->u.numassgnv_.numval_);
       break;
@@ -496,7 +431,6 @@ visitStrassgn (Strassgn _p_)
   switch (_p_->kind)
     {
     case is_StrAssgnv:
-      /* Code for StrAssgnv Goes Here */
       visitStringvar (_p_->u.strassgnv_.stringvar_);
       visitStringval (_p_->u.strassgnv_.stringval_);
       break;
@@ -531,11 +465,10 @@ visitLarrow (Larrow _p_)
 Integer
 visitRarrow (Rarrow _p_)
 {
-  /* Code for Arrowr Goes Here */
   return visitBuffsize (_p_->u.arrowr_.buffsize_);
 }
 
-/* Add port,p to port list at P->port in order by port id*/
+/** Add port,p to port list at P->port in order by port id*/
 static void
 linkPort (Process P, Port p)
 {
@@ -621,7 +554,6 @@ visitS_tream (S_tream _p_)
       SetSource (src);
       linkPort (src, src_pt);
       s = MakeStream (state, src, snk, bs, net_model, src_pt, snk_pt);
-      //src_pt->stream=snk_pt->stream=s;
       s->SourcePort = src_pt;
       s->SinkPort = snk_pt;
       s->SourcePort->stream = s->SinkPort->stream = s;
@@ -677,7 +609,7 @@ visitS_tream (S_tream _p_)
       s2->SourcePort->match = s2->SinkPort;
       VerifyStream (s2);
       return s2;
-    case is_Streamry:		/* Code for Streamry Goes Here */
+    case is_Streamry:		 
       s = visitS_tream (_p_->u.streamry_.s_tream_);
       snk = visitProc (_p_->u.streamry_.proc_);
       bs = visitRarrow (_p_->u.streamry_.rarrow_);
@@ -703,16 +635,6 @@ visitS_tream (S_tream _p_)
     }
 }
 
-/*
-static int setID(int id, String name) {
-	
-	if(name!=NULL) 
-		return -2;
-	return fixId(id);
-}
-*/
-
-/** Make External port */
 String saves = NULL;
 Extport
 MakeExtport (PortType type, Process p, Port prt, int bs, int id)
@@ -729,7 +651,6 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
     {
       ep->sink = p;
       ep->source = NULL;
-      //ep->sink_id = setID(prt->id,saves);
       ep->sink_id = fixId(prt->id);
       ep->source_id = id;
       ep->bufsz=bs;	
@@ -739,7 +660,6 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
     {
       ep->source = p;
       ep->sink = NULL;
-      // ep->source_id = setID(prt->id,saves);
       ep->source_id = fixId(prt->id);
       ep->sink_id = id;
       SetSource (p);
@@ -748,8 +668,6 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
   saves=NULL;
   ep->bufsz = bs;
   ep->next = NULL;
-  // ep->sink_id = fixId (ep->sink_id);
-  // ep->source_id = fixId (ep->source_id);
   return ep;
 }
 
@@ -767,11 +685,9 @@ visitSymval (Symval _p_)
   switch (_p_->kind)
     {
     case is_Symvalv:
-      /* Code for Symvalv Goes Here */
       return (visitSymvar (_p_->u.symvalv_.symvar_));
 
     case is_Symvali:
-      /* Code for Symvali Goes Here */
       return (visitIdent (_p_->u.symvali_.ident_));
 
     default:
@@ -788,7 +704,6 @@ visitTab (Tab _p_)
     case is_Tabn:
       return visitNumval (_p_->u.tabn_.numval_);
     case is_Tabs:
-      /* Code for Tabs Goes Here */
       saves = visitSymval (_p_->u.tabs_.symval_);	/** @todo fix named ports */
       return -2;
     default:
@@ -865,7 +780,6 @@ visitHermt (Hermt _p_)
 				(_p_->u.hermtx_.listargument_), name));
       return p;
     case is_Hermty:
-      /* Code for Hermty Goes Here */
       p = MakeProcess (net_model,
 		   visitIdent (_p_->u.hermty_.ident_), NULL,
 		   MakeArg (visitListArgument (_p_->u.hermty_.listargument_),
@@ -873,7 +787,6 @@ visitHermt (Hermt _p_)
      
       return p;
     case is_Hermtax:
-      /* Code for Hermtax Goes Here */
       p = MakeProcess (net_model, "_", visitComp (_p_->u.hermtax_.comp_),
 		   MakeArg (visitListArgument (_p_->u.hermtax_.listargument_),
 			    NULL));
@@ -945,14 +858,6 @@ visitStm (Stm _p_)
   state = IS_NET;
   switch (_p_->kind)
     {
-#if 0
-    case is_Stmein:
-   	 visitExtPortIn(_p_->u.stmein_.extportin_);
-    	 return;  
-    case is_Stmeout:
-  	  visitExtPortOut(_p_->u.stmeout_.extportout_);
-	  return;
-#endif
     case is_Stmx:
       visitS_tream (_p_->u.stmx_.s_tream_);
       return;
@@ -1092,7 +997,6 @@ visitComp (Comp _p_)
 Argument
 visitArgument (Argument _p_)
 {
-  // OLD: return make_Argumentx(visitString(_p_->u.argumentx_.string_));  
   return
     make_Argumentx (make_StringValv
 		    (visitStringval (_p_->u.argumentx_.stringval_)));
@@ -1255,7 +1159,7 @@ Expand3 (Model m, Process p,
 
   if (ep->type == SOURCE)
     {				 
-      pt = p->port;		/** Find matching source port  */
+      pt = p->port;		/** Find matching sink port  */
       while(pt) {
        do
 	{			
@@ -1333,8 +1237,6 @@ Expand3 (Model m, Process p,
     }
 
     findAmatchingPort(m,p,ep); 
-  //sprintf (fbfr, "Cannot match process %s port %i\n", p->name, ep->sink_id);
-  //FAIL (Expand3, fbfr);
 
 }
 
@@ -1361,7 +1263,7 @@ Expand (Model m, Process p, Subnetm sn)
 
 }
 
-	/* Expand a subnet process, i.e. replace this process
+	/** Expand a subnet process, i.e. replace this process
 	   with its subnet */
 static void
 expandSub (Model m, Process p)
@@ -1405,14 +1307,14 @@ FreeExpandedProcesses (Process * fl)
   *fl = NULL;
 }
 
-	/* While some process contains a subnet component, 
+	/** While some process contains a subnet component, 
 	   expand that component subnet. 
 	 */
 void
 expandSubnets (Model m)
 {
   Process p, pp, ps;
-  Process fl = NULL;		/* List of processes to free */
+  Process fl = NULL;		/** List of processes to free */
 
   int more;
 
@@ -1426,8 +1328,7 @@ expandSubnets (Model m)
 	  if (p->comp)
 	    {
 	      if (p->comp->path[0] == '\'')
-		{
-		  /* Is a subnet */
+		{        /* Is a subnet */
 		  more = 1;
 		  m->nprocs--;
 		  ps = p;
@@ -1453,7 +1354,7 @@ expandSubnets (Model m)
 }
 
 
-		/* Fix  port stream pointers for this stream */
+		/** Fix  port stream pointers for this stream */
 static void
 fixStream (Stream s2)
 {
@@ -1496,7 +1397,7 @@ fixStream (Stream s2)
 
 }
 
-			/* Fix Fan in */
+			/** Fix Fan in */
 static void
 fixFan2 (Model m, Process p, Port pt0, Port pt)
 {
@@ -1700,7 +1601,7 @@ fixFan (Model m, Process p)
     }
 }
 
-			/* Insert poc.Join process wherever fanin occurs. */
+			/** Insert poc.Join process wherever fanin occurs. */
 static void
 fixFanInOut (Model m)
 {
@@ -1737,7 +1638,8 @@ static void linkProc(Model m,  Process p) {
 
 #define MAX(A,B) ( (A>B)? A: B)
 
-static void SortPorts(Process p) {   /* Slow, bubble sort */
+/** Slow, bubble sort */
+static void SortPorts(Process p) {   
 	Port pt0, pt1, pt2,ptw;
 	int more=1;
 
@@ -1771,10 +1673,7 @@ static void SortPorts(Process p) {   /* Slow, bubble sort */
 			}
 			pt1=pt2; pt2=pt1->next;
 		}
-	}
-		
-		
-	
+	}	
 }
 
 static void createStream(Model m, Extport ep, Extport ep2) {
@@ -1801,20 +1700,17 @@ static void createStream(Model m, Extport ep, Extport ep2) {
 
 	s=MakeStream(IS_NET, ep->source, ep2->sink, 
 		MAX(ep->bufsz,ep2->bufsz), m, srcpt, snkpt);
+
 	linkProc(m,ep->source);
 	linkProc(m,ep2->sink);
+
 	s->SourcePort->match=s->SinkPort;
 	s->SinkPort->match=s->SourcePort;
 	s->SourcePort->stream=s;
-	s->SinkPort->stream=s;
-	
-	if(1) {
-		s->SourcePort->id=s->source_id=fixId(ep->source_id);
-		s->SinkPort->id=s->sink_id=fixId(ep2->sink_id);
-	} else {
-		s->SourcePort->id=ep->sink_id;
-		s->SinkPort->id=ep2->source_id;
-	}
+	s->SinkPort->stream=s;	
+	s->SourcePort->id=s->source_id=fixId(ep->source_id);
+	s->SinkPort->id=s->sink_id=fixId(ep2->sink_id);
+
 	SortPorts(s->source);
 	SortPorts(s->sink);
 	VerifyStream(s);
