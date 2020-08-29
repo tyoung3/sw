@@ -110,7 +110,10 @@ static void showSink(Process p, int id) {
 			showArgs(p);	
 			
 			
-			printf(")%d ",id);
+			printf(")");
+			if(id>0)
+				printf("%d",id);
+			printf(" ");
 }			
 
 static void showSource(Process p, int id, int bfsz) {		
@@ -123,9 +126,10 @@ static void showSource(Process p, int id, int bfsz) {
 				p->comp->name
 			);
 		} else {
-			printf("\t\t<%d- %d(%s %s.%s",
-				bfsz, 
-				id, 
+			printf("\t\t<%d- ",bfsz);
+			if(id>0) 
+				printf("%d",id);
+			printf("(%s %s.%s",	
 				p->name,
 				p->comp->path,
 				p->comp->name
