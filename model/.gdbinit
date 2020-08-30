@@ -22,4 +22,4 @@
 #break visitHermt
 #break createStream
 break sw.c:1299
-run tests/n1.sw
+run tests/n6.sw

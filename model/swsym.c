@@ -14,19 +14,19 @@
 #include "sw.h"
 
 struct bucket {
-	union {
-		Stream  	stream; 
-		Process 	proc; 
-		Component 	comp; 
-	} u;
-	char *tag;
-	int nrefs;  // Number of references to this symbol
-	struct bucket *link;
-	struct bucket *next;
+    union {
+	Stream stream;
+	Process proc;
+	Component comp;
+    } u;
+    char *tag;
+    int nrefs;			// Number of references to this symbol
+    struct bucket *link;
+    struct bucket *next;
 } bucket;
 typedef struct bucket *bucketp;
 
-bucketp *symtable;  /* Array of bucket pointers */
+bucketp *symtable;		/* Array of bucket pointers */
 
 int TABLESIZE = 2000000;
 
@@ -47,26 +47,29 @@ int nsyms;
 static bucketp firstsymbol;
 static bucketp lastsymbol;
 
-void tabinit(int nvar) {
-	TABLESIZE=nvar;
-	int i;
+void tabinit(int nvar)
+{
+    TABLESIZE = nvar;
+    int i;
 
-	symtable = (bucketp *) malloc(TABLESIZE * sizeof( bucketp) );
+    symtable = (bucketp *) malloc(TABLESIZE * sizeof(bucketp));
 
     if (symtable == NULL) {
-		FAIL(tabinit,"Too many variables for memory.");
+	FAIL(tabinit, "Too many variables for memory.");
     }
 
     /* Set all symtable pointers to NULL 
-    [REPLACED by loop, below, to eliminate Valgrind errors.]
-    symtable[0] = NULL;
-    i = sizeof(*symtable);
-    i *= TABLESIZE - 1;
-    memmove(&symtable[1], &symtable[0], i);
-    */
+       [REPLACED by loop, below, to eliminate Valgrind errors.]
+       symtable[0] = NULL;
+       i = sizeof(*symtable);
+       i *= TABLESIZE - 1;
+       memmove(&symtable[1], &symtable[0], i);
+     */
 
 
-    for( i=0; i < TABLESIZE; i++ ) { symtable[ i ] = NULL; };  
+    for (i = 0; i < TABLESIZE; i++) {
+	symtable[i] = NULL;
+    };
 
     firstsymbol = NULL;
     lastsymbol = NULL;
@@ -74,7 +77,7 @@ void tabinit(int nvar) {
 }
 
 static int hash(char *key)
-{ 
+{
     register int k;
 
     k = 0;
@@ -96,35 +99,34 @@ static bucketp lookup(char *key)
     bp = symtable[hashval];
 
     found = 0;
-    while (bp != NULL && found == 0) { 
-		if (strcmp(key, bp->tag) == 0)
-	   	 	found = 1;
-		else
-	   	 	bp = bp->link;
+    while (bp != NULL && found == 0) {
+	if (strcmp(key, bp->tag) == 0)
+	    found = 1;
+	else
+	    bp = bp->link;
     }
 
     if (found == 0) {
-		nsyms++;
-		if (nsyms > TABLESIZE) {
-	   	 	sprintf(fbfr, 
-	   	 		"%i variables exceeds symtable size.\n",
-		    TABLESIZE);
-	    	FAIL(lookup,fbfr);
-		}
-		bp = (bucketp) malloc(sizeof(bucket));
-		bp->link = symtable[hashval];
-		bp->next = NULL;
-		bp->tag = strdup(key);
-		bp->u.comp = NULL;
-		if (firstsymbol == NULL) {
-	   	 	firstsymbol = bp;
-	    	lastsymbol = bp;
-		} else {
-	    	lastsymbol->next = bp;
-	    	lastsymbol = bp;
-		}
+	nsyms++;
+	if (nsyms > TABLESIZE) {
+	    sprintf(fbfr,
+		    "%i variables exceeds symtable size.\n", TABLESIZE);
+	    FAIL(lookup, fbfr);
+	}
+	bp = (bucketp) malloc(sizeof(bucket));
+	bp->link = symtable[hashval];
+	bp->next = NULL;
+	bp->tag = strdup(key);
+	bp->u.comp = NULL;
+	if (firstsymbol == NULL) {
+	    firstsymbol = bp;
+	    lastsymbol = bp;
+	} else {
+	    lastsymbol->next = bp;
+	    lastsymbol = bp;
+	}
 
-		symtable[hashval] = bp;
+	symtable[hashval] = bp;
     }
 
     return (bp);
@@ -145,52 +147,59 @@ void free_symtab()
     }
 }
 
-Component addComponent(char *name, char *path, Component c) {
-	bucketp b;
-	char key[1000]; 
-	
-	key[0]='^'; key[1]=0;
-	strncat(key,path,999);	
-	strncat(key,".",999);
-	strncat(key,name,999);
-	b=lookup(key);
-	b->u.comp = c;
-	return b->u.comp;
+Component addComponent(char *name, char *path, Component c)
+{
+    bucketp b;
+    char key[1000];
+
+    key[0] = '^';
+    key[1] = 0;
+    strncat(key, path, 999);
+    strncat(key, ".", 999);
+    strncat(key, name, 999);
+    b = lookup(key);
+    b->u.comp = c;
+    return b->u.comp;
 }
 
-Component getComponent(char *name, char *path) {
-	bucketp b;
-	char key[1000]; 
-	
-	key[0]='^'; key[1]=0;
-	strncat(key,path,999);	
-	strncat(key,".",999);
-	strncat(key,name,999);
-	b=lookup(key);
-	return b->u.comp;
+Component getComponent(char *name, char *path)
+{
+    bucketp b;
+    char key[1000];
+
+    key[0] = '^';
+    key[1] = 0;
+    strncat(key, path, 999);
+    strncat(key, ".", 999);
+    strncat(key, name, 999);
+    b = lookup(key);
+    return b->u.comp;
 }
 
-Process addProc(char *key, Process p) {
-	bucketp b;
-	
-	b=lookup(key);
-	b->u.proc = p;
-	return b->u.proc;
+Process addProc(char *key, Process p)
+{
+    bucketp b;
+
+    b = lookup(key);
+    b->u.proc = p;
+    return b->u.proc;
 }
 
-Process getProc(char *key) {
-	bucketp b;
-		
-	b=lookup(key);
-	return b->u.proc;
+Process getProc(char *key)
+{
+    bucketp b;
+
+    b = lookup(key);
+    return b->u.proc;
 }
 
-int getPath(char *key) {
-	bucketp b;
-		
-	b=lookup(key);
-	b->nrefs++;
-	return b->nrefs;
+int getPath(char *key)
+{
+    bucketp b;
+
+    b = lookup(key);
+    b->nrefs++;
+    return b->nrefs;
 }
 
 #ifdef TEST_MAIN
@@ -198,7 +207,8 @@ int getPath(char *key) {
 int main()
 {
     struct bucket b1, b2;
-	struct Process_ p1={"C1_x"},p2={"C2_x"};
+    struct Process_ p1 = { "C1_x" }, p2 = {
+    "C2_x"};
     tabinit(100);
 
 #define ASSOCP(k,w) lookup( #k )->proc = (w)
