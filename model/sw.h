@@ -7,6 +7,10 @@
 
 extern char *version;  /* In swmain.c from Makefile $VERSION */
 
+#define FAIL1(S) { 					\
+	fprintf(stderr,"\033[31mFAIL: SW/%s\033[39m\n",(#S));	\
+	exit(1);					\
+	}
 
 		/* Abort message */
 #define FAIL(F,S) { 						\
@@ -27,6 +31,7 @@ struct cfg_ {
 	char *defaultFilterComp;
 } ;	
 
+int ConfigError(char *);  /* swconfig.c process configuration file */
 	
 /* sw.c  */
 void 	expandSubnets(Model model);

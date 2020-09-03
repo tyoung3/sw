@@ -286,6 +286,12 @@ int main(int argc, char **argv)
 	exit(1);
     }
 
+#ifdef CONFIG
+    if(ConfigError("sw.cfg")) {
+	FAIL1(Configuration failure)	
+    }
+#endif
+
     parse_tree = pValidSW(input);	/** Parse network definition */
 
     if (parse_tree) {
