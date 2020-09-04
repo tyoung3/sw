@@ -10,14 +10,14 @@
 #include "swsym.h"
 #include "swgraph.h"
 
+#if 0
 int defBufferSize;
 int maxbfsz;
 char *defaultPath;
 char *defaultSourceComp;
 char *defaultSinkComp;
 char *defaultFilterComp;
-
-struct cfg_ cfg = { 1, 10000, "def", "Gen1", "Print1", "Filter1" };
+#endif
 
 char fbfr[100];
 
@@ -165,10 +165,10 @@ static void FixComp(Process p, char *cn, char *path)
 static void FixComps(Stream s)
 {
     if (!s->source->comp) {
-	FixComp(s->source, cfg.defaultSourceComp, cfg.defaultPath);
+	FixComp(s->source, defaultSourceComp, defaultPath);
     }
     if (!s->sink->comp) {
-	FixComp(s->sink, cfg.defaultSinkComp, cfg.defaultPath);
+	FixComp(s->sink, defaultSinkComp, defaultPath);
     }
 }
 
@@ -256,7 +256,7 @@ static int BadArg(int argc, char **argv)
 	    if (strncmp(argv[i], "-d", 30) == 0) {
 		if (i == argc - 1)
 		    return 1;
-		cfg.defaultPath = argv[i + 1];
+		defaultPath = argv[i + 1];
 		i += 2;
 	    } else {
 		if (strncmp(argv[i], "-v", 4) == 0) {
@@ -286,11 +286,9 @@ int main(int argc, char **argv)
 	exit(1);
     }
 
-#ifdef CONFIG
     if(ConfigError("sw.cfg")) {
-	FAIL1(Configuration failure)	
+	FAIL(swmain / main, "Configuration failure");	
     }
-#endif
 
     parse_tree = pValidSW(input);	/** Parse network definition */
 

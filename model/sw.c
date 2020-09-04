@@ -6,21 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 #include "sw.h"
+#include "swconfig.h"
 #include "swsym.h"
 #include "model.h"
 
 #include <assert.h>
-
-char *defaultPath = { "def" };
-char *defaultSourceComp = { "Gen1" };
-
-/** @todo char *defaultFilterComp={"Filter1"};    */
-char *defaultSinkComp = { "Print1" };
-
-/** Default hermit component = process name. */
-
-int defBufferSize = 1;		/* Size one may prevent deadlock on occasion. */
-static int maxdepth = 20;
 
 Port LatestPort = NULL, LatestSrcPort = NULL;
 STATE state = IS_NET;
@@ -319,8 +309,8 @@ MakeStream(STATE state, Process src, Process snk, int bs, Model m,
     m->stream = f;
     if (bs < 0)
 	bs = 0;
-    if (bs > cfg.maxbfsz)
-	bs = cfg.maxbfsz;
+    if (bs > maxbfsz)
+	bs = maxbfsz;
     f->bufsz = bs;
     return f;
 }
@@ -398,7 +388,7 @@ Integer visitBuffsize(Buffsize _p_)
     case is_Bufszi:
 	return (visitNumval(_p_->u.bufszi_.numval_));
     case is_Bufsze:
-	return defBufferSize;
+	return defBufferSize;  // @todo 
     default:
 	fprintf(stderr, "Error: bad kind field when visiting Buffsize!\n");
 	exit(1);

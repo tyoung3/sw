@@ -4,6 +4,7 @@
 
 #include "swmain.h"
 #include "model.h"
+#include "swconfig.h"
 
 extern char *version;  /* In swmain.c from Makefile $VERSION */
 
@@ -20,18 +21,6 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 		(S)   );							\
 		exit(1);							\
 	}	
-	
-/** Configure structure */
-struct cfg_ {
-	int   defBufferSize;
-	int   maxbfsz;
-	char *defaultPath;
-	char *defaultSourceComp;
-	char *defaultSinkComp;
-	char *defaultFilterComp;
-} ;	
-
-int ConfigError(char *);  /* swconfig.c process configuration file */
 	
 /* sw.c  */
 void 	expandSubnets(Model model);

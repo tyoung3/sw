@@ -123,7 +123,7 @@ static void showSink(Process p, int id)
 static void showSource(Process p, int id, int bfsz)
 {
 
-    if (bfsz == cfg.defBufferSize) {
+    if (bfsz == defBufferSize) {
 	printf("\t\t<- %d(%s %s.%s",
 	       id, p->name, p->comp->path, p->comp->name);
     } else {
@@ -184,7 +184,7 @@ static int nbrMultiples(Model m)
 };
 #endif
 
-static void ConnectProcess(Process p, int partn);
+// ?? static void ConnectProcess(Process p, int partn);
 
 static void ConnectProcess(Process p, int partn) {
 	Port pt;

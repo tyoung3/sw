@@ -15,7 +15,7 @@
 int main(int argc, char ** argv)
 {
   FILE *input;
-  ValidSW parse_tree;
+  Valide parse_tree;
   if (argc > 1) 
   {
     input = fopen(argv[1], "r");
@@ -27,14 +27,14 @@ int main(int argc, char ** argv)
   }
   else input = stdin;
   /* The default entry point is used. For other options see Parser.h */
-  parse_tree = pValidSW(input);
+  parse_tree = pValide(input);
   if (parse_tree)
   {
     printf("\nParse Succesful!\n");
     printf("\n[Abstract Syntax]\n");
-    printf("%s\n\n", showValidSW(parse_tree));
+    printf("%s\n\n", showValide(parse_tree));
     printf("[Linearized Tree]\n");
-    printf("%s\n\n", printValidSW(parse_tree));
+    printf("%s\n\n", printValide(parse_tree));
     return 0;
   }
   return 1;
