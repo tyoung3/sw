@@ -10,9 +10,14 @@
 #include "swsym.h"
 #include "swgraph.h"
 
+/** @todo
+	* Implement getops() for command line & Usage
+	* Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
+	* Create Man page w/Doxygen
+*/
+
 typedef enum
     { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE = 7 } MODE;
-
 
 char fbfr[100];
 char *version = { VERSION };
@@ -201,7 +206,7 @@ static int verifyOK(Model model)
 
 static void Usage()
 {
-    fprintf(stderr, "Usage:\tsw [-m MODE [ SW_FILE ]\n");
+    fprintf(stderr, "\nUsage:\tsw [-m MODE [ SW_FILE ]\n");
     fprintf(stderr, "\tsw -v\n");
     fprintf(stderr,
 	    "\t\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|7-CMODE,}\n");
