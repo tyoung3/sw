@@ -10,21 +10,14 @@
 #include "swsym.h"
 #include "swgraph.h"
 
-#if 0
-int defBufferSize;
-int maxbfsz;
-char *defaultPath;
-char *defaultSourceComp;
-char *defaultSinkComp;
-char *defaultFilterComp;
-#endif
-
-char fbfr[100];
-
 typedef enum
     { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE = 7 } MODE;
 
+
+char fbfr[100];
 char *version = { VERSION };
+
+static String configfile={"/home/tyoung3/projects/docker/goland/sw/sw.cfg"};
 
 static MODE mode = GOMODE;
 static char *fname = { "stdin" };
@@ -220,10 +213,12 @@ FILE *input;
 static FILE *openFile(char *fname)
 {
     input = fopen(fname, "r");
+#if 0
     if (!input) {
 	sprintf(fbfr, "Error opening input file: %s.", fname);
 	FAIL(openFile, fbfr);
     }
+#endif
     return input;
 }
 
@@ -249,27 +244,36 @@ static int BadArg(int argc, char **argv)
 	if (strncmp(argv[i], "-m", 30) == 0) {
 	    if (i == argc - 1)
 		return 1;
-	    mode = atoi(argv[i + 1]);
-	    i += 2;
+	    mode = atoi(argv[++i]);
 	} else {
-
 	    if (strncmp(argv[i], "-d", 30) == 0) {
 		if (i == argc - 1)
 		    return 1;
-		defaultPath = argv[i + 1];
-		i += 2;
+		defaultPath = argv[++i];
 	    } else {
 		if (strncmp(argv[i], "-v", 4) == 0) {
 		    printf("StreamWork/sw-%s\n", version);
-		    i++;
 		    exit(0);
 		} else {
-		    input = openFile(argv[i]);
-		    fname = argv[i];
-		    i++;
+		    if (strncmp(argv[i], "-cfg", 6) == 0) {	
+			configfile=argv[++i];
+		    } else {
+			if (strncmp(argv[i], "--help", 7) == 0){
+				Usage();
+			} else {
+		   	 	fname = argv[i];
+		   	 	input = openFile(fname);
+		   	 	if(input==NULL) {
+					sprintf(fbfr, 
+					   "Error opening input file: %s.", fname);
+					FAIL(openFile, fbfr);
+				}
+			}
+		    }
 		}
 	    }
 	}
+	i++;
     }
     return 0;
 }
@@ -286,8 +290,8 @@ int main(int argc, char **argv)
 	exit(1);
     }
 
-    if(ConfigError("sw.cfg")) {
-	FAIL(swmain / main, "Configuration failure");	
+    if(ConfigError(configfile)) {
+	FAIL(swmain / main, "Configuration file(~/.sw/sw.cfg) failure");	
     }
 
     parse_tree = pValidSW(input);	/** Parse network definition */

@@ -388,7 +388,7 @@ Integer visitBuffsize(Buffsize _p_)
     case is_Bufszi:
 	return (visitNumval(_p_->u.bufszi_.numval_));
     case is_Bufsze:
-	return defBufferSize;  // @todo 
+	return defaultBufferSize;  // @todo 
     default:
 	fprintf(stderr, "Error: bad kind field when visiting Buffsize!\n");
 	exit(1);

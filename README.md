@@ -260,6 +260,10 @@ Ex.  ```A<-B;``` expands to
 ------
 	* Fixed External port errors
 	* Commented heading of linearized tree output
+
+0.11.3
+------
+	* Implemented configuration file, /home/tyoung3/.sw/sw.cfg
 	
 	
 SW.cf Language Notes

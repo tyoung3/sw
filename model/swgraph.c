@@ -7,6 +7,8 @@
 #include <string.h>
 #include "model.h"
 #include "sw.h"
+#include "swconfig.h"
+
 
 #define P(s) printf("%s\n",(#s));
 #define FIXINDENT(s) {};
@@ -106,11 +108,10 @@ static void genArgs(char **a) {
 } 
 
 static char *makeURL(char *comp) {
-    char bfr[100];
+    char bfr[110];
 
-     snprintf(bfr, sizeof(bfr) - 1,
-	      "/home/tyoung3/go/mod/sw/html/%s.html", comp);
-     return strndup(bfr, sizeof(bfr) - 1);
+    snprintf(bfr,sizeof(bfr) - 1, "%s/%s.html",htmldir,comp);
+    return strndup(bfr, sizeof(bfr) - 1);
 }
 
     /* EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */

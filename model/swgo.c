@@ -123,7 +123,7 @@ static void showSink(Process p, int id)
 static void showSource(Process p, int id, int bfsz)
 {
 
-    if (bfsz == defBufferSize) {
+    if (bfsz == defaultBufferSize) {
 	printf("\t\t<- %d(%s %s.%s",
 	       id, p->name, p->comp->path, p->comp->name);
     } else {
