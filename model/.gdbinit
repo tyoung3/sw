@@ -21,5 +21,6 @@
 #break createStream
 #break visitHermt
 #break createStream
-break sw.c:1299
-run tests/n6.sw
+#break ConfigError
+#break FixComps
+run  -m 3 ../nds/collate.sw 

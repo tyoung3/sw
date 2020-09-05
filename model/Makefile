@@ -3,13 +3,13 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.11.1\"
+VERSION = \"0.11.3\"
 
 LATEX = latex
 DVIPS = dvips
 
 OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
-SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o
+SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o swconfig.o
 HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 
 all:  ../bin/sw tags SW.pdf
@@ -17,7 +17,7 @@ all:  ../bin/sw tags SW.pdf
 install: ${PGM}
 	sudo cp ${PGM} ../bin/swgraph ../bin/swgo ${GOPATH}/bin
 
-tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h model.h sw.h  swmain.h  swsym.h
+tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h model.h sw.h swconfig.c swmain.h  swsym.h
 	ctags *.c *.h
 
 clean:
@@ -38,10 +38,12 @@ SW.pdf:  SW.ps
 	ps2pdf SW.ps
             
 
-check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
+check:
+	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
 	${PGM}  -v 
-	#! ${PGM} tests/e2.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	${PGM}  tests/aa.sw  >/dev/null
 	${PGM}  tests/ab.sw  >/dev/null
 	${PGM}  tests/ad.sw  >/dev/null
@@ -70,8 +72,6 @@ check: ${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw
 	${PGM}  tests/lr.sw   >/dev/null
 	${PGM}  tests/lrR.sw   >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
-	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
-	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	../sw.sh poc     
 
 
@@ -94,10 +94,13 @@ jpeg:  /tmp/collate.jpg
 	&& dot -Tpng /tmp/sw/locusts.dot > /tmp/sw/locusts.png
 	
 ${PGM}: ${OBJS} ${SWOBJS}  
-	${CC} ${CCFLAGS} ${OBJS}  ${SWOBJS}  -o ../bin/sw
+	${CC} ${CCFLAGS} ${OBJS}  ${SWOBJS} -lyaml -o ../bin/sw
 	
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
+
+swconfig.o: swconfig.c sw.h
+	${CC} ${CCFLAGS} -c  swconfig.c -o swconfig.o
 		
 sw.o: sw.c sw.h swsym.h ${HEADERS} model.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 

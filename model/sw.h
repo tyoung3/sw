@@ -4,9 +4,14 @@
 
 #include "swmain.h"
 #include "model.h"
+#include "swconfig.h"
 
 extern char *version;  /* In swmain.c from Makefile $VERSION */
 
+#define FAIL1(S) { 					\
+	fprintf(stderr,"\033[31mFAIL: SW/%s\033[39m\n",(#S));	\
+	exit(1);					\
+	}
 
 		/* Abort message */
 #define FAIL(F,S) { 						\
@@ -16,17 +21,6 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 		(S)   );							\
 		exit(1);							\
 	}	
-	
-/** Configure structure */
-struct cfg_ {
-	int   defBufferSize;
-	int   maxbfsz;
-	char *defaultPath;
-	char *defaultSourceComp;
-	char *defaultSinkComp;
-	char *defaultFilterComp;
-} ;	
-
 	
 /* sw.c  */
 void 	expandSubnets(Model model);

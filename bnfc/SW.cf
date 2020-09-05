@@ -8,8 +8,14 @@
 
 --  See: https://github.com/flowbased/fbp#readme  
 
-entrypoints		ValidSW		     ; 
-Valid.	 	    ValidSW  	::= [Stm]    ;
+
+
+entrypoints		Valide, ValidSW, ValidCFG    	; 
+	
+SWvalid.	 	Valide ::= ValidSW	;
+CFGvalid.		Valide ::= ValidCFG 	;
+
+Valid.			ValidSW ::= [Stm] 	;
 
 Stmx.			Stm	::= S_tream  ; 
 --Stmein.			Stm	::= ExtPortIn  	;
@@ -89,8 +95,19 @@ Symvali.		Symval	   ::= Ident;
 
 token   Numvar	  '%' letter  ( letter | digit  )*;		
 token	Stringvar '$' letter  ( letter | digit  )*;
-token	Symvar    '&' letter  ( letter | digit | '_' )* ;	
+token	Symvar    '&' letter  ( letter | digit | '_' )* ;
+	
+--  SWCFG.cf  
+--              Streamworks YAML Configuration Interpreter
 
+Validcfg.	 	ValidCFG ::= [Stn];
+
+StmTitle.		Stn	::= "title:" Ident; 
+StmHeading.		Stn	::= Ident ":"  ;  
+StmKeyvalint.		Stn	::= Ident ":" Integer;
+StmKeyvalstr.		Stn	::= Ident ":" String;
+terminator	   	Stn   "" ;
+	
 comment "#";
 comment "{#" "#}";	
 ------------   End of Current Language Definition   --------------

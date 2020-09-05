@@ -79,9 +79,10 @@ RunDocker() {
 }
 
 case $1 in	
-	c) pushd ./model&& make -j8 check && echo Success! || echo Check Failed.;;
+	c) pushd ./model&& make -j8&&make check&& echo Success! || echo Check Failed.;;
 	cl) ShowCheck;;
 	d) shift ; RunDocker $*;;
+	doc)shift; doxygen&&$BROWSER ./doxy/html/index.html;;
 	j) GenSVG;;
 	jl) bin/locusts.sh j ;;	#Display locusts map;
 	poc) RunPoC;;
@@ -94,6 +95,7 @@ USAGE:
 		c		. Make check
 		cl       	. Show release check list. 
 		d  OPT		. Build and run this script in docker. 
+		doc		. Run and browse Doxygen 
 		j		. Generate collate .SVT
 		jl		. Generage locusts .SVG
 		poc		. Build and run Proof of Concept 

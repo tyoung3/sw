@@ -12,6 +12,7 @@
 #include <string.h>
 #include "swsym.h"
 #include "sw.h"
+#include "swconfig.h"
 
 struct bucket {
     union {
@@ -28,8 +29,8 @@ typedef struct bucket *bucketp;
 
 bucketp *symtable;		/* Array of bucket pointers */
 
-int TABLESIZE = 2000000;
-
+// int TABLESIZE = 2000000;
+ 
 #define FREE(x)      free((char *) (x))
 #define NEW(t)      ((t *) alloca((unsigned) sizeof(t)))
 #define NEW2(n, t) ((t *) alloca((unsigned) ((n) * sizeof(t*))))
@@ -47,9 +48,9 @@ int nsyms;
 static bucketp firstsymbol;
 static bucketp lastsymbol;
 
-void tabinit(int nvar)
+void tabinit()
 {
-    TABLESIZE = nvar;
+    // TABLESIZE = nvar;
     int i;
 
     symtable = (bucketp *) malloc(TABLESIZE * sizeof(bucketp));
@@ -209,7 +210,7 @@ int main()
     struct bucket b1, b2;
     struct Process_ p1 = { "C1_x" }, p2 = {
     "C2_x"};
-    tabinit(100);
+    tabinit();
 
 #define ASSOCP(k,w) lookup( #k )->proc = (w)
 #define SSHOWP(k) fprintf( stderr, "%s == %s\n", #k, lookup( #k )->proc->name)

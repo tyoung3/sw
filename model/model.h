@@ -65,6 +65,7 @@ struct Process_ {
 		struct Process_ *next;
 		char **arg;		  /* An array of strings. */
 		STATE kind;	  /* In subnet or net */
+		int  partn;	/* Partition number.  */
 } Process_; 
 typedef struct Process_ *Process;
 
