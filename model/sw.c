@@ -12,6 +12,12 @@
 
 #include <assert.h>
 
+#define badkind(S) { 						\
+   fprintf(stderr,						\
+	"Error: bad kind field when visiting %s!\n",(#S));	\
+   exit(1); 							\
+}
+
 Port LatestPort = NULL, LatestSrcPort = NULL;
 STATE state = IS_NET;
 
@@ -323,7 +329,7 @@ Numvar visitNumvar(Numvar p)
 
 String visitStringvar(Stringvar p)
 {
-    return p; /** @todo implement visitStringvar */
+    return getStringVar(p);  
 }
 
 String visitStringval(Stringval _p_)
@@ -335,9 +341,7 @@ String visitStringval(Stringval _p_)
 	return visitStringvar(_p_->u.stringvalv_.stringvar_);
 
     default:
-	fprintf(stderr,
-		"Error: bad kind field when visiting Stringval!\n");
-	exit(1);
+	badkind(Stringval);
     }
 }
 
@@ -350,8 +354,7 @@ Integer visitNumval(Numval _p_)
 	visitNumvar(_p_->u.numvalv_.numvar_);
 	return 0;
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Numval!\n");
-	exit(1);
+	badkind(Numval);
     }
 }
 
@@ -363,24 +366,39 @@ void visitNumassgn(Numassgn _p_)
 	visitNumval(_p_->u.numassgnv_.numval_);
 	break;
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Numassgn!\n");
-	exit(1);
+	badkind(Numassgn);
     }
 }
 
+#if 0
+String visitSymvar(Symvar p)
+{
+    return getSymVar(p);	
+}
+#endif
+
+String visitSymAssgn(SymAssgn _p_)
+{
+  switch(_p_->kind)
+  {
+  case is_SymAssgni:
+    return addSymVar(_p_->u.symassgni_.symvar_,
+    	visitIdent(_p_->u.symassgni_.ident_));
+    break;  
+   case is_SymAssgns:
+     return addSymVar(_p_->u.symassgns_.symvar_1,
+   	 getSymVar(_p_->u.symassgns_.symvar_2));
+  default:
+    badkind(SymAssgn);
+  }
+}
 void visitStrassgn(Strassgn _p_)
 {
-    switch (_p_->kind) {
-    case is_StrAssgnv:
-	visitStringvar(_p_->u.strassgnv_.stringvar_);
-	visitStringval(_p_->u.strassgnv_.stringval_);
-	break;
-    default:
-	fprintf(stderr, "Error: bad kind field when visiting Strassgn!\n");
-	exit(1);
-    }
+	addStringVar( 
+    		visitStringvar(_p_->u.strassgnv_.stringvar_),
+    		visitIdent(_p_->u.strassgnv_.ident_)
+	);
 }
-
 
 Integer visitBuffsize(Buffsize _p_)
 {
@@ -390,8 +408,7 @@ Integer visitBuffsize(Buffsize _p_)
     case is_Bufsze:
 	return defaultBufferSize;  // @todo 
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Buffsize!\n");
-	exit(1);
+	badkind(Buffsize);
     }
 }
 
@@ -554,8 +571,7 @@ Stream visitS_tream(S_tream _p_)
 	return s2;
 
     default:
-	fprintf(stderr, "Error: bad kind field when visiting S_tream!\n");
-	exit(1);
+	badkind(S_tream);
     }
 }
 
@@ -592,24 +608,17 @@ Extport MakeExtport(PortType type, Process p, Port prt, int bs, int id)
 }
 
 
-String visitSymvar(Symvar p)
-{
-    p = p;
-    return NULL;		/** @todo implement variable substitution */
-}
-
 String visitSymval(Symval _p_)
 {
     switch (_p_->kind) {
     case is_Symvalv:
-	return (visitSymvar(_p_->u.symvalv_.symvar_));
+	return getSymVar(_p_->u.symvalv_.symvar_);
 
     case is_Symvali:
 	return (visitIdent(_p_->u.symvali_.ident_));
 
     default:
-	fprintf(stderr, "Error: bad kind field when printing Symval!\n");
-	exit(1);
+	badkind(Symval);
     }
 }
 
@@ -622,8 +631,7 @@ Integer visitTab(Tab _p_)
 	saves = visitSymval(_p_->u.tabs_.symval_);	/** @todo fix named ports */
 	return -2;
     default:
-	fprintf(stderr, "Error: bad kind field when printing Tab!\n");
-	exit(1);
+	badkind(Tab);
     }
 }
 
@@ -644,8 +652,7 @@ Extport visitExtPortIn(ExtPortIn _p_)
 			   visitRarrow(_p_->u.extinr_.rarrow_),
 			   visitTab(_p_->u.extinr_.tab_));
     default:
-	fprintf(stderr, "Error: bad kind field at visitExtPortIn!\n");
-	exit(1);
+	badkind(ExtPortIn);
     }
 
 }
@@ -667,8 +674,7 @@ Extport visitExtPortOut(ExtPortOut _p_)
 			   visitRarrow(_p_->u.extoutr_.rarrow_),
 			   visitTab(_p_->u.extoutr_.tab_));
     default:
-	fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
-	exit(1);
+	badkind(ExtPortOut);
     }
 }
 
@@ -706,8 +712,7 @@ Process visitHermt(Hermt _p_)
 				(_p_->u.hermtay_.listargument_), NULL));
 	return p;
     default:
-	fprintf(stderr, "Error: bad kind field when printing Hermt!\n");
-	exit(1);
+	badkind(Hermt);
     }
 }
 
@@ -735,8 +740,7 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 			   visitExtPortOut(_p_->u.snetout_.extportout_),
 			   eport);
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Subnet!\n");
-	exit(1);
+	badkind(Subnet);
     }
 }
 
@@ -768,7 +772,10 @@ void visitStm(Stm _p_)
 	return;
     case is_Stms:
 	visitStrassgn(_p_->u.stms_.strassgn_);
-	return;
+	return;  
+    case is_Stmb:
+    	visitSymAssgn(_p_->u.stmb_.symassgn_);
+	break;
     case is_Stmnet:
 	state = IS_SUB;
 	visitSubdef(_p_->u.stmnet_.subdef_);
@@ -779,8 +786,7 @@ void visitStm(Stm _p_)
 	    p->comp = MakeComponent(p->name, defaultPath);
 	break;
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Stm!\n");
-	exit(1);
+	badkind(Stm);
     }
 }
 
@@ -814,7 +820,7 @@ Process visitProc(Proc _p_)
 
     case is_Processx:
 	return MakeProcess(net_model,
-			   visitIdent(_p_->u.processx_.ident_),
+			   visitSymval(_p_->u.processx_.symval_),
 			   visitComp(_p_->u.processx_.comp_),
 			   MakeArg(visitListArgument
 				   (_p_->u.processx_.listargument_),
@@ -822,7 +828,7 @@ Process visitProc(Proc _p_)
 
     case is_Processy:
 	return MakeProcess(net_model,
-			   visitIdent(_p_->u.processy_.ident_),
+			       visitSymval(_p_->u.processy_.symval_),
 			   NULL,
 			   MakeArg(visitListArgument
 				   (_p_->u.processy_.listargument_),
@@ -848,8 +854,7 @@ Process visitProc(Proc _p_)
 				   (_p_->u.processay_.listargument_),
 				   name));
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Proc!\n");
-	exit(1);
+	badkind(Proc);
     }
 }
 
@@ -870,8 +875,7 @@ Port visitPrt(Prt _p_)
     case is_Porte:
 	return MakePort(-1, NULL);
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Prt!\n");
-	exit(1);
+	badkind(Prt);
     }
 }
 
@@ -887,8 +891,7 @@ Component visitComp(Comp _p_)
     case is_Compn:
 	return MakeComponent(visitIdent(_p_->u.compn_.ident_), "'");
     default:
-	fprintf(stderr, "Error: bad kind field when visiting Comp!\n");
-	exit(1);
+	badkind(Comp);
     }
 }
 

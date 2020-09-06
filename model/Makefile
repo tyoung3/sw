@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.11.3\"
+VERSION = \"0.11.4\"
 
 LATEX = latex
 DVIPS = dvips

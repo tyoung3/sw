@@ -23,4 +23,6 @@
 #break createStream
 #break ConfigError
 #break FixComps
-run  -m 3 ../nds/collate.sw 
+break getSymVar
+break addSymvar
+run   ../nds/hello.sw  

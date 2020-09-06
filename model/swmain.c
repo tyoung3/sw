@@ -22,7 +22,7 @@ typedef enum
 char fbfr[100];
 char *version = { VERSION };
 
-static String configfile={"/home/tyoung3/projects/docker/goland/sw/sw.cfg"};
+String configfile={"/home/tyoung3/projects/docker/goland/sw/sw.cfg"};
 
 static MODE mode = GOMODE;
 static char *fname = { "stdin" };

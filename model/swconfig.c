@@ -46,7 +46,7 @@ static void CfgString(String key, String val)  {
 	SetS(HTMLdir);
 };
 
-static void visitStn(Stn _p_)
+void visitStn(Stn _p_)
 {
   switch(_p_->kind)
   {
@@ -71,7 +71,7 @@ static void visitStn(Stn _p_)
   }
 }
 
-static void visitListStn(ListStn liststn)
+void visitListStn(ListStn liststn)
 {
   while(liststn != 0)
   {
@@ -81,17 +81,17 @@ static void visitListStn(ListStn liststn)
   }
 }
 
-static Ident visitIdent1(Ident i)
+Ident visitIdent1(Ident i)
 {
     return i;
 }
 
-static int visitInteger1(Integer i)
+int visitInteger1(Integer i)
 {
   return i;
 }
 
-static String visitString1(String s)
+String visitString1(String s)
 {
   return s;
 }

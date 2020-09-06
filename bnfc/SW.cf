@@ -22,6 +22,7 @@ Stmx.			Stm	::= S_tream  ;
 --Stmeout.			Stm  	::= ExtPortOut  ; 
 Stmn.			Stm	::= Numassgn ; 
 Stms.			Stm	::= Strassgn ;
+Stmb.			Stm	::= SymAssgn ; 
 Stmh.			Stm	::= Hermt    ; 
 Stmnet.			Stm	::= Subdef   ;  
 terminator	   	Stm   ";" ;
@@ -61,8 +62,8 @@ Hermty.			Hermt	::=   Ident  [Argument]  	 ;
 Hermtax.		Hermt	::=   "_"  Comp [Argument]   ;
 Hermtay.		Hermt	::=   "_"  [Argument]   	 ;
 
-Processx.		Proc	::= "(" Ident  Comp [Argument] ")" ;
-Processy.		Proc	::= "(" Ident  [Argument] ")" ;
+Processx.		Proc	::= "(" Symval  Comp [Argument] ")" ;
+Processy.		Proc	::= "(" Symval  [Argument] ")" ;
 Processax.		Proc	::= "(" "_"  Comp [Argument] ")" ;
 Processay.		Proc	::= "(" "_"  [Argument] ")" ;
 
@@ -81,7 +82,10 @@ separator	    	Argument   "";
 
 NumAssgnv.		Numassgn   ::= Numvar "=" Numval;
 
-StrAssgnv.		Strassgn   ::= Stringvar "=" Stringval;
+StrAssgnv.		Strassgn   ::= Stringvar "=" Ident;
+
+SymAssgni.		SymAssgn   ::= Symvar "=" Ident;
+SymAssgns.		SymAssgn   ::= Symvar "=" Symvar;
 
 NumVali.		Numval     ::= Integer;
 NumValv.		Numval	   ::= Numvar;
@@ -124,7 +128,7 @@ comment "{#" "#}";
 
 
 ----------    Possible future additions -------------------
-{-  
+{-     NOTE: COMMENTED OUT 
 AAsgn.		       	Acond		::= NumAssgn;
 AAexp.		       	Acond		::= Aexpr;
 

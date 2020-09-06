@@ -19,6 +19,7 @@ struct bucket {
 	Stream stream;
 	Process proc;
 	Component comp;
+	String  string;
     } u;
     char *tag;
     int nrefs;			// Number of references to this symbol
@@ -119,6 +120,7 @@ static bucketp lookup(char *key)
 	bp->next = NULL;
 	bp->tag = strdup(key);
 	bp->u.comp = NULL;
+	bp->nrefs = 0;
 	if (firstsymbol == NULL) {
 	    firstsymbol = bp;
 	    lastsymbol = bp;
@@ -148,6 +150,35 @@ void free_symtab()
     }
 }
 
+String getStringVar(String *name) {
+    bucketp b;
+    b = lookup((char*)name);
+    return(b->u.string);
+}
+
+String addStringVar(String name, String val) {
+    bucketp b;
+
+    b = lookup((char*)name);
+    b->u.string = val;
+    return val;
+}
+
+String getSymVar(String name) {
+    bucketp b;
+
+    b = lookup(name);
+    return(b->u.string);
+}
+
+String addSymVar(String name, String val) {
+    bucketp b;
+
+    b = lookup(name);
+    b->u.string = val;
+    return val;
+}
+ 
 Component addComponent(char *name, char *path, Component c)
 {
     bucketp b;
@@ -194,9 +225,14 @@ Process getProc(char *key)
     return b->u.proc;
 }
 
-int getPath(char *key)
+int getPath(char *name)
 {
     bucketp b;
+    char key[1000];
+
+    key[0] = '<';
+    key[1] = 0;
+    strncat(key, name, 999);
 
     b = lookup(key);
     b->nrefs++;
