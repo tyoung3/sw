@@ -23,6 +23,6 @@
 #break createStream
 #break ConfigError
 #break FixComps
-break getSymVar
-break addSymvar
-run   ../nds/hello.sw  
+break getStringVar
+break addStringVar
+run   tests/var.sw

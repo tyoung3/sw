@@ -150,10 +150,25 @@ void free_symtab()
     }
 }
 
-String getStringVar(String *name) {
+String getSymVar(String name) {
     bucketp b;
-    b = lookup((char*)name);
+
+    b = lookup(name);
     return(b->u.string);
+}
+
+String getStringVar(String name) {
+    bucketp b;
+    String s;
+
+    b = lookup((char*)name);
+#if 0
+    s = b->u.string;
+    if(s==NULL) {
+	b->u.string=strdup("");
+    }
+#endif
+    return b->u.string;
 }
 
 String addStringVar(String name, String val) {
@@ -162,13 +177,6 @@ String addStringVar(String name, String val) {
     b = lookup((char*)name);
     b->u.string = val;
     return val;
-}
-
-String getSymVar(String name) {
-    bucketp b;
-
-    b = lookup(name);
-    return(b->u.string);
 }
 
 String addSymVar(String name, String val) {
