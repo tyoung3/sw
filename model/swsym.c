@@ -21,8 +21,8 @@ struct bucket {
 	Component comp;
 	String  string;
     } u;
-    char *tag;
-    int nrefs;			// Number of references to this symbol
+    char *tag;		
+    int nrefs;	/* Number of references to symbol */
     struct bucket *link;
     struct bucket *next;
 } bucket;
@@ -159,15 +159,16 @@ String getSymVar(String name) {
 
 String getStringVar(String name) {
     bucketp b;
-    String s;
 
-    b = lookup((char*)name);
+    b = lookup(name);
 #if 0
     s = b->u.string;
     if(s==NULL) {
 	b->u.string=strdup("");
     }
 #endif
+    if(b->u.string==NULL)
+	return NULL;
     return b->u.string;
 }
 
@@ -175,7 +176,7 @@ String addStringVar(String name, String val) {
     bucketp b;
 
     b = lookup((char*)name);
-    b->u.string = val;
+    b->u.string = strdup(val);
     return val;
 }
 

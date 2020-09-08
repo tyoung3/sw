@@ -25,4 +25,5 @@
 #break FixComps
 break getStringVar
 break addStringVar
-run   tests/var.sw
+
+run   <(echo '$X=xs;(A a "1 " $X  ) <- (B b "1" $X $Y "3" );')

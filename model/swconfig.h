@@ -1,15 +1,15 @@
 #ifndef _SWCONFIG_H
 #define _SWCONFIG_H
 
-#define htmldir		cfg.HTMLdir
-#define defaultPath 	cfg.DefaultPath
+#define htmldir		  cfg.HTMLdir
+#define defaultPath 	  cfg.DefaultPath
 #define defaultSourceComp cfg.DefaultSourceComp
-#define defaultSinkComp cfg.DefaultSinkComp
+#define defaultSinkComp   cfg.DefaultSinkComp
 #define defaultFilterComp cfg.DefaultFilterComp
 #define defaultBufferSize cfg.DefaultBufferSize
-#define maxbfsz		cfg.Maxbfsz
-#define maxdepth	cfg.MaxDepth
-#define TABLESIZE 	cfg.Tablesize
+#define maxbfsz		  cfg.Maxbfsz
+#define maxdepth	  cfg.MaxDepth
+#define TABLESIZE 	  cfg.Tablesize
 
 int ConfigError(String s);  /* swconfig.c process configuration file */
 

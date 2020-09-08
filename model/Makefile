@@ -72,6 +72,7 @@ check:
 	${PGM}  tests/lr.sw   >/dev/null
 	${PGM}  tests/lrR.sw   >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
+	${PGM}  tests/var.sw   >/dev/null
 	../sw.sh poc     
 
 

@@ -327,19 +327,33 @@ Numvar visitNumvar(Numvar p)
     return p;
 }
 
-String visitStringvar(Stringvar p)
-{
-    return getStringVar(p);  
+String visitStringvar(Stringvar p) {
+   char s[100];
+
+   if(1) {
+	   return p;
+   } else {
+	snprintf( s,99,"\"%s\"",getStringVar(p));
+	return strdup(s);
+   }   
 }
+
+String s1;
 
 String visitStringval(Stringval _p_)
 {
+    char s[100];
+
     switch (_p_->kind) {
     case is_StringVals:
 	return (visitString(_p_->u.stringvals_.string_));
     case is_StringValv:
-	return visitStringvar(_p_->u.stringvalv_.stringvar_);
-
+	//snprintf( s,99,"\"%s\"",getStringVar(_p_));
+	//return strdup(s);
+	// return visitStringvar(_p_->u.stringvalv_.stringvar_);
+	//return "";
+	s1=getStringVar(_p_->u.stringvalv_.stringvar_);
+	return s1;
     default:
 	badkind(Stringval);
     }
@@ -824,7 +838,7 @@ Process visitProc(Proc _p_)
 			   visitComp(_p_->u.processx_.comp_),
 			   MakeArg(visitListArgument
 				   (_p_->u.processx_.listargument_),
-				   NULL));
+				   visitSymval(_p_->u.processx_.symval_)));
 
     case is_Processy:
 	return MakeProcess(net_model,
@@ -897,9 +911,14 @@ Component visitComp(Comp _p_)
 
 Argument visitArgument(Argument _p_)
 {
-    return
-	make_Argumentx(make_StringValv
+    Argument arg;
+
+	//visitStringval(_p_->u.argumentx_.stringval_);
+	arg=make_Argumentx(make_StringVals
 		       (visitStringval(_p_->u.argumentx_.stringval_)));
+    return arg;
+	//make_Argumentx(
+	//	       (visitStringval(_p_->u.argumentx_.stringval_));
 }
 
 ListArgument visitListArgument(ListArgument listargument)
