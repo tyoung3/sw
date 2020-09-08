@@ -92,13 +92,17 @@ NumValv.		Numval	   ::= Numvar;
 				
 StringVals.		Stringval  ::= String;
 StringValv.		Stringval  ::= Stringvar;
+StringVale.		Stringval  ::= Envar;
 
 Symvalv.		Symval	   ::= Symvar;
 Symvali.		Symval	   ::= Ident; 
 --Sstrng.		Symval	   ::= "&("  Sexpr ")" ;  
+SymVale.		Symval	   ::= Envar;
+
 
 token   Numvar	  '%' letter  ( letter | digit  )*;		
-token	Stringvar '$' letter  ( letter | digit  )*;
+token	Stringvar '$' letter  ( letter | digit  )*;	
+token	Envar 	  '$' '_' letter  ( letter | digit  )*;   	-- Environment variable
 token	Symvar    '&' letter  ( letter | digit | '_' )* ;
 	
 --  SWCFG.cf  
