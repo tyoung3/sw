@@ -269,6 +269,10 @@ Ex.  ```A<-B;``` expands to
 ------
 	* Added TODOs. 
 	* Implemented string variables.
+
+0.11.5
+------
+	* Fixed string variables
 	
 	
 SW.cf Language Notes
