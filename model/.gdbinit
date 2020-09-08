@@ -26,4 +26,4 @@
 break getStringVar
 break addStringVar
 
-run   <(echo '$X=xs;(A a "1 " $X  ) <- (B b "1" $X $Y "3" );')
+run   <(echo '$X=xs;&U=tt;&T=x;(A a "1 " $X  ) <- (&U T "1" $X $Y "4" );')

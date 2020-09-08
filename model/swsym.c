@@ -154,6 +154,8 @@ String getSymVar(String name) {
     bucketp b;
 
     b = lookup(name);
+    if(b->u.string==NULL)
+	return name;
     return(b->u.string);
 }
 
@@ -161,14 +163,8 @@ String getStringVar(String name) {
     bucketp b;
 
     b = lookup(name);
-#if 0
-    s = b->u.string;
-    if(s==NULL) {
-	b->u.string=strdup("");
-    }
-#endif
     if(b->u.string==NULL)
-	return NULL;
+	return name;
     return b->u.string;
 }
 

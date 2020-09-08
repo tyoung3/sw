@@ -328,32 +328,16 @@ Numvar visitNumvar(Numvar p)
 }
 
 String visitStringvar(Stringvar p) {
-   char s[100];
-
-   if(1) {
 	   return p;
-   } else {
-	snprintf( s,99,"\"%s\"",getStringVar(p));
-	return strdup(s);
-   }   
 }
 
-String s1;
-
-String visitStringval(Stringval _p_)
-{
-    char s[100];
+String visitStringval(Stringval _p_) {
 
     switch (_p_->kind) {
     case is_StringVals:
-	return (visitString(_p_->u.stringvals_.string_));
+	return visitString(_p_->u.stringvals_.string_);
     case is_StringValv:
-	//snprintf( s,99,"\"%s\"",getStringVar(_p_));
-	//return strdup(s);
-	// return visitStringvar(_p_->u.stringvalv_.stringvar_);
-	//return "";
-	s1=getStringVar(_p_->u.stringvalv_.stringvar_);
-	return s1;
+	return getStringVar(_p_->u.stringvalv_.stringvar_);
     default:
 	badkind(Stringval);
     }
@@ -384,12 +368,19 @@ void visitNumassgn(Numassgn _p_)
     }
 }
 
-#if 0
-String visitSymvar(Symvar p)
+String visitSymval(Symval _p_)
 {
-    return getSymVar(p);	
+    switch (_p_->kind) {
+    case is_Symvalv:
+	return getSymVar(_p_->u.symvalv_.symvar_);
+
+    case is_Symvali:
+	return (visitIdent(_p_->u.symvali_.ident_));
+
+    default:
+	badkind(Symval);
+    }
 }
-#endif
 
 String visitSymAssgn(SymAssgn _p_)
 {
@@ -397,7 +388,7 @@ String visitSymAssgn(SymAssgn _p_)
   {
   case is_SymAssgni:
     return addSymVar(_p_->u.symassgni_.symvar_,
-    	visitIdent(_p_->u.symassgni_.ident_));
+    	visitSymval(_p_->u.symassgni_.symval_));
     break;  
    case is_SymAssgns:
      return addSymVar(_p_->u.symassgns_.symvar_1,
@@ -410,7 +401,7 @@ void visitStrassgn(Strassgn _p_)
 {
 	addStringVar( 
     		visitStringvar(_p_->u.strassgnv_.stringvar_),
-    		visitIdent(_p_->u.strassgnv_.ident_)
+    		visitSymval(_p_->u.strassgnv_.symval_)
 	);
 }
 
@@ -621,21 +612,6 @@ Extport MakeExtport(PortType type, Process p, Port prt, int bs, int id)
     return ep;
 }
 
-
-String visitSymval(Symval _p_)
-{
-    switch (_p_->kind) {
-    case is_Symvalv:
-	return getSymVar(_p_->u.symvalv_.symvar_);
-
-    case is_Symvali:
-	return (visitIdent(_p_->u.symvali_.ident_));
-
-    default:
-	badkind(Symval);
-    }
-}
-
 Integer visitTab(Tab _p_)
 {
     switch (_p_->kind) {
@@ -701,7 +677,7 @@ Process visitHermt(Hermt _p_)
     state = IS_NET;
     switch (_p_->kind) {
     case is_Hermtx:
-	name = visitIdent(_p_->u.hermtx_.ident_);
+	name = visitSymval(_p_->u.hermtx_.symval_);
 	p = MakeProcess(net_model,
 			name,
 			visitComp(_p_->u.hermtx_.comp_),
@@ -710,7 +686,7 @@ Process visitHermt(Hermt _p_)
 	return p;
     case is_Hermty:
 	p = MakeProcess(net_model,
-			visitIdent(_p_->u.hermty_.ident_), NULL,
+			visitSymval(_p_->u.hermty_.symval_), NULL,
 			MakeArg(visitListArgument
 				(_p_->u.hermty_.listargument_), NULL));
 
@@ -769,7 +745,7 @@ static void visitListSubnet(ListSubnet listsubnet, Ident id)
 void visitSubdef(Subdef _p_)
 {
     visitListSubnet(_p_->u.snet_.listsubnet_,
-		    visitIdent(_p_->u.snet_.ident_));
+		    visitSymval(_p_->u.snet_.symval_));
 }
 
 void visitStm(Stm _p_)
@@ -897,13 +873,13 @@ Component visitComp(Comp _p_)
 {
     switch (_p_->kind) {
     case is_Compx:
-	return MakeComponent(visitIdent(_p_->u.compx_.ident_),
+	return MakeComponent(visitSymval(_p_->u.compx_.symval_),
 			     defaultPath);
     case is_Compy:
-	return MakeComponent(visitIdent(_p_->u.compy_.ident_2),
-			     visitIdent(_p_->u.compy_.ident_1));
+	return MakeComponent(visitSymval(_p_->u.compy_.symval_2),
+			     visitSymval(_p_->u.compy_.symval_1));
     case is_Compn:
-	return MakeComponent(visitIdent(_p_->u.compn_.ident_), "'");
+	return MakeComponent(visitSymval(_p_->u.compn_.symval_), "'");
     default:
 	badkind(Comp);
     }

@@ -11,6 +11,8 @@
 #define maxdepth	  cfg.MaxDepth
 #define TABLESIZE 	  cfg.Tablesize
 
+String visitSymval(Symval _p_);
+
 int ConfigError(String s);  /* swconfig.c process configuration file */
 
 void visitValidCFG(ValidCFG p);

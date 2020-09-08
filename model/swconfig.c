@@ -15,7 +15,7 @@
 struct cfg_ cfg = { 0, 10000, 20, 1000, 
 	"def", "Gen1", "Print1", "Filter1", "/home/tyoung3/go/mod/sw/html/"  };
 
-static String title={"No title"};
+// static String title={"No title"};
 
 void visitValidCFG(ValidCFG _p_)
 {
@@ -52,17 +52,17 @@ void visitStn(Stn _p_)
   {
   case is_StmTitle:
     /* Code for StmTitle Goes Here */
-    title=visitIdent1(_p_->u.stmtitle_.ident_);
+    visitString1(_p_->u.stmtitle_.string_);
     break;  
   case is_StmHeading:
-    // visitIdent1(_p_->u.stmdefaults_.ident_);
+     //visitIdent1(_p_->u.stmdefaults_.ident_);
     break;  
   case is_StmKeyvalint:
-    CfgInt(	visitIdent1(_p_->u.stmkeyvalint_.ident_),
+    CfgInt(	visitSymval(_p_->u.stmkeyvalint_.symval_),
     	 	visitInteger1(_p_->u.stmkeyvalint_.integer_));
     break;  
   case is_StmKeyvalstr:
-    CfgString(	visitIdent1(_p_->u.stmkeyvalstr_.ident_),
+    CfgString(	visitSymval(_p_->u.stmkeyvalstr_.symval_),
     		visitString1(_p_->u.stmkeyvalstr_.string_));
     break;
   default:
@@ -91,7 +91,7 @@ int visitInteger1(Integer i)
   return i;
 }
 
-String visitString1(String s)
+	String visitString1(String s)
 {
   return s;
 }
