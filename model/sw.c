@@ -331,6 +331,20 @@ String visitStringvar(Stringvar p) {
 	   return p;
 }
 
+String visitEnvar(Envar p)
+{
+  return p;
+}
+
+String getEnvVar(String s) {
+	String s1,s2;
+
+	s1=s+2;
+	s2=getenv(s1);
+	return s2;
+	return(getenv("BROWSER"));
+}
+
 String visitStringval(Stringval _p_) {
 
     switch (_p_->kind) {
@@ -338,6 +352,8 @@ String visitStringval(Stringval _p_) {
 	return visitString(_p_->u.stringvals_.string_);
     case is_StringValv:
 	return getStringVar(_p_->u.stringvalv_.stringvar_);
+    case is_StringVale:
+    	return(getEnvVar(visitEnvar(_p_->u.stringvale_.envar_)));
     default:
 	badkind(Stringval);
     }

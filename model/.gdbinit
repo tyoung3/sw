@@ -23,7 +23,7 @@
 #break createStream
 #break ConfigError
 #break FixComps
-break getStringVar
-break addStringVar
-
-run   <(echo '$X=xs;&U=tt;&T=x;(A a "1 " $X  ) <- (&U T "1" $X $Y "4" );')
+#break getStringVar
+#break addStringVar
+break getEnvVar
+run   <(echo '$X=xs;&U=tt;&T=x;(A a $_BROWSER  ) <- (&U T "1" $X $Y "4" );')
