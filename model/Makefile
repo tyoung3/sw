@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.11.3\"
+VERSION = \"0.11.4\"
 
 LATEX = latex
 DVIPS = dvips
@@ -72,6 +72,7 @@ check:
 	${PGM}  tests/lr.sw   >/dev/null
 	${PGM}  tests/lrR.sw   >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
+	${PGM}  tests/var.sw   >/dev/null
 	../sw.sh poc     
 
 

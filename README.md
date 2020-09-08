@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.11.3 - STREAMWORK/FrontEnd
+SW-0.11.4 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -264,6 +264,11 @@ Ex.  ```A<-B;``` expands to
 0.11.3
 ------
 	* Implemented configuration file, /home/tyoung3/.sw/sw.cfg
+
+0.11.4
+------
+	* Added TODOs. 
+	* Implemented string variables.
 	
 	
 SW.cf Language Notes

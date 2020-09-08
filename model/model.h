@@ -63,7 +63,7 @@ struct Process_ {
 		int  ch;			/* Low channel number */
 		int  depth;			/* Subnet depth */
 		struct Process_ *next;
-		char **arg;		  /* An array of strings. */
+		char **arg;		  /* Pointer to an array of strings. */
 		STATE kind;	  /* In subnet or net */
 		int  partn;	/* Partition number.  */
 } Process_; 

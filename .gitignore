@@ -32,4 +32,4 @@ model/tests/.gdbinit
 model/tests/mashup.sw
 PORTNAMES.md
 doxy/*
-
+.gdbinit

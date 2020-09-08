@@ -51,6 +51,7 @@ void genJavaFBP(Model model);
 void genC(Model model); 
 
 	/* swmain.c */
+String configfile;
 extern struct cfg_ cfg;
 extern char fbfr[]; 	
 #endif   // SW_H_

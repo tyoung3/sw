@@ -22,11 +22,12 @@ Stmx.			Stm	::= S_tream  ;
 --Stmeout.			Stm  	::= ExtPortOut  ; 
 Stmn.			Stm	::= Numassgn ; 
 Stms.			Stm	::= Strassgn ;
+Stmb.			Stm	::= SymAssgn ; 
 Stmh.			Stm	::= Hermt    ; 
 Stmnet.			Stm	::= Subdef   ;  
 terminator	   	Stm   ";" ;
 
-Snet.			Subdef	 ::= "'" Ident "{" [Subnet] "}" ;
+Snet.			Subdef	 ::= "'" Symval "{" [Subnet] "}" ;
 
 Sneth.			Subnet ::= Hermt    	;
 Snets.			Subnet ::= S_tream	;
@@ -56,13 +57,13 @@ Arrowr.			Rarrow	 ::=  "-" Buffsize ">";
 Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 
 
-Hermtx.			Hermt	::=   Ident  Comp [Argument] ;
-Hermty.			Hermt	::=   Ident  [Argument]  	 ;
+Hermtx.			Hermt	::=   Symval  Comp [Argument] ;
+Hermty.			Hermt	::=   Symval  [Argument]  	 ;
 Hermtax.		Hermt	::=   "_"  Comp [Argument]   ;
 Hermtay.		Hermt	::=   "_"  [Argument]   	 ;
 
-Processx.		Proc	::= "(" Ident  Comp [Argument] ")" ;
-Processy.		Proc	::= "(" Ident  [Argument] ")" ;
+Processx.		Proc	::= "(" Symval  Comp [Argument] ")" ;
+Processy.		Proc	::= "(" Symval  [Argument] ")" ;
 Processax.		Proc	::= "(" "_"  Comp [Argument] ")" ;
 Processay.		Proc	::= "(" "_"  [Argument] ")" ;
 
@@ -72,16 +73,19 @@ Portin.         	Prt     ::= Symval "." Numval;
 Portn.          	Prt     ::= Symval; 
 Porte.			Prt	::= ;		
 
-Compx.			Comp	::= Ident;	
-Compy.			Comp	::= Ident "." Ident;	
-Compn.		    	Comp	::= "'" Ident;
+Compx.			Comp	::= Symval;	
+Compy.			Comp	::= Symval "." Symval;	
+Compn.		    	Comp	::= "'" Symval;
 
 Argumentx.		Argument ::= Stringval;	
 separator	    	Argument   ""; 	
 
 NumAssgnv.		Numassgn   ::= Numvar "=" Numval;
 
-StrAssgnv.		Strassgn   ::= Stringvar "=" Stringval;
+StrAssgnv.		Strassgn   ::= Stringvar "=" Symval;
+
+SymAssgni.		SymAssgn   ::= Symvar "=" Symval;
+SymAssgns.		SymAssgn   ::= Symvar "=" Symvar;
 
 NumVali.		Numval     ::= Integer;
 NumValv.		Numval	   ::= Numvar;
@@ -102,10 +106,10 @@ token	Symvar    '&' letter  ( letter | digit | '_' )* ;
 
 Validcfg.	 	ValidCFG ::= [Stn];
 
-StmTitle.		Stn	::= "title:" Ident; 
-StmHeading.		Stn	::= Ident ":"  ;  
-StmKeyvalint.		Stn	::= Ident ":" Integer;
-StmKeyvalstr.		Stn	::= Ident ":" String;
+StmTitle.		Stn	::= "title:"   String; 
+StmHeading.		Stn	::= Symval ":" ;  
+StmKeyvalint.		Stn	::= Symval ":" Integer;
+StmKeyvalstr.		Stn	::= Symval ":" String;
 terminator	   	Stn   "" ;
 	
 comment "#";
@@ -124,7 +128,7 @@ comment "{#" "#}";
 
 
 ----------    Possible future additions -------------------
-{-  
+{-     NOTE: COMMENTED OUT 
 AAsgn.		       	Acond		::= NumAssgn;
 AAexp.		       	Acond		::= Aexpr;
 

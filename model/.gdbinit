@@ -23,4 +23,7 @@
 #break createStream
 #break ConfigError
 #break FixComps
-run  -m 3 ../nds/collate.sw 
+break getStringVar
+break addStringVar
+
+run   <(echo '$X=xs;&U=tt;&T=x;(A a "1 " $X  ) <- (&U T "1" $X $Y "4" );')
