@@ -25,5 +25,5 @@
 #break FixComps
 #break getStringVar
 #break addStringVar
-break getEnvVar
+break genPath
 run   <(echo '$X=xs;&U=tt;&T=x;(A a $_BROWSER  ) <- (&U T "1" $X $Y "4" );')

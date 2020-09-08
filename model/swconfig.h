@@ -7,6 +7,7 @@
 #define defaultSinkComp   cfg.DefaultSinkComp
 #define defaultFilterComp cfg.DefaultFilterComp
 #define defaultBufferSize cfg.DefaultBufferSize
+#define defaultLibrary	  cfg.DefaultLibrary
 #define maxbfsz		  cfg.Maxbfsz
 #define maxdepth	  cfg.MaxDepth
 #define TABLESIZE 	  cfg.Tablesize
@@ -35,6 +36,7 @@ struct cfg_ {
 	char *DefaultSourceComp;
 	char *DefaultSinkComp;
 	char *DefaultFilterComp;
+	char *DefaultLibrary;
 	char *HTMLdir;
 } ;	
 	

@@ -31,15 +31,19 @@ void genSuffix()
     printf("}\n");
 }
 
+
 static void genPath(char *s)
 {
-    char *importPath = { "github.com/tyoung3/streamwork" };
-
+    // char *importPath = { "github.com/tyoung3/streamwork" };
+    char *importPath = { defaultLibrary };
+    printf("import \"%s/%s\"\n", importPath, s);
+#if 0
     if (s == NULL) {
 	printf("import \"%s/fbp\"\n", importPath);
     } else {
 	printf("import \"%s/%s\"\n", importPath, s);
     }
+#endif
 
 }
 
@@ -58,8 +62,7 @@ static void genPaths(Model m)
 
     // P(import "fmt");
     P(import "sync");
-
-    genPath(NULL);
+    P(import "github.com/tyoung3/streamwork/fbp");
 
     p = m->proc;
     while (p) {

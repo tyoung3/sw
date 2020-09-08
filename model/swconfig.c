@@ -43,6 +43,7 @@ static void CfgString(String key, String val)  {
 	SetS(DefaultSourceComp);
 	SetS(DefaultSinkComp);
 	SetS(DefaultFilterComp);
+	SetS(DefaultLibrary);
 	SetS(HTMLdir);
 };
 
