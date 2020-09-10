@@ -199,18 +199,20 @@ static void ConnectProcess(Process p, int partn) {
 	pt=p->port;
 	if(pt) {
 		do {
+		   if(pt->match) {
 			if(pt->match->stream->source!=p) 
 				ConnectProcess(pt->match->stream->source,partn);
 			if(pt->match->stream->sink!=p)
 				ConnectProcess(pt->match->stream->sink,partn);
-			pt=pt->next;
+		   }
+		   pt=pt->next;
 		} while(pt!=p->port);
 	}	
 }
 
 /** For every disconnected process; 
     increment partn and
-    set partn in every connected process;
+    set partn in every connected process;	
 */
 static int ComputeNpartitions(Model m) {
 	Process p;
