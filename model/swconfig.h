@@ -12,13 +12,17 @@
 #define maxdepth	  cfg.MaxDepth
 #define TABLESIZE 	  cfg.Tablesize
 
+#define badkind(S) { 						\
+   fprintf(stderr,						\
+	"Error: bad kind field when visiting %s!\n",(#S));	\
+   exit(1); 							\
+}
+
 String visitSymval(Symval _p_);
 
 int ConfigError(String s);  /* swconfig.c process configuration file */
 
 void visitValidCFG(ValidCFG p);
-void visitStn(Stn p);
-void visitListStn(ListStn p);
 
 Ident visitIdent1(Ident i);
 int   visitInteger1(Integer i);

@@ -11,9 +11,9 @@
 
 
 entrypoints		Valide, ValidSW, ValidCFG    	; 
-	
+
+CFGvalid.		Valide ::= ValidCFG 	;	
 SWvalid.	 	Valide ::= ValidSW	;
-CFGvalid.		Valide ::= ValidCFG 	;
 
 Valid.			ValidSW ::= [Stm] 	;
 
@@ -95,8 +95,7 @@ StringValv.		Stringval  ::= Stringvar;
 StringVale.		Stringval  ::= Envar;
 
 Symvalv.		Symval	   ::= Symvar;
-Symvali.		Symval	   ::= Ident; 
---Sstrng.		Symval	   ::= "&("  Sexpr ")" ;  
+Symvali.		Symval	   ::= Ident;  
 SymVale.		Symval	   ::= Envar;
 
 
@@ -108,13 +107,17 @@ token	Symvar    '&' letter  ( letter | digit | '_' )* ;
 --  SWCFG.cf  
 --              Streamworks YAML Configuration Interpreter
 
-Validcfg.	 	ValidCFG ::= [Stn];
+Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry];
 
-StmTitle.		Stn	::= "title:"   String; 
-StmHeading.		Stn	::= Symval ":" ;  
-StmKeyvalint.		Stn	::= Symval ":" Integer;
-StmKeyvalstr.		Stn	::= Symval ":" String;
-terminator	   	Stn   "" ;
+CfgEntrya.		Entry	::=  Heading [KeyVal];
+terminator	   	Entry   "" ;
+
+CfgHeading.		Heading	::= Symval ":" ;   
+
+CfgKeyvalint.		KeyVal	::= Symval ":" Integer;
+CfgKeyvalstr.		KeyVal	::= Symval ":" String;
+CfgKeyvalent.		KeyVal  ::= Entry;
+terminator	   	KeyVal  "" ;
 	
 comment "#";
 comment "{#" "#}";	

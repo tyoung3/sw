@@ -71,14 +71,14 @@ typedef struct Process_ *Process;
 
 /** Stream structure */
 struct Stream_ {
-	Process source;
+	Process source;       /* Source or orhan process */
 	Process sink;      
 	Port  SourcePort; 
 	Port  SinkPort; 		      
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	STATE  state;    /* Type of Stream IS_SUB or IS_NET */
+	STATE  state;    /* Type of Stream IS_SUB or IS_NET or IS_ORPHAN*/
 	struct Stream_ *next;
 } Stream_;
 typedef struct Stream_ *Stream;

@@ -12,11 +12,6 @@
 
 #include <assert.h>
 
-#define badkind(S) { 						\
-   fprintf(stderr,						\
-	"Error: bad kind field when visiting %s!\n",(#S));	\
-   exit(1); 							\
-}
 
 Port LatestPort = NULL, LatestSrcPort = NULL;
 STATE state = IS_NET;

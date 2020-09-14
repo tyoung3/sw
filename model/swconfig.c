@@ -12,18 +12,12 @@
 #include "../bnfc/Parser.h"
 #include "swconfig.h"
 
-struct cfg_ cfg = { 0, 10000, 20, 1000, 
-	"def", "Gen1", "Print1", "Filter1", "/home/tyoung3/go/mod/sw/html/"  };
+struct cfg_ cfg = { 0, 10000, 10000, 1000, 
+	"def", "Gen1", "Print1", "Filter1", "defaultLib", "/home/tyoung3/go/mod/sw/html/"  };
 
-// static String title={"No title"};
-
-void visitValidCFG(ValidCFG _p_)
-{
-    visitListStn(_p_->u.validcfg_.liststn_);
-}
+void visitEntry(Entry _p_);
 
 static String Filter(String s) {
-	// String t;
 
 	return s;
 }
@@ -47,39 +41,9 @@ static void CfgString(String key, String val)  {
 	SetS(HTMLdir);
 };
 
-void visitStn(Stn _p_)
+String visitString1(String s)
 {
-  switch(_p_->kind)
-  {
-  case is_StmTitle:
-    /* Code for StmTitle Goes Here */
-    visitString1(_p_->u.stmtitle_.string_);
-    break;  
-  case is_StmHeading:
-     //visitIdent1(_p_->u.stmdefaults_.ident_);
-    break;  
-  case is_StmKeyvalint:
-    CfgInt(	visitSymval(_p_->u.stmkeyvalint_.symval_),
-    	 	visitInteger1(_p_->u.stmkeyvalint_.integer_));
-    break;  
-  case is_StmKeyvalstr:
-    CfgString(	visitSymval(_p_->u.stmkeyvalstr_.symval_),
-    		visitString1(_p_->u.stmkeyvalstr_.string_));
-    break;
-  default:
-    fprintf(stderr, "Error: bad kind field when printing Stn!\n");
-    exit(1);
-  }
-}
-
-void visitListStn(ListStn liststn)
-{
-  while(liststn != 0)
-  {
-    /* Code For ListStn Goes Here */
-    visitStn(liststn->stn_);
-    liststn = liststn->liststn_;
-  }
+  return s;
 }
 
 Ident visitIdent1(Ident i)
@@ -92,15 +56,67 @@ int visitInteger1(Integer i)
   return i;
 }
 
-	String visitString1(String s)
+void visitKeyVal(KeyVal _p_)
 {
-  return s;
+  switch(_p_->kind)
+  {
+  case is_CfgKeyvalint:
+    CfgInt(	visitSymval(_p_->u.cfgkeyvalint_.symval_),
+    		visitInteger1(_p_->u.cfgkeyvalint_.integer_));
+    break;  
+  case is_CfgKeyvalstr:
+    CfgString(	visitSymval(_p_->u.cfgkeyvalstr_.symval_),
+    		visitString1(_p_->u.cfgkeyvalstr_.string_));
+    break;  
+  case is_CfgKeyvalent:
+    visitEntry(_p_->u.cfgkeyvalent_.entry_);
+    break;
+  default:
+    badkind(KeyVal);
+  }
+}
+
+void visitListKeyVal(ListKeyVal listkeyval)
+{
+  while(listkeyval != 0)
+  {
+    visitKeyVal(listkeyval->keyval_);
+    listkeyval = listkeyval->listkeyval_;
+  }
+}
+
+String visitHeading(Heading _p_)
+{
+   return visitSymval(_p_->u.cfgheading_.symval_);
+}
+
+void visitEntry(Entry _p_)
+{
+    visitHeading(_p_->u.cfgentrya_.heading_);
+    visitListKeyVal(_p_->u.cfgentrya_.listkeyval_);
+}
+
+void visitListEntry(ListEntry listentry)
+{
+  while(listentry != 0)
+  {
+    visitEntry(listentry->entry_);
+    listentry = listentry->listentry_;
+  }
+}
+void visitValidCFG(ValidCFG _p_)
+{
+    visitListEntry(_p_->u.validcfg_.listentry_);
 }
 
 int match(const char *string, const char *pattern) 
 { 
     int status;
     regex_t re; 
+
+    if(string==NULL) {
+		return 0;
+    }
 
     if (regcomp(&re, pattern, REG_EXTENDED|REG_NOSUB) != 0) 
 		return 0; 
