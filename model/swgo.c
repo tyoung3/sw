@@ -157,7 +157,14 @@ static void assignChannels(Model m)
     Stream f = m->stream;
 
     while (f) {
-	assign_channel(ch--, f);
+	switch (f->type) {
+	   case IS_SUB:
+	   case IS_ORPHAN:
+		break;
+	   case IS_NET:
+		assign_channel(ch--, f);
+	    	break;
+	}
 	f = f->next;
     }
 }
@@ -248,11 +255,17 @@ String Plural(int n) {
 	return "s";
 }
 
+
+static void ShowOrphan(Process p) {
+    printf("%s %s.%s", p->name, p->comp->path, p->comp->name);
+    showArgs(p);
+    printf(";\n");
+}
+
 /** Show Network definition */
 static void showND(Model m)
 {
     Stream f;
-    char plural[] = "s";
     int nparts, ncycles;			/* Number of partitions */
 
     //* Generate commented Reconstructed Network Definition */
@@ -263,18 +276,21 @@ static void showND(Model m)
     assignChannels(m);
 
     while (f) {
-	if (f->source->kind == IS_NET) {
-	    showSink(f->sink, f->sink_id);
-	    showSource(f->source, f->source_id, f->bufsz);
-	}
+	switch (f->source->kind) {
+		case IS_SUB:
+			break;
+		case IS_NET:
+	    		showSink(f->sink, f->sink_id);
+	    		showSource(f->source, f->source_id, f->bufsz);
+			break;
+		case IS_ORPHAN:
+			ShowOrphan(f->source);
+	} 
 	f = f->next;
     }
 
     nparts=ComputeNpartitions(m);
 
-    if (nparts < 2) {
-	plural[0] = 0;
-    }
     ncycles=m->nstreams - m->nprocs + nparts;  
     printf("# %d stream%s, %d processes, %d component%s, %d partition%s, %d cycle%s.\n",
 		m->nstreams, Plural(m->nstreams), 
@@ -314,7 +330,7 @@ void genPrefix(Model m)
     i = 0;
     while (f) {
 	bfrtbl[nstreams - i++ - 1] = f->bufsz;
-	assert(f->sink->comp->path != 0);
+	// assert(f->sink->comp->path != 0);
 	f = f->next;
     }
     i = 0;
@@ -409,7 +425,7 @@ static void genLaunches(Process p)
 		printf("cs[%i:%i])\n", ch, ch + 1);
 	    } else {
 		genLaunch1(p);
-		printf("\n");
+		printf("NULL)\n");
 	    }
 	}
 	p = p->next;
@@ -441,15 +457,21 @@ void genND(Model mod)
 
     f = mod->stream;
     while (f) {
-	if (f->sink->port->id)
-	    printf("(%s)%d<-%d(%s); \n", f->sink->name,
-		   f->sink->port->id, f->source->port->id,
-		   f->source->name);
-	else
-	    printf(" (%s)%d<-(%s); \n", f->sink->name,
-		   f->source->port->id, f->source->name);
-
-	f = f->next;
+      if( f->type==IS_NET) {
+		if (f->sink->port->id) {
+	    		printf("(%s)%d<-%d(%s); \n", f->sink->name,
+		   		f->sink->port->id, f->source->port->id,
+		   		f->source->name);
+		} else {
+	    		printf(" (%s)%d<-(%s); \n", f->sink->name,
+		   		f->source->port->id, f->source->name);
+		}
+      }  else  {
+	 if( f->type==IS_ORPHAN ) {
+		printf("%s;\n",f->source->name);
+	 }
+      }	
+      f = f->next;
     }
 
 }

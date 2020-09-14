@@ -14,7 +14,7 @@
 
 
 Port LatestPort = NULL, LatestSrcPort = NULL;
-STATE state = IS_NET;
+TYPE type = IS_NET;
 
 int bs = 1;			/*  Buffer size */
 Model net_model = NULL;
@@ -62,6 +62,7 @@ static Subnetm linkSubnet(Model m, char *name)
 	sn2->name = name;
 	sn2->stream = NULL;
 	sn2->extport = NULL;
+	sn2->next = NULL;
 	m->subnetm = sn2;
 	return sn2;
     }
@@ -197,9 +198,9 @@ MakeProcess(Model model, Ident name, Component comp, char **arg)
 	p->nportsIn = 0;
 	p->nportsOut = 0;
 	p->port = NULL;
-	p->kind = state;
+	p->kind = type;
 	p->depth = 0;
-	if (state == IS_NET) {
+	if (type == IS_NET) {
 	    p->next = model->proc;
 	    model->proc = p;
 	    model->nprocs++;
@@ -280,7 +281,7 @@ Component MakeComponent(Ident name, String path)
 
 /** Make Stream structure */
 Stream
-MakeStream(STATE state, Process src, Process snk, int bs, Model m,
+MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
 	   Port SourcePort, Port SinkPort)
 {
     Stream f;
@@ -299,13 +300,8 @@ MakeStream(STATE state, Process src, Process snk, int bs, Model m,
     f->SinkPort = SinkPort;
     f->source = src;
     f->sink = snk;
-    f->source_id = fixId(SourcePort->id);
-    f->sink_id = fixId(SinkPort->id);
     f->next = NULL;
-    f->state = state;		/* Defined w/ '<-'  */
-    if (state == IS_NET) {
-	m->nstreams++;
-    }
+    f->type = type;		/* Defined w/ '<-'  */
     f->next = m->stream;
     m->stream = f;
     if (bs < 0)
@@ -313,6 +309,18 @@ MakeStream(STATE state, Process src, Process snk, int bs, Model m,
     if (bs > maxbfsz)
 	bs = maxbfsz;
     f->bufsz = bs;
+
+    switch (type) {
+    	case IS_ORPHAN:
+		// m->nstreams++;
+		break;
+    	case IS_NET:
+		m->nstreams++;
+   	case IS_SUB:
+    		f->source_id = fixId(SourcePort->id);
+   	 	f->sink_id   = fixId(SinkPort->id);
+    }
+	
     return f;
 }
 
@@ -512,7 +520,7 @@ Stream visitS_tream(S_tream _p_)
 	SetSink(snk);
 	SetSource(src);
 	linkPort(src, src_pt);
-	s = MakeStream(state, src, snk, bs, net_model, src_pt, snk_pt);
+	s = MakeStream(type, src, snk, bs, net_model, src_pt, snk_pt);
 	s->SourcePort = src_pt;
 	s->SinkPort = snk_pt;
 	s->SourcePort->stream = s->SinkPort->stream = s;
@@ -532,7 +540,7 @@ Stream visitS_tream(S_tream _p_)
 	linkPort(snk, LatestPort);
 	SetSink(snk);
 	bs = visitRarrow(_p_->u.streamrx_.rarrow_);
-	s = MakeStream(state, src, snk, bs, net_model, LatestSrcPort,
+	s = MakeStream(type, src, snk, bs, net_model, LatestSrcPort,
 		       LatestPort);
 	setStream(LatestSrcPort, s);
 	setStream(LatestPort, s);
@@ -554,7 +562,7 @@ Stream visitS_tream(S_tream _p_)
 	SetSource(src);
 	linkPort(snk, pt);
 	SetSink(snk);
-	s2 = MakeStream(state, src, snk, bs, net_model, LatestSrcPort,
+	s2 = MakeStream(type, src, snk, bs, net_model, LatestSrcPort,
 			LatestPort);
 	s2->SourcePort->stream = s2->SinkPort->stream = s2;
 	s2->SourcePort = LatestSrcPort;
@@ -576,7 +584,7 @@ Stream visitS_tream(S_tream _p_)
 	SetSource(src);
 	pt = visitPrt(_p_->u.streamry_.prt_2);	/* Sink Port */
 	SetSink(snk);
-	s2 = MakeStream(state, src, snk, bs, net_model, src_pt, pt);
+	s2 = MakeStream(type, src, snk, bs, net_model, src_pt, pt);
 	setStream(src_pt, s2);
 	setStream(pt, s2);
 	s2->sink_id = s->SinkPort->id;
@@ -685,7 +693,7 @@ Process visitHermt(Hermt _p_)
     char *name;
     Process p;
 
-    state = IS_NET;
+    type = IS_NET;
     switch (_p_->kind) {
     case is_Hermtx:
 	name = visitSymval(_p_->u.hermtx_.symval_);
@@ -763,7 +771,7 @@ void visitStm(Stm _p_)
 {
     Process p;
 
-    state = IS_NET;
+    type = IS_NET;
     switch (_p_->kind) {
     case is_Stmx:
 	visitS_tream(_p_->u.stmx_.s_tream_);
@@ -778,7 +786,7 @@ void visitStm(Stm _p_)
     	visitSymAssgn(_p_->u.stmb_.symassgn_);
 	break;
     case is_Stmnet:
-	state = IS_SUB;
+	type = IS_SUB;
 	visitSubdef(_p_->u.stmnet_.subdef_);
 	break;
     case is_Stmh:
@@ -964,7 +972,7 @@ static void Expand2(Model m, Process p, Stream s)
     Process src, snk;
     Port psrc, psnk;
     Stream ns;			/* New Stream */
-    state = IS_NET;
+    type = IS_NET;
 
     srcname = makeName(p->name, s->source->name);
     snkname = makeName(p->name, s->sink->name);
@@ -979,11 +987,11 @@ static void Expand2(Model m, Process p, Stream s)
     src->nportsOut++;
     snk->nportsIn++;
     bs = s->bufsz;
-    ns = MakeStream(state, src, snk, bs, m, psrc, psnk);
+    ns = MakeStream(type, src, snk, bs, m, psrc, psnk);
     ns->sink_id = s->sink_id;
     ns->source_id = s->source_id;
     ns->bufsz = s->bufsz;
-    ns->state = state;
+    ns->type = type;
     psrc->stream = psnk->stream = ns;
     ns->source->depth = ns->sink->depth = CheckDepth(p->depth);
     ns->SinkPort->match = ns->SourcePort;
@@ -1014,7 +1022,7 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
     char *srcname;
     char *snkname;
 
-    state = IS_ORPHAN;
+    type = IS_ORPHAN;
 
     if (ep->type == SOURCE) {
 	srcname = makeName(p->name, fixName(ep->source->name));
@@ -1649,19 +1657,31 @@ static void findSink(Model m, Extport ep)
     }
 }
 
-	/** Match source ports */
+	/** Match source ports to appropriate sink ports 
+	    also identify and mark orphan process */
 static void autolink(Model m)
 {
     Extport ep;
+    Process p;
 
     ep = extprtList;
-    state = IS_NET;
+    type = IS_NET;
     while (ep) {
 	if (ep->type == SOURCE) {
 	    findSink(m, ep);
 	}
 	ep = ep->next;
     }
+
+    p=m->proc;
+
+    while(p) {
+	if(p->nportsIn + p->nportsOut == 0) {
+		p->kind=IS_ORPHAN;	
+		MakeStream(IS_ORPHAN,  p, NULL, -1, m, NULL, NULL);
+	}
+	p=p->next;
+    }	
 }
 
 Model visitValidSW(ValidSW _p_)

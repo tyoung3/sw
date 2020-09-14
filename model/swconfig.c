@@ -37,6 +37,7 @@ static void CfgString(String key, String val)  {
 	SetS(DefaultSourceComp);
 	SetS(DefaultSinkComp);
 	SetS(DefaultFilterComp);
+	SetS(DefaultOrphanComp);
 	SetS(DefaultLibrary);
 	SetS(HTMLdir);
 };
@@ -138,6 +139,7 @@ int match(const char *string, const char *pattern)
 	exit(1);						\
   }
 
+/** Parse config file, validate, and set cfg struct */
 int ConfigError(String s) {
   ValidCFG parse_tree;
   FILE *file;
@@ -175,6 +177,7 @@ int ConfigError(String s) {
   CheckString(defaultSourceComp,component);
   CheckString(defaultSinkComp,component);
   CheckString(defaultFilterComp,component);
+  CheckString(defaultOrphanComp,component);
 	
   return 0;
 

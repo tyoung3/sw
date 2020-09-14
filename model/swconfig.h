@@ -6,6 +6,7 @@
 #define defaultSourceComp cfg.DefaultSourceComp
 #define defaultSinkComp   cfg.DefaultSinkComp
 #define defaultFilterComp cfg.DefaultFilterComp
+#define defaultOrphanComp cfg.DefaultOrphanComp
 #define defaultBufferSize cfg.DefaultBufferSize
 #define defaultLibrary	  cfg.DefaultLibrary
 #define maxbfsz		  cfg.Maxbfsz
@@ -40,6 +41,7 @@ struct cfg_ {
 	char *DefaultSourceComp;
 	char *DefaultSinkComp;
 	char *DefaultFilterComp;
+	char *DefaultOrphanComp;
 	char *DefaultLibrary;
 	char *HTMLdir;
 } ;	

@@ -31,7 +31,7 @@
 
 /*    MODEL  Structures   */
 
-typedef enum {IS_NET, IS_SUB, IS_ORPHAN} STATE;   /* Type of Stream */
+typedef enum {IS_NET, IS_SUB, IS_ORPHAN} TYPE;   /* Type of Stream */
 
 /** Component structure */
 struct Component_ {
@@ -57,15 +57,15 @@ typedef struct Port_ *Port;
 struct Process_ {
 		String name;
 		Component comp;    		  
-		Port  port; 	      /* Port list */
+		Port  port; 	      	/* Port list */
 		int  nportsIn;
 		int  nportsOut;
-		int  ch;			/* Low channel number */
-		int  depth;			/* Subnet depth */
+		int  ch;		/* Low channel number */
+		int  depth;		/* Subnet depth */
 		struct Process_ *next;
-		char **arg;		  /* Pointer to an array of strings. */
-		STATE kind;	  /* In subnet or net */
-		int  partn;	/* Partition number.  */
+		char **arg;		/* Pointer to an array of strings. */
+		TYPE kind;	  	/* In subnet or net or orphan */
+		int  partn;		/* Partition number.  */
 } Process_; 
 typedef struct Process_ *Process;
 
@@ -78,7 +78,7 @@ struct Stream_ {
 	int source_id; 	
 	int sink_id; 	
 	int bufsz; 
-	STATE  state;    /* Type of Stream IS_SUB or IS_NET or IS_ORPHAN*/
+	TYPE  type;    /* Type of Stream IS_SUB or IS_NET or IS_ORPHAN*/
 	struct Stream_ *next;
 } Stream_;
 typedef struct Stream_ *Stream;

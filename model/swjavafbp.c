@@ -1,13 +1,17 @@
 /* SWjavafbp.C 
-		  Generate JavaFBP Network Definition
+		  Generate JavaFBP Network Definition [TBI]
 */
 
 ///@todo    . Everything  	  
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "model.h"
 #include "sw.h"
+#include "model.h"
+
+#ifndef INCORPORATED
+void genJavaFBP(Model m) {m=m;}
+#else
 
 #define P(s) printf("%s\n",(#s));
 #define C(s) printf("%s,\n",(#s));
@@ -41,7 +45,6 @@ static void genPrefix(int nstreams) {
 //static void genPort(int n) {
 //  		// printf("|<%i> %i", n, n);
 //}  	
-
 static void genProc(char *name, char *comp, char *host) {
 
 #ifdef GRAPHV
@@ -53,7 +56,7 @@ static void genProc(char *name, char *comp, char *host) {
      printf("label=\"{<P> %s|%s }",name,comp);
 #endif 
  
-}  	    
+}  	  
 
 static void endProc() {
 #ifdef GRAPHV
@@ -61,6 +64,7 @@ static void endProc() {
     printf("];\n"); // End proc 
     #endif
 }
+
 
      
 static void genCluster1(char *name) { 
@@ -217,5 +221,6 @@ public class xxxxxx extends Network {
      new xxxxxx().go();
   }
 }
+#endif  //  #ifdef INCORPORATED 
 
 #endif 
