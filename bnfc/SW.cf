@@ -27,7 +27,7 @@ Stmh.			Stm	::= Hermt    ;
 Stmnet.			Stm	::= Subdef   ;  
 terminator	   	Stm   ";" ;
 
-Snet.			Subdef	 ::= "'" Symval "{" [Subnet] "}" ;
+Snet.			Subdef	 ::= "_" Symval "{" [Subnet] "}" ;
 
 Sneth.			Subnet ::= Hermt    	;
 Snets.			Subnet ::= S_tream	;
@@ -75,7 +75,7 @@ Porte.			Prt	::= ;
 
 Compx.			Comp	::= Symval;	
 Compy.			Comp	::= Symval "." Symval;	
-Compn.		    	Comp	::= "'" Symval;
+Compn.		    	Comp	::= "_" Symval;
 
 Argumentx.		Argument ::= Stringval;	
 separator	    	Argument   ""; 	
