@@ -28,5 +28,5 @@
 #break genPath
 #run   <(echo '$X=xs;&U=tt;&T=x;(A a $_BROWSER  ) <- (&U T "1" $X $Y "4" );')
 #run -m 3 <(echo 'A b; C d; (E)<-(F);')
-
-run -m 3 <(echo "A x.a;")
+#run -m 3 <(echo "A x.a;")
+run te*/n6.sw

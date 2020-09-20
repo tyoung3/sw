@@ -55,6 +55,7 @@ static int badProc(Process p)
 		sprintf(fbfr,
 			"(%s) port[%i] is disconnected(has no ->stream).\n",
 			p->name, i);
+		FAIL(badProc, fbfr);
 	    }
 	    if (port->id != i) {
 		sprintf(fbfr,
@@ -313,7 +314,7 @@ int main(int argc, char **argv)
     parse_tree = pValidSW(input);	/** Parse network definition */
 
     if (parse_tree) {
-	tabinit(2000000);	/** set symbol table */
+	tabinit();	/** set symbol table */
 	model = visitValidSW(parse_tree);	/** Build model */
 	model->name = baseOf(fname);
 	if (verifyOK(model)) {
