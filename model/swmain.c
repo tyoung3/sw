@@ -192,6 +192,8 @@ static int verifyOK(Model model)
        switch (f->type) {
 	 case IS_ORPHAN:
 		break;
+	 case IS_SUB:
+		break;
 	 case IS_NET:
 		FixComps(f);
 		if (badProc(f->sink) || badProc(f->source)) {
