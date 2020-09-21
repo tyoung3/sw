@@ -277,6 +277,7 @@ Ex.  ```A<-B;``` expands to
 0.11.6
 ------
 	* Fixed port autolinking
+	* Changed subnet tag from quote(') to underscore(_).
 
 	
 	
