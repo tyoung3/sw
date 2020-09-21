@@ -1,6 +1,7 @@
 Absyn.?
 AbsynLexer.c
 config/
+example/
 Lexer.c
 Parser.?
 Printer.?

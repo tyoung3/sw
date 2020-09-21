@@ -34,6 +34,9 @@ static int badProc(Process p)
     int i;
     Port port;
 
+    if(!p)
+	return 0;
+
     if (!p->comp) {
 	sprintf(fbfr, "missing component for process: (%s)", p->name);
 	FAIL(badProc, fbfr);
@@ -52,6 +55,7 @@ static int badProc(Process p)
 		sprintf(fbfr,
 			"(%s) port[%i] is disconnected(has no ->stream).\n",
 			p->name, i);
+		FAIL(badProc, fbfr);
 	    }
 	    if (port->id != i) {
 		sprintf(fbfr,
@@ -165,6 +169,9 @@ static void FixComps(Stream s)
     if (!s->source->comp) {
 	FixComp(s->source, defaultSourceComp, defaultPath);
     }
+    
+    if(s->type==IS_ORPHAN) 
+	return;
     if (!s->sink->comp) {
 	FixComp(s->sink, defaultSinkComp, defaultPath);
     }
@@ -182,13 +189,18 @@ static int verifyOK(Model model)
 
     f = model->stream;
     while (f) {
-	FixComps(f);
-	if (badProc(f->sink) || badProc(f->source)) {
-	    return 0;
-	}
-	if (NameMisMatch(f->source, f->source_id, f->sink, f->sink_id))
-	    return 0;
-	f = f->next;
+       switch (f->type) {
+	 case IS_ORPHAN:
+		break;
+	 case IS_NET:
+		FixComps(f);
+		if (badProc(f->sink) || badProc(f->source)) {
+	    		return 0;
+		}
+		if (NameMisMatch(f->source, f->source_id, f->sink, f->sink_id))
+	    		return 0;
+       }		
+       f = f->next;
     }
 
     p = model->proc;
@@ -296,13 +308,13 @@ int main(int argc, char **argv)
     }
 
     if(ConfigError(configfile)) {
-	FAIL(swmain / main, "Configuration file(~/.sw/sw.cfg) failure");	
+	FAIL(swmain / main, "Configuration file parse error");	
     }
 
     parse_tree = pValidSW(input);	/** Parse network definition */
 
     if (parse_tree) {
-	tabinit(2000000);	/** set symbol table */
+	tabinit();	/** set symbol table */
 	model = visitValidSW(parse_tree);	/** Build model */
 	model->name = baseOf(fname);
 	if (verifyOK(model)) {
@@ -322,13 +334,13 @@ int main(int argc, char **argv)
 		genGraph(model);	// Generate .DOT file
 		break;
 	    case JAVAFBP:
-		genJavaFBP(model);	// Generate JavaFBP 
+		genJavaFBP(model);	// Generate JavaFBP [TBI]
 		break;
 	    case GOMODE:
-		genGo(model);	// Generate Go MAIN.GO
+		genGo(model);		// Generate Go MAIN.GO
 		break;
 	    case CMODE:
-		genC(model);	// Generate C source
+		genC(model);		// Generate C source  [TBI]
 		break;
 	    default:
 		Usage();

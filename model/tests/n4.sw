@@ -1,13 +1,13 @@
-'a {  
+_a {  
    (A)	<- IN ;
 };  
 
-'b {  
+_b {  
     OUT	<- (B);
 };  
 
-'ab {
-X 'a; Y 'b; 
+_ab {
+X _a; Y _b; 
 };
 
-T 'ab;
+T _ab;

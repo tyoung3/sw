@@ -273,6 +273,11 @@ Ex.  ```A<-B;``` expands to
 0.11.5
 ------
 	* Fixed string variables
+
+0.11.6
+------
+	* Fixed port autolinking
+
 	
 	
 SW.cf Language Notes

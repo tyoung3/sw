@@ -29,8 +29,6 @@ struct bucket {
 typedef struct bucket *bucketp;
 
 bucketp *symtable;		/* Array of bucket pointers */
-
-// int TABLESIZE = 2000000;
  
 #define FREE(x)      free((char *) (x))
 #define NEW(t)      ((t *) alloca((unsigned) sizeof(t)))
@@ -51,7 +49,6 @@ static bucketp lastsymbol;
 
 void tabinit()
 {
-    // TABLESIZE = nvar;
     int i;
 
     symtable = (bucketp *) malloc(TABLESIZE * sizeof(bucketp));
