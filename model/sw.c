@@ -280,8 +280,7 @@ Component MakeComponent(Ident name, String path)
 
 
 /** Make Stream structure */
-Stream
-MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
+static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
 	   Port SourcePort, Port SinkPort)
 {
     Stream f;
@@ -316,9 +315,13 @@ MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
 		break;
     	case IS_NET:
 		m->nstreams++;
+		__attribute__ ((fallthrough));
    	case IS_SUB:
     		f->source_id = fixId(SourcePort->id);
    	 	f->sink_id   = fixId(SinkPort->id);
+		break;
+	default:
+		badkind(MakeStream);
     }
 	
     return f;
@@ -725,6 +728,13 @@ Process visitHermt(Hermt _p_)
     }
 }
 
+static Ident UnderScore( Ident id) {
+	Ident uid;
+
+	uid = id;  // ?? add underscore later. Just refactor now.
+	return uid;
+}
+
 Subnetm visitSubnet(Subnet _p_, Ident id)
 {
     Stream s = NULL;
@@ -756,7 +766,7 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 static void visitListSubnet(ListSubnet listsubnet, Ident id)
 {
     while (listsubnet != 0) {
-	(visitSubnet(listsubnet->subnet_, id));
+	(visitSubnet(listsubnet->subnet_, UnderScore(id)));
 	listsubnet = listsubnet->listsubnet_;
     }
 }

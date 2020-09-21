@@ -102,10 +102,9 @@ SymVale.		Symval	   ::= Envar;
 token   Numvar	  '%' letter  ( letter | digit  )*;		
 token	Stringvar '$' letter  ( letter | digit  )*;	
 token	Envar 	  '$' '_' letter  ( letter | digit  )*;   	-- Environment variable
-token	Symvar    '&' letter  ( letter | digit | '_' )* ;
-	
---  SWCFG.cf  
---              Streamworks YAML Configuration Interpreter
+token	Symvar    '&' letter  ( letter | digit | '_' )* ;    
+	 
+----------------------  Streamworks YAML Configuration Interpreter  ----------------------
 
 Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry];
 
@@ -121,13 +120,7 @@ terminator	   	KeyVal  "" ;
 	
 comment "#";
 comment "{#" "#}";	
-------------   End of Current Language Definition   --------------
-
-
---        Version changes  Must be new minor level for any SW.cf change  -- 
--- v0.4.0   Added buffer sizes ( Buffsize )
--- v0.5.0   Named ports (portni, 'in, 'n).  Expand missing port numbers(Porte).
-
+----------------------   End of Current Language Definition   ----------------------
 
 
 -- Force component names to have initial capitals
