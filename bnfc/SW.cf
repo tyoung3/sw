@@ -27,7 +27,7 @@ Stmh.			Stm	::= Hermt    ;
 Stmnet.			Stm	::= Subdef   ;  
 terminator	   	Stm   ";" ;
 
-Snet.			Subdef	 ::= "_" Symval "{" [Subnet] "}" ;
+Snet.			Subdef	 ::= SubId "{" [Subnet] "}" ;
 
 Sneth.			Subnet ::= Hermt    	;
 Snets.			Subnet ::= S_tream	;
@@ -75,7 +75,7 @@ Porte.			Prt	::= ;
 
 Compx.			Comp	::= Symval;	
 Compy.			Comp	::= Symval "." Symval;	
-Compn.		    	Comp	::= "_" Symval;
+Compn.		    	Comp	::= SubId;
 
 Argumentx.		Argument ::= Stringval;	
 separator	    	Argument   ""; 	
@@ -102,7 +102,8 @@ SymVale.		Symval	   ::= Envar;
 token   Numvar	  '%' letter  ( letter | digit  )*;		
 token	Stringvar '$' letter  ( letter | digit  )*;	
 token	Envar 	  '$' '_' letter  ( letter | digit  )*;   	-- Environment variable
-token	Symvar    '&' letter  ( letter | digit | '_' )* ;    
+token	Symvar    '&' letter  ( letter | digit | '_' )* ;  
+token   SubId	  '_' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
 	 
 ----------------------  Streamworks YAML Configuration Interpreter  ----------------------
 

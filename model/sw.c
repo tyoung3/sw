@@ -263,7 +263,7 @@ Component MakeComponent(Ident name, String path)
 
     if (c == NULL) {
 	c = (Component) malloc(sizeof(Component_));
-	if (path[0] != '\'')
+	if (path[0] != '_')
 	    net_model->ncomponents++;
     }
     if (!c) {
@@ -327,6 +327,11 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     return f;
 }
 
+
+Ident visitSubId(SubId p)
+{
+  return p;
+}
 
 Numvar visitNumvar(Numvar p)
 {
@@ -772,9 +777,11 @@ static void visitListSubnet(ListSubnet listsubnet, Ident id)
 }
 
 void visitSubdef(Subdef _p_)
-{
+{	
     visitListSubnet(_p_->u.snet_.listsubnet_,
-		    visitSymval(_p_->u.snet_.symval_));
+	visitSubId(_p_->u.snet_.subid_));
+    //visitListSubnet(_p_->u.snet_.listsubnet_,
+	//		    visitSymval(_p_->u.snet_.symval_));
 }
 
 void visitStm(Stm _p_)
@@ -908,7 +915,7 @@ Component visitComp(Comp _p_)
 	return MakeComponent(visitSymval(_p_->u.compy_.symval_2),
 			     visitSymval(_p_->u.compy_.symval_1));
     case is_Compn:
-	return MakeComponent(visitSymval(_p_->u.compn_.symval_), "'");
+	return MakeComponent(visitSubId(_p_->u.compn_.subid_),"_");
     default:
 	badkind(Comp);
     }
@@ -1225,7 +1232,7 @@ void expandSubnets(Model m)
 	more = 0;
 	while (p) {
 	    if (p->comp) {
-		if (p->comp->path[0] == '\'') {	/* Is a subnet */
+		if (p->comp->path[0] == '_') {	/* Is a subnet */
 		    more = 1;
 		    m->nprocs--;
 		    ps = p;
