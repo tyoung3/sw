@@ -10,10 +10,12 @@
 #include "swsym.h"
 #include "swgraph.h"
 
-/** @todo
-	* Implement getops() for command line & Usage
-	* Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
-	* Create Man page w/Doxygen
+/** 
+	@todo Implement Process name expansion. 
+	Ex. "_MONITOR;" launches system monitor
+	@todo Create Man page w/Doxygen
+	@todo Generate project examples
+
 */
 
 typedef enum
@@ -192,8 +194,22 @@ static int verifyOK(Model model)
        switch (f->type) {
 	 case IS_ORPHAN:
 		break;
+	 case IS_SUB:
+		break;
 	 case IS_NET:
 		FixComps(f);
+		if(f->sink->name==NULL) {
+			sprintf(fbfr, 
+				"Sink process has no name. Source is %s.", 
+				f->source->name);
+			FAIL(verifyOK, fbfr);
+		}
+		if(f->source->name==NULL) {
+			sprintf(fbfr, 
+				"Source process has no name. Sink is %s.", 
+				f->sink->name);
+			FAIL(verifyOK, fbfr);
+		}
 		if (badProc(f->sink) || badProc(f->source)) {
 	    		return 0;
 		}

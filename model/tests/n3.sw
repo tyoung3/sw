@@ -1,13 +1,13 @@
-_a {  
+^a {  
    (A)	<- IN ;
 };  
 
-_b {  
+^b {  
     OUT	<- (B);
 };  
 
-_ab {
-X _a; Y _b; 
+^ab {
+X ^a; Y ^b; 
 };
 
-T _ab;
+T ^ab;

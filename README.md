@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.11.4 - STREAMWORK/FrontEnd
+SW-0.11.7 - STREAMWORK/FrontEnd
 ==============================
 
 Name
@@ -24,16 +24,16 @@ Name
 Description
 -----------
 
-StreamWork is the prototype for a Go language,
+StreamWork is a Go language,
 flow-based-programming(FBP) system.  
 
 StreamWork reads, analyzes, and executes a StreamWork network 
 definition(ND) file.
-Employing StreamWork, an ND becomes, in effect, an executable
+Employing StreamWork, a network definition becomes, in effect, an executable
 script. 
 
 By default, sw generates 
-and builds a single main.go program which imports the StreamWork backend
+and builds a single main.go program which imports the StreamWork, FBP backend
 to launch a goroutine 
 for each process,  connect these processes via Go interface channels,
 and wait for all processes to finish.  
@@ -67,20 +67,23 @@ The component identifier and arguments may be omitted.
 
 A component identifier consists of its import path identifier, 
 a period, '.', and the component name.  If  the path is omitted, 
-'def' is assumed.  If the component name is also ommited, Print1 
+'def' is assumed or a configuration default path.  
+If the component name is also ommited, Print1 
 is assumed for sink processes and Gen1 is assumed 
 for source processes.   These defaults can be overridden by 
+configuration file defaults or
 arguments to sw. 
  
 Channel arrows consist of ```<```, an optional
 buffersize integer, and ```-```. Example: ```<100-```
+The reverse, ```-100>``` is also valid.
  
 IPs are designed as nil(empty) interfaces whose
 data type is determined by the sending component. A type 
 mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
 type(including user-defined types); 
-a few types(Print1 can process strings and integers); 
+a few components		(Print1, for instance) can process strings and integers; 
 or just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
@@ -279,7 +282,9 @@ Ex.  ```A<-B;``` expands to
 	* Fixed port autolinking
 	* Changed subnet tag from quote(') to underscore(_).
 
-	
+0.11.7
+------
+	* Added missing name error messages.	
 	
 SW.cf Language Notes
 --------------------

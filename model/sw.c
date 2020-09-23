@@ -1,5 +1,6 @@
 /** @file SW.c
     Create network model from parse tree 
+
 */
 
 #include <stdlib.h>
@@ -11,7 +12,7 @@
 #include "model.h"
 
 #include <assert.h>
-
+#define DEBUGGING
 
 Port LatestPort = NULL, LatestSrcPort = NULL;
 TYPE type = IS_NET;
@@ -263,7 +264,7 @@ Component MakeComponent(Ident name, String path)
 
     if (c == NULL) {
 	c = (Component) malloc(sizeof(Component_));
-	if (path[0] != '\'')
+	if (path[0] != '_')
 	    net_model->ncomponents++;
     }
     if (!c) {
@@ -280,8 +281,7 @@ Component MakeComponent(Ident name, String path)
 
 
 /** Make Stream structure */
-Stream
-MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
+static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
 	   Port SourcePort, Port SinkPort)
 {
     Stream f;
@@ -316,14 +316,23 @@ MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
 		break;
     	case IS_NET:
 		m->nstreams++;
+		__attribute__ ((fallthrough));
    	case IS_SUB:
     		f->source_id = fixId(SourcePort->id);
    	 	f->sink_id   = fixId(SinkPort->id);
+		break;
+	default:
+		badkind(MakeStream);
     }
 	
     return f;
 }
 
+
+Ident visitSubId(SubId p)
+{
+  return p;
+}
 
 Numvar visitNumvar(Numvar p)
 {
@@ -387,6 +396,11 @@ void visitNumassgn(Numassgn _p_)
     }
 }
 
+Id visitId(Id i)
+{
+    return i;
+}
+
 String visitSymval(Symval _p_)
 {
     switch (_p_->kind) {
@@ -394,7 +408,7 @@ String visitSymval(Symval _p_)
 	return getSymVar(_p_->u.symvalv_.symvar_);
 
     case is_Symvali:
-	return (visitIdent(_p_->u.symvali_.ident_));
+	return (visitId(_p_->u.symvali_.id_)); 
 
     default:
 	badkind(Symval);
@@ -637,7 +651,7 @@ Integer visitTab(Tab _p_)
     case is_Tabn:
 	return visitNumval(_p_->u.tabn_.numval_);
     case is_Tabs:
-	saves = visitSymval(_p_->u.tabs_.symval_);	/** @todo fix named ports */
+	saves = visitSymval(_p_->u.tabs_.symval_);	 
 	return -2;
     default:
 	badkind(Tab);
@@ -725,6 +739,13 @@ Process visitHermt(Hermt _p_)
     }
 }
 
+static Ident UnderScore( Ident id) {
+	Ident uid;
+
+	uid = id;  // ?? add underscore later. Just refactor now.
+	return uid;
+}
+
 Subnetm visitSubnet(Subnet _p_, Ident id)
 {
     Stream s = NULL;
@@ -756,15 +777,17 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 static void visitListSubnet(ListSubnet listsubnet, Ident id)
 {
     while (listsubnet != 0) {
-	(visitSubnet(listsubnet->subnet_, id));
+	(visitSubnet(listsubnet->subnet_, UnderScore(id)));
 	listsubnet = listsubnet->listsubnet_;
     }
 }
 
 void visitSubdef(Subdef _p_)
-{
+{	
     visitListSubnet(_p_->u.snet_.listsubnet_,
-		    visitSymval(_p_->u.snet_.symval_));
+	visitSubId(_p_->u.snet_.subid_));
+    //visitListSubnet(_p_->u.snet_.listsubnet_,
+	//		    visitSymval(_p_->u.snet_.symval_));
 }
 
 void visitStm(Stm _p_)
@@ -898,7 +921,7 @@ Component visitComp(Comp _p_)
 	return MakeComponent(visitSymval(_p_->u.compy_.symval_2),
 			     visitSymval(_p_->u.compy_.symval_1));
     case is_Compn:
-	return MakeComponent(visitSymval(_p_->u.compn_.symval_), "'");
+	return MakeComponent(visitSubId(_p_->u.compn_.subid_),"_");
     default:
 	badkind(Comp);
     }
@@ -927,11 +950,6 @@ ListArgument visitListArgument(ListArgument listargument)
 
     return l;
 
-}
-
-Ident visitIdent(Ident i)
-{
-    return i;
 }
 
 Integer visitInteger(Integer i)
@@ -1215,7 +1233,7 @@ void expandSubnets(Model m)
 	more = 0;
 	while (p) {
 	    if (p->comp) {
-		if (p->comp->path[0] == '\'') {	/* Is a subnet */
+		if (p->comp->path[0] == '_') {	/* Is a subnet */
 		    more = 1;
 		    m->nprocs--;
 		    ps = p;

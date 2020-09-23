@@ -253,7 +253,8 @@ static void showPorts (Stream f, Process src, Process snk, int channel)      {
         	printf ("#(%s %s.%s) %d ports\n",
 	     		p->name,
 	     		p->comp->path,
-	     		p->comp->name);
+	     		p->comp->name,
+			p->nportsIn + p->nportsOut);
         	genProc (p->name, p->comp->name, p->comp->path, "taos_", p->arg);
         	printf (" }"); endProc ();		
      }	// End if IS_NET      

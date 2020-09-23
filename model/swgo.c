@@ -1,9 +1,7 @@
 /** @file SWGO.C 
-		  Greate StreamWork Go program 
-
-  @bug  A a;  causes launch code w/missing parameter, S.B cs[0,0].  Fixed 9/14/'20
-	
+		  Greate a Go program from the network model	
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
