@@ -95,7 +95,7 @@ StringValv.		Stringval  ::= Stringvar;
 StringVale.		Stringval  ::= Envar;
 
 Symvalv.		Symval	   ::= Symvar;
-Symvali.		Symval	   ::= Ident;  
+Symvali.		Symval	   ::= Id;  
 SymVale.		Symval	   ::= Envar;
 
 
@@ -103,7 +103,8 @@ token   Numvar	  '%' letter  ( letter | digit  )*;
 token	Stringvar '$' letter  ( letter | digit  )*;	
 token	Envar 	  '$' '_' letter  ( letter | digit  )*;   	-- Environment variable
 token	Symvar    '&' letter  ( letter | digit | '_' )* ;  
-token   SubId	  '_' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
+token   SubId	  '^' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
+token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
 	 
 ----------------------  Streamworks YAML Configuration Interpreter  ----------------------
 

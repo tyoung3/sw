@@ -1,5 +1,7 @@
 /** @file SW.c
     Create network model from parse tree 
+
+  @bug x1.sw graph out of bounds
 */
 
 #include <stdlib.h>
@@ -11,7 +13,7 @@
 #include "model.h"
 
 #include <assert.h>
-
+#define DEBUGGING
 
 Port LatestPort = NULL, LatestSrcPort = NULL;
 TYPE type = IS_NET;
@@ -395,6 +397,11 @@ void visitNumassgn(Numassgn _p_)
     }
 }
 
+Id visitId(Id i)
+{
+    return i;
+}
+
 String visitSymval(Symval _p_)
 {
     switch (_p_->kind) {
@@ -402,7 +409,7 @@ String visitSymval(Symval _p_)
 	return getSymVar(_p_->u.symvalv_.symvar_);
 
     case is_Symvali:
-	return (visitIdent(_p_->u.symvali_.ident_));
+	return (visitId(_p_->u.symvali_.id_)); 
 
     default:
 	badkind(Symval);
@@ -645,7 +652,7 @@ Integer visitTab(Tab _p_)
     case is_Tabn:
 	return visitNumval(_p_->u.tabn_.numval_);
     case is_Tabs:
-	saves = visitSymval(_p_->u.tabs_.symval_);	/** @todo fix named ports */
+	saves = visitSymval(_p_->u.tabs_.symval_);	 
 	return -2;
     default:
 	badkind(Tab);
@@ -944,11 +951,6 @@ ListArgument visitListArgument(ListArgument listargument)
 
     return l;
 
-}
-
-Ident visitIdent(Ident i)
-{
-    return i;
 }
 
 Integer visitInteger(Integer i)
