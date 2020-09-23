@@ -11,10 +11,10 @@
 #include "swgraph.h"
 
 /** 
-	@todo Fix x1.sw graph
 	@todo Implement Process name expansion. 
 	Ex. "_MONITOR;" launches system monitor
 	@todo Create Man page w/Doxygen
+	@todo Generate project examples
 
 */
 

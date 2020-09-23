@@ -1,7 +1,6 @@
 /** @file SW.c
     Create network model from parse tree 
 
-  @bug x1.sw graph out of bounds
 */
 
 #include <stdlib.h>
