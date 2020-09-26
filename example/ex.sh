@@ -492,10 +492,8 @@ BuildCustom(){
 	done
 	echo ';' >> $pkg.sw
 	sw -cfg $bdir/$pkg.yaml $pkg.sw > /tmp/main.go 
-	 
 	[ -z $cfg_file ] || $EDITOR $cfg_file &
-	tree  $bdir/$pkg
-	
+	tree  $bdir/$pkg	
 	go test -v  && go build
 	 
 }
@@ -506,10 +504,10 @@ MakeProject() {
 		 exit
 	fi
 	echo Building example project. 
-	defSource=xSource
-	defSink=xSink
-	defFilter=xFilter
-	defOrphan=xOrphan
+	defSource=XSource
+	defSink=XSink
+	defFilter=XFilter
+	defOrphan=XOrphan
 	BuildCustom example $defSource 1 0  $defSink 0 1 $defFilter 1 1 $defOrphan 0 0  
 	pwd
 	echo "(E1 $defSink)<-1(E3 $defFilter)<-(E2 $defSource); E4 $defOrphan;" > $pkg.sw
