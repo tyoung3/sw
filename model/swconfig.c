@@ -13,7 +13,7 @@
 #include "swconfig.h"
 
 struct cfg_ cfg = { 0, 10000, 10000, 1000, 
-	"def", "Gen1", "Print1", "Filter1", "defaultLib", "/home/tyoung3/go/mod/sw/html/"  };
+	"def", "Gen1", "Print1", "Filter1", "defaultLib", "/home/tyoung3/go/mod/sw/html/",NULL };
 
 void visitEntry(Entry _p_);
 
@@ -139,6 +139,7 @@ int match(const char *string, const char *pattern)
 	exit(1);						\
   }
 
+
 /** Parse config file, validate, and set cfg struct */
 int ConfigError(String s) {
   ValidCFG parse_tree;
@@ -154,7 +155,7 @@ int ConfigError(String s) {
   if (parse_tree) { 
 	visitValidCFG(parse_tree);
   } else {
-	fprintf(stderr,"Config file parse error.\n");
+	fprintf(stderr,"Config file: \'%s\'  parse error.\n", s);
 	return 1;
   }
 
