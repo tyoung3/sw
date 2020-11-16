@@ -86,7 +86,7 @@ case $1 in
 	doc)shift; doxygen&&$BROWSER ./doxy/html/todo.html&&$BROWSER ./doxy/html/bug.html;;
         ex)shift; cd example; make;;   
 	j) GenSVG;;
-	jl) bin/locusts.sh j ;;	#Display locusts map;
+	jl) bin/locusts.sh j & ;;	#Display locusts map;
 	poc) RunPoC;;
 	r) RunCollate;;
 	rl) bin/locusts.sh r ;;
