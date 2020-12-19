@@ -41,11 +41,24 @@ and wait for all processes to finish.
 On option, sw will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree.
 
 The network definition consists of a list of 
-streams(or dataflows) and subnet definitions.  Each stream definition consists 
-of a sink process, a sink port number, "<-", a source
-portnumber, and a source process followed by the 
-statement terminator, ';'; or a source process, a source portnumber, 
-"->", a sink portnumber, and a sink process followed by the terminator. 
+streams(or dataflows) and subnet definitions.  
+
+Each stream definition consists 
+of:
+	* a sink process, 
+	* a sink port number, 
+	* left arrow ("<-"), 
+	* a sourceportnumber, 
+	* and a source process followed by 
+	* a statement terminator, ';'; 
+		OR 
+	* a source process, 
+	* a source portnumber, 
+	* right arrow("->"), 
+	* a sink portnumber, 
+	* and a sink process followed by 
+	* a statement terminator. 
+
 The arrows ("<-" and "->")
 may include a stream buffer size: e.g. "<10-" and "-2>".  If not included,
 buffer size defaults to zero.
@@ -78,12 +91,12 @@ Channel arrows consist of ```<```, an optional
 buffersize integer, and ```-```. Example: ```<100-```
 The reverse, ```-100>``` is also valid.
  
-IPs are designed as nil(empty) interfaces whose
+Information packets(IPs) are designed as nil(empty) interfaces whose
 data type is determined by the sending component. A type 
 mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
 type(including user-defined types); 
-a few components		(Print1, for instance) can process strings and integers; 
+a few components (Print1, for instance) can process strings and integers; 
 or just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
@@ -91,12 +104,12 @@ version(currently v0).
 
 Sw builds a network model in memory, then optionally generates
 either an abstract syntax tree, 
-a linearized tree(an ND recronstruction), 
+a linearized tree(a network definition recronstruction), 
 a GraphViz .dot file, 
 or Go source code from this model.
 
-C and other languages could also be generated.  
-JavaFBP is possible.   
+C and other languages could also be generated, but this has not been implemented.
+JavaFBP is also possible.   
 
 Comments and critiques are welcome.    Contributors are encouraged.  
 

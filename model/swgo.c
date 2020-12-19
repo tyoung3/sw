@@ -38,14 +38,6 @@ static void genPath(char *s)
     //char *importPath = { defaultPath };
     char *importLib  = { defaultLibrary };
     printf("import \"%s/%s\"\n", importLib,  s);
-#if 0
-    if (s == NULL) {
-	printf("import \"%s/fbp\"\n", importPath);
-    } else {
-	printf("import \"%s/%s\"\n", importPath, s);
-    }
-#endif
-
 }
 
 int newPath(char *p)
@@ -150,9 +142,13 @@ static int assign_channel(int ch, Stream f)
 }
 
 static void assignChannels(Model m)
-{
+{  
     int ch = m->nstreams - 1;
     Stream f = m->stream;
+
+    /* if (ch<1) { 
+		ch=1;
+    } */
 
     while (f) {
 	switch (f->type) {
@@ -328,7 +324,6 @@ void genPrefix(Model m)
     i = 0;
     while (f) {
 	bfrtbl[nstreams - i++ - 1] = f->bufsz;
-	// assert(f->sink->comp->path != 0);
 	f = f->next;
     }
     i = 0;
@@ -423,7 +418,8 @@ static void genLaunches(Process p)
 		printf("cs[%i:%i])\n", ch, ch + 1);
 	    } else {
 		genLaunch1(p);
-		printf("NULL)\n");
+		//printf("NULL)\n");
+		printf("cs[0:1])\n");
 	    }
 	}
 	p = p->next;
