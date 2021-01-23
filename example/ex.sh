@@ -490,11 +490,17 @@ BuildCustom(){
 		GenSkel $pkg $mod YAML $nin $nout  
 		N=$(($N+1))
 	done
-	echo ';' >> $pkg.sw
+	echo ';' >> $pkg.sw	
 	sw -cfg $bdir/$pkg.yaml $pkg.sw > /tmp/main.go 
 	[ -z $cfg_file ] || $EDITOR $cfg_file &
-	tree  $bdir/$pkg	
+	tree  $bdir/$pkg
+
+	echo "swgraph -cfg *yaml  $pkg.sw &" >> run	\
+	&& echo "swgo -cfg *yaml $pkg.sw &" >> run    		\
+	&& chmod a+x run 
+
 	go test -v  && go build
+	./run
 	 
 }
 
@@ -509,12 +515,12 @@ MakeProject() {
 	defFilter=XFilter
 	defOrphan=XOrphan
 	BuildCustom example $defSource 1 0  $defSink 0 1 $defFilter 1 1 $defOrphan 0 0  
-	pwd
+	# pwd
 	echo "(E1 $defSink)<-1(E3 $defFilter)<-(E2 $defSource); E4 $defOrphan;" > $pkg.sw
 	sw -cfg $pkg.yaml $pkg.sw > /tmp/mainex.go 
 	less *.go *.sw *.yaml
 	echo Removing $bdir/$pkg
-	mv $bdir/$pkg  /tmp/$pkg$$ || Die cannot rm $bdir/$pkg
+	mv $bdir/$pkg  /tmp/$pkg$$ || Die cannot mv $bdir/$pkg
 }
 
 pgm=`basename $0`
