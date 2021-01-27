@@ -1,6 +1,7 @@
 Absyn.?
 AbsynLexer.c
 config/
+*.tgz
 Lexer.c
 Parser.?
 Printer.?
