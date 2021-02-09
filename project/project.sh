@@ -1,12 +1,13 @@
 #!/bin/bash
 
 # ex.sh:
-#	Purpost:  Generate a Streamwork skeleton project 
+#	Purpose:  Generate a Streamwork skeleton project 
 #
-#   Create project directory(if not existing) and skeleton files, generate and test example code. 
-#   Projects are created inside ~/.sw/  
+#   Create GO/FBP project(s) from .SW file(s).   
+#   Create directory(if not existing) and skeleton files, 
+#     generate and test example code, and run the example.   
+#   Project sub-directories are created in the current directory.
 #   
-#   Other useful options
 #
 pgm=ex.sh
 version="0.0.0"  
@@ -530,8 +531,39 @@ esac
 	
 case $1 in	
 	gs|skel)shift;GenSkel $*    \
-	&& 	$BROWSER --new-window $* $HTML;;
+	&& 	$BROWSER  $* $HTML;;
 	# r)  go run internal/$pgm/*.go;;  #/* */
+	n)  shift; cat <<- EOF | /usr/bin/multimarkdown >/dev/shm/$$.html 
+
+		
+	Purpose:  Generate a Streamwork skeleton project 
+	================================================
+  	. Create GO/FBP project(s) from .SW file(s).    
+   
+   	. Create directory(if not existing) and skeleton files. 
+
+      	* Generate, build, test, and run the project.
+
+    	* Project sub-directories are created in the current directory.
+
+	Named Ports
+	-----------
+
+	Ports are numbered 0...N; where N+1 is the number of process ports. 
+	Input ports appear before output ports.   Port names may be appended 
+	as in: NNN.name; where NNN is the7 port number and 'name' is the port
+	name.  If there exists a format file for 'name',  that file will be
+	attached to the port.  If not, string data will be assumed.  
+
+	Certain 
+	port names are reserved:  
+		* n+     . is short for numeric data; ex.  1.nnn.7 will generate
+					seven, random, three digit numbers. 
+    
+
+EOF
+	$BROWSER  /dev/shm/$$.html &
+	 ;;
 	p)  shift; MakeProject $*;;
 	v)	echo $pgm-v$version;;
 	x)  $EDITOR ${pgm}  &;;
