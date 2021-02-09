@@ -32,13 +32,13 @@ Init() {
 }
 
 Genp() {
-	[ -f $dir0/${p}.sw ] || Die Missing $dir0/${p}.sw 
+	[ -f $dir0/test/${p}.sw ] || Die Missing $dir0/test/${p}.sw 
 	
 	( [ -d $p ] && echo Found project $p )		\
 	   || ( mkdir $p || Die Cannot mkdir $p ) 	\
 	   &&  pushd $p						\
 	   &&  echo Generating  $p project  
-	ln -s $dir0/${p}.sw && sw -m 2 ${p}.sw
+	ln -s $dir0/test/${p}.sw && sw -m 2 ${p}.sw
 	popd
 }
 
