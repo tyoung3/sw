@@ -29,19 +29,18 @@ Display() {
 
 Init() {
 	pushd $dir || Die Cannot pushd $dir
-}
+}	
 
 Genp() {
-
-	p=`basename $pn`
-	[ -f $dir0/${p}.sw ] || Die Missing $dir0/${p}.sw 
-	
-	( [ -d $p ] && echo Found project $p )		\
-	   || ( mkdir $p || Die Cannot mkdir $p ) 	\
-	   &&  pushd $p						\
-	   &&  echo && echo Generating  $p project  
-	ln -sf $pn ${p}.sw && swgraph ${p}.sw 	\
-	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw >/dev/null
+	p=`basename $pn` 
+	echo; echo Generating  $p project
+	[ -f ${pn}.sw ] || Die Missing ${pn}.sw 
+	sw=$dir/$p/${p}.sw 
+	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
+	[ -f $dir/$p/${p}.sw ] || cp  ${pn}.sw $dir/$p/${p}.sw	
+	pushd $dir/$p					\
+	  && swgraph ${p}.sw 	\
+	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > psh.out
 	
 	popd
 }
@@ -62,9 +61,9 @@ KillEm() {
 }
 
 case $1 in
-	g)shift; Init; GenProject $*;;
+	g)shift;  GenProject $*;;
 	k)shift; Init; KillEm $*;;
-	l)shift; Init; tree --noreport  -L 1 $* * ;;
+	l)shift; Init; tree --noreport  -L 2 $* * ;;
 	x)shift; $EDITOR $self;;
 	*)cat <<- EOF 
 
