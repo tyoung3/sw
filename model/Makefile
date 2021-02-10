@@ -39,7 +39,7 @@ SW.pdf:  SW.ps
             
 
 check:
-	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
+	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  >/dev/null
 	${PGM}  -v 
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
@@ -54,7 +54,7 @@ check:
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 4 tests/java.sw     >/dev/null
-	cd tests ; ../../project/p.sh g java > /dev/null	
+	 ../project/p.sh g tests/java  >/dev/null	 
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
 	${PGM}  tests/aj.sw   >/dev/null
 	${PGM}  tests/asj.sw   >/dev/null

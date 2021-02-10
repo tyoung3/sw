@@ -32,20 +32,24 @@ Init() {
 }
 
 Genp() {
-	[ -f $dir0/test/${p}.sw ] || Die Missing $dir0/test/${p}.sw 
+
+	p=`basename $pn`
+	[ -f $dir0/${p}.sw ] || Die Missing $dir0/${p}.sw 
 	
 	( [ -d $p ] && echo Found project $p )		\
 	   || ( mkdir $p || Die Cannot mkdir $p ) 	\
 	   &&  pushd $p						\
 	   &&  echo && echo Generating  $p project  
-	ln -sf $dir0/test/${p}.sw && sw -m 2 ${p}.sw
+	ln -sf $pn ${p}.sw && swgraph ${p}.sw 	\
+	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw >/dev/null
+	
 	popd
 }
 
 GenProject() {
-	Display GenProject $*
-	for p in $*; do
-		Genp $p & 
+	Display GenProject for $*
+	for pn in $*; do
+		Genp $pn & 
 	done
 
 }
