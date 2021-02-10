@@ -37,8 +37,8 @@ Genp() {
 	( [ -d $p ] && echo Found project $p )		\
 	   || ( mkdir $p || Die Cannot mkdir $p ) 	\
 	   &&  pushd $p						\
-	   &&  echo Generating  $p project  
-	ln -s $dir0/test/${p}.sw && sw -m 2 ${p}.sw
+	   &&  echo && echo Generating  $p project  
+	ln -sf $dir0/test/${p}.sw && sw -m 2 ${p}.sw
 	popd
 }
 
@@ -60,7 +60,7 @@ KillEm() {
 case $1 in
 	g)shift; Init; GenProject $*;;
 	k)shift; Init; KillEm $*;;
-	l)shift; Init; tree --noreport  -L 1 * ;;
+	l)shift; Init; tree --noreport  -L 1 $* * ;;
 	x)shift; $EDITOR $self;;
 	*)cat <<- EOF 
 

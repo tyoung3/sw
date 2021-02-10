@@ -9,7 +9,7 @@ LATEX = latex
 DVIPS = dvips
 
 OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
-SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o swconfig.o
+SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o swconfig.o swproject.o
 HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 
 all:  ../bin/sw tags SW.pdf
@@ -17,7 +17,7 @@ all:  ../bin/sw tags SW.pdf
 install: ${PGM}
 	sudo cp ${PGM} ../bin/swgraph ../bin/swgo ${GOPATH}/bin
 
-tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h model.h sw.h swconfig.c swmain.h  swsym.h
+tags:   sw.c  swgo.c  swmain.c swsym.c swproject.c swgo.h model.h sw.h swconfig.c swmain.h  swsym.h
 	ctags *.c *.h
 
 clean:
@@ -111,6 +111,9 @@ swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h ${HEADERS} Makefile  m
 	
 swgo.o: swgo.c swgo.h swsym.h sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
+	
+swproject.o: swproject.c swsym.h sw.h model.h ${HEADERS}
+	${CC} ${CCFLAGS} -c swproject.c -o swproject.o
 		
 swc.o: swc.c sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swc.c -o swc.o	
