@@ -10,7 +10,6 @@ testdata/
 Absyn.?
 AbsynLexer.c
 *.bak
-bin/sw
 *.dot
 fbp/DocFBP.txt
 fbp/LexFBP.x
