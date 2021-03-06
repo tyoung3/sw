@@ -9,7 +9,7 @@
 #   Project sub-directories are created in the current directory.
 #   
 #   Example:
-#	$ ./p.sh Ex1 
+#	$ ./p.sh g test/X
 #
 self=p.sh
 version="0.0.0"  
@@ -39,9 +39,9 @@ Genp() {
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	[ -f $dir/$p/${p}.sw ] || cp  ${pn}.sw $dir/$p/${p}.sw	
 	pushd $dir/$p					\
-	  && swgraph ${p}.sw 	\
-	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > psh.out
-	
+	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ${p}.sh \
+	   && echo;echo Running `pwd`/${p}.sh 	\
+	   && /bin/bash ./${p}.sh  
 	popd
 }
 
@@ -67,7 +67,12 @@ case $1 in
 	x)shift; $EDITOR $self;;
 	*)cat <<- EOF 
 
-	Usage: $self g|k|l|x|*
+	Usage: $self 
+	 	g [PROJECT ...]	. Generate project(s) from PROJECT.sw 
+	 	k [JOB...]	. Kill [JOB](s)
+	 	l [PROJECT ...] . List PROJECT(s)	
+	 	x Edit this script
+	 	* Display this help
 
 EOF
 	;;
