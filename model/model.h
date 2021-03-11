@@ -13,6 +13,7 @@
 
                |<-------------------------------- 
                |                         ^      ^ 
+
                v                         |      |
 	 Model > Stream > Source_Process > Port > Port 
 	 			 	Sink_Process     > Port > Port
@@ -42,35 +43,41 @@ typedef struct Component_ *Component;
 
 
 /** Port structure */
-struct Port_ {
+
+typedef struct Port_ {
 	int id; 
 	int channel;  /* Assigned Go Channel Number */	
 	String name;
+
 	struct Port_ *match;
 	struct Stream_ *stream;
+
 	struct Port_ *next;
 	struct Port_ *prev;
 } Port_;
 typedef struct Port_ *Port;
 	
 /** Process structure */
-struct Process_ {
+typedef struct Process_ {
 		String name;
 		Component comp;    		  
-		Port  port; 	      	/* Port list */
+		Port  port; 	      	
+/* Port list */
 		int  nportsIn;
 		int  nportsOut;
 		int  ch;		/* Low channel number */
 		int  depth;		/* Subnet depth */
 		struct Process_ *next;
+
 		char **arg;		/* Pointer to an array of strings. */
 		TYPE kind;	  	/* In subnet or net or orphan */
 		int  partn;		/* Partition number.  */
 } Process_; 
 typedef struct Process_ *Process;
 
+
 /** Stream structure */
-struct Stream_ {
+typedef struct Stream_ {
 	Process source;       /* Source or orhan process */
 	Process sink;      
 	Port  SourcePort; 
@@ -83,13 +90,15 @@ struct Stream_ {
 } Stream_;
 typedef struct Stream_ *Stream;
 
+
 typedef enum {SINK,SOURCE} PortType;
 
 /** Extport structure */
-struct Extport_ {
+typedef struct Extport_ {
 	PortType type;
 	Process source;
 	Process sink;
+
 	String  name;   /* Port name */
 	int source_id; 	
 	int sink_id; 
@@ -99,7 +108,7 @@ struct Extport_ {
 typedef struct Extport_ *Extport;
 
 /** Subnetm structure */
-struct Subnetm_ {     /*  Subnetm: a list of external ports and streams*/
+typedef struct Subnetm_ {     /*  Subnetm: a list of external ports and streams*/
 	char *name;
 	Stream  stream;		/* First SN stream in this subnet */
 	Extport extport;
@@ -108,7 +117,7 @@ struct Subnetm_ {     /*  Subnetm: a list of external ports and streams*/
 typedef struct Subnetm_ *Subnetm;
 
 /** Model structure */
-struct Model_ {
+typedef struct Model_ {
 	int nstreams;
 	int ncomponents;
 	int nprocs; 		/* number of processes */
