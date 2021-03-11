@@ -32,6 +32,7 @@ Init() {
 }	
 
 Genp() {
+	pn=./test/$pn
 	p=`basename $pn` 
 	echo; echo Generating  $p project
 	[ -f ${pn}.sw ] || Die Missing ${pn}.sw 
@@ -42,13 +43,14 @@ Genp() {
 	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ${p}.sh \
 	   && echo;echo Running `pwd`/${p}.sh 	\
 	   && /bin/bash ./${p}.sh  
-	popd
+
 }
 
 GenProject() {
+	[ -z $1 ] && ( GenProject X Y; exit 0 ) 
 	Display GenProject for $*
-	for pn in $*; do
-		Genp $pn & 
+	for pn in $*; do 
+		Genp $pn &
 	done
 
 }

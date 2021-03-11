@@ -35,9 +35,10 @@
 typedef enum {IS_NET, IS_SUB, IS_ORPHAN} TYPE;   /* Type of Stream */
 
 /** Component structure */
-struct Component_ {
+typedef struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
+	 struct Component_ *next;
 } Component_;
 typedef struct Component_ *Component;
 
@@ -118,13 +119,14 @@ typedef struct Subnetm_ *Subnetm;
 
 /** Model structure */
 typedef struct Model_ {
-	int nstreams;
-	int ncomponents;
-	int nprocs; 		/* number of processes */
-	Stream stream;		/* pointer to first stream*/
-	Subnetm subnetm;     	/* Pointer to first subnet */
-	Process proc;		/* Pointer to First Process */
-	char *name;		/* Model Name */
+	int       nstreams;
+	int       ncomponents;
+	int       nprocs; 	/* number of processes */
+	Stream    stream;	/* pointer to first stream*/
+	Subnetm   subnetm;     	/* Pointer to first subnet */
+	Process   proc;		/* Pointer to First Process */
+        Component comp;	        /* Pointer to first Conponent */
+	char     *name;		/* Model Name */
 } Model_;
 typedef struct Model_ *Model;
 

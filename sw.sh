@@ -80,7 +80,7 @@ RunDocker() {
 }
 
 GenProject() {
-	pushd project && ./p.sh g  X Y $*
+	pushd project && ./p.sh g  $*
 	popd 
 }
 

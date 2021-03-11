@@ -136,6 +136,7 @@ Model MakeModel(Stream f)
     m->stream = f;
     m->proc = NULL;
     m->subnetm = NULL;
+    m->comp=NULL;
     m->name = "SW";
     return m;
 
@@ -264,8 +265,11 @@ Component MakeComponent(Ident name, String path)
 
     if (c == NULL) {
 	c = (Component) malloc(sizeof(Component_));
-	if (path[0] != '_')
+	if (path[0] != '_') {    /* subnet? */
 	    net_model->ncomponents++;
+	    c->next=net_model->comp;   /* Link component to list */
+	    net_model->comp=c;
+	}
     }
     if (!c) {
 	fprintf(stderr,
