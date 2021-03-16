@@ -12,7 +12,7 @@ OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o swconfig.o swproject.o
 HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 
-all:  ../bin/sw tags SW.pdf
+all:  ../bin/sw tags  
 
 install: ${PGM}
 	sudo cp ${PGM} ../bin/swgraph ../bin/swgo ${GOPATH}/bin
@@ -32,11 +32,13 @@ SW.ps: SW.dvi
 	${DVIPS} SW.dvi -o SW.ps
 	
 SW.dvi: ../bnfc/SW.tex
-	${LATEX} ../bnfc/SW.tex
+	${LATEX} -output-format=dvi ../bnfc/SW.tex
         
-SW.pdf:  SW.ps
-	ps2pdf SW.ps
+SW.pdf:  ../bnfc/SW.tex
+	( pdftex ../bnfc/SW.tex; echo OK ) 
             
+../bnfc/Absyn.o: ../bnfc/Absyn.c 
+	make -C ../bnfc
 
 check:
 	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  >/dev/null
