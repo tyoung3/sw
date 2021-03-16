@@ -90,11 +90,16 @@ GenProject() {
 	popd 
 }
 
+Browse () {
+	[ -f $1 ] && $BROWSER $1
+}
+
 case $1 in	
 	c) pushd ./model&& make -j8&&make check&& echo Success! || echo Check Failed.;;
 	cl) ShowCheck;;
 	d) shift ; RunDocker $*;;
-	doc)shift; doxygen&&$BROWSER ./doxy/html/todo.html&&$BROWSER ./doxy/html/bug.html;;
+	doc)shift; doxygen&&Browse ./doxy/html/todo.html	\
+		&&Browse ./doxy/html/bug.html ;;
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
