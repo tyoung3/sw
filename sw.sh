@@ -2,6 +2,8 @@
 
 # COLLATE.sh
 
+#https://coderwall.com/p/fasnya/add-git-branch-name-to-bash-prompt
+
 Die() {
 	echo "$0/DIE: $*"
 	exit 1
