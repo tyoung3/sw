@@ -7,6 +7,9 @@ Die() {
 	exit 1
 }
 
+[ -z $EDITOR  ] && Die  Need to set environment variable: EDITOR
+[ -z $BROWSER ] && Die  Need to set environment variable: BROWSER
+
 RunCollate () {
 	temp=/tmp
 	[ -d bin ] || pushd ../
