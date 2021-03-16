@@ -2,6 +2,8 @@
 
 # COLLATE.sh
 
+#https://coderwall.com/p/fasnya/add-git-branch-name-to-bash-prompt
+
 Die() {
 	echo "$0/DIE: $*"
 	exit 1
@@ -83,6 +85,11 @@ RunDocker() {
 	docker run -it --rm --name SWdemo  $myapp ./sw.sh $*
 }
 
+GenProject() {
+	pushd project && ./p.sh g  $*
+	popd 
+}
+
 case $1 in	
 	c) pushd ./model&& make -j8&&make check&& echo Success! || echo Check Failed.;;
 	cl) ShowCheck;;
@@ -91,6 +98,7 @@ case $1 in
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
+	p)  shift; GenProject $*;;
 	poc) RunPoC;;
 	r) RunCollate;;
 	rl) bin/locusts.sh r ;;
@@ -105,6 +113,7 @@ USAGE:
 		ex		. Run make in ../example/
 		j		. Generate collate .SVT
 		jl		. Generage locusts .SVG
+		p  [NAME..]	. Generate project(s) named NAME... 
 		poc		. Build and run Proof of Concept 
 		r		. Build and run Collate program 
 		rl		. Run locusts program

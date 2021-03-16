@@ -19,12 +19,16 @@
 */
 
 typedef enum
-    { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, CMODE = 7 } MODE;
+    { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, PROJECT, CMODE = 7 } MODE;
 
 char fbfr[100];
 char *version = { VERSION };
 
+<<<<<<< HEAD
 String configfile={"/home/tyoung3/go/mod/sw/sw.cfg"};
+=======
+String configfile={"./sw.cfg"};
+>>>>>>> project
 
 static MODE mode = GOMODE;
 static char *fname = { "stdin" };
@@ -237,7 +241,7 @@ static void Usage()
     fprintf(stderr, "\nUsage:\tsw [-m MODE [ SW_FILE ]\n");
     fprintf(stderr, "\tsw -v\n");
     fprintf(stderr,
-	    "\t\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|7-CMODE,}\n");
+	    "\t\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE,}\n");
     fprintf(stderr, "\t\t[with no arguments, sw will read from stdin. \n");
 }
 
@@ -357,6 +361,9 @@ int main(int argc, char **argv)
 		break;
 	    case CMODE:
 		genC(model);		// Generate C source  [TBI]
+		break;
+	    case PROJECT:
+		genProject(model);	// Generate project files in current directory  [TBI]
 		break;
 	    default:
 		Usage();

@@ -44,8 +44,11 @@ String visitString(String s);
 String visitStringval(Stringval p);
 Component MakeComponent(Ident name, String path);
 
-	/* swjafafbp.c */
+	/* swjafafbp.c */	
 void genJavaFBP(Model model);
+
+	/* swproject.c */
+void genProject(Model model);
 
 	/* swc.c       */
 void genC(Model model); 

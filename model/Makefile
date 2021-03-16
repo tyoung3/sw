@@ -9,7 +9,7 @@ LATEX = latex
 DVIPS = dvips
 
 OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
-SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o swconfig.o
+SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o swconfig.o swproject.o
 HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 
 all:  ../bin/sw tags  
@@ -17,7 +17,7 @@ all:  ../bin/sw tags
 install: ${PGM}
 	sudo cp ${PGM} ../bin/swgraph ../bin/swgo ${GOPATH}/bin
 
-tags:   sw.c  swgo.c  swmain.c swsym.c swgo.h model.h sw.h swconfig.c swmain.h  swsym.h
+tags:   sw.c  swgo.c  swmain.c swsym.c swproject.c swgo.h model.h sw.h swconfig.c swmain.h  swsym.h
 	ctags *.c *.h
 
 clean:
@@ -32,14 +32,16 @@ SW.ps: SW.dvi
 	${DVIPS} SW.dvi -o SW.ps
 	
 SW.dvi: ../bnfc/SW.tex
-	${LATEX} ../bnfc/SW.tex
+	${LATEX} -output-format=dvi ../bnfc/SW.tex
         
-SW.pdf:  SW.ps
-	ps2pdf SW.ps
+SW.pdf:  ../bnfc/SW.tex
+	( pdftex ../bnfc/SW.tex; echo OK ) 
             
+../bnfc/Absyn.o: ../bnfc/Absyn.c 
+	make -C ../bnfc
 
 check:
-	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  
+	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  >/dev/null
 	${PGM}  -v 
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
@@ -54,6 +56,7 @@ check:
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 4 tests/java.sw     >/dev/null
+	 ../project/p.sh g tests/java  >/dev/null	 
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
 	${PGM}  tests/aj.sw   >/dev/null
 	${PGM}  tests/asj.sw   >/dev/null
@@ -111,6 +114,9 @@ swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h ${HEADERS} Makefile  m
 	
 swgo.o: swgo.c swgo.h swsym.h sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swgo.c -o swgo.o
+	
+swproject.o: swproject.c swsym.h sw.h model.h ${HEADERS}
+	${CC} ${CCFLAGS} -c swproject.c -o swproject.o
 		
 swc.o: swc.c sw.h model.h ${HEADERS}
 	${CC} ${CCFLAGS} -c swc.c -o swc.o	

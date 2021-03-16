@@ -20,14 +20,19 @@ clean:
 	rm -f *.o TestSW SW.aux SW.log SW.pdf SW.dvi SW.ps SW
 
 distclean: clean
-	rm -f Absyn.h Absyn.c Test.c Parser.c Parser.h Lexer.c Skeleton.c Skeleton.h Printer.c Printer.h  SW.l SW.y SW.tex 
+	rm -f Absyn.h Absyn.c Test.c Parser.c Parser.h Lexer.c Skeleton.c Skeleton.h Printer.c Printer.h  SW.l SW.y SW.tex SW.pdf
 
 SW.tex:  SW.cf
 	bnfc --latex SW.cf
 	
 SW.pdf:	SW.tex
+<<<<<<< HEAD
 	( pdftex SW.tex || echo )	
 	
+=======
+	( pdftex ../bnfc/SW.tex; echo  )
+		
+>>>>>>> project
 Skeleton.c: SW.cf
 	bnfc --c SW.cf
 	
