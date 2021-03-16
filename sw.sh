@@ -37,7 +37,8 @@ RunPoC() {
 		# Create collate.jpg 		
 GenSVG() { 
 	pushd model 
-	make svg && $BROWSER --nosandbox /tmp/collate.svg &
+#	make svg && $BROWSER --nosandbox /tmp/collate.svg &
+	make svg && $BROWSER  /tmp/collate.svg &
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.Jnetwork_languagePG
 	#gimp /tmp/collate_SW.JPG

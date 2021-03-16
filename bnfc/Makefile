@@ -11,9 +11,9 @@ OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
 .PHONY: clean distclean
 
-all: Skeleton.c TestSW  SW.tex
+all: Skeleton.c TestSW  SW.pdf
 
-check: TestSW 
+check: TestSW xaXPH6Dq
 	./TestSW ../nds/collate.sw >/dev/null
 
 clean:
@@ -24,6 +24,9 @@ distclean: clean
 
 SW.tex:  SW.cf
 	bnfc --latex SW.cf
+	
+SW.pdf:	SW.tex
+	( pdftex SW.tex || echo )	
 	
 Skeleton.c: SW.cf
 	bnfc --c SW.cf

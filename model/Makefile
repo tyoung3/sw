@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.11.8\"
+VERSION = \"0.11.9\"
 
 LATEX = latex
 DVIPS = dvips
@@ -12,7 +12,7 @@ OBJS = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 SWOBJS = sw.o swmain.o swgo.o swsym.o swgraph.o swjavafbp.o swc.o swconfig.o
 HEADERS = ../bnfc/Parser.h ../bnfc/Printer.h ../bnfc/Absyn.h
 
-all:  ../bin/sw tags SW.pdf
+all:  ../bin/sw tags  
 
 install: ${PGM}
 	sudo cp ${PGM} ../bin/swgraph ../bin/swgo ${GOPATH}/bin

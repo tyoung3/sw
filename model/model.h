@@ -35,7 +35,7 @@
 typedef enum {IS_NET, IS_SUB, IS_ORPHAN} TYPE;   /* Type of Stream */
 
 /** Component structure */
-struct Component_ {
+typedef struct Component_ {
 		String name;   // First letter Upper Case. No slashes    
 		String path;   // Ex. github/tyoung3/streamwork/std 
 } Component_;
