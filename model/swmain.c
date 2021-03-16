@@ -24,12 +24,7 @@ typedef enum
 char fbfr[100];
 char *version = { VERSION };
 
-<<<<<<< HEAD
-String configfile={"/home/tyoung3/go/mod/sw/sw.cfg"};
-=======
 String configfile={"./sw.cfg"};
->>>>>>> project
-
 static MODE mode = GOMODE;
 static char *fname = { "stdin" };
 
