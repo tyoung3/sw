@@ -94,6 +94,13 @@ Browse () {
 	[ -f $1 ] && $BROWSER $1
 }
 
+Shell() {
+	export sps1="$PS1"
+	export PS1="\w> "
+	echo Entering StreamWork shell  
+	exec bash --rcfile .bashrc  
+}
+
 case $1 in	
 	c) pushd ./model&& make -j8&&make check&& echo Success! || echo Check Failed.;;
 	cl) ShowCheck;;
@@ -105,8 +112,9 @@ case $1 in
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
 	p)  shift; GenProject $*;;
 	poc) RunPoC;;
-	r) RunCollate;;
+	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
+	s) shift; Shell $;;
 	x) $EDITOR nds/collate.sw sw.sh;;
 	*) cat << EOF 
 	
@@ -120,8 +128,9 @@ USAGE:
 		jl		. Generage locusts .SVG
 		p  [NAME..]	. Generate project(s) named NAME... 
 		poc		. Build and run Proof of Concept 
-		r		. Build and run Collate program 
+		rc		. Build and run Collate program 
 		rl		. Run locusts program
+		s		. Enter SW shell.  'e' or 'exit' to return
 		x		. Edit this script
 		--help	. Display this help
 		
