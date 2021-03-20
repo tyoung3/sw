@@ -37,17 +37,27 @@ Genp() {
 	echo; echo Generating  $p project
 	[ -f ${pn}.sw ] || Die Missing ${pn}.sw 
 	sw=$dir/$p/${p}.sw 
+	[ -d $dir/$p  ] && mv $dir/$p $dir/${p}_$$ 
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	[ -f $dir/$p/${p}.sw ] || cp  ${pn}.sw $dir/$p/${p}.sw	
-	pushd $dir/$p					\
-	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ${p}.sh \
-	   && echo;echo Running `pwd`/${p}.sh 	\
-	   && /bin/bash ./${p}.sh  
+	cp ../sw.cfg $dir/$p
+	cp *tmpl $dir/$p
+	pushd $dir/$p							\
+	   && go mod init $p/$p						\
+	   && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ${p}.sh 	\
+	   && chmod a+x ${p}.sh 					\
+	   && echo;echo Running `pwd`/${p}.sh 				\
+	   && ./${p}.sh  						\
+	   && swgraph *.sw						\
+	   && swgo *.sw							\
+	   && echo Success! || echo OOPS!
+	   go fmt && go test
+	echo
 
 }
 
 GenProject() {
-	[ -z $1 ] && ( GenProject X Y; exit 0 ) 
+	[ -z $1 ] && ( GenProject X; exit 0 ) 
 	Display GenProject for $*
 	for pn in $*; do 
 		Genp $pn &
@@ -65,7 +75,7 @@ KillEm() {
 case $1 in
 	g)shift;  GenProject $*;;
 	k)shift; Init; KillEm $*;;
-	l)shift; Init; tree --noreport  -L 2 $* * ;;
+	l)shift; Init; tree --noreport  -L 2 $*;;
 	x)shift; $EDITOR $self;;
 	*)cat <<- EOF 
 

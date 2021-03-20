@@ -1,5 +1,8 @@
 /** @file SWPROJECT.C 
 		  Generate a  script to create FBP project files from the network model.
+
+ @@TODO:  Fix http link in swgraph 
+ 
 */
 
 #include <stdio.h>
@@ -24,62 +27,11 @@ static String Timestamp()
     return (asctime(localtime(&ltime)));
 }
 
-#if 0
-static void genPath(char *s)
-{
-    // char *importPath = { "github.com/tyoung3/streamwork" };
-    //char *importPath = { defaultPath };
-    char *importLib  = { defaultLibrary };
-    printf("import \"%s/%s\"\n", importLib,  s);
-}
-
-/** Generate Suffix code */
-static void genSuffix()
-{
-
-    P(wg.Wait());
-    printf("}\n");
-}
-static int newPath(char *p)
-{
-
-    if (getPath(p) == 1)
-	return 1;
-
-    return 0;
-}
-#endif
-
-#if 1
 static String Plural(int n) {
 	if(n==1) 
 		return "";
 	return "s";
 }
-#endif
-
-
-#if 0
-static void genPaths(Model m)
-{
-    Process p;
-
-    // P(import "fmt");
-    P(import "sync");
-    P(import "github.com/tyoung3/streamwork/fbp");
-
-    p = m->proc;
-    while (p) {
-	if (newPath(p->comp->path)) {
-	    genPath(p->comp->path);
-	}
-	p = p->next;
-    };
-
-    printf("\n\n");
-}
-#endif
-
 
 static Port findPort(Process p, int id)
 {
@@ -99,7 +51,7 @@ static Port findPort(Process p, int id)
 }
 
 static void showArgs(Process p)
-{
+{ 
     int i = 1;
 
     if (!p->arg)
@@ -109,8 +61,6 @@ static void showArgs(Process p)
 	printf(" \"%s\"", p->arg[i]);
 	i++;
     }
-
-
 }
 
 static void showSink(Process p, int id)
@@ -174,38 +124,6 @@ static void assignChannels(Model m)
     }
 }
 
-#ifdef NBRMULTIPLES
-/**  Count number of streams connecting identical nodes */
-static int nbrMultiples(Model m)
-{
-    Stream s, s2;
-    Process p1, p2, p3, p4;
-    int n = 0;
-
-    s = m->stream;
-    while (s) {
-	s2 = s->next;
-	p1 = s->source;
-	p2 = s->sink;
-	while (s2) {
-	    p3 = s2->source;
-	    p4 = s2->sink;
-	    if ((p1 == p3 && p2 == p4) || (p1 == p4 && p2 == p3)) {
-		n++;
-	    }
-	    s2 = s2->next;
-	}
-	s = s->next;
-    }
-
-    return n;
-};
-#endif
-
-// ?? static void ConnectProcess(Process p, int partn);
-
-/** @todo  Handle unmatched ports by autconnecting to dummy process.  
-*/
 static void ConnectProcess(Process p, int partn) {
 	Port pt;
 
@@ -252,8 +170,6 @@ static int ComputeNpartitions(Model m) {
 
 	return nparts;
 }
-
-
 
 
 static void ShowOrphan(Process p) {
@@ -315,144 +231,21 @@ static void genPrefix(Model m)
     printf("# Purpose:  create GoLang code from an .SW file.\n");
     printf("# 	Generate a GoLang source and test file for every component.\n");
     printf("# 	Build the project and run it.\n\n");
-    showND(m);			/* Show commented ND */
+    showND(m);			/* Show commented Net Definition */
     printf("\nNetDef\n");
-
-#if 0
-    genPaths(m);
-
-    P(func main() {
-	);
-    PE(} Fixes indent);
-    printf("	var cs []chan interface{}\n	");
-    P(var wg sync.WaitGroup);
-    printf("\n");
-
-    f = m->stream;
-    i = 0;
-    while (f) {
-	bfrtbl[nstreams - i++ - 1] = f->bufsz;
-	f = f->next;       
-    }
-    i = 0;
-    f = m->stream;
-    while (i < nstreams) {
-	if (bfrtbl[i] > 0) {
-	    printf("cs = append(cs,make(chan interface{},%i))\n",
-		   bfrtbl[i]);
-	} else {
-	    printf("cs = append(cs,make(chan interface{}))\n");
-	}
-	i++;
-    }
-
-#endif
-    printf("\n");
+      
+    printf("\nGenComp() {\necho OK > ${1}.go\necho Test > ${1}_test.go\n" );
+    printf("}\n");
 }
 
-#if 0
-static int needaSlice(Port pt)          
-
-{
-    Port pt0 = pt;
-    int ch;
-
-    ch = pt->channel;
-    pt = pt->next;
-
-    do {
-	if (pt->channel != ++ch) {
-	    return 1;
-	}
-	pt = pt->next;
-    } while (pt != pt0);
-    return 0;
-}
-
-
-	/** Generate a slice of channels for this process */
-static void makeChSlice(Process p, int nstreams)
-{
-    char *name;
-    Port pt;
-
-    name = p->name;
-    printf("\n\tvar cs_%s []chan interface{}\n", name);
-    printf("\tfor i:=0; i<%i; i++ {\n\t\t", nstreams);
-    printf("cs_%s=append(cs_%s, make(chan interface{},2))", name, name);
-    printf("\n\t}\n");          
-
-    pt = p->port;
-    do {
-	printf("\tcs_%s[%i] = cs[%i]\n", name, pt->id, pt->channel);
-	pt = pt->next;
-    } while (pt != p->port);
-}          
-
-
-static void genLaunch1(Process p)
-{
-    int i = 1;
-
-    printf("fbp.Launch(&wg,");         
-
-    printf("[]string{\"%s\"", p->name);
-
-    if (p->arg) {
-	while (p->arg[i]) {         
-
-	    printf(",\"%s\"", p->arg[i]);
-	    i++;
-	}
-    }
-    printf("},\t%9s.%s, ", p->comp->path, p->comp->name);
-
-}
-static void genLaunches(Process p)
-{
-    int ch;			/* Assigned channel */
-    int nstreams;
-    int ch0;			/* initial channel index */
-
-    while (p) {
-	nstreams = p->nportsIn + p->nportsOut;
-	if (nstreams > 1) {
-	    if (needaSlice(p->port)) {
-		makeChSlice(p, nstreams);
-		genLaunch1(p);
-		printf("cs_%s[0:%i])\n", p->name, nstreams);
-	    } else {
-		genLaunch1(p);
-		ch0 = p->port->channel;
-		printf("cs[%i:%i])\n", ch0, ch0 + nstreams);
-	    }
-	} else {
-	    if (nstreams > 0) {
-		ch = p->port->channel;
-		genLaunch1(p);          
-
-		printf("cs[%i:%i])\n", ch, ch + 1);
-	    } else {
-		genLaunch1(p);
-		//printf("NULL)\n");
-		printf("cs[0:1])\n")          
-;
-	    }
-	}
-	p = p->next;
-    }
-
-    printf("\n");
-}
-#endif
-
-void GenComponents(Model m) {
+static void GenComponents(Model m) {
 	Component c;
 
 	c=m->comp;
 
 	while(c!=NULL) {
-		printf("%s\n",c->name);
+		printf("GenComp %s\n",c->name);
+		c=c->next;
 	}
 	
 
@@ -470,35 +263,5 @@ void genProject(Model model)
     // genSuffix();		/* Generate Suffix code */
 }
 
-#if 0
-/** Generate Expanded Network Definition */
-static void genND(Model mod)
-{
-    Stream f;
-			/** Generate Prefix code */
-    printf("StreamWork Network Definition.  Generated by sw-%s. \n",
-	   version);
-
-    f = mod->stream;
-    while (f) {
-      if( f->type==IS_NET) {
-		if (f->sink->port->id) {
-	    		printf("(%s)%d<-%d(%s); \n", f->sink->name,
-		   		f->sink->port->id, f->source->port->id,
-		   		f->source->name);
-		} else {
-	    		printf(" (%s)%d<-(%s); \n", f->sink->name,
-		   		f->source->port->id, f->source->name);
-		}
-      }  else  {
-	 if( f->type==IS_ORPHAN ) {
-		printf("%s;\n",f->source->name);
-	 }
-      }	
-      f = f->next;
-    }
-
-}
-#endif
 
 /***************   End of SWPROJECT.C   ********************/

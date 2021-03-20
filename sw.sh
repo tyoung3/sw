@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# COLLATE.sh
+# SW.sh
 
 #https://coderwall.com/p/fasnya/add-git-branch-name-to-bash-prompt
 
