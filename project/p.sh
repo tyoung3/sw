@@ -13,6 +13,7 @@
 #
 
 # @@TODO:  List of banned Modules.   Push Data to file, then have script read file. 
+#    git branch to PS1
 
 
 Die() {
@@ -85,8 +86,8 @@ Genp() {
 	   && pushd internal 						\
 		 && cp $tdir/*tmpl ./ 					\
 	   	 &&[ -f ${p}.sw ] || cp  $sw ${p}.sw			\
-	   	 && sw ${p}.sw > ../main.go				\
 	   	 && GenCFG > sw.cfg					\
+	   	 && sw ${p}.sw > ../main.go				\
 	   	 && GenGo $*						\
 	   	 && swgraph ${p}.sw					\
 	   && popd							\

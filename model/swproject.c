@@ -209,8 +209,8 @@ static void showND(Model m)
 
     ncycles=m->nstreams - m->nprocs + nparts;  
     printf("# %d stream%s, %d processes, %d component%s, %d partition%s, %d cycle%s.\n",
-		m->nstreams, Plural(m->nstreams), 
-		 m->nprocs,
+		m->nstreams,  Plural(m->nstreams), 
+		m->nprocs,
 		m->ncomponents, Plural(m->ncomponents),
 		nparts, Plural(nparts), 
 		ncycles, Plural(ncycles));
@@ -234,7 +234,11 @@ static void genPrefix(Model m)
     showND(m);			/* Show commented Net Definition */
     printf("\nNetDef\n");
       
-    printf("\nGenComp() {\necho package X > ${1}.go\necho package X > ${1}_test.go\n" );
+    
+    //	echo package $1 > ../$1/${2}.go
+    //	echo package $1 > ../$1/${2}_test.go  
+      
+    printf("\nGenComp() {\necho package $1 > ../$1/${2}.go\necho package $1 > ../$1/${2}_test.go\n" );
     printf("}\n");
 }
 
@@ -244,7 +248,7 @@ static void GenComponents(Model m) {
 	c=m->comp;
 
 	while(c!=NULL) {
-		printf("GenComp %s\n",c->name);
+		printf("GenComp %s %s\n",c->path,c->name);
 		c=c->next;
 	}
 	
