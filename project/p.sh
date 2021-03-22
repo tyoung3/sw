@@ -12,6 +12,9 @@
 #	$ ./p.sh g test/X
 #
 
+# @@TODO:  List of banned Modules.   Push Data to file, then have script read file. 
+
+
 Die() {
 	echo "$self/DIE: $*"
 	exit
@@ -57,6 +60,13 @@ GenCFG() {
 EOF
 }
 
+GenGo() {
+
+	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ${p}.sh 	 
+	 #chmod a+x ${p}.sh 					 
+	 bash ${p}.sh  $*			 
+}
+
 Genp() {
 	echo GENP: $*
 	pn=test/$1
@@ -68,29 +78,27 @@ Genp() {
 	sw=$dir/sw/project/test/${p}.sw 
 	[ -d $dir/$p  ] && mv $dir/$p $dir/${p}_$$ 
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	cp *tmpl $dir/$p
+	tdir=`pwd`
 	pushd $dir/$p							\
 	   && mkdir $* internal						\
 	   && go mod init $p						\
 	   && pushd internal 						\
+		 && cp $tdir/*tmpl ./ 					\
 	   	 &&[ -f ${p}.sw ] || cp  $sw ${p}.sw			\
+	   	 && sw ${p}.sw > ../main.go				\
 	   	 && GenCFG > sw.cfg					\
+	   	 && GenGo $*						\
 	   	 && swgraph ${p}.sw					\
-	  	 && /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ${p}.sh \
-	  	 && chmod a+x ${p}.sh 					\
-	         && bash ${p}.sh  $* 					\
-	  	 && echo;echo Running `pwd`/internal/${p}.sh		\
-	   	 && sw ${p}.sw > ../main.go ; popd			\
+	   && popd							\
 	   && go run main.go						\
 	   && echo Project Build Success || echo Project Build $0  OOPS!
-	   go fmt && go test
+	   # go fmt && go test
 	echo
-
-	   # ??? && export GOPATH="$GOPATH:`pwd`"				 
+				 
 }
 
 GenProject() {
-	[ -z $1 ] && ( Genp X Y Z; exit 0 )  \
+	[ -z $1 ] && ( Genp X Y Z; exit 0 )  	\
 	|| Display GenProject for $*		\
 	, Genp $* 
 }
