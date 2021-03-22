@@ -7,8 +7,9 @@ Die () {
 	exit 1
 }
 
-SW=$GOPATH/bin/sw
-[ -e $SW     ] || Die $SW is missing 
+SW=/home/tyoung3/bin/sw
+echo SW=$SW
+[ -e $SW     ] || Die SW $SW is missing 
 [ -f go.mod  ] || [ -f ../go.mod ]  || [ -f ../../go.mod ] || ../go.mod  || Die go.mod is missing
 
 GenRun() {

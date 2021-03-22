@@ -234,7 +234,7 @@ static void genPrefix(Model m)
     showND(m);			/* Show commented Net Definition */
     printf("\nNetDef\n");
       
-    printf("\nGenComp() {\necho OK > ${1}.go\necho Test > ${1}_test.go\n" );
+    printf("\nGenComp() {\necho package X > ${1}.go\necho package X > ${1}_test.go\n" );
     printf("}\n");
 }
 
