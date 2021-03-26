@@ -4,8 +4,10 @@
 
 #https://coderwall.com/p/fasnya/add-git-branch-name-to-bash-prompt
 
+pgm=sw.sh
+
 Die() {
-	echo "$0/DIE: $*"
+	echo "$pgm/DIE: $*"
 	exit 1
 }
 
@@ -86,6 +88,7 @@ RunDocker() {
 }
 
 GenProject() {
+	[ -f ${1}.sw ] || Die Missing PROJECT.SW: ${1}.sw
 	pushd project && ./p.sh g  $*
 	popd 
 }
@@ -97,6 +100,7 @@ Browse () {
 Shell() {
 	export sps1="$PS1"
 	export PS1="\w> "
+	export PATH=$GOPATH/mod/sw/bin:$PATH
 	echo Entering StreamWork shell  
 	exec bash --rcfile .bashrc  
 }
@@ -110,12 +114,12 @@ case $1 in
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
-	p)  shift; GenProject $*;;
+	p)  shift;export DEBUG=y;GenProject $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
 	s) shift; Shell $;;
-	x) $EDITOR nds/collate.sw sw.sh;;
+	x) $EDITOR sw.sh;;
 	*) cat << EOF 
 	
 USAGE: 

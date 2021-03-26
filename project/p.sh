@@ -14,12 +14,20 @@
 
 # @@TODO:  List of banned Modules.   Push Data to file, then have script read file. 
 #    git branch to PS1
+#    all packages import project code.
 
+pgm=p.sh
 
 Die() {
 	echo "$self/DIE: $*"
 	exit
 }
+
+Debug() {
+        [ "$DEBUG" == "y" ] && echo "$pgm/DEBUG: $* " 
+}
+
+Debug Running $pgm w/DEBUG
 
 #pat  is github Personal Access Token: "SW Project Generation"
 pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
@@ -52,7 +60,7 @@ GenCFG() {
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
     HTMLdir:	"/home/tyoung3/go/mod/sw/html/" #Where tooltips live
-    DefaultLibrary: "X"
+    DefaultLibrary: "$p"
   limits:
     Maxbfsz:   	10000    #Maximum GO buffer size
   SymbolTable:
@@ -62,44 +70,58 @@ EOF
 }
 
 GenGo() {
-
-	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ${p}.sh 	 
+	 module=$p
+	 Debug GenGo:  $*  module=$module
+	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > /tmp/GOGEN_$p.sh 	 
 	 #chmod a+x ${p}.sh 					 
-	 bash ${p}.sh  $*			 
-}
+	 #bash ${p}.sh  $*	
+	 for pkg in $*; do   
+		 	/home/tyoung3/go/mod/sw/bin/swgen.sh gs $module $pkg YAML 0 2 Comp1;
+		 	/home/tyoung3/go/mod/sw/bin/swgen.sh gs $module $pkg YAML 1 1 Comp2;
+		 	/home/tyoung3/go/mod/sw/bin/swgen.sh gs $module $pkg YAML 2 0 Comp3;
+	 done 
+	 		 
+}   
 
 Genp() {
 	echo GENP: $*
-	pn=test/$1
+	pn=$1
 	p=`basename $pn`
+	sw=`pwd`/../${pn}.sw 
+	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
-	[ -z $1 ] && Die No packages specified.  Try swgo `pwd`/${pn}.sw 
-	echo; echo Generating  project $p and packages $* from `pwd`/${pn}.sw 
-	[ -f ${pn}.sw ] || Die Missing ${pn}.sw 
-	sw=$dir/sw/project/test/${p}.sw 
+	[ -z $1 ] && Die No packages specified.  Try swgo $sw 
+	echo; echo Generating  go module $p containing packages $* from $sw 
 	[ -d $dir/$p  ] && mv $dir/$p $dir/${p}_$$ 
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	tdir=`pwd`
 	pushd $dir/$p							\
 	   && mkdir $* internal						\
-	   && go mod init $p						\
+	   && go mod init $p/$p						\
 	   && pushd internal 						\
 		 && cp $tdir/*tmpl ./ 					\
 	   	 &&[ -f ${p}.sw ] || cp  $sw ${p}.sw			\
-	   	 && GenCFG > sw.cfg					\
-	   	 && sw ${p}.sw > ../main.go				\
+	   	 && GenCFG  > sw.cfg					\
+	   	 && sw ${p}.sw > main.go				\
 	   	 && GenGo $*						\
-	   	 && swgraph ${p}.sw					\
+	   	 && swgraph ${p}.sw 					\
 	   && popd							\
-	   && go run main.go						\
-	   && echo Project Build Success || echo Project Build $0  OOPS!
-	   # go fmt && go test
+	   && go run internal/main.go					\
+	   && echo Project Build Success || echo Project Build $0:  OOPS!
+	   go fmt  ./...
+	   go test ./...
 	echo
 				 
 }
 
+GenProjectP() {
+	[ -z $1 ] && Die Missing Module.sw
+	Display GenProject for $*		 
+	Genp $* 
+}
+
 GenProject() {
-	[ -z $1 ] && ( Genp X Y Z; exit 0 )  	\
+	[ -z $1 ] && ( Genp X Y ; exit 0 )  	\
 	|| Display GenProject for $*		\
 	, Genp $* 
 }
@@ -112,7 +134,8 @@ KillEm() {
 }
 
 case $1 in
-	g)shift;  GenProject $*;;
+	p)shift; Die option p OBSOLETE;;  # GenProject $*
+	g)shift; GenProjectP $*;;
 	k)shift; Init; KillEm $*;;
 	l)shift; Init; tree --noreport  -L 2 $*;;
 	x)shift; $EDITOR $self;;

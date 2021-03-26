@@ -3,6 +3,12 @@
 
  @@TODO:  Fix http link in swgraph 
  
+ Method:  Build project model in memory 
+          Traverse model to generate project file
+          Generate code tree from project file and go templates
+          
+Approach: Prototype code tree generation          
+ 
 */
 
 #include <stdio.h>

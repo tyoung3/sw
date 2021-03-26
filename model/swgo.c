@@ -37,7 +37,7 @@ static void genPath(char *s)
     // char *importPath = { "github.com/tyoung3/streamwork" };
     //char *importPath = { defaultPath };
     char *importLib  = { defaultLibrary };
-    printf("import \"%s/%s\"\n", importLib,  s);
+    printf("import \"%s/%s/%s\"\n", importLib, importLib,  s);
 }
 
 int newPath(char *p)
