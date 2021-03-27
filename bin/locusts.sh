@@ -7,6 +7,8 @@ Die() {
 	exit 1
 }
 
+[ -z $VIEWOR ] && VIEWOR=eog
+
 RunLocusts () {
 	temp=/tmp
 	dir=$temp/sw/locusts
@@ -30,7 +32,7 @@ RunLocusts () {
 		# Create  .jpg 		
 GenJPG() {  
 	pushd model
-	make /tmp/sw/locusts.png  && gimp /tmp/sw/locusts.png &
+	make /tmp/sw/locusts.png  && $VIEWOR /tmp/sw/locusts.png &
 }	
 
 
