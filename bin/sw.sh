@@ -6,8 +6,19 @@
 
 pgm=sw.sh
 
+        black="\u001b[30m"
+        red="\u001b[31m"
+        green="\u001b[32m"	
+        lightgreen="\u001b[32;1m"	 
+        yellow="\u001b[33m"
+        blue="\u001b[34m"
+        magenta="\u001b[35m"
+        cyan="\u001b[36m"
+        white="\u001b[37m"
+        reset="\u001b[0m"
+        
 Die() {
-	echo "$pgm/DIE: $*"
+	echo -e "$red$pgm/DIE: $*$reset"
 	exit 1
 }
 
@@ -20,7 +31,7 @@ RunCollate () {
 	[ -x bin/sw ]|| Die Cannot find bin/sw -- run make ? 
 	[ -d $temp/sw/collate ] || mkdir -p $temp/sw/collate 
 	bin/sw nds/collate.sw |gofmt >  $temp/sw/collate/main.go
-	pushd $temp/sw/collate
+	pushd $temp/sw/collategenPath1
 	[ -f go.mod ] || go mod init collate/collate
 	go run main.go 	 
 }
@@ -46,7 +57,7 @@ GenSVG() {
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.Jnetwork_languagePG
 	#gimp /tmp/collate_SW.JPG
-}	
+}	 
 
 ShowCheck() {
 	cat << EOF
@@ -89,7 +100,8 @@ RunDocker() {
 
 GenProject() {
 	[ -f ${1}.sw ] || Die Missing PROJECT.SW: ${1}.sw
-	 p.sh g  $*
+	sw=`pwd`/$1;shift
+	 p.sh g  $sw $*
 }
 
 Browse () {
@@ -113,7 +125,7 @@ case $1 in
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
-	p)  shift;export DEBUG=y;GenProject $*;;
+	p)  shift;GenProject $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
@@ -141,6 +153,4 @@ EOF
 	;;	
 					
 esac	 
-	
-	
-
+#########################   End of script   ############################

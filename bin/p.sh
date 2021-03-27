@@ -30,15 +30,17 @@
 pgm=p.sh
 
 Die() {
-	echo -e "${red}$self/DIE: $*"
-	exit
+	echo -e "${red}$self/DIE: $*$reset"
+	exit 1
 }
 
 Debug() {
         [ "$DEBUG" == "y" ] && echo -e "$yellow$pgm/DEBUG: $* $reset " 
+        # echo -e $red Debug $* $reset
+        echo -n 
 }
 
-Debug Running $pgm w/DEBUG
+Debug Running $pgm w/DEBUG args: $*
 
 #pat  is github Personal Access Token: "SW Project Generation"
 pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
@@ -47,10 +49,10 @@ self=p.sh
 version="0.0.0"  
 [ -z $GOPATH ] && Die GOPATH is not set
 dir=$GOPATH/mod/
-dir0=`pwd`p ~/myapp d e
+# dir0=`pwd`p ~/myapp d e
 
 Display() {
-	echo $green$self/$*$reset
+	echo -e $yellow$self/$*$reset
 }
 
 [ -d $dir ] || Die Missing directory: $dir
@@ -121,8 +123,8 @@ Genp() {
 	   	 && swgraph ${p}.sw 					\
 	   && popd							\
 	   && go run internal/main.go					\
-	   && echo -e "${green}Project Build Success$reset" 		\
-	   || echo -e "${red}Project Build $0:  OOPS!$reset"
+	   && echo -e "${green}$self: Create project from $sw: Success!$reset" 		\
+	   || echo -e "${red}$self: Create project from $sw: FAILED.$reset"
 	   go fmt  ./...
 	   go test ./...
 	echo

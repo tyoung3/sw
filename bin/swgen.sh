@@ -2,24 +2,24 @@
 
 # SWGEN.sh  Created from SWSKEL.sh from SW.sh
 pgm=swgen.sh
-version="0.3.0"
+version="0.3.1"
 HTML=fbpgo.html
 
 # NOTE: Go ignores files and directories beginning with '_', as in _OLD/
 
-        black="\u001b[30m"
-        red="\u001b[31m"
-        green="\u001b[32m"
+             black="\u001b[30m"
+               red="\u001b[31m"
+             green="\u001b[32m"
+            yellow="\u001b[33m"
+              blue="\u001b[34m"
+           magenta="\u001b[35m"
+              cyan="\u001b[36m"
+             white="\u001b[37m"
+             reset="\u001b[0m"   
         lightgreen="\u001b[32;1m"
-        yellow="\u001b[33m"
-        blue="\u001b[34m"
-        magenta="\u001b[35m"
-        cyan="\u001b[36m"
-        white="\u001b[37m"
-        reset="\u001b[0m"
         
 Die() {
-                echo -e "$red$pgm/DIE: $*$reset"
+                echo -e "$red$pgm/DIE: $* $reset"
                 exit 1
 }
 
@@ -27,7 +27,7 @@ Debug() {
         [ "$DEBUG" == "y" ] && echo -e "${yellow}$pgm/DEBUG: $* $reset" 
 } 
 
-Debug Running $pgm w/DEBUG
+Debug Running $pgm w/DEBUG.  Args: $*
 
 Verbose() {
         if [ ! -z $verbose ]; then
@@ -178,11 +178,11 @@ func PkgConfig()  *config.Config {
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
     
     fmt.Println(title, 
-                \"Running\", 
+                \"${green}gRunning7\", 
                 arg[0], 
                 version, 
                 \"bs =\", bs, 
-                \"seqno = \", seqno) 
+                \"seqno = \", seqno,"$reset") 
     
     if seqno != 1234 {
         fmt.Println(
@@ -218,11 +218,11 @@ func PkgConfig()  *config.Config {
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
     
     fmt.Println(title, 
-                \"Running\", 
+                \"${green}Running\", 
                 arg[0], 
                 version, 
                 \"bs =\", bs, 
-                \"seqno = \", seqno) 
+                \"seqno: \", seqno,\"$reset\") 
     
     if seqno != 1234 {
         fmt.Println(
@@ -239,7 +239,7 @@ noPkgConfig() {
     seqno, _ := cfg.IntOr(\"${pkg}.seqno\", 1)
     bs, _ := cfg.IntOr(\"${pkg}.buffersize\", 1)
         fmt.Println(
-                \"Running\", arg[0], version, \"bs =\", bs)  
+                \"Running3\", arg[0], version, \"bs =\", bs)  
         
     if seqno != 1234 {
         fmt.Println(
@@ -256,7 +256,7 @@ noPkgYAML() {
     seqno, _ := cfg.IntOr(\"${pkg}.seqno\", 1)
     bs, _ := cfg.IntOr(\"${pkg}.buffersize\", 1)
         fmt.Println(
-                \"Running\", arg[0], version, 
+                \"Running4\", arg[0], version, 
                 \"bs =\", bs, 
                 \"seqno =\", seqno)  
         
@@ -284,7 +284,7 @@ GenConfig() {
                     fi	
                         ;;
                  *)go_config3="fmt.Println(
-                \"Running\", arg[0])" 
+                \"Running5\", arg[0])" 
                    ;;   
          esac
 }         
