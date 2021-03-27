@@ -30,12 +30,12 @@
 pgm=p.sh
 
 Die() {
-	echo "${red}$self/DIE: $*"
+	echo -e "${red}$self/DIE: $*"
 	exit
 }
 
 Debug() {
-        [ "$DEBUG" == "y" ] && echo "$pgm/DEBUG: $* " 
+        [ "$DEBUG" == "y" ] && echo -e "$yellow$pgm/DEBUG: $* $reset " 
 }
 
 Debug Running $pgm w/DEBUG
@@ -50,7 +50,7 @@ dir=$GOPATH/mod/
 dir0=`pwd`p ~/myapp d e
 
 Display() {
-	echo $self/$*
+	echo $green$self/$*$reset
 }
 
 [ -d $dir ] || Die Missing directory: $dir
@@ -121,7 +121,8 @@ Genp() {
 	   	 && swgraph ${p}.sw 					\
 	   && popd							\
 	   && go run internal/main.go					\
-	   && echo Project Build Success || echo Project Build $0:  OOPS!
+	   && echo -e "${green}Project Build Success$reset" 		\
+	   || echo -e "${red}Project Build $0:  OOPS!$reset"
 	   go fmt  ./...
 	   go test ./...
 	echo

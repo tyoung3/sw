@@ -19,13 +19,13 @@ HTML=fbpgo.html
         reset="\u001b[0m"
         
 Die() {
-                echo "$red$pgm/DIE: $*"
+                echo -e "$red$pgm/DIE: $*$reset"
                 exit 1
 }
 
 Debug() {
-        [ "$DEBUG" == "y" ] && echo "$pgm/DEBUG: $* " 
-}
+        [ "$DEBUG" == "y" ] && echo -e "${yellow}$pgm/DEBUG: $* $reset" 
+} 
 
 Debug Running $pgm w/DEBUG
 
