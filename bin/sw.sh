@@ -89,8 +89,7 @@ RunDocker() {
 
 GenProject() {
 	[ -f ${1}.sw ] || Die Missing PROJECT.SW: ${1}.sw
-	pushd project && ./p.sh g  $*
-	popd 
+	 p.sh g  $*
 }
 
 Browse () {

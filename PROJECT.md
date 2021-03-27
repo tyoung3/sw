@@ -29,6 +29,8 @@ QuickStart (on Linux)
 Example
 -------
 
+sw.sh p X.sh Y X 
+
 ```	
 PROJECT_NAME=ex1
 mkdir ~/go/mod/$PROJECT_NAME || Die .

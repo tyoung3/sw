@@ -7,8 +7,19 @@ HTML=fbpgo.html
 
 # NOTE: Go ignores files and directories beginning with '_', as in _OLD/
 
+        black="\u001b[30m"
+        red="\u001b[31m"
+        green="\u001b[32m"
+        lightgreen="\u001b[32;1m"
+        yellow="\u001b[33m"
+        blue="\u001b[34m"
+        magenta="\u001b[35m"
+        cyan="\u001b[36m"
+        white="\u001b[37m"
+        reset="\u001b[0m"
+        
 Die() {
-                echo "$pgm/DIE: $*"
+                echo "$red$pgm/DIE: $*"
                 exit 1
 }
 
@@ -134,13 +145,11 @@ EOF
 }
 
 concatYAML() {
-        red="\u001b[31m"
-        reset="\u001b[0m"
         Debug concatYAML $1 at `pwd`
         cat <<- EOF >> $1
         $module/${pkg}:   
           bornon: `date -I'seconds'`
-          title: "${red}Module:$module Pkg:$pkg${reset}" 
+          title: "${lightgreen}Module:$module Pkg:$pkg${reset}" 
           seqno: 1234    #Used to check for valid config file. 
           buffersize: 1  #Integer example. 
         

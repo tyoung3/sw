@@ -32,15 +32,25 @@ void genSuffix()
 }
 
 
+static void genPath1(char *s)
+{
+    // char *importPath = { "github.com/tyoung3/streamwork" };
+    //char *importPath = { defaultPath };
+        printf("\t//  genPath1: %s \n",  s);
+    char *importLib  = { defaultLibrary };
+    printf("import \"%s/%s\"\n", importLib,  s);
+}
+
 static void genPath(char *s)
 {
     // char *importPath = { "github.com/tyoung3/streamwork" };
     //char *importPath = { defaultPath };
+        printf("\t//  genPath1: %s \n",  s);
     char *importLib  = { defaultLibrary };
     printf("import \"%s/%s/%s\"\n", importLib, importLib,  s);
 }
 
-int newPath(char *p)
+int newPath(char *p)	
 {
 
     if (getPath(p) == 1)

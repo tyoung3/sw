@@ -55,8 +55,7 @@ check:
 	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
-	${PGM}  -m 4 tests/java.sw     >/dev/null
-	 ../project/p.sh g tests/java  >/dev/null	 
+	${PGM}  -m 4 tests/java.sw     >/dev/null	 
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
 	${PGM}  tests/aj.sw   >/dev/null
 	${PGM}  tests/asj.sw   >/dev/null

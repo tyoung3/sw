@@ -12,6 +12,17 @@
 #	$ ./p.sh g test/X
 #
 
+        black="\u001b[30m"
+        red="\u001b[31m"
+        green="\u001b[32m"	
+        lightgreen="\u001b[32;1m"	 
+        yellow="\u001b[33m"
+        blue="\u001b[34m"
+        magenta="\u001b[35m"
+        cyan="\u001b[36m"
+        white="\u001b[37m"
+        reset="\u001b[0m"
+        
 # @@TODO:  List of banned Modules.   Push Data to file, then have script read file. 
 #    git branch to PS1
 #    all packages import project code.
@@ -19,7 +30,7 @@
 pgm=p.sh
 
 Die() {
-	echo "$self/DIE: $*"
+	echo "${red}$self/DIE: $*"
 	exit
 }
 
@@ -36,7 +47,7 @@ self=p.sh
 version="0.0.0"  
 [ -z $GOPATH ] && Die GOPATH is not set
 dir=$GOPATH/mod/
-dir0=`pwd`
+dir0=`pwd`p ~/myapp d e
 
 Display() {
 	echo $self/$*
@@ -84,17 +95,18 @@ GenGo() {
 }   
 
 Genp() {
-	echo GENP: $*
+	echo GENPy: $*
 	pn=$1
 	p=`basename $pn`
-	sw=`pwd`/../${pn}.sw 
+	sw=${pn}.sw 
+	Debug sw=$sw pn=$pn
 	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
 	[ -z $1 ] && Die No packages specified.  Try swgo $sw 
 	echo; echo Generating  go module $p containing packages $* from $sw 
 	[ -d $dir/$p  ] && mv $dir/$p $dir/${p}_$$ 
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	tdir=`pwd`
+	tdir=$GOPATH/mod/sw/project
 	pushd $dir/$p							\
 	   && mkdir $* internal						\
 	   && go mod init $p/$p						\
@@ -102,7 +114,9 @@ Genp() {
 		 && cp $tdir/*tmpl ./ 					\
 	   	 &&[ -f ${p}.sw ] || cp  $sw ${p}.sw			\
 	   	 && GenCFG  > sw.cfg					\
+	   	 && Debug internal run sw ${p}.sw			\
 	   	 && sw ${p}.sw > main.go				\
+	   	 && Debug internal run GenGo:				\
 	   	 && GenGo $*						\
 	   	 && swgraph ${p}.sw 					\
 	   && popd							\
