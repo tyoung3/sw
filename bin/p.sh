@@ -120,14 +120,15 @@ Genp() {
 	   	 &&[ -f ${p}.sw ] || cp  $sw ${p}.sw			\
 	   	 && GenCFG  > sw.cfg					\
 	   	 && Debug internal run sw ${p}.sw			\
-	   	 && sw ${p}.sw > main.go				\
+	   	 && sw ${p}.sw > ${p}.go				\
 	   	 && Debug internal run GenGo:				\
 	   	 && GenGo $*						\
 	   	 && swgraph ${p}.sw 					\
 	   && popd							\
-	   && go run internal/main.go					\
 	   && echo -e "${green}$self: Create project from $sw: Success!$reset" 		\
-	   || echo -e "${red}$self: Create project from $sw: FAILED.$reset"
+	   || Die "${red}$self: Create project from $sw: FAILED.$reset"	\
+	   && go run internal/${p}.go					\
+	   && (pushd internal; go build *.go; popd)			 
 	   go fmt  ./...
 	   go test ./...
 	echo
