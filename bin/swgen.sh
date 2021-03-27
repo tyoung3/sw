@@ -211,7 +211,11 @@ genPkgYAML() {
         
 defversion='var version string="v0.0.0"'
 
-args="/***  $*  ***/"
+args=""
+for arg in $*; do
+	args="$args 
+	fmt.Print(\"\n//$arg\")" 
+done 
 
 fconfig="
 /* PkgConfig initializes the go-config package.
@@ -235,15 +239,18 @@ func PkgConfig()  *config.Config {
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
     // argx, _ := cfg.StringOr(\"$module/${pkg}.argx\", \"no argx\")
     
+    fmt.Print(title, 
+                \" ${cyan}Running \", 
+                arg[0],\"-\",  
+                \"${name}-\",
+                version, 
+                \" bs=\", bs, 
+                \" seqno: \", seqno)
+    
     $args
     
-    fmt.Println(title, 
-                \"${cyan}Running\", 
-                arg[0],\"-\",  
-                \"$name\",
-                version, 
-                \"bs =\", bs, 
-                \"seqno: \", seqno,\"$reset\") 
+    fmt.Println(
+    	\"$reset\") 
     
     if seqno != 1234 {
         fmt.Println(
