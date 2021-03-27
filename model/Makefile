@@ -24,9 +24,9 @@ clean:
 	rm -f ${SWOBJS}      
 
 poc:	.phony 
-	../sw.sh poc 
+	../bin/sw.sh poc 
 
-.phony:  ${PGM} ../sw.sh
+.phony:  ${PGM} ../bin/sw.sh
 
 SW.ps: SW.dvi
 	${DVIPS} SW.dvi -o SW.ps
@@ -75,7 +75,7 @@ check:
 	${PGM}  tests/lrR.sw   >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/var.sw   >/dev/null
-	../sw.sh poc     
+	../bin/sw.sh poc     
 
 
 svg:  .phsvg 
