@@ -40,19 +40,20 @@ Debug() {
         echo -n 
 }
 
-Debug Running $pgm w/DEBUG args: $*
 
 #pat  is github Personal Access Token: "SW Project Generation"
 pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
 
 self=p.sh
-version="0.0.0"  
+version="0.0.1"  
 [ -z $GOPATH ] && Die GOPATH is not set
 dir=$GOPATH/mod/
-# dir0=`pwd`p ~/myapp d e
+
+Debug Running ${pgm}-$version w/DEBUG args: $*
 
 Display() {
-	echo -e $yellow$self/$*$reset
+	Debug $*
+	#echo -e $magenta$self/$*$reset
 }
 
 [ -d $dir ] || Die Missing directory: $dir
@@ -88,16 +89,18 @@ GenGo() {
 	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > /tmp/GOGEN_$p.sh 	 
 	 #chmod a+x ${p}.sh 					 
 	 #bash ${p}.sh  $*	
+	 arg1="arg1";arg2="arg2";arg3="arg3"
+	 val1="val1";val2="val2";val3="val3"
 	 for pkg in $*; do   
-		 	/home/tyoung3/go/mod/sw/bin/swgen.sh gs $module $pkg YAML 0 2 Comp1;
-		 	/home/tyoung3/go/mod/sw/bin/swgen.sh gs $module $pkg YAML 1 1 Comp2;
-		 	/home/tyoung3/go/mod/sw/bin/swgen.sh gs $module $pkg YAML 2 0 Comp3;
+		 	swgen.sh gs $module $pkg YAML 0 2 Comp1 
+		 	swgen.sh gs $module $pkg YAML 1 1 Comp2 $arg2 $val2 
+		 	swgen.sh gs $module $pkg YAML 2 0 Comp3 $arg2 $val2 $arg3 $val3
 	 done 
 	 		 
 }   
 
 Genp() {
-	echo GENPy: $*
+	Display $GENPy: $*
 	pn=$1
 	p=`basename $pn`
 	sw=${pn}.sw 
@@ -105,7 +108,7 @@ Genp() {
 	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
 	[ -z $1 ] && Die No packages specified.  Try swgo $sw 
-	echo; echo Generating  go module $p containing packages $* from $sw 
+	echo; Display Generating  go module $p containing packages $* from $sw 
 	[ -d $dir/$p  ] && mv $dir/$p $dir/${p}_$$ 
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	tdir=$GOPATH/mod/sw/project

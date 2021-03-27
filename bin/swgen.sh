@@ -5,8 +5,6 @@ pgm=swgen.sh
 version="0.3.1"
 HTML=fbpgo.html
 
-# NOTE: Go ignores files and directories beginning with '_', as in _OLD/
-
              black="\u001b[30m"
                red="\u001b[31m"
              green="\u001b[32m"
@@ -17,6 +15,20 @@ HTML=fbpgo.html
              white="\u001b[37m"
              reset="\u001b[0m"   
         lightgreen="\u001b[32;1m"
+   
+NOTE_BgColors() {
+	cat << EOF        
+   # NOTE: Go ignores files and directories beginning with '_', as in _OLD/
+        Background Black: \u001b[40m
+	Background Red: \u001b[41m
+	Background Green: \u001b[42m
+	Background Yellow: \u001b[43m
+	Background Blue: \u001b[44m
+	Background Magenta: \u001b[45m
+	Background Cyan: \u001b[46m
+	Background White: \u001b[47m
+EOF
+}
         
 Die() {
                 echo -e "$red$pgm/DIE: $* $reset"
@@ -149,11 +161,12 @@ concatYAML() {
         cat <<- EOF >> $1
         $module/${pkg}:   
           bornon: `date -I'seconds'`
-          title: "${lightgreen}Module:$module Pkg:$pkg${reset}" 
+          title: "${cyan}Module:$module Pkg:$pkg${reset}" 
           seqno: 1234    #Used to check for valid config file. 
           buffersize: 1  #Integer example. 
         
 EOF
+	
         
 }
 
@@ -178,8 +191,9 @@ func PkgConfig()  *config.Config {
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
     
     fmt.Println(title, 
-                \"${green}gRunning7\", 
-                arg[0], 
+                \"${cyan}gRunning7\", 
+                arg[0],"-",  
+                $name,
                 version, 
                 \"bs =\", bs, 
                 \"seqno = \", seqno,"$reset") 
@@ -193,9 +207,12 @@ func PkgConfig()  *config.Config {
 
 
 genPkgYAML() {  
-        Debug genPkgYAML
+        Debug genPkgYAML Args: $*
         
 defversion='var version string="v0.0.0"'
+
+args="/***  $*  ***/"
+
 fconfig="
 /* PkgConfig initializes the go-config package.
 See: https://github.com/zpatrick/go-config for details*/
@@ -216,10 +233,14 @@ func PkgConfig()  *config.Config {
     bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
     seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
+    // argx, _ := cfg.StringOr(\"$module/${pkg}.argx\", \"no argx\")
+    
+    $args
     
     fmt.Println(title, 
-                \"${green}Running\", 
-                arg[0], 
+                \"${cyan}Running\", 
+                arg[0],\"-\",  
+                \"$name\",
                 version, 
                 \"bs =\", bs, 
                 \"seqno: \", seqno,\"$reset\") 
@@ -347,7 +368,7 @@ EOFZ
 EOF
 
         gofmt -w -s ${name}.go
-        echo Debug: $EDITOR $cfg_file
+        Debug $EDITOR $cfg_file
 	GenConfig
         # $EDITOR $cfg_file &
 }
@@ -443,6 +464,11 @@ EOFY
         go fmt ${name}_test.go
 }
         
+Fail() {
+	echo -e Usage: $pgm gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS Component [ARG VAL]...
+	Die $*
+}
+        
 #  Generate a skeleton component
 GenSkel() {
 	module=$1;shift;
@@ -455,10 +481,10 @@ GenSkel() {
         [ -z $outp ] && outp=0
         cfg_file="$GOPATH/mod/$module/$module.yaml"
         Debug GenSkel: $module $pkg config=$config input=$inp output=$outp $*
-        shift 4
-        [ -z $module ] 	&& Die  Usage: $pgm gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS
-        [ -z $pkg ] 	&& Die  Usage: $pgm gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS
-        [ -z $name ] 	&& Die  Usage: $pgm gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS
+        shift 5; Debug ARG/VAL: $*
+        [ -z $module ] 	&& Fail Missing module
+        [ -z $pkg ] 	&& Fail Missing package 
+        [ -z $name ] 	&& Fail Missing name 
         mdl=$module
         [ "$module" == "$pkg" ] && mdl=".";  Debug mdl=$mdl pkg=$pkg
         [ -d $src/$mdl/$pkg ]       		 \
@@ -466,7 +492,7 @@ GenSkel() {
         	|| Die Cannot create $src/$mdl/$pkg.
         src2=$src/$mdl/$pkg
         pushd $src/$module
-        genPkgYAML  
+        genPkgYAML  $*
         	Debug GenSkel/GenConfig.go `pwd`
        	 	[ -f config.go ] 								\
        	 		|| ( 									\
@@ -479,11 +505,9 @@ GenSkel() {
         cfg_file="$GOPATH/mod/$module/${module}.yaml" 
         [ -f $cfg_file ] || makeYAML $cfg_file
         inps=$inp;outps=$outp
-        for name in $*; do 
         	Debug `pwd` name: $name $inps $outps
         	[ -f ${name}.go ]       || GenGo     $inps $outps
         	[ -f ${name}_test.go ]  || GenTestGo $inps $outps
-        done
         Debug Generate go.mod at $src/$mdl
         [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init $module/$module && popd) 
         go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
@@ -507,7 +531,7 @@ case $1 in
         *)  cat <<- EOFX
         
         $0-v$version USAGE:  
-                gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS COMPNAME... 	. Generate skeleton components
+                gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS COMPNAME [ARG VAL]...  . Generate skeleton components
                                         COMPNAME must begin with an upper case letter
                                         PKG and/or MODULE directories will be created if missing.
                                         CONFIG_TYPE can be NONE,TOML, or YAML
