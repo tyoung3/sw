@@ -211,11 +211,30 @@ genPkgYAML() {
         
 defversion='var version string="v0.0.0"'
 
-args=""
-for arg in $*; do
-	args="$args 
-	fmt.Print(\"\n//$arg\")" 
-done 
+args=" "
+getargs=""
+
+allargs=($*) 
+	i=${#allargs[@]}  
+        
+    while [ $i -gt 1 ]; do 
+        
+	arg=${allargs[$(($i-2))]}
+        val=${allargs[$(($i-1))]}
+        
+	Debug i=$i  arg=$arg val=$val
+	
+	getargs="$arg, _ := cfg.StringOr(\"$module/${pkg}.$arg\", \"$val\")
+	$getargs" 
+        
+	args="fmt.Print(\"; $arg=\",$arg)  
+	$args" 
+	
+	i=$(($i-2))
+	
+    done
+     	
+	Debug make args $*
 
 fconfig="
 /* PkgConfig initializes the go-config package.
@@ -237,7 +256,7 @@ func PkgConfig()  *config.Config {
     bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
     seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
-    // argx, _ := cfg.StringOr(\"$module/${pkg}.argx\", \"no argx\")
+        $getargs
     
     fmt.Print(title, 
                 \" ${cyan}Running \", 

@@ -92,9 +92,9 @@ GenGo() {
 	 arg1="arg1";arg2="arg2";arg3="arg3"
 	 val1="val1";val2="val2";val3="val3"
 	 for pkg in $*; do   
-		 	swgen.sh gs $module $pkg YAML 0 2 Comp1 
-		 	swgen.sh gs $module $pkg YAML 1 1 Comp2 $arg2 $val2 
-		 	swgen.sh gs $module $pkg YAML 2 0 Comp3 $arg2 $val2 $arg3 $val3
+		 	swgen.sh gs $module $pkg YAML 0 2 Comp1 			 
+		 	swgen.sh gs $module $pkg YAML 1 1 Comp2 $arg2 $val2 		 
+		 	swgen.sh gs $module $pkg YAML 2 0 Comp3 $arg1 $val1 $arg2 $val2 $arg3 $val3  
 	 done 
 	 		 
 }   
