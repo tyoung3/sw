@@ -200,6 +200,7 @@ static void showND(Model m)
     while (f) {
 	switch (f->source->kind) {
 		case IS_SUB:
+
 			break;
 		case IS_NET:
 	    		showSink(f->sink, f->sink_id);
@@ -248,13 +249,37 @@ static void genPrefix(Model m)
     printf("}\n");
 }
 
+static char *Prefix(char *s) {
+	char *s0;
+	char *s1;
+
+	s0=malloc(sizeof(s)+1);
+	s1=s0;
+	
+	while (*s != 0) {
+		if( *s == '.') {
+			*s1=0;
+			return s0;
+		} else {
+		   *s1++ = *s++;
+		}
+	}
+	
+	return s;
+}
+
 static void GenComponents(Model m) {
 	Component c;
-
+	char *module; 
+	
 	c=m->comp;
 
+
+	module=Prefix(m->name);   // Strip off suffix: .sw
+	
 	while(c!=NULL) {
-		printf("GenComp %s %s\n",c->path,c->name);
+		printf("swgen.sh gs %s %s YAML 1 1 %s \"arg1\" \"val1\" \n",
+			"X",c->path,c->name);
 		c=c->next;
 	}
 	
@@ -263,14 +288,8 @@ static void GenComponents(Model m) {
 
 void genProject(Model model)
 {
-    // Process p;
-
-    genPrefix(model);		/* Generate Prefix code */
-    //p = model->proc;		/* Get first process    */
     GenComponents(model);
 
-    // genLaunches(p);		/* Expand processes     */
-    // genSuffix();		/* Generate Suffix code */
 }
 
 

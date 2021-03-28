@@ -53,7 +53,6 @@ Debug Running ${pgm}-$version w/DEBUG args: $*
 
 Display() {
 	Debug $*
-	#echo -e $magenta$self/$*$reset
 }
 
 [ -d $dir ] || Die Missing directory: $dir
@@ -86,7 +85,9 @@ EOF
 GenGo() {
 	 module=$p
 	 Debug GenGo:  $*  module=$module
-	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > /tmp/GOGEN_$p.sh 	 
+	 Debug $cmds
+	 #  echo $red  $cmds $reset
+	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ./gengo$p.sh 	 
 	 #chmod a+x ${p}.sh 					 
 	 #bash ${p}.sh  $*	
 	 arg1="arg1";arg2="arg2";arg3="arg3"
@@ -94,18 +95,20 @@ GenGo() {
 	 val1="val1";val2="val2";val3="val3"
 	 val4="val4";val5="val5";val6="val6"
 	 
-	 for pkg in $*; do   
+	 
+	 if [ 1 ]; then
+	 	bash ./gengo$p.sh
+	 else 
+	    for pkg in $*; do   
 	 		# DO NOT Subtask Comp1 build.  Makes stuff needed for Comp2 and Comp3
 		 	swgen.sh gs $module $pkg YAML 0 2 Comp1 	 	 	 
 		 	swgen.sh gs $module $pkg YAML 1 1 Comp2 $arg1 $val1    &
 		 	swgen.sh gs $module $pkg YAML 2 0 Comp3 $arg1 $val1 $arg2 $val2 $arg3 $val3   &
-		 	#swgen.sh gs $module $pkg YAML 0 0 Comp4 $arg1 $val1 $arg2 $val2 $arg3 $val3  $arg4 $val4    &
-		 	#swgen.sh gs $module $pkg YAML 0 0 Comp5 $arg1 $val1 $arg2 $val2    &
-		 	#swgen.sh gs $module $pkg YAML 0 0 Comp6 $arg1 $val1 $arg2 $val2    &
-		 	#swgen.sh gs $module $pkg YAML 0 0 Comp7 $arg1 $val1 $arg2 $val2    &
-	 done 
+	    done 
+	 fi   
 	 		 
-}   
+}    
+
 
 Genp() {
 	Display $GENPy: $*
