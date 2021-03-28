@@ -90,11 +90,19 @@ GenGo() {
 	 #chmod a+x ${p}.sh 					 
 	 #bash ${p}.sh  $*	
 	 arg1="arg1";arg2="arg2";arg3="arg3"
+	 arg4="arg4";arg5="arg5";arg6="arg6"
 	 val1="val1";val2="val2";val3="val3"
+	 val4="val4";val5="val5";val6="val6"
+	 
 	 for pkg in $*; do   
-		 	swgen.sh gs $module $pkg YAML 0 2 Comp1 			 
-		 	swgen.sh gs $module $pkg YAML 1 1 Comp2 $arg2 $val2 		 
-		 	swgen.sh gs $module $pkg YAML 2 0 Comp3 $arg1 $val1 $arg2 $val2 $arg3 $val3  
+	 		# DO NOT Subtask Comp1 build.  Makes stuff needed for Comp2 and Comp3
+		 	swgen.sh gs $module $pkg YAML 0 2 Comp1 	 	 	 
+		 	swgen.sh gs $module $pkg YAML 1 1 Comp2 $arg1 $val1    &
+		 	swgen.sh gs $module $pkg YAML 2 0 Comp3 $arg1 $val1 $arg2 $val2 $arg3 $val3   &
+		 	#swgen.sh gs $module $pkg YAML 0 0 Comp4 $arg1 $val1 $arg2 $val2 $arg3 $val3  $arg4 $val4    &
+		 	#swgen.sh gs $module $pkg YAML 0 0 Comp5 $arg1 $val1 $arg2 $val2    &
+		 	#swgen.sh gs $module $pkg YAML 0 0 Comp6 $arg1 $val1 $arg2 $val2    &
+		 	#swgen.sh gs $module $pkg YAML 0 0 Comp7 $arg1 $val1 $arg2 $val2    &
 	 done 
 	 		 
 }   
@@ -122,7 +130,7 @@ Genp() {
 	   	 && Debug internal run sw ${p}.sw			\
 	   	 && sw ${p}.sw > ${p}.go				\
 	   	 && Debug internal run GenGo:				\
-	   	 && GenGo $*						\
+	   	 && GenGo $* ; wait					\
 	   	 && swgraph ${p}.sw 					\
 	   && popd							\
 	   && echo -e "${green}$self: Create project from $sw: Success!$reset" 		\
