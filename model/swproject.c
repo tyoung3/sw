@@ -26,6 +26,7 @@ Approach: Prototype code tree generation
 #define C(s) printf("%s",(#s));
 
 
+#if 0
 static String Timestamp()
 {
     time_t ltime;		/* calendar time */
@@ -249,6 +250,8 @@ static void genPrefix(Model m)
     printf("}\n");
 }
 
+#endif
+
 static char *Prefix(char *s) {
 	char *s0;
 	char *s1;
@@ -268,28 +271,22 @@ static char *Prefix(char *s) {
 	return s;
 }
 
-static void GenComponents(Model m) {
+void genProject(Model m) {
 	Component c;
-	char *module; 
+	int inp=0;	// Number of input ports 	
+	int outp=0;	// Number of output ports
+	char *module; 	// Go Module (and executable name)  
+	char amp=' ';   // Ampersand (or not);
 	
 	c=m->comp;
-
-
 	module=Prefix(m->name);   // Strip off suffix: .sw
 	
 	while(c!=NULL) {
-		printf("swgen.sh gs %s %s YAML 1 1 %s \"arg1\" \"val1\" \n",
-			"X",c->path,c->name);
+		printf("swgen.sh gs %s %s YAML %d %d %s \"arg1\" \"val1\" %c \n",
+			module ,c->path, inp, outp, c->name, amp );
+		amp='&';
 		c=c->next;
 	}
-	
-
-}
-
-void genProject(Model model)
-{
-    GenComponents(model);
-
 }
 
 

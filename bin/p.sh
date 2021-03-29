@@ -85,27 +85,9 @@ EOF
 GenGo() {
 	 module=$p
 	 Debug GenGo:  $*  module=$module
-	 Debug $cmds
-	 #  echo $red  $cmds $reset
-	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ./gengo$p.sh 	 
-	 #chmod a+x ${p}.sh 					 
-	 #bash ${p}.sh  $*	
-	 arg1="arg1";arg2="arg2";arg3="arg3"
-	 arg4="arg4";arg5="arg5";arg6="arg6"
-	 val1="val1";val2="val2";val3="val3"
-	 val4="val4";val5="val5";val6="val6"
-	 
-	 
-	 if [ 1 ]; then
-	 	bash ./gengo$p.sh
-	 else 
-	    for pkg in $*; do   
-	 		# DO NOT Subtask Comp1 build.  Makes stuff needed for Comp2 and Comp3
-		 	swgen.sh gs $module $pkg YAML 0 2 Comp1 	 	 	 
-		 	swgen.sh gs $module $pkg YAML 1 1 Comp2 $arg1 $val1    &
-		 	swgen.sh gs $module $pkg YAML 2 0 Comp3 $arg1 $val1 $arg2 $val2 $arg3 $val3   &
-	    done 
-	 fi   
+	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ./gen_$p.sh 	 
+	 chmod a+x ./gen_$p.sh 				 
+	 ./gen_$p.sh
 	 		 
 }    
 
@@ -132,9 +114,9 @@ Genp() {
 	   	 && GenCFG  > sw.cfg					\
 	   	 && Debug internal run sw ${p}.sw			\
 	   	 && sw ${p}.sw > ${p}.go				\
-	   	 && Debug internal run GenGo:				\
-	   	 && GenGo $* ; wait					\
+	   	 && GenGo $* 						\
 	   	 && swgraph ${p}.sw 					\
+	   	 && wait						\
 	   && popd							\
 	   && echo -e "${green}$self: Create project from $sw: Success!$reset" 		\
 	   || Die "${red}$self: Create project from $sw: FAILED.$reset"	\
