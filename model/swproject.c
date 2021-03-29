@@ -271,6 +271,33 @@ static char *Prefix(char *s) {
 	return s;
 }
 
+/** Find number of input and output ports for component **/
+static void getPorts(Model m, Component c,  int *inp, int *outp) {
+	Stream s;
+	Process p;
+	
+	s=m->stream;
+	
+	while ( s != NULL ) {
+		p=s->source;
+		if (p->comp == c) {
+			*inp=p->nportsIn;
+			*outp=p->nportsOut;
+			return;	
+		}
+		p=s->sink;
+		if (p->comp == c) {
+			*inp=p->nportsIn;
+			*outp=p->nportsOut;
+			return;	
+		}
+		s = s->next;
+	}
+	
+	*inp=0;
+	*outp=0;
+}
+
 void genProject(Model m) {
 	Component c;
 	int inp=0;	// Number of input ports 	
@@ -282,6 +309,7 @@ void genProject(Model m) {
 	module=Prefix(m->name);   // Strip off suffix: .sw
 	
 	while(c!=NULL) {
+		getPorts(m, c, &inp,&outp);   
 		printf("swgen.sh gs %s %s YAML %d %d %s \"arg1\" \"val1\" %c \n",
 			module ,c->path, inp, outp, c->name, amp );
 		amp='&';

@@ -100,8 +100,8 @@ Genp() {
 	Debug sw=$sw pn=$pn
 	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
-	[ -z $1 ] && Die No packages specified.  Try swgo $sw 
-	echo; Display Generating  go module $p containing packages $* from $sw 
+	# [ -z $1 ] && Die No packages specified.  Try swgo $sw 
+	echo; Display Generating  go module $p  from $sw 
 	[ -d $dir/$p  ] && mv $dir/$p $dir/${p}_$$ 
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	tdir=$GOPATH/mod/sw/project

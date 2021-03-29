@@ -260,7 +260,7 @@ func PkgConfig()  *config.Config {
     
     fmt.Print(title, 
                 \" ${cyan}Running \", 
-                arg[0],\"-\",  
+                arg[0],\"\t\",  
                 \"${name}-\",
                 version, 
                 \" bs=\", bs, 
@@ -351,8 +351,6 @@ GenGo() {
                        "sync"
                        "$module/$module"
                 )
-                
-                //  go_config2
                 
             func $name(wg *sync.WaitGroup, arg []string, cs []chan interface{} ){
                 $defversion
