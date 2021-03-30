@@ -16,8 +16,8 @@ limitations under the License.
 
 ## Description
 
-Generate project files from an .sw file, 
-build and run the executable. 
+Generate project files from a network definition file.
+Build and run the executable. 
 
 
 

@@ -14,7 +14,7 @@ Die() {
 
 Debug() {
 	red="\u001b[31m"
-        [ "$DEBUG" == "y" ] && echo "SWSKEL.SH/DEBUG: $* " 
+        [ "$DEBUG" == "y" ] && echo "$red ??? SWSKEL.SH/DEBUG: $* " 
 }
 
 Debug Running $0 w/DEBUG

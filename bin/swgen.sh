@@ -114,7 +114,7 @@ EOFX
                 i := $po-1
                 
                 $for i >= $inp $lb
-                        cs[i] <- i+37
+                        cs[i] <- i
                         close(cs[i])
                         i--
                 $rb

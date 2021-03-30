@@ -38,32 +38,28 @@ to launch a goroutine
 for each process,  connect these processes via Go interface channels,
 and wait for all processes to finish.  
 
-On option, sw will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree.
+On option, sw will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree from a network definition file.
 
 The network definition consists of a list of 
 streams(or dataflows) and subnet definitions.  
 
-Each stream definition consists 
-of:
-	* a sink process, 
-	* a sink port number, 
-	* left arrow ("<-"), 
-	* a sourceportnumber, 
-	* and a source process followed by 
-	* a statement terminator, ';'; 
-		OR 
-	* a source process, 
-	* a source portnumber, 
-	* right arrow("->"), 
-	* a sink portnumber, 
-	* and a sink process followed by 
-	* a statement terminator. 
+Each stream definition looks like:
+```
+(a C) -> (b D);
+   and
+(E) <- (F); 
+```
+and consists of:
+	* processname, component identifier, and optional arguments in parens 
+	* portnumber (defaults to 0), 
+	* right arrow("->") or left arrow("<-), 
+	* portnumber, 
+	* and another processname and component identifier, and optional arguments  in parens 
+	* a statement terminator(';'. 
 
-The arrows ("<-" and "->")
-may include a stream buffer size: e.g. "<10-" and "-2>".  If not included,
-buffer size defaults to zero.
-  
-Port numbers default to 0.
+The arrows ("<-" and "->") point from the source process to the sink process. 
+They may include a stream buffer size: e.g. "<10-" and "-2>".  If not included, buffer size defaults to zero.
+Streamwork configuration determines component default names.
 
 Ex.  
 ```
@@ -95,9 +91,9 @@ Information packets(IPs) are designed as nil(empty) interfaces whose
 data type is determined by the sending component. A type 
 mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
-type(including user-defined types); 
-a few components (Print1, for instance) can process strings and integers; 
-or just a single type; on each receiving port.   
+type(including user-defined types and structures); 
+some components (Print1, for instance) can process strings and integers; 
+some just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
 version(currently v0).    
@@ -298,6 +294,10 @@ Ex.  ```A<-B;``` expands to
 0.11.7
 ------
 	* Added missing name error messages.	
+	
+0.12.0
+-------
+	*
 	
 SW.cf Language Notes
 --------------------
