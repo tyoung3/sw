@@ -109,12 +109,13 @@ GenOutP() {
 EOFX
          else   
                 
+                $msg="$pkg/$name $((po-1))"
                 cat << EOFX >> ${name}.go
                 
                 i := $po-1
                 
                 $for i >= $inp $lb
-                        cs[i] <- i
+                        cs[i] <- "$msg" 
                         close(cs[i])
                         i--
                 $rb
@@ -342,7 +343,7 @@ GenGo() {
          
                  
          cat << EOF > ${name}.go 
-                package $pkg
+                package $pkg2
                 
                 `IdSkel` 
                  
@@ -415,7 +416,7 @@ GenTestGo() {
 	 Debug GenTestGo $name $ni $no
 	 inp=$ni; outp=$no
          cat << EOFY > ${name}_test.go
-                package $pkg
+                package $pkg2
 
 	
         `IdSkel`
@@ -493,6 +494,11 @@ Fail() {
 	Die $*
 }
         
+makePkg2() {
+	pkg2=`basename $pkg`
+}
+        
+        
 #  Generate a skeleton component
 GenSkel() {
 	module=$1;shift;
@@ -529,6 +535,7 @@ GenSkel() {
         cfg_file="$GOPATH/mod/$module/${module}.yaml" 
         [ -f $cfg_file ] || makeYAML $cfg_file
         inps=$inp;outps=$outp
+        	makePkg2
         	Debug `pwd` name: $name $inps $outps
         	[ -f ${name}.go ]       || GenGo     $inps $outps
         	[ -f ${name}_test.go ]  || GenTestGo $inps $outps

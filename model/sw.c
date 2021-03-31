@@ -915,6 +915,33 @@ Port visitPrt(Prt _p_)
     }
 }
 
+static char *makeModPath(char *pn, char *nn)
+{
+    char bfr[1000];
+
+    strncpy(bfr, pn, 500);
+    strncat(bfr, "/", 501);
+    strncat(bfr, nn, 1000);
+    return (strdup(bfr));
+}
+
+String visitModPath(ModPath p)
+{
+  switch(p->kind)
+  {
+  case is_Modpx:
+    return( makeModPath(
+    		visitSymval(p->u.modpx_.symval_1),
+    	    	visitSymval(p->u.modpx_.symval_2)));
+  case is_Modpy:
+    return( makeModPath(
+     		visitModPath(p->u.modpy_.modpath_),
+    		visitSymval(p->u.modpy_.symval_)));
+  default:
+  	badkind(ModPath);
+  }
+}
+
 Component visitComp(Comp _p_)
 {
     switch (_p_->kind) {
@@ -926,6 +953,10 @@ Component visitComp(Comp _p_)
 			     visitSymval(_p_->u.compy_.symval_1));
     case is_Compn:
 	return MakeComponent(visitSubId(_p_->u.compn_.subid_),"_");
+    case is_Compz:
+    	return MakeComponent(
+    		visitSymval(_p_->u.compz_.symval_),
+    		visitModPath(_p_->u.compz_.modpath_));
     default:
 	badkind(Comp);
     }

@@ -34,21 +34,8 @@ void genSuffix()
 
 static void genPath(char *s)
 {
-    // char *importPath = { "github.com/tyoung3/streamwork" };
-    //char *importPath = { defaultPath };
-        printf("\t//  genPath1: %s \n",  s);
     char *importLib  = { defaultLibrary };
     printf("import \"%s/%s/%s\"\n", importLib, importLib,  s);
-}
-
-static void genPath1(char *s)
-{
-    // char *importPath = { "github.com/tyoung3/streamwork" };
-    //char *importPath = { defaultPath };
-        printf("\t//  genPath1: %s \n",  s);
-    char *importLib  = { defaultLibrary };
-   // ?? Breaks make check:  printf("import \"%s/%s/%s\"\n", importLib, importLib,  s);
-    printf("import \"%s/%s\"\n",  importLib,  s);
 }
 
 int newPath(char *p)	
@@ -387,10 +374,27 @@ static void makeChSlice(Process p, int nstreams)
     } while (pt != p->port);
 }
 
+
+char *stripPath( char *s1 ) {
+	char *s;
+	char *s2;
+	
+	s=s2=s1;
+	
+	while (*s != 0) {
+		if (*s == '/') {
+			s2=s+1;
+		}
+		s++;
+	}
+	return s2;
+	
+}
+
+
 static void genLaunch1(Process p)
 {
     int i = 1;
-
     printf("fbp.Launch(&wg,");
     printf("[]string{\"%s\"", p->name);
 
@@ -400,7 +404,8 @@ static void genLaunch1(Process p)
 	    i++;
 	}
     }
-    printf("},\t%9s.%s, ", p->comp->path, p->comp->name);
+    
+    printf("},\t%9s.%s, ", stripPath(p->comp->path), p->comp->name);
 
 }
 
@@ -409,6 +414,7 @@ static void genLaunches(Process p)
     int ch;			/* Assigned channel */
     int nstreams;
     int ch0;			/* initial channel index */
+
 
     while (p) {
 	nstreams = p->nportsIn + p->nportsOut;
@@ -429,7 +435,6 @@ static void genLaunches(Process p)
 		printf("cs[%i:%i])\n", ch, ch + 1);
 	    } else {
 		genLaunch1(p);
-		//printf("NULL)\n");
 		printf("cs[0:1])\n");
 	    }
 	}

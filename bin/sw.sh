@@ -117,7 +117,7 @@ Shell() {
 }
 
 case $1 in	
-	c) pushd ./model&& make -j8&&make check&& echo Success! || echo Check Failed.;;
+	c) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	d) shift ; RunDocker $*;;
 	doc)shift; doxygen&&Browse ./doxy/html/todo.html	\

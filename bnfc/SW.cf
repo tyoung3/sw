@@ -74,8 +74,12 @@ Portn.          	Prt     ::= Symval;
 Porte.			Prt	::= ;		
 
 Compx.			Comp	::= Symval;	
-Compy.			Comp	::= Symval "." Symval;	
 Compn.		    	Comp	::= SubId;
+Compy.			Comp	::= Symval  "." Symval;	
+Compz.			Comp	::= ModPath "." Symval;
+
+Modpx.			ModPath	::= Symval "/" Symval;
+Modpy.			ModPath	::= ModPath "/" Symval ;
 
 Argumentx.		Argument ::= Stringval;	
 separator	    	Argument   ""; 	
