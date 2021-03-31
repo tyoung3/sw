@@ -1,10 +1,10 @@
-#Pathalogical flows:
-(B c.d)1 <- 0(D a.b);
-(C a.b)0 <- 0(B c.d);
-(A a.b)1 <- 3(B c.d);
-(D a.b)2 <- 2(B c.d);
-(B c.d)4 <- 0(A a.b);
-(A a.b)2 <- 5(B c.d);
-(C a.b)1 <- 6(B c.d);
-(D a.b)1 <- 7(B c.d);
+#PAthAlogiCAl flows:
+(A A/B)1 <- 3(B C/D);
+(A A/B)0 <- 5(B C/D);
+(B C/D)0 <- 2(A A/B);
+(B C/D)1 <- 2(D A/B);
+(C A/B)0 <- 4(B C/D);
+(C A/B)1 <- 6(B C/D);
+(D A/B)0 <- 2(B C/D);
+(D A/B)1 <- 7(B C/D);
 #}

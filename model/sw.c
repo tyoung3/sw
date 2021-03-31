@@ -930,13 +930,11 @@ String visitModPath(ModPath p)
   switch(p->kind)
   {
   case is_Modpx:
-    return( makeModPath(
-    		visitSymval(p->u.modpx_.symval_1),
-    	    	visitSymval(p->u.modpx_.symval_2)));
+    return(visitSymval(p->u.modpx_.symval_));
   case is_Modpy:
-    return( makeModPath(
-     		visitModPath(p->u.modpy_.modpath_),
-    		visitSymval(p->u.modpy_.symval_)));
+    return( makeModPath(	
+    	visitModPath(p->u.modpy_.modpath_),
+    	visitSymval(p->u.modpy_.symval_)));
   default:
   	badkind(ModPath);
   }
@@ -948,14 +946,12 @@ Component visitComp(Comp _p_)
     case is_Compx:
 	return MakeComponent(visitSymval(_p_->u.compx_.symval_),
 			     defaultPath);
-    case is_Compy:
-	return MakeComponent(visitSymval(_p_->u.compy_.symval_2),
-			     visitSymval(_p_->u.compy_.symval_1));
     case is_Compn:
 	return MakeComponent(visitSubId(_p_->u.compn_.subid_),"_");
     case is_Compz:
     	return MakeComponent(
-    		visitSymval(_p_->u.compz_.symval_),
+    	
+    		visitComp(_p_->u.compz_.comp_)->name,
     		visitModPath(_p_->u.compz_.modpath_));
     default:
 	badkind(Comp);
