@@ -108,6 +108,7 @@ Browse () {
 	[ -f $1 ] && $BROWSER $1
 }
 
+## @Shell   Enters a bash subshell 
 Shell() {
 	export sps1="$PS1"
 	export PS1="\w> "
