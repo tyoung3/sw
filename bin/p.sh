@@ -107,9 +107,8 @@ Genp() {
 	tdir=$GOPATH/mod/sw/project
 	pushd $dir/$p							\
 	   && mkdir $* internal						\
-	   && go mod init $p/$p						\
+	   && go mod init $p						\
 	   && pushd internal 						\
-		 && cp $tdir/*tmpl ./ 					\
 	   	 &&[ -f ${p}.sw ] || cp  $sw ${p}.sw			\
 	   	 && GenCFG  > sw.cfg					\
 	   	 && Debug internal run sw ${p}.sw			\

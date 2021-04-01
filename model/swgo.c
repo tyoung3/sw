@@ -35,7 +35,7 @@ void genSuffix()
 static void genPath(char *s)
 {
     char *importLib  = { defaultLibrary };
-    printf("import \"%s/%s/%s\"\n", importLib, importLib,  s);
+    printf("import \"%s/%s\"\n",  importLib,  s);
 }
 
 int newPath(char *p)	

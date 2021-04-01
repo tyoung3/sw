@@ -3,6 +3,16 @@
 
  @@TODO:  Fix http link in swgraph 
  
+ todo Generate project examples
+	
+	@todo to test for Configure.go 
+	@todo Do not use .sw file name as module:  use it for program name only. 
+	@todo Avoid duplicates in YAML config file.
+	@todo Restore poc test
+	@todo Blue/Gold code generation for deadlock prevention
+	@todo output Buffer > 0  filtercode generation for deadlock prevention
+	@todo wait on multiple inputs for example and deadlock prevention 
+ 
  Method:  Build project model in memory 
           Traverse model to generate project file
           Generate code tree from project file and go templates

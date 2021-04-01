@@ -180,13 +180,13 @@ func PkgConfig()  *config.Config {
         }
         
         return config.NewConfig([]config.Provider  {
-                config.New${config}File(\"$GOPATH/mod/$module/$module.yaml\"), 
+                config.New${config}File(\"$GOPATH/mod/${module}.yaml\"), 
                 config.NewEnvironment(mappings)} )      
 }
 "           
         go_config='config "github.com/zpatrick/go-config"'      
         go_config2="$fconfig"
-        go_config3="cfg := PkgConfig(\"/home/tyoung3/go/mod/$module/${module}.toml\")
+        go_config3="cfg := PkgConfig(\"/home/tyoung3/go/mod/${module}.toml\")
     bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
     seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
@@ -328,7 +328,7 @@ GenConfig() {
                     concatYAML $cfg_file
                     if [ "$module" != "$pkg" ]; then 
                   	  go_config2=""
-                    	go_config="\"$module/$module\""
+                    	go_config="\"$module\""
                     fi	
                         ;;
                  *)go_config3="fmt.Println(
@@ -350,7 +350,7 @@ GenGo() {
                 import (
                         "fmt"
                        "sync"
-                       "$module/$module"
+                       "$module"
                 )
                 
             func $name(wg *sync.WaitGroup, arg []string, cs []chan interface{} ){
@@ -509,7 +509,7 @@ GenSkel() {
         name=$5
         [ -z $inp ] && inp=0
         [ -z $outp ] && outp=0
-        cfg_file="$GOPATH/mod/$module/$module.yaml"
+        cfg_file="$GOPATH/mod/$module/${module}.yaml"
         Debug GenSkel: $module $pkg config=$config input=$inp output=$outp $*
         shift 5; Debug ARG/VAL: $*
         [ -z $module ] 	&& Fail Missing module
@@ -540,7 +540,7 @@ GenSkel() {
         	[ -f ${name}.go ]       || GenGo     $inps $outps
         	[ -f ${name}_test.go ]  || GenTestGo $inps $outps
         Debug Generate go.mod at $src/$mdl
-        [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init $module/$module && popd) 
+        [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init $module && popd) 
         go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
         
 }

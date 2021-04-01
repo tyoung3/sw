@@ -11,15 +11,9 @@
 #include "swgraph.h"
 
 /** 
-	@todo Do not use .sw file name as module:  use it for program name only. 
 	@todo Implement Process name expansion. 
 	Ex. "_MONITOR;" launches system monitor
 	@todo Create Man page w/Doxygen
-	@todo Generate project examples
-	@todo Blue/Gold code generation for deadlock prevention
-	@todo output Buffer > 0  filtercode generation for deadlock prevention
-	@todo wait on multiple inputs for example and deadlock prevention 
-
 */
 
 typedef enum
