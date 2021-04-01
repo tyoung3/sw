@@ -297,7 +297,7 @@ Ex.  ```A<-B;``` expands to
 	
 0.12.0
 -------
-	*
+	* Added ability to generate and run Go code  from a network definition file. 
 	
 SW.cf Language Notes
 --------------------

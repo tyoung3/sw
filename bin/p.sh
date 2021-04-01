@@ -100,16 +100,15 @@ Genp() {
 	Debug sw=$sw pn=$pn
 	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
-	# [ -z $1 ] && Die No packages specified.  Try swgo $sw 
 	echo; Display Generating  go module $p  from $sw 
-	[ -d $dir/$p  ] && mv $dir/$p $dir/${p}_$$ 
+	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Display Generating  go module $p  from $sw 
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	tdir=$GOPATH/mod/sw/project
 	pushd $dir/$p							\
-	   && mkdir $* internal						\
-	   && go mod init $p						\
-	   && pushd internal 						\
-	   	 &&[ -f ${p}.sw ] || cp  $sw ${p}.sw			\
+	   && ( [ -d internal ] || mkdir $* internal )			\
+	   && ( [ -f go.mod ]  || go mod init $p )			\
+	   && pushd internal || Die Cannot pushd internal		\
+	   	 && [ -f ${p}.sw ] || cp  $sw ${p}.sw			\
 	   	 && GenCFG  > sw.cfg					\
 	   	 && Debug internal run sw ${p}.sw			\
 	   	 && sw ${p}.sw > ${p}.go				\

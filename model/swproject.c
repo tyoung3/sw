@@ -5,13 +5,21 @@
  
  todo Generate project examples
 	
-	@todo to test for Configure.go 
-	@todo Do not use .sw file name as module:  use it for program name only. 
+	@todo Document more functions 
+	@todo Generate man doc(s) from Doxygen
+	@todo Fix generated graph HTMLs
+	@todo Fix swgo [poc]
+	@todo Avoid using .sw file name as module:  use it for program name only. 
 	@todo Avoid duplicates in YAML config file.
 	@todo Restore poc test
-	@todo Blue/Gold code generation for deadlock prevention
-	@todo output Buffer > 0  filtercode generation for deadlock prevention
-	@todo wait on multiple inputs for example and deadlock prevention 
+		@todo Subtask channel send/receive when more than two ports,  for deadlock prevention.
+			 Wait on multiple inputs for example and deadlock prevention 
+		@todo Blue/Gold code generation for deadlock prevention
+		@todo output Buffer > 0  filtercode generation for deadlock prevention
+	@todo Generate Init function w/commentary
+	@todo Fix swgen arguments w/default generation
+	@todo Process command arguments.
+	@todo Update .yaml file instead of replacing it.  Do not erase prev config. 
  
  Method:  Build project model in memory 
           Traverse model to generate project file
