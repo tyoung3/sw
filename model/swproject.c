@@ -6,6 +6,7 @@
  todo Generate project examples
 	
 	@todo Document more functions 
+	@todo If component involved in a cycle, then subtask all sends and receives
 	@todo Generate man doc(s) from Doxygen
 	@todo Fix generated graph HTMLs
 	@todo Fix swgo [poc]

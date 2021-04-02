@@ -91,6 +91,31 @@ GenGo() {
 	 		 
 }    
 
+selectExample() {   # Reverse for _test.go
+	cat <<- EOF
+	var wg2 sync.WaitGroup
+	wg2.Add(2)
+	state := 3
+	
+	go  func() {
+		defer wg2.Done()
+		cs[1]   <- state
+		fmt.Println("A/sent state:",state)
+			
+	}()
+	
+	go func() {
+		defer wg2.Done()	
+		msg1,ok  := <-cs[0]
+		for ok==true {
+			fmt.Println("A/receivedx:", msg1)
+			msg1,ok  = <-cs[0]
+		}	
+	}()
+	
+        wg2.Wait()
+EOF
+}	
 
 Genp() {
 	Display $GENPy: $*
