@@ -30,7 +30,7 @@ SW.pdf:	SW.tex
 	( pdftex ../bnfc/SW.tex; echo  )
 		
 Skeleton.c: SW.cf
-	bnfc --c SW.cf
+	bnfc  --c SW.cf
 	
 TestSW: ${OBJS} Test.o
 	@echo "Linking TestSW..."

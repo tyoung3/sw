@@ -52,6 +52,7 @@ Verbose() {
         fi      
 } 
 
+
 # NotesFBP(): See SWSKEL.SH
 
 Notesx() { 
@@ -130,7 +131,7 @@ GenInP1() {
 EOF
 
 }
-
+ 
 GenOutP() {      
          if [ $outp -eq 1 ]; then 
                 cat << EOFX >> ${name}.go       
@@ -368,12 +369,13 @@ GenConfig() {
                    ;;   
          esac
 }         
+        
          
         # See:  https://github.com/zpatrick/go-config
 GenGo() {       
-         Debug GenGo $name $* $config  
-         
-                 
+	 nports=$(($inps + $outps))
+         Debug GenGo $name $* $config  $inps $outps  $nports
+	 
          cat << EOF > ${name}.go 
                 package $pkg2
                 
@@ -390,12 +392,17 @@ GenGo() {
                 
                 defer wg.Done()
                 $go_config3
-                
-	    var wg2 sync.WaitGroup
-	    
-	    wg2.Add($inps + $outps)
 EOF
-         outp=$(($outps + $inps))
+	    
+	 if [ $nports -gt 0 ]; then 
+	    cat <<- EOFNP >> ${name}.go
+	    var wg2 sync.WaitGroup
+	    wg2.Add($nports) 
+
+EOFNP
+	 fi
+	
+         outp=$nports
          inp=$inps
          while [ $outp -gt $inps ]; do
                 outp=$(($outp - 1))
@@ -407,16 +414,17 @@ EOF
                 GenInP1
          done
               
-               
-         cat << EOF >> ${name}.go 
-	 wg2.Wait()
-            }
+              
+         if [ $nports -gt 0 ]; then 
+        	 cat <<- EOF >> ${name}.go 
+		 wg2.Wait()
+           	 }
 EOF
+         fi  	 
 
         gofmt -w -s ${name}.go
         Debug $EDITOR $cfg_file
 	GenConfig
-        # $EDITOR $cfg_file &
 }
 
 GenTestOutP() {         
