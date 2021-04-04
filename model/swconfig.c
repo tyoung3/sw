@@ -99,6 +99,11 @@ String visitKeyName(KeyName p)
   }
 }
 
+void visitDate(Date p)
+{
+  /* Code for Date Goes Here */
+}
+
 void visitKeyVal(KeyVal p)
 {
   switch(p->kind)
@@ -108,6 +113,11 @@ void visitKeyVal(KeyVal p)
     visitKeyName(p->u.cfgkeyvalint_.keyname_),
     visitInteger1(p->u.cfgkeyvalint_.integer_));
     break;  
+  case is_CfgKeyDate:
+    /* Code for CfgKeyDate Goes Here */
+    visitKeyName(p->u.cfgkeydate_.keyname_);
+    visitDate(p->u.cfgkeydate_.date_);
+    break;
   case is_CfgKeyvalstr:
     CfgString(	visitKeyName(p->u.cfgkeyvalstr_.keyname_),
     visitString1(p->u.cfgkeyvalstr_.string_));

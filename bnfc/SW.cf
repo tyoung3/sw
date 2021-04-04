@@ -110,6 +110,7 @@ token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
 ----------------------  Streamworks YAML Configuration Interpreter  ----------------------
 
 Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry];
+Validcfgd.		ValidCFG ::= "---" [Entry];
 
 CfgEntrya.		Entry	::=  Heading [KeyVal];
 NilEntry.		Entry   ::=  ;
@@ -119,13 +120,15 @@ CfgHeading.		Heading	::= KeyName  ;
 
 CfgKeyvalint.		KeyVal	::= KeyName  Integer;
 CfgKeyvalstr.		KeyVal	::= KeyName  String;
+CfgKeyDate.		KeyVal  ::= KeyName  Date;
 CfgKeyvalent.		KeyVal  ::= Entry;    -- conflicts
 terminator	   	KeyVal  "" ;
 
 KeynameS.		KeyName ::= Symval ":"; 
 KeynameM.		KeyName ::= ModPath Symval ":";
 
-	
+
+token   Date	    (digit digit digit digit)  ('-' digit digit )* 'T'  ( ':' | digit | '-' )* ;       -- Legal Date	
 comment "#";
 comment "{#" "#}";	
 ----------------------   End of Current Language Definition   ----------------------

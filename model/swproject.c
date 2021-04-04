@@ -323,15 +323,18 @@ void genProject(Model m) {
 	int outp=0;	// Number of output ports
 	char *module; 	// Go Module (and executable name)  
 	char amp=' ';   // Ampersand (or not);
+	char yaml[]="YAML";   // Config file type
 	
 	c=m->comp;
 	module=Prefix(m->name);   // Strip off suffix: .sw
 	
 	while(c!=NULL) {
 		getPorts(m, c, &inp,&outp);   
-		printf("swgen.sh gs %s %s YAML %d %d %s \"arg1\" \"val1\" %c \n",
-			module ,c->path, inp, outp, c->name, amp );
+		printf("swgen.sh gs %s %s %s %d %d %s \"arg1\" \"val1\" %c \n",
+			module ,c->path, yaml, inp, outp, c->name, amp );
 		amp='&';
+		yaml[0]='_'; 
+		yaml[1]=0;  
 		c=c->next;
 	}
 }

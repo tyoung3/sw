@@ -193,6 +193,8 @@ EOF
 
 concatYAML() {
         Debug concatYAML $1 at `pwd`
+        
+        # yamllint <(( echo $module/${pkg}: ))
         cat <<- EOF >> $1
 $module/${pkg}:
   bornon: `date -I'seconds'`
