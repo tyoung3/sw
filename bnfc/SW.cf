@@ -119,7 +119,7 @@ CfgHeading.		Heading	::= KeyName  ;
 
 CfgKeyvalint.		KeyVal	::= KeyName  Integer;
 CfgKeyvalstr.		KeyVal	::= KeyName  String;
--- CfgKeyvalent.		KeyVal  ::= Entry;
+CfgKeyvalent.		KeyVal  ::= Entry;    -- conflicts
 terminator	   	KeyVal  "" ;
 
 KeynameS.		KeyName ::= Symval ":"; 
