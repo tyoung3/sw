@@ -317,13 +317,13 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 	*outp=0;
 }
 
+
 void genProject(Model m) {
 	Component c;
 	int inp=0;	// Number of input ports 	
 	int outp=0;	// Number of output ports
 	char *module; 	// Go Module (and executable name)  
 	char amp=' ';   // Ampersand (or not);
-	char yaml[]="YAML";   // Config file type
 	
 	c=m->comp;
 	module=Prefix(m->name);   // Strip off suffix: .sw
@@ -331,10 +331,8 @@ void genProject(Model m) {
 	while(c!=NULL) {
 		getPorts(m, c, &inp,&outp);   
 		printf("swgen.sh gs %s %s %s %d %d %s \"arg1\" \"val1\" %c \n",
-			module ,c->path, yaml, inp, outp, c->name, amp );
-		amp='&';
-		yaml[0]='_'; 
-		yaml[1]=0;  
+			module ,c->path, getConfType(c->path), inp, outp, c->name, amp );
+		amp='&'; 
 		c=c->next;
 	}
 }
