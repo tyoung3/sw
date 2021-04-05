@@ -9,7 +9,7 @@
 #   Project sub-directories are created in the current directory.
 #   
 #   Example:
-#	$ ./p.sh g test/X
+#	$ ./p.sh g test/X.sw
 #
 
         black="\u001b[30m"
@@ -47,7 +47,7 @@ pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7
 self=p.sh
 version="0.0.1"  
 [ -z $GOPATH ] && Die GOPATH is not set
-dir=$GOPATH/mod/
+dir=$GOPATH/src/gen/
 
 Debug Running ${pgm}-$version w/DEBUG args: $*
 
@@ -119,10 +119,15 @@ EOF
 
 Genp() {
 	Display $GENPy: $*
-	pn=$1
-	p=`basename $pn`
-	sw=${pn}.sw 
-	Debug sw=$sw pn=$pn
+	sw=$1
+	[ -f $sw ] || sw="${sw}.sw"
+	p=`basename -s .sw $sw	`  || Die $sw not MODULE.sw  
+	
+	if [ -f `pwd`/$sw ]; then 
+		sw=`pwd`/$sw
+	fi
+	
+	Debug sw=$sw p=$p 
 	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
 	echo; Display Generating  go module $p  from $sw 

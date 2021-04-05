@@ -98,12 +98,6 @@ RunDocker() {
 	docker run -it --rm --name SWdemo  $myapp ./sw.sh $*
 }
 
-GenProject() {
-	[ -f ${1}.sw ] || Die Missing PROJECT.SW: ${1}.sw
-	sw=`pwd`/$1;shift
-	 p.sh g  $sw $*
-}
-
 Browse () {
 	[ -f $1 ] && $BROWSER $1
 }
@@ -126,12 +120,12 @@ case $1 in
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
-	p)  shift;GenProject $*;;
+	p)  shift;p.sh g  $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
 	s) shift; Shell $;;
-	x) $EDITOR sw.sh;;
+	x) $EDITOR $0;;
 	*) cat << EOF 
 	
 USAGE: 
