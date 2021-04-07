@@ -108,14 +108,14 @@ for="for"
 GenOutP1() {
 	Debug GenOutP1
 	cat <<- EOF >> ${name}.go 
-	go ${module}.Send(cs[$outp], &wg2, arg, $outp)
+	$routine ${module}.Send(cs[$outp], &wg2, arg, $outp)
 EOF
 
 }
 
 GenInP1() {
 	cat <<- EOF >> ${name}.go 
-	go ${module}.Recv(cs[$inp], &wg2, arg, $inp)
+	$routine ${module}.Recv(cs[$inp], &wg2, arg, $inp)
 EOF
 
 }
@@ -387,6 +387,12 @@ EOF
 EOFNP
 	 fi
 	
+	 if [ $nports -eq 1 ]; then
+	 	routine=""
+	 else 
+	 	routine="go"
+	 fi 
+	 	
          outp=$nports
          inp=$inps
          while [ $outp -gt $inps ]; do
@@ -567,7 +573,7 @@ type ip_t struct {   /* Information Packet type */
 	func  Recv( ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int ) {
 		defer wg2.Done()
 		ip, _ := <- ci   
-		fmt.Println( arg[0], "received:", ip)
+		fmt.Println( arg[0], nport,  "received:", ip)
 	}						 
 EOF
 
