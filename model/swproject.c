@@ -5,23 +5,31 @@
  
  todo Generate project examples
 	
+	
+	@todo Structure in module/modele package.  Pass struct instead of integers.
+	@todo Restore poc test
 	@todo Document more functions 
-	@todo If component involved in a cycle, then subtask all sends and receives
+	@todo Allow git.hub, etc. imports.  Simplify .sw file requirements.
+	@todo  Wait on multiple inputs for example and deadlock prevention in ...test_.go files. -> or <- to diffferentiate.
+		@toto negative nimports and noutports in swgen.sh to prioritize ports and reduce n goroutines.
 	@todo Generate man doc(s) from Doxygen
 	@todo Fix generated graph HTMLs
-	@todo Fix swgo [poc]
-	@todo Avoid using .sw file name as module:  use it for program name only. 
-	@todo Avoid duplicates in YAML config file.
-	@todo Restore poc test
-		@todo Subtask channel send/receive when more than two ports,  for deadlock prevention.
-			 Wait on multiple inputs for example and deadlock prevention 
-		@todo Blue/Gold code generation for deadlock prevention
-		@todo output Buffer > 0  filtercode generation for deadlock prevention
 	@todo Generate Init function w/commentary
-	@todo Fix swgen arguments w/default generation
+	@todo Fix swgen arguments w/default generation. Generate in config file
 	@todo Process command arguments.
 	@todo Update .yaml file instead of replacing it.  Do not erase prev config. 
- 
+	
+ DONE: 
+	@done Avoid duplicates in YAML config file.
+	@done If component involved in a cycle, then subtask all sends and receives
+	@done Subtask channel send/receive when more than two ports,  for deadlock prevention.
+	@done Fix swgo [poc]
+	
+ SHELVED:
+	@shelved Avoid using .sw file name as module:  use it for program name only. 
+	@shelved Blue/Gold code generation for deadlock prevention	
+	@shelved output Buffer > 0  filtercode generation for deadlock prevention
+ 	
  Method:  Build project model in memory 
           Traverse model to generate project file
           Generate code tree from project file and go templates

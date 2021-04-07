@@ -110,9 +110,13 @@ GenOutP1() {
 	cat <<- EOF >> ${name}.go 
 	
 	go  func() {
+		var ip ${module}.IP
+		
+		ip.I = $outp
+		ip.S = "$pkg/$name"
 		defer wg2.Done()
-		cs[$outp]   <- $outp
-		fmt.Println("$name sent ", $outp)
+		cs[$outp]   <- ip
+		//  ?? fmt.Println("$name sent ", ip)
 			
 	}()
 	
@@ -545,16 +549,28 @@ GenSkel() {
         	|| mkdir -p $src/$mdl/$pkg    \
         	|| Die Cannot create $src/$mdl/$pkg.
         src2=$src/$mdl/$pkg
-        pushd $src/$module
+
+    pushd $src/$module
                 genPkgYAML  $*
         	Debug GenSkel/GenConfig.go `pwd`
-       	 	[ -f config.go ] 								\
-       	 		|| ( 									\
-       	 		   echo package $module >> config.go&& echo 				\
-       	 		&& echo import config \"github.com/zpatrick/go-config\">> config.go	\
-       	 		&& echo "$fconfig" >> config.go )   
-        popd
-        pushd $src2 || Die Cannot cd  $src2
+
+       	 	[ -f config.go ] ||   \
+       	 		cat <<- EOF > config.go
+package $module
+	      	 		
+import config "github.com/zpatrick/go-config"
+       	 		
+type IP struct {   /* Information Packet type */ 
+	S string 
+	I int
+}
+			
+	$fconfig				 
+EOF
+
+    popd
+
+    pushd $src2 || Die Cannot cd  $src2
         Debug GenSkel/subdir `pwd`
         cfg_file="$src/$module/${module}.yaml" 
         [ -f $cfg_file ] || makeYAML $cfg_file
@@ -566,7 +582,7 @@ GenSkel() {
         Debug Generate go.mod at $src/$mdl
         [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init $module && popd) 
         go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
-        
+    popd        
 }
 
 

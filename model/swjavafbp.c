@@ -2,7 +2,7 @@
 		  Generate JavaFBP Network Definition [TBI]
 */
 
-///@todo    . Everything  	  
+//  todo     Everything  	  
 
 #include <stdio.h>
 #include <stdlib.h>
