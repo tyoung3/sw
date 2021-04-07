@@ -108,30 +108,14 @@ for="for"
 GenOutP1() {
 	Debug GenOutP1
 	cat <<- EOF >> ${name}.go 
-	
-	go  func() {
-		var ip ${module}.IP
-		
-		ip.I = $outp
-		ip.S = "$pkg/$name"
-		defer wg2.Done()
-		cs[$outp]   <- ip
-		//  ?? fmt.Println("$name sent ", ip)
-			
-	}()
-	
+	go ${module}.Send(cs[$outp], &wg2, arg, $outp)
 EOF
 
 }
 
 GenInP1() {
 	cat <<- EOF >> ${name}.go 
-	
-	go func() {
-		defer wg2.Done()	
-		ip := <-cs[$inp]
-		fmt.Println("$name received:", ip)
-	}()
+	go ${module}.Recv(cs[$inp], &wg2, arg, $inp)
 EOF
 
 }
@@ -274,6 +258,7 @@ allargs=($*)
      	
 	Debug make args $*
 
+	
 fconfig="
 /* PkgConfig initializes the go-config package.
 See: https://github.com/zpatrick/go-config for details*/
@@ -387,6 +372,7 @@ GenGo() {
                        "$module"
                 )
                 
+
             func $name(wg *sync.WaitGroup, arg []string, cs []chan interface{} ){
                 
                 defer wg.Done()
@@ -559,13 +545,30 @@ GenSkel() {
 package $module
 	      	 		
 import config "github.com/zpatrick/go-config"
+import "sync"
+import "fmt"
        	 		
-type IP struct {   /* Information Packet type */ 
-	S string 
-	I int
+type ip_t struct {   /* Information Packet type */ 
+	P string   /* Process Name  */
+	S string   /* modulepath/component */
+	I int      /* Port number */
 }
 			
-	$fconfig				 
+	$fconfig	
+	   
+	func  Send( ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int ) {
+		defer wg2.Done()
+		var ip ip_t
+		ip.I = nport
+		ip.P = arg[0]
+		ci   <- ip
+	}	
+	
+	func  Recv( ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int ) {
+		defer wg2.Done()
+		ip, _ := <- ci   
+		fmt.Println( arg[0], "received:", ip)
+	}						 
 EOF
 
     popd
