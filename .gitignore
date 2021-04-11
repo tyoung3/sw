@@ -10,6 +10,7 @@ project/test/
 
 Absyn.?
 AbsynLexer.c
+bnfc/SW.pdf
 FBP.md
 fbp/DocFBP.txt
 fbp/LexFBP.x
