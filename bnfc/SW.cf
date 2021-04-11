@@ -1,4 +1,4 @@
---  SW.cf  
+	--  SW.cf  
 --              Streamworks prototype network definition language
 
 --	   Note: No semicolon(;) after INCLUDE statement.  
@@ -113,7 +113,6 @@ Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry];
 Validcfgd.		ValidCFG ::= "---" [Entry];
 
 CfgEntrya.		Entry	::=  Heading [KeyVal];
-NilEntry.		Entry   ::=  ;
 terminator	   	Entry   "" ;
 
 CfgHeading.		Heading	::= KeyName  ;   
@@ -121,7 +120,7 @@ CfgHeading.		Heading	::= KeyName  ;
 CfgKeyvalint.		KeyVal	::= KeyName  Integer;
 CfgKeyvalstr.		KeyVal	::= KeyName  String;
 CfgKeyDate.		KeyVal  ::= KeyName  Date;
-CfgKeyvalent.		KeyVal  ::= Entry;    -- conflicts
+CfgKeyvalent.		KeyVal  ::= Entry;     
 terminator	   	KeyVal  "" ;
 
 KeynameS.		KeyName ::= Symval ":"; 
