@@ -26,13 +26,8 @@ SW.tex:  SW.cf
 	bnfc --latex SW.cf
 	
 SW.pdf:	SW.tex
-<<<<<<< HEAD
 #	( pdftex ../bnfc/SW.tex; echo  )
 	( pdftex SW.tex || echo )	
-=======
-	( pdftex SW.tex || echo )	
-	( pdftex ../bnfc/SW.tex; echo  )
->>>>>>> project
 		
 Skeleton.c: SW.cf
 	bnfc  --c SW.cf
