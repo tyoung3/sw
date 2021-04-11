@@ -543,7 +543,7 @@ GenSkel() {
         src2=$src/$mdl/$pkg
 
     pushd $src/$module
-                genPkgYAML  $*
+                genPkgYAML   ; # ?? $*
         	Debug GenSkel/GenConfig.go `pwd`
 
        	 	[ -f config.go ] ||   \
