@@ -400,10 +400,14 @@ void visitNumassgn(Numassgn _p_)
     }
 }
 
-Id visitId(Id i)
+#if 1
+# define visitId(i) (String) i
+#else
+String visitId(Id i)
 {
     return i;
 }
+#endif
 
 String visitSymval(Symval _p_)
 {
@@ -421,19 +425,10 @@ String visitSymval(Symval _p_)
 
 String visitSymAssgn(SymAssgn _p_)
 {
-  switch(_p_->kind)
-  {
-  case is_SymAssgni:
     return addSymVar(_p_->u.symassgni_.symvar_,
     	visitSymval(_p_->u.symassgni_.symval_));
-    break;  
-   case is_SymAssgns:
-     return addSymVar(_p_->u.symassgns_.symvar_1,
-   	 getSymVar(_p_->u.symassgns_.symvar_2));
-  default:
-    badkind(SymAssgn);
-  }
 }
+
 void visitStrassgn(Strassgn _p_)
 {
 	addStringVar( 
@@ -915,18 +910,44 @@ Port visitPrt(Prt _p_)
     }
 }
 
+static char *makeModPath(char *pn, char *nn)
+{
+    char bfr[100];
+
+    strncpy(bfr, pn, 100);
+    strncat(bfr, "/", 99);
+    strncat(bfr, nn, 100);
+    return (strdup(bfr));
+}
+
+String visitModPath(ModPath p)
+{
+  switch(p->kind)
+  {
+  case is_Modpx:
+    return(visitSymval(p->u.modpx_.symval_));
+  case is_Modpy:
+    return( makeModPath(	
+    	visitModPath(p->u.modpy_.modpath_),
+    	visitSymval(p->u.modpy_.symval_)));
+  default:
+  	badkind(ModPath);
+  }
+}
+
 Component visitComp(Comp _p_)
 {
     switch (_p_->kind) {
     case is_Compx:
 	return MakeComponent(visitSymval(_p_->u.compx_.symval_),
 			     defaultPath);
-    case is_Compy:
-	return MakeComponent(visitSymval(_p_->u.compy_.symval_2),
-			     visitSymval(_p_->u.compy_.symval_1));
     case is_Compn:
 	return MakeComponent(visitSubId(_p_->u.compn_.subid_),"_");
-    default:
+    case is_Compz:
+    	return MakeComponent(	
+    		visitSymval(_p_->u.compz_.symval_),
+    		visitModPath(_p_->u.compz_.modpath_));
+    default:		
 	badkind(Comp);
     }
 }

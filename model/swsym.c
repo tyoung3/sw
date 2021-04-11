@@ -20,6 +20,7 @@ struct bucket {
 	Process proc;
 	Component comp;
 	String  string;
+	String  type;        /* Config type: YAML or NONE */
     } u;
     char *tag;		
     int nrefs;	/* Number of references to symbol */
@@ -225,6 +226,25 @@ Process getProc(char *key)
 
     b = lookup(key);
     return b->u.proc;
+}
+
+String getConfType(char *path)
+{
+   bucketp b;
+    char key[1000];
+
+    key[0] = '#';
+    key[1] = 0;
+    strncat(key, path, 999);
+
+
+    b = lookup(key);
+    if( b->u.type == NULL ) {
+    	b->u.type="NONE";
+    	return "YAML";
+    }
+    
+    return b->u.type;
 }
 
 int getPath(char *name)

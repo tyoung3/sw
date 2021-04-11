@@ -1,6 +1,6 @@
-#JAVA.SW
+#JAVA/SW
 
-#	  JavaFBP Ex.
+#	  JavaFBP Ex/
 
 # JavaFBP Poc: 
 
@@ -35,20 +35,20 @@
 #(R1)1 		   <-     "c:\\mastfile";
 #(R2)1 		   <-     "c:\\detlfile";
 
-# connect(component("Read Masters",Read.class),  port("OUT"), 
-#	      component("Collate",    Collate.class),port("IN",0));  
+# connect(component("Read Masters",Read/class),  port("OUT"), 
+#	      component("Collate",    Collate/class),port("IN",0));  
 
-#    connect(component("Read Details",Read.class),port("OUT"),
+#    connect(component("Read Details",Read/class),port("OUT"),
 #      component("Collate"),port("IN",1));// array port  
       
 #    connect(component("Collate"),port("OUT"),
-#      component("Process Merged Stream",Proc.class),port("IN"));  
+#      component("Process Merged Stream",Proc/class),port("IN"));  
       
 #    connect(component("Process Merged Stream"),port("OUTM"),
-#      component("Write New Masters",Write.class),port("IN"));  
+#      component("Write New Masters",Write/class),port("IN"));  
       
 #    connect(component("Process Merged Stream"),port("OUTSE"),
-#      component("Summary & Errors",Report.class),port("IN"));
+#      component("Summary & Errors",Report/class),port("IN"));
       
 
 #    initialize(new FileReader("c:\\mastfile"),

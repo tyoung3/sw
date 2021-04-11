@@ -1,20 +1,20 @@
 #!/bin/bash 
 
-# SWGO  script.  Generate a jpg image from  a StreamWork .sw file(ND).
+# SWGRAPH  script.  Generate a jpg image from  a StreamWork .sw file(ND).
 
 Die () {
-	echo "swgo/DIE: $*"
+	echo "$0/DIE: $*"
 	exit 1
 }
 
+
 Debug() {
 	a="a"
-	#echo "Debug: $*"
+	# echo "Debug: $*"
 }
 
-SW=$GOPATH/bin/sw
+SW=~/go/mod/sw/bin/sw
 [ -e $SW     ] || Die $SW is missing 
-
 $SW -v 
 
 SearchFile() { 
@@ -36,9 +36,9 @@ GenRun() {
 	[ -f $file ] || searchFile  
 	
 	if [ -f $swfile ]; then
-		Debug Got $swfile
-		$SW -m 3 $swfile > /tmp/${base}.dot
-		dot -Tsvg /tmp/$base.dot > /tmp/${base}.svg
+		Debug Got `pwd`/$swfile 
+		$SW -m 3 $swfile > /tmp/${base}.dot || Die Cannot build .dot file
+		dot -Tsvg /tmp/$base.dot > /tmp/${base}.svg || Die Cannot convert .dot file to .svg
 		$BROWSER --new-window /tmp/${base}.svg	
 	else 
 		DIE $swfile missing

@@ -57,20 +57,73 @@ int visitInteger1(Integer i)
   return i;
 }
 
-void visitKeyVal(KeyVal _p_)
+#if 0
+void visitModPath(ModPath p)
 {
-  switch(_p_->kind)
+  switch(p->kind)
+  {
+  case is_Modpx:
+    /* Code for Modpx Goes Here */
+    visitSymval(p->u.modpx_.symval_);
+    break;
+  case is_Modpy:
+    /* Code for Modpy Goes Here */
+    visitModPath(p->u.modpy_.modpath_);
+    visitSymval(p->u.modpy_.symval_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing ModPath!\n");
+    exit(1);
+  }
+}
+#endif
+
+String visitKeyName(KeyName p)
+{
+  switch(p->kind)
+  {
+  case is_KeynameS:
+    /* Code for KeynameS Goes Here */
+    visitSymval(p->u.keynames_.symval_);
+    break;
+  case is_KeynameM:
+    /* Code for KeynameM Goes Here */
+    visitModPath(p->u.keynamem_.modpath_);
+    visitSymval(p->u.keynamem_.symval_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing KeyName!\n");
+    exit(1);
+  }
+}
+
+void visitDate(Date p)
+{
+  /* Code for Date Goes Here */
+}
+
+void visitKeyVal(KeyVal p)
+{
+  switch(p->kind)
   {
   case is_CfgKeyvalint:
-    CfgInt(	visitSymval(_p_->u.cfgkeyvalint_.symval_),
-    		visitInteger1(_p_->u.cfgkeyvalint_.integer_));
+    CfgInt(	
+    visitKeyName(p->u.cfgkeyvalint_.keyname_),
+    visitInteger1(p->u.cfgkeyvalint_.integer_));
     break;  
+  case is_CfgKeyDate:
+    /* Code for CfgKeyDate Goes Here */
+    visitKeyName(p->u.cfgkeydate_.keyname_);
+    visitDate(p->u.cfgkeydate_.date_);
+    break;
   case is_CfgKeyvalstr:
-    CfgString(	visitSymval(_p_->u.cfgkeyvalstr_.symval_),
-    		visitString1(_p_->u.cfgkeyvalstr_.string_));
+    CfgString(	visitKeyName(p->u.cfgkeyvalstr_.keyname_),
+    visitString1(p->u.cfgkeyvalstr_.string_));
     break;  
   case is_CfgKeyvalent:
-    visitEntry(_p_->u.cfgkeyvalent_.entry_);
+    visitEntry(p->u.cfgkeyvalent_.entry_);
     break;
   default:
     badkind(KeyVal);
@@ -86,9 +139,9 @@ void visitListKeyVal(ListKeyVal listkeyval)
   }
 }
 
-String visitHeading(Heading _p_)
+String visitHeading(Heading p)
 {
-   return visitSymval(_p_->u.cfgheading_.symval_);
+   return visitKeyName(p->u.cfgheading_.keyname_);
 }
 
 void visitEntry(Entry _p_)

@@ -1,11 +1,24 @@
 #!/bin/bash 
 
-# COLLATE.sh
+# SW.sh
 
 #https://coderwall.com/p/fasnya/add-git-branch-name-to-bash-prompt
 
+pgm=sw.sh
+
+        black="\u001b[30m"
+        red="\u001b[31m"
+        green="\u001b[32m"	
+        lightgreen="\u001b[32;1m"	 
+        yellow="\u001b[33m"
+        blue="\u001b[34m"
+        magenta="\u001b[35m"
+        cyan="\u001b[36m"
+        white="\u001b[37m"
+        reset="\u001b[0m"
+        
 Die() {
-	echo "$0/DIE: $*"
+	echo -e "$red$pgm/DIE: $*$reset"
 	exit 1
 }
 
@@ -18,7 +31,7 @@ RunCollate () {
 	[ -x bin/sw ]|| Die Cannot find bin/sw -- run make ? 
 	[ -d $temp/sw/collate ] || mkdir -p $temp/sw/collate 
 	bin/sw nds/collate.sw |gofmt >  $temp/sw/collate/main.go
-	pushd $temp/sw/collate
+	pushd $temp/sw/collategenPath1
 	[ -f go.mod ] || go mod init collate/collate
 	go run main.go 	 
 }
@@ -44,7 +57,7 @@ GenSVG() {
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.Jnetwork_languagePG
 	#gimp /tmp/collate_SW.JPG
-}	
+}	 
 
 ShowCheck() {
 	cat << EOF
@@ -85,24 +98,21 @@ RunDocker() {
 	docker run -it --rm --name SWdemo  $myapp ./sw.sh $*
 }
 
-GenProject() {
-	pushd project && ./p.sh g  $*
-	popd 
-}
-
 Browse () {
 	[ -f $1 ] && $BROWSER $1
 }
 
+## @Shell   Enters a bash subshell 
 Shell() {
 	export sps1="$PS1"
 	export PS1="\w> "
+	export PATH=$GOPATH/mod/sw/bin:$PATH
 	echo Entering StreamWork shell  
 	exec bash --rcfile .bashrc  
 }
 
 case $1 in	
-	c) pushd ./model&& make -j8&&make check&& echo Success! || echo Check Failed.;;
+	c) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	d) shift ; RunDocker $*;;
 	doc)shift; doxygen&&Browse ./doxy/html/todo.html	\
@@ -110,12 +120,12 @@ case $1 in
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
-	p)  shift; GenProject $*;;
+	p)  shift;p.sh g  $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
 	s) shift; Shell $;;
-	x) $EDITOR nds/collate.sw sw.sh;;
+	x) $EDITOR $0;;
 	*) cat << EOF 
 	
 USAGE: 
@@ -138,6 +148,4 @@ EOF
 	;;	
 					
 esac	 
-	
-	
-
+#########################   End of script   ############################

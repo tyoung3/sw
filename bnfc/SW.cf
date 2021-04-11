@@ -51,7 +51,6 @@ Streamry.		S_tream  ::= S_tream Prt Rarrow Prt Proc;
 --separator		S_tream	 ";" ;  
 
 Arrowx.			Larrow	 ::=  "<" Buffsize "-";
-
 Arrowr.			Rarrow	 ::=  "-" Buffsize ">"; 
 
 Bufszi.			Buffsize ::= Numval;
@@ -74,8 +73,11 @@ Portn.          	Prt     ::= Symval;
 Porte.			Prt	::= ;		
 
 Compx.			Comp	::= Symval;	
-Compy.			Comp	::= Symval "." Symval;	
 Compn.		    	Comp	::= SubId;
+Compz.			Comp	::= ModPath Symval;
+
+Modpx.			ModPath	::= Symval "/";
+Modpy.			ModPath	::= ModPath Symval "/";
 
 Argumentx.		Argument ::= Stringval;	
 separator	    	Argument   ""; 	
@@ -84,8 +86,7 @@ NumAssgnv.		Numassgn   ::= Numvar "=" Numval;
 
 StrAssgnv.		Strassgn   ::= Stringvar "=" Symval;
 
-SymAssgni.		SymAssgn   ::= Symvar "=" Symval;
-SymAssgns.		SymAssgn   ::= Symvar "=" Symvar;
+SymAssgni.		SymAssgn   ::= Symvar "=" Symval;  
 
 NumVali.		Numval     ::= Integer;
 NumValv.		Numval	   ::= Numvar;
@@ -109,17 +110,25 @@ token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
 ----------------------  Streamworks YAML Configuration Interpreter  ----------------------
 
 Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry];
+Validcfgd.		ValidCFG ::= "---" [Entry];
 
 CfgEntrya.		Entry	::=  Heading [KeyVal];
+NilEntry.		Entry   ::=  ;
 terminator	   	Entry   "" ;
 
-CfgHeading.		Heading	::= Symval ":" ;   
+CfgHeading.		Heading	::= KeyName  ;   
 
-CfgKeyvalint.		KeyVal	::= Symval ":" Integer;
-CfgKeyvalstr.		KeyVal	::= Symval ":" String;
-CfgKeyvalent.		KeyVal  ::= Entry;
+CfgKeyvalint.		KeyVal	::= KeyName  Integer;
+CfgKeyvalstr.		KeyVal	::= KeyName  String;
+CfgKeyDate.		KeyVal  ::= KeyName  Date;
+CfgKeyvalent.		KeyVal  ::= Entry;    -- conflicts
 terminator	   	KeyVal  "" ;
-	
+
+KeynameS.		KeyName ::= Symval ":"; 
+KeynameM.		KeyName ::= ModPath Symval ":";
+
+
+token   Date	    (digit digit digit digit)  ('-' digit digit )* 'T'  ( ':' | digit | '-' )* ;       -- Legal Date	
 comment "#";
 comment "{#" "#}";	
 ----------------------   End of Current Language Definition   ----------------------

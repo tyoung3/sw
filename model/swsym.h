@@ -13,6 +13,7 @@ String getStringVar(String name);
 String getSymVar(String name);
 String addSymVar(String name, String val);
 String getSymVar(String name);
+String getConfType(String path);
 void    tabinit();
 void free_symtab();
 #endif

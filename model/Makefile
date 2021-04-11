@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = -g -W -Wall
 
-VERSION = \"0.11.9\"
+VERSION = \"0.12.0\"
 
 LATEX = latex
 DVIPS = dvips
@@ -24,9 +24,9 @@ clean:
 	rm -f ${SWOBJS}      
 
 poc:	.phony 
-	../sw.sh poc 
+	../bin/sw.sh poc 
 
-.phony:  ${PGM} ../sw.sh
+.phony:  ${PGM} ../bin/sw.sh
 
 SW.ps: SW.dvi
 	${DVIPS} SW.dvi -o SW.ps
@@ -55,8 +55,7 @@ check:
 	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
-	${PGM}  -m 4 tests/java.sw     >/dev/null
-	 ../project/p.sh g tests/java  >/dev/null	 
+	${PGM}  -m 4 tests/java.sw     >/dev/null	 
 	${PGM}  -m 7 ../nds/collate.sw  >/dev/null
 	${PGM}  tests/aj.sw   >/dev/null
 	${PGM}  tests/asj.sw   >/dev/null
@@ -76,7 +75,8 @@ check:
 	${PGM}  tests/lrR.sw   >/dev/null
 	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/var.sw   >/dev/null
-	../sw.sh poc     
+	${PGM}  tests/module.sw   >/dev/null
+	# ??  ../bin/sw.sh poc     
 
 
 svg:  .phsvg 
