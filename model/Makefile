@@ -76,7 +76,7 @@ check:
 	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/var.sw   >/dev/null
 	${PGM}  tests/module.sw   >/dev/null
-	# ??  ../bin/sw.sh poc     
+	 ../bin/sw.sh poc     
 
 
 svg:  .phsvg 

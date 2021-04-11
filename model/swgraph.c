@@ -37,7 +37,7 @@ findPort (Port pt, int id)
     }
   while (pt != pt0);
 
-  return NULL;	       /** @todo error message   */
+  return NULL;	       /** @todo SWGRAPH error message on error   */
 }
 
 static int
