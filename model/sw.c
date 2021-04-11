@@ -1311,17 +1311,19 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
     /*              BEFORE 
        (A)id <- x(B);    [ s0 pt0 psnk0]
        (A)id <- y(C);    [ s1 pt  psnk1]  */
+       
+    /*              AFTER
+       (A)id <- 2(_ poc.Join);  [ s0 pt0 ptn]  
+       (j)0  <- y(C);           [ s1 pt1   ] 
+       (j)1  <- x(B);           [ s2 pt2    ]  */
+       
     c = MakeComponent("Join", "poc");
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
-    /*              AFTER
-       (A)id <- 0(_ poc.Join);  [ s0 pt0 ptn]  
-       (j)1  <- y(C);                [ s1 pt1   ] 
-       (j)2  <- x(B);           [ s2 pt2    ]  */
 
-    pt1 = MakePort(1, "");
-    pt2 = MakePort(2, "");
-    ptn = MakePort(0, "");	/*Join output */
+    pt1 = MakePort(0, "");
+    pt2 = MakePort(1, "");
+    ptn = MakePort(2, "");	/*Join output */
 
     s1 = pt->stream;
     s0 = pt0->stream;
@@ -1333,11 +1335,11 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
     s0->source = j;
     s0->SourcePort = ptn;
     s0->SourcePort->stream = s0;
-    s0->source_id = 0;
+    s0->source_id = ptn->id;
     ptn->stream = s0;
 
 
-    s2->sink_id = 2;
+    s2->sink_id = 1;
     assert(s0->SinkPort->stream == s0);
     s2->source_id = s2->SourcePort->id;
     s2->SinkPort = pt2;
@@ -1345,7 +1347,7 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
     pt2->stream = s2;
 
     s1->sink = j;
-    s1->sink_id = 1;
+    s1->sink_id = 0;
     assert(s2->SourcePort->stream == s2);
 
 
@@ -1355,15 +1357,18 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
 
 
     /* Fix j ports */
-    j->port = ptn;
-    ptn->id = 0;
+    ptn->id = 2;
     ptn->name = "";
-    ptn->next = pt1;
+    
+    j->port = pt1;
     pt1->next = pt2;
     pt2->next = ptn;
-    pt2->prev = pt1;
-    pt1->prev = ptn;
-    ptn->prev = pt2;
+    ptn->next = pt1;
+    
+    pt2->next->prev = pt2;
+    pt1->next->prev = pt1;
+    ptn->next->prev = ptn;
+    
     pt1->stream = s1;
     pt2->stream = s2;
     s1->SinkPort = pt1;
