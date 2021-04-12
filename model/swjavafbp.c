@@ -1,5 +1,5 @@
-/* SWjavafbp.C 
-		  Generate JavaFBP Network Definition [TBI]
+/* SWjavafbp.c
+
 */
 
 //  todo     Everything  	  

@@ -14,40 +14,43 @@
 #include "sw.h"
 #include "swconfig.h"
 
+
+/** Variable key/value structure. */
 struct bucket {
     union {
-	Stream stream;
-	Process proc;
-	Component comp;
-	String  string;
-	String  type;        /* Config type: YAML or NONE */
-    } u;
-    char *tag;		
-    int nrefs;	/* Number of references to symbol */
-    struct bucket *link;
-    struct bucket *next;
-} bucket;
-typedef struct bucket *bucketp;
+	Stream stream;   	/**<??*/
+	Process proc;		/**<??*/
+	Component comp;		/**<??*/
+	String  string;		/**<??*/
+	String  type;        	/**<Config type: YAML or NONE */
+    } u;  /**<Union of return values */
+    char *tag;			/**<??*/	
+    int nrefs;			/**<Number of references to symbol */
+    struct bucket *link;	/**<??*/
+    struct bucket *next;	/**<??*/
+} bucket;  /**<Variable key/value structure.*/
+typedef struct bucket *bucketp;	/**<Pointer to bucket*/
 
-bucketp *symtable;		/* Array of bucket pointers */
+bucketp *symtable;		/**<Array of bucket pointers */
  
-#define FREE(x)      free((char *) (x))
-#define NEW(t)      ((t *) alloca((unsigned) sizeof(t)))
-#define NEW2(n, t) ((t *) alloca((unsigned) ((n) * sizeof(t*))))
+#define FREE(x)      free((char *) (x))					/**<Free storage*/
+#define NEW(t)      ((t *) alloca((unsigned) sizeof(t)))		/**<Allocate a new table entry*/
+#define NEW2(n, t) ((t *) alloca((unsigned) ((n) * sizeof(t*))))	/**<Allocate multiple table entries.*/
 
 #ifndef REGISTER
-#define REGISTER register
+#define REGISTER register		/**<??*/
 #endif
 
-#define COUNT_SYMS 1
+#define COUNT_SYMS 1			/**< Number of table entries stored.*/
 
 #if COUNT_SYMS
-int nsyms;
+int nsyms;				/**<Number of Symbols */
 #endif
 
-static bucketp firstsymbol;
-static bucketp lastsymbol;
+static bucketp firstsymbol;	/**<??*/
+static bucketp lastsymbol;	/**<??*/
 
+/** Create symbol table.*/
 void tabinit()
 {
     int i;
@@ -76,6 +79,7 @@ void tabinit()
 
 }
 
+/** Find symbol table entry for key.*/
 static int hash(char *key)
 {
     register int k;
@@ -87,7 +91,7 @@ static int hash(char *key)
     return (k % TABLESIZE);
 }
 
-/** bucketp structure */
+/** Find table entry for key.  Create new entry if no existing entry */
 static bucketp lookup(char *key)
 {
     register int hashval;
@@ -133,6 +137,7 @@ static bucketp lookup(char *key)
     return (bp);
 }
 
+/** Delete symbol table when done. */
 void free_symtab()
 {
     register int i;
@@ -148,6 +153,7 @@ void free_symtab()
     }
 }
 
+/** Find string for key.*/
 String getSymVar(String name) {
     bucketp b;
 
@@ -157,6 +163,7 @@ String getSymVar(String name) {
     return(b->u.string);
 }
 
+/** Find string value for key.*/
 String getStringVar(String name) {
     bucketp b;
 
@@ -166,6 +173,7 @@ String getStringVar(String name) {
     return b->u.string;
 }
 
+/** Add new string value to table. */
 String addStringVar(String name, String val) {
     bucketp b;
 
@@ -174,6 +182,7 @@ String addStringVar(String name, String val) {
     return val;
 }
 
+/** Add new value for symbol variable to table */
 String addSymVar(String name, String val) {
     bucketp b;
 
@@ -182,6 +191,7 @@ String addSymVar(String name, String val) {
     return val;
 }
  
+/** Add new component pointer to table */
 Component addComponent(char *name, char *path, Component c)
 {
     bucketp b;
@@ -197,6 +207,7 @@ Component addComponent(char *name, char *path, Component c)
     return b->u.comp;
 }
 
+/** Find component in table */
 Component getComponent(char *name, char *path)
 {
     bucketp b;
@@ -211,6 +222,7 @@ Component getComponent(char *name, char *path)
     return b->u.comp;
 }
 
+/** Add new process to table */
 Process addProc(char *key, Process p)
 {
     bucketp b;
@@ -220,6 +232,7 @@ Process addProc(char *key, Process p)
     return b->u.proc;
 }
 
+/** Find process in table */
 Process getProc(char *key)
 {
     bucketp b;
@@ -228,6 +241,7 @@ Process getProc(char *key)
     return b->u.proc;
 }
 
+/** Get Conf Type */
 String getConfType(char *path)
 {
    bucketp b;
@@ -247,6 +261,7 @@ String getConfType(char *path)
     return b->u.type;
 }
 
+/** Find path for key */
 int getPath(char *name)
 {
     bucketp b;
@@ -262,7 +277,7 @@ int getPath(char *name)
 }
 
 #ifdef TEST_MAIN
-
+/** Unit test symbol table lookup */
 int main()
 {
     struct bucket b1, b2;

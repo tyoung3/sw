@@ -1,3 +1,7 @@
+/** \file swgraph.h
+
+ ** swgraph function prototype
+ */
 #ifndef SWGRAPH_H_
 #define SWGRAPH_H_
 

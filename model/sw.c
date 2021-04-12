@@ -12,13 +12,18 @@
 #include "model.h"
 
 #include <assert.h>
+/** Addional checking if DEBUGGING is defined.*/
 #define DEBUGGING
 
-Port LatestPort = NULL, LatestSrcPort = NULL;
+/** Place to store latest visited port. */
+Port LatestPort = NULL;
+/** Place to store latest visited source port. */
+Port LatestSrcPort = NULL;  
+/** Current network type. */
 TYPE type = IS_NET;
 
-int bs = 1;			/*  Buffer size */
-Model net_model = NULL;
+int bs = 1;			/**<  Buffer size */
+Model net_model = NULL;		/**<  Network model anchor point. */
 
 #ifdef DEBUGGING
 static int VerifyStream(Stream s)
@@ -332,26 +337,30 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     return f;
 }
 
-
+/** Subnet port id */
 Ident visitSubId(SubId p)
 {
   return p;
 }
 
+/** Numeric variable */
 Numvar visitNumvar(Numvar p)
 {
     return p;
 }
 
+/** String variable */
 String visitStringvar(Stringvar p) {
 	   return p;
 }
 
+/** Environment variable */
 String visitEnvar(Envar p)
 {
   return p;
 }
 
+/** Get Environment variable */
 String getEnvVar(String s) {
 	String s1,s2;
 
@@ -361,7 +370,7 @@ String getEnvVar(String s) {
 	return(getenv("BROWSER"));
 }
 
-String visitStringval(Stringval _p_) {
+String visitStringval(Stringval _p_) {   /**<Get String value*/
 
     switch (_p_->kind) {
     case is_StringVals:
@@ -375,7 +384,8 @@ String visitStringval(Stringval _p_) {
     }
 }
 
-Integer visitNumval(Numval _p_)
+/** Get Numeric value */
+Integer visitNumval(Numval _p_)		
 {
     switch (_p_->kind) {
     case is_NumVali:
@@ -388,7 +398,8 @@ Integer visitNumval(Numval _p_)
     }
 }
 
-void visitNumassgn(Numassgn _p_)
+/** Assign value to numeric variable. */
+void visitNumassgn(Numassgn _p_)   
 {
     switch (_p_->kind) {
     case is_NumAssgnv:
@@ -401,15 +412,18 @@ void visitNumassgn(Numassgn _p_)
 }
 
 #if 1
-# define visitId(i) (String) i
+/** Get Id */
+#define visitId(i) (String) i
 #else
+/** Get Id */
 String visitId(Id i)
 {
     return i;
 }
 #endif
 
-String visitSymval(Symval _p_)
+/** Get Symbol value */
+String visitSymval(Symval _p_)		 /**<Get symbol value.*/
 {
     switch (_p_->kind) {
     case is_Symvalv:
@@ -423,12 +437,14 @@ String visitSymval(Symval _p_)
     }
 }
 
-String visitSymAssgn(SymAssgn _p_)
+/** Assign value to symbol*/
+String visitSymAssgn(SymAssgn _p_)		 
 {
     return addSymVar(_p_->u.symassgni_.symvar_,
     	visitSymval(_p_->u.symassgni_.symval_));
 }
 
+/** Assign value to String variable */
 void visitStrassgn(Strassgn _p_)
 {
 	addStringVar( 
@@ -437,23 +453,26 @@ void visitStrassgn(Strassgn _p_)
 	);
 }
 
+/** Get buffer size */
 Integer visitBuffsize(Buffsize _p_)
 {
     switch (_p_->kind) {
     case is_Bufszi:
 	return (visitNumval(_p_->u.bufszi_.numval_));
     case is_Bufsze:
-	return defaultBufferSize;  // @todo 
+	return defaultBufferSize;   
     default:
 	badkind(Buffsize);
     }
 }
 
+/** Get left arrow bufferize */
 Integer visitLarrow(Larrow _p_)
 {
     return visitBuffsize(_p_->u.arrowx_.buffsize_);
 }
 
+/** Get right arrow buffersize */
 Integer visitRarrow(Rarrow _p_)
 {
     return visitBuffsize(_p_->u.arrowr_.buffsize_);
@@ -495,6 +514,7 @@ static void linkPort(Process P, Port p)
 
 }
 
+/** Set stream pointer in port structure */
 static void setStream(Port pt, Stream s)
 {
     while (pt->stream) {
@@ -503,18 +523,22 @@ static void setStream(Port pt, Stream s)
     pt->stream = s;
 }
 
+/** Set number of out ports in source process */
 static void SetSource(Process p)
 {
 
     p->nportsOut++;
 }
 
+/** Set number of input ports in sink process */
 static void SetSink(Process p)
 {
 
     p->nportsIn++;
 }
 
+
+/** Get stream structure */
 Stream visitS_tream(S_tream _p_)
 {
     Process snk, src;
@@ -612,7 +636,8 @@ Stream visitS_tream(S_tream _p_)
     }
 }
 
-static String saves = NULL;
+static String saves = NULL;   /**<Save name ?? */
+/** Create an external port structure. */
 Extport MakeExtport(PortType type, Process p, Port prt, int bs, int id)
 {
 
@@ -644,6 +669,7 @@ Extport MakeExtport(PortType type, Process p, Port prt, int bs, int id)
     return ep;
 }
 
+/** Get tab */
 Integer visitTab(Tab _p_)
 {
     switch (_p_->kind) {
@@ -657,6 +683,7 @@ Integer visitTab(Tab _p_)
     }
 }
 
+/** Get external input port */
 Extport visitExtPortIn(ExtPortIn _p_)
 {
     switch (_p_->kind) {
@@ -679,6 +706,7 @@ Extport visitExtPortIn(ExtPortIn _p_)
 
 }
 
+/** Get external output port. */
 Extport visitExtPortOut(ExtPortOut _p_)
 {
 
@@ -700,7 +728,7 @@ Extport visitExtPortOut(ExtPortOut _p_)
     }
 }
 
-
+/** Get hermit structure */
 Process visitHermt(Hermt _p_)
 {
     char *name;
@@ -738,6 +766,7 @@ Process visitHermt(Hermt _p_)
     }
 }
 
+/** Get underscore ?? */
 static Ident UnderScore( Ident id) {
 	Ident uid;
 
@@ -745,6 +774,7 @@ static Ident UnderScore( Ident id) {
 	return uid;
 }
 
+/** Get subnet */
 Subnetm visitSubnet(Subnet _p_, Ident id)
 {
     Stream s = NULL;
@@ -773,6 +803,7 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
     }
 }
 
+/** Get subnet list */
 static void visitListSubnet(ListSubnet listsubnet, Ident id)
 {
     while (listsubnet != 0) {
@@ -781,6 +812,7 @@ static void visitListSubnet(ListSubnet listsubnet, Ident id)
     }
 }
 
+/** Get subnet definition */
 void visitSubdef(Subdef _p_)
 {	
     visitListSubnet(_p_->u.snet_.listsubnet_,
@@ -789,6 +821,8 @@ void visitSubdef(Subdef _p_)
 	//		    visitSymval(_p_->u.snet_.symval_));
 }
 
+
+/** Get network statement. */
 void visitStm(Stm _p_)
 {
     Process p;
@@ -821,6 +855,7 @@ void visitStm(Stm _p_)
     }
 }
 
+/** Get network statement list */
 void visitListStm(ListStm liststm)
 {
 
@@ -830,6 +865,7 @@ void visitListStm(ListStm liststm)
     }
 }
 
+/** Create anonymous component. */
 static char *MakeAnon(Component c)
 {
     static char bfr[100];
@@ -837,11 +873,13 @@ static char *MakeAnon(Component c)
     if (c == NULL)
 	return bfr;
 
-    sprintf(bfr, "_%s", c->name);	// @BUG too many dupes
+    sprintf(bfr, "_%s", c->name);	// @BUG too many dupes  ???
     return strndup(bfr, 99);
 
 };
 
+
+/** Get process */
 Process visitProc(Proc _p_)
 {
     Component c;
@@ -889,6 +927,7 @@ Process visitProc(Proc _p_)
     }
 }
 
+/** Get port */
 Port visitPrt(Prt _p_)
 {
     switch (_p_->kind) {
@@ -910,6 +949,8 @@ Port visitPrt(Prt _p_)
     }
 }
 
+
+/** Create module path */
 static char *makeModPath(char *pn, char *nn)
 {
     char bfr[100];
@@ -920,6 +961,7 @@ static char *makeModPath(char *pn, char *nn)
     return (strdup(bfr));
 }
 
+/** Get module path */
 String visitModPath(ModPath p)
 {
   switch(p->kind)
@@ -935,6 +977,7 @@ String visitModPath(ModPath p)
   }
 }
 
+/** Get component */
 Component visitComp(Comp _p_)
 {
     switch (_p_->kind) {
@@ -952,6 +995,7 @@ Component visitComp(Comp _p_)
     }
 }
 
+/** Get process argument */
 Argument visitArgument(Argument _p_)
 {
     Argument arg;
@@ -964,6 +1008,7 @@ Argument visitArgument(Argument _p_)
 	//	       (visitStringval(_p_->u.argumentx_.stringval_));
 }
 
+/** Get list of arguments.*/
 ListArgument visitListArgument(ListArgument listargument)
 {
     ListArgument l = NULL;
@@ -977,16 +1022,19 @@ ListArgument visitListArgument(ListArgument listargument)
 
 }
 
+/** Get Integer */
 Integer visitInteger(Integer i)
 {
     return i;
 }
 
+/** Get String */
 String visitString(String s)
 {
     return s;
 }
 
+/** Create a name string */
 static char *makeName(char *pn, char *nn)
 {
     char bfr[1000];
@@ -997,6 +1045,8 @@ static char *makeName(char *pn, char *nn)
     return (strdup(bfr));
 }
 
+
+/** Check depth of subnet expansion.   Subnets may invoke subnets up to maxdepth depth. */
 static int CheckDepth(int d)
 {
     if (d > maxdepth) {
@@ -1008,7 +1058,7 @@ static int CheckDepth(int d)
     return d + 1;
 }
 
-
+/** Expand a subnet*/
 static void Expand2(Model m, Process p, Stream s)
 {
     char *srcname, *snkname;	// Concatenated process names 
@@ -1044,6 +1094,7 @@ static void Expand2(Model m, Process p, Stream s)
 
 }
 
+/** Copy port structure */
 static Port copyPort(Port p0)
 {
     Port p1;
@@ -1052,11 +1103,11 @@ static Port copyPort(Port p0)
     return p1;
 }
 
+
+static Extport extprtList = NULL;   /**<Anchor for external port list */
 /**  Add external port to list of unmatched external ports.
      Match ports laterfindAmatchingPort
 */
-
-static Extport extprtList = NULL;
 static int findAmatchingPort(Model m, Process p, Extport ep)
 {
     Extport ep2 = NULL;
@@ -1184,7 +1235,7 @@ static void Expand3(Model m, Process p, Extport ep)
 
 }
 
-	/* Expand the model for each external port and stream in the subnet */
+	/** Expand the model for each external port and stream in the subnet */
 static void Expand(Model m, Process p, Subnetm sn)
 {
     Stream s;
@@ -1225,12 +1276,14 @@ static void expandSub(Model m, Process p)
     FAIL(expandSub, fbfr);
 }
 
+/** Add process to list to be freed.  */
 static void FreeLater(Process * fl, Process p)
 {
     p->next = *fl;
     *fl = p;
 }
 
+/** Free discarded process structure memory. */
 static void FreeExpandedProcesses(Process * fl)
 {
     Process pn;
@@ -1410,6 +1463,7 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
     VerifyStream(s2);
 }
 
+/** Create anonymous Split process if output port directed to more than one process.*/
 static void fixFanOut(Model m, Process p, Port pt0, Port pt)
 {
     Process j;			// New anonymous split process 
@@ -1492,6 +1546,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
 
 }
 
+/** Search for fanin/fanout conditions */
 static void fixFan(Model m, Process p)
 {
     Port pt, pt0;
@@ -1536,6 +1591,7 @@ static void fixFanInOut(Model m)
 
 }
 
+/** Add process to model.*/
 static void linkProc(Model m, Process p)
 {
     Process p2;
@@ -1556,6 +1612,7 @@ static void linkProc(Model m, Process p)
 
 }
 
+/** MAX(A,B) returns highest of A or B */
 #define MAX(A,B) ( (A>B)? A: B)
 
 /** Slow, bubble sort */
@@ -1602,6 +1659,7 @@ static void SortPorts(Process p)
     }
 }
 
+/** Create a new stream structure. */
 static void createStream(Model m, Extport ep, Extport ep2)
 {
     Stream s;
@@ -1645,6 +1703,7 @@ static void createStream(Model m, Extport ep, Extport ep2)
     VerifyStream(s);
 }
 
+/** MATCH(SRC,SNK) is true if port names match. ?? */
 #define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) {	\
 			  if(eqs(snkn,#SNK)) {	\
 				return 1;	\
@@ -1653,6 +1712,7 @@ static void createStream(Model m, Extport ep, Extport ep2)
 			  }			\
 		       }
 
+/** Return true if names match.*/
 static int MatchName(String srcn, String snkn)
 {
 
@@ -1671,6 +1731,7 @@ static int MatchName(String srcn, String snkn)
     return 0;
 }
 
+/** return true if external port is matched.*/
 static int Matched(Extport ep2) {
 	Port pt;
 	int  id;
@@ -1714,6 +1775,7 @@ static int isaMatch(Extport ep2, Extport ep)
     return 0;
 }
 
+/** Create a new stream if external port is matched.*/ 
 static void findSink(Model m, Extport ep)
 {
     Extport ep2;		/* sink port */
@@ -1761,6 +1823,7 @@ static void autolink(Model m)
     }	
 }
 
+/** Return model structure by examining the SW parse tree. */
 Model visitValidSW(ValidSW _p_)
 {				/* Parse visit root */
 

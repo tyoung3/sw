@@ -1,3 +1,8 @@
+/** \file swsym.h
+
+ ** Streamwork swsym includes
+
+*/
 #ifndef SWSYM_H_
 #define SWSYM_H_
 

@@ -1,3 +1,9 @@
+/** \file swconfig.h 
+
+ ** Streamwork configuration includes
+
+ */
+ 
 #ifndef _SWCONFIG_H
 #define _SWCONFIG_H
 
@@ -33,17 +39,17 @@ String visitString1(String s);
 
 /** Configure structure */
 struct cfg_ {
-	int   Maxbfsz;
-	int   MaxDepth;
-	int   Tablesize;
-	int   DefaultBufferSize;
-	char *DefaultPath;
-	char *DefaultSourceComp;
-	char *DefaultSinkComp;
-	char *DefaultFilterComp;
-	char *DefaultOrphanComp;
-	char *DefaultLibrary;
-	char *HTMLdir;
+	int   Maxbfsz;			/**<Maximum buffer size */
+	int   MaxDepth;			/**<Maximum subnet depth*/
+	int   Tablesize;		/**<Symbol table size*/
+	int   DefaultBufferSize;	/**<Default buffer size */
+	char *DefaultPath;		/**<Default module path*/
+	char *DefaultSourceComp;	/**<Default source component*/
+	char *DefaultSinkComp;		/**<Default sink component*/
+	char *DefaultFilterComp;	/**<Default filter component*/
+	char *DefaultOrphanComp;	/**<Default orphan component*/
+	char *DefaultLibrary;		/**<Default module library: github.com/... for instance.*/
+	char *HTMLdir;			/**<Directory for html tooltips in network graph*/
 } ;	
 	
 #endif

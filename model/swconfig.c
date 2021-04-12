@@ -1,3 +1,9 @@
+/** \file swconfig.c 
+
+ ** Streamwork Configuration
+
+*/
+ 
 /*** BNFC-Generated Visitor Traversal Skeleton. ***/
 /* This traverses the abstract syntax tree.
    To use, copy Skeleton.h and Skeleton.c to
@@ -79,6 +85,7 @@ void visitModPath(ModPath p)
 }
 #endif
 
+/** @todo implemement visitKeyName QQ */
 String visitKeyName(KeyName p)
 {
   switch(p->kind)
@@ -97,12 +104,17 @@ String visitKeyName(KeyName p)
     fprintf(stderr, "Error: bad kind field when printing KeyName!\n");
     exit(1);
   }
+  // return "Not implemented";
 }
 
+#if 1 
+#define visitDate(X) 
+#else
 void visitDate(Date p)
 {
   /* Code for Date Goes Here */
 }
+#endif
 
 void visitKeyVal(KeyVal p)
 {
@@ -216,7 +228,7 @@ int ConfigError(String s) {
 
   if(!match(htmldir,"(/[a-zA-Z0-9_.-]+)/$")) {
 	fprintf(stderr,
-		"\033[31m%s is not a valid directory path.\033[39m\n", 
+		"\033[31mConfigError%s is not a valid directory path.\033[39m\n", 
 		htmldir);
 	exit(1);
   }

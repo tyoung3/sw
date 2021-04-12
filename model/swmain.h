@@ -1,3 +1,9 @@
+/** \file swmain.h
+
+ ** Streamwork swmain includes
+
+*/
+ 
 #ifndef SWMAIN_H_
 #define SWMAIN_H_
 
