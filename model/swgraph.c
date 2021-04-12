@@ -1,4 +1,4 @@
-/** @file SWGRAPH.C 
+/** @file swgraph.c
 		  Generate Graphviz input(.dot file)  
 */
 

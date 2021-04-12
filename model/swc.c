@@ -1,4 +1,4 @@
-/** @file SWC.C 
+/** @file swc.c 
 		  Generate C code  
 */
 

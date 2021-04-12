@@ -1,4 +1,4 @@
-/** @file SWMAIN.C 
+/** @file swmain.c
 
 */
 #include <stdio.h>

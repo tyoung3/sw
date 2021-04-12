@@ -1,4 +1,4 @@
-/** @file SWGO.C 
+/** @file swgo.c 
 		  Greate a Go program from the network model	
 */
 

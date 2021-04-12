@@ -1,4 +1,4 @@
-/** @file SW.c
+/** @file sw.c
     Create network model from parse tree 
 
 */
@@ -1055,7 +1055,8 @@ static Port copyPort(Port p0)
 /**  Add external port to list of unmatched external ports.
      Match ports laterfindAmatchingPort
 */
-Extport extprtList = NULL;
+
+static Extport extprtList = NULL;
 static int findAmatchingPort(Model m, Process p, Extport ep)
 {
     Extport ep2 = NULL;

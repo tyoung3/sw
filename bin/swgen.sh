@@ -222,7 +222,7 @@ func PkgConfig()  *config.Config {
     
     if seqno != 1234 {
         fmt.Println(
-          \"$module/${pkg}/$name: Seqno not = 1234.  Missing config file?\")
+          \"$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?\")
     } 
     "    
 }
@@ -298,7 +298,7 @@ func PkgConfig()  *config.Config {
     
     if seqno != 1234 {
         fmt.Println(
-          \"${red}$module/${pkg}/$name: Seqno not = 1234.  Missing config file?$reset\")
+          \"${red}$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?$reset\")
     } 
     "    
 }       
@@ -315,7 +315,7 @@ noPkgConfig() {
         
     if seqno != 1234 {
         fmt.Println(
-          \"${red}$module/${pkg}/$name: Seqno not = 1234.  Missing config file?$reset\")
+          \"${red}$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?$reset\")
     } "
 }
 
@@ -334,7 +334,7 @@ noPkgYAML() {
         
     if seqno != 1234 {
         fmt.Println(
-          \"${red$module/${pkg}/$name: Seqno not = 1234.  Missing config file?$reset\")
+          \"${red$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?$reset\")
     } "
 }
 

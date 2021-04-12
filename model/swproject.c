@@ -1,8 +1,10 @@
-/** @file SWPROJECT.C 
+/** @file swproject.c
 		  Generate a  script to create FBP project files from the network model.
-
+**/
  
+/* 
  	@@todo Generate project examples
+ 	@@todo Create .../internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
 	@todo Process command arguments. 
 	@todo Restore poc test
 	@todo Document more functions 

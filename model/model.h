@@ -40,6 +40,8 @@ typedef struct Component_ {
 		String path;   // Ex. github/tyoung3/streamwork/std 
 	 struct Component_ *next;
 } Component_;
+
+/** Component pointer */
 typedef struct Component_ *Component;
 
 
