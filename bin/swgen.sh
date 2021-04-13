@@ -298,7 +298,7 @@ func PkgConfig()  *config.Config {
     
     if seqno != 1234 {
         fmt.Println(
-          \"${red}$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?$reset\")
+          \"${red}$module/${pkg}/$name: Seqno is\", seqno, \"not = 1234.  Missing config file?$reset\")
     } 
     "    
 }       

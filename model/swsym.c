@@ -50,7 +50,6 @@ int nsyms;				/**<Number of Symbols */
 static bucketp firstsymbol;	/**<??*/
 static bucketp lastsymbol;	/**<??*/
 
-/** Create symbol table.*/
 void tabinit()
 {
     int i;
