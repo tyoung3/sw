@@ -109,7 +109,7 @@ swconfig.o: swconfig.c sw.h
 sw.o: sw.c sw.h swsym.h ${HEADERS} model.h
 	${CC} ${CCFLAGS} -c  sw.c -o sw.o 
 	
-swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h ${HEADERS} Makefile  model.h
+swmain.o: swmain.c sw.h swgo.h swgraph.h swsym.h swmain.h swconfig.h ${HEADERS} Makefile  model.h
 	${CC} ${CCFLAGS} -DVERSION=${VERSION} -c swmain.c -o swmain.o 	
 	
 swgo.o: swgo.c swgo.h swsym.h sw.h model.h ${HEADERS}

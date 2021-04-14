@@ -9,6 +9,7 @@
 #include "swgo.h"
 #include "swsym.h"
 #include "swgraph.h"
+#include "swconfig.h"
 
 /** @todo Implement Process name expansion. 
 	Ex. "_MONITOR;" launches system monitor

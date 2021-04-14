@@ -950,8 +950,8 @@ Port visitPrt(Prt _p_)
 }
 
 
-/** Create module path */
-static char *makeModPath(char *pn, char *nn)
+/** Create module path ( also used in swconfig.c ) */
+char *makeModPath(char *pn, char *nn)
 {
     char bfr[100];
 

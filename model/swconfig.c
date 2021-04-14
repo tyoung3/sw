@@ -16,6 +16,7 @@
 #include <sys/types.h>
 
 #include "../bnfc/Parser.h"
+#include "sw.h"
 #include "swconfig.h"
 
 struct cfg_ cfg = { 0, 10000, 10000, 1000, 
@@ -27,9 +28,6 @@ static String Filter(String s) {
 
 	return s;
 }
-
-#define SetV(S) if (strcmp(key,(#S))==0) { cfg.S = val; }
-#define SetS(S) if (strcmp(key,Filter(#S))==0) { cfg.S = val; }
 
 static void CfgInt(String key, int val) {
 	SetV(DefaultBufferSize);
@@ -63,58 +61,21 @@ int visitInteger1(Integer i)
   return i;
 }
 
-#if 0
-void visitModPath(ModPath p)
-{
-  switch(p->kind)
-  {
-  case is_Modpx:
-    /* Code for Modpx Goes Here */
-    visitSymval(p->u.modpx_.symval_);
-    break;
-  case is_Modpy:
-    /* Code for Modpy Goes Here */
-    visitModPath(p->u.modpy_.modpath_);
-    visitSymval(p->u.modpy_.symval_);
-    break;
-
-  default:
-    fprintf(stderr, "Error: bad kind field when printing ModPath!\n");
-    exit(1);
-  }
-}
-#endif
-
-/** @todo implemement visitKeyName QQ */
 String visitKeyName(KeyName p)
 {
   switch(p->kind)
   {
   case is_KeynameS:
-    /* Code for KeynameS Goes Here */
-    visitSymval(p->u.keynames_.symval_);
-    break;
+    return visitSymval(p->u.keynames_.symval_);
   case is_KeynameM:
-    /* Code for KeynameM Goes Here */
-    visitModPath(p->u.keynamem_.modpath_);
-    visitSymval(p->u.keynamem_.symval_);
-    break;
-
+    return makeModPath(
+    	visitModPath(p->u.keynamem_.modpath_),
+         visitSymval(p->u.keynamem_.symval_));   
   default:
-    fprintf(stderr, "Error: bad kind field when printing KeyName!\n");
-    exit(1);
+    badkind(KeyName);
   }
-  // return "Not implemented";
 }
 
-#if 1 
-#define visitDate(X) 
-#else
-void visitDate(Date p)
-{
-  /* Code for Date Goes Here */
-}
-#endif
 
 void visitKeyVal(KeyVal p)
 {
@@ -125,23 +86,22 @@ void visitKeyVal(KeyVal p)
     visitKeyName(p->u.cfgkeyvalint_.keyname_),
     visitInteger1(p->u.cfgkeyvalint_.integer_));
     break;  
-  case is_CfgKeyDate:
-    /* Code for CfgKeyDate Goes Here */
-    visitKeyName(p->u.cfgkeydate_.keyname_);
-    visitDate(p->u.cfgkeydate_.date_);
-    break;
   case is_CfgKeyvalstr:
     CfgString(	visitKeyName(p->u.cfgkeyvalstr_.keyname_),
     visitString1(p->u.cfgkeyvalstr_.string_));
     break;  
-  case is_CfgKeyvalent:
-    visitEntry(p->u.cfgkeyvalent_.entry_);
+  case is_CfgKeyDate:
+    /* Code for CfgKeyDate Goes Here */
+    badkind(KeyVal_date);
+    visitKeyName(p->u.cfgkeydate_.keyname_);
+    visitDate(p->u.cfgkeydate_.date_);
     break;
   default:
-    badkind(KeyVal);
+    badkind(KeyVal_default);
   }
 }
 
+#ifdef SAVE_IN_CASE_CF_CHANGE
 void visitListKeyVal(ListKeyVal listkeyval)
 {
   while(listkeyval != 0)
@@ -155,11 +115,21 @@ String visitHeading(Heading p)
 {
    return visitKeyName(p->u.cfgheading_.keyname_);
 }
+#endif
 
-void visitEntry(Entry _p_)
+    
+void visitEntry(Entry p)
 {
-    visitHeading(_p_->u.cfgentrya_.heading_);
-    visitListKeyVal(_p_->u.cfgentrya_.listkeyval_);
+  switch(p->kind) {
+  case is_CfgEntrya:
+    visitKeyVal(p->u.cfgentrya_.keyval_);
+    break;
+  case is_CfgEntryb:
+    visitKeyName(p->u.cfgentryb_.keyname_);
+    break;
+  default:
+    badkind(Entry);
+   } 
 }
 
 void visitListEntry(ListEntry listentry)
@@ -195,14 +165,6 @@ int match(const char *string, const char *pattern)
 
     return 1; 
 } 
-
-#define CheckString(S,N)  					\
-  if(!match((S),"([a-zA-Z0-9_.]+)$")) {				\
-	fprintf(stderr,						\
-		"\033[31m%s is not a valid %s.\033[39m\n",	\
-		(S),#N);					\
-	exit(1);						\
-  }
 
 
 /** Parse config file, validate, and set cfg struct */

@@ -31,7 +31,7 @@ RunCollate () {
 	[ -x bin/sw ]|| Die Cannot find bin/sw -- run make ? 
 	[ -d $temp/sw/collate ] || mkdir -p $temp/sw/collate 
 	bin/sw nds/collate.sw |gofmt >  $temp/sw/collate/main.go
-	pushd $temp/sw/collategenPath1
+	pushd $temp/sw/collate
 	[ -f go.mod ] || go mod init collate/collate
 	go run main.go 	 
 }
@@ -92,10 +92,23 @@ Remove Branch:
 EOF
 }
 
-RunDocker() {
+RunDocker() {    # To install see:  https://docs.docker.com/engine/install/ubuntu/#prerequisites
+	myapp=sw 	
+	docker run -it --rm --name SWdemo  $myapp 
+	
+	## Set EDITOR and BROWSER in docker image. 
+	## Fix PATH.   ORIGINALLY: /go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+	##   add /go/mod/sw/bin
+	##   ln -s /go ~/go
+	## swconfig.c:99:5: warning: implicit declaration of function 'visitModPath'; did you mean 'visitIdent1'? [-Wimplicit-function-declaration
+ 
+}
+
+BuildDocker() {    # To install see:  https://docs.docker.com/engine/install/ubuntu/#prerequisites
 	myapp=sw
-	docker build -t  $myapp . &&  	\
-	docker run -it --rm --name SWdemo  $myapp ./sw.sh $*
+	docker ps |grep SWdemo 			\
+	|| docker build -t  $myapp .   
+	RunDocker 	
 }
 
 Browse () {
@@ -114,7 +127,8 @@ Shell() {
 case $1 in	
 	c) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
-	d) shift ; RunDocker $*;;
+	dbuild) shift ; BuildDocker $*;;
+	d)shift; RunDocker $*;;
 	doc)shift; doxygen&&Browse ./doxy/html/todo.html	\
 		&&Browse ./doxy/html/bug.html ;;
         ex)shift; cd example; make;;   
@@ -131,7 +145,8 @@ case $1 in
 USAGE: 
 		c		. Make check
 		cl       	. Show release check list. 
-		d  OPT		. Build and run this script in docker. 
+		d  [OPTs]	. Switch to docker container. 
+		dbuild [OPTs]	. Build SWdemo docker container. 
 		doc		. Run and browse Doxygen 
 		ex		. Run make in ../example/
 		j		. Generate collate .SVT

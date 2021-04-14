@@ -47,6 +47,7 @@ Integer visitInteger(Integer i); 		/**<Get integer*/
 String visitString(String s);			/**<Get string*/
 String visitStringval(Stringval p);		/**<Get String value*/
 Component MakeComponent(Ident name, String path);/**<Create component structure*/
+char *makeModPath(char *pn, char *nn);
 
 	/** swjafafbp.c */	
 void genJavaFBP(Model model);

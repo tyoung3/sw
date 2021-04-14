@@ -41,7 +41,7 @@ GenRun() {
 		dot -Tsvg /tmp/$base.dot > /tmp/${base}.svg || Die Cannot convert .dot file to .svg
 		$BROWSER --new-window /tmp/${base}.svg	
 	else 
-		DIE $swfile missing
+		Die $swfile missing
 	fi
 }
 
