@@ -7,7 +7,7 @@
 # Generate/explain init function  ?? todo 
 
 pgm=swgen.sh
-version="0.3.1"
+version="0.3.2"
 HTML=fbpgo.html
 
              black="\u001b[30m"
@@ -210,7 +210,7 @@ func PkgConfig()  *config.Config {
     bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
     seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
-    version, _ := cfg.StringOr(\"$module/${pkg}.version\", \"v0.0.0\")
+    version := \"v0.0.0\"
     
     fmt.Println(title, 
                 \"${cyan}gRunning7\", 
@@ -222,16 +222,17 @@ func PkgConfig()  *config.Config {
     
     if seqno != 1234 {
         fmt.Println(
-          \"Seqno not = 1234.  Missing config file?\")
+          \"$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?\")
     } 
     "    
 }
 
+#    // version, _ := cfg.StringOr(\"$module/${pkg}.version\", \"v0.0.0\")
 
 genPkgYAML() {  
         Debug genPkgYAML Args: $*
         
-defversion='var version string="v0.0.0"'
+#  defversion='var version string="v0.0.0"'
 
 args=" "
 getargs=""
@@ -279,7 +280,7 @@ func PkgConfig()  *config.Config {
     bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
     seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
-    version, _ := cfg.StringOr(\"$module/${pkg}/$name.version\", \"v0.0.0\")
+    version := \"v0.0.0\"
         $getargs
     
     fmt.Print(title, 
@@ -297,7 +298,7 @@ func PkgConfig()  *config.Config {
     
     if seqno != 1234 {
         fmt.Println(
-          \"Seqno not = 1234.  Missing config file?\")
+          \"${red}$module/${pkg}/$name: Seqno is\", seqno, \"not = 1234.  Missing config file?$reset\")
     } 
     "    
 }       
@@ -314,7 +315,7 @@ noPkgConfig() {
         
     if seqno != 1234 {
         fmt.Println(
-          \"Seqno not = 1234.  Missing config file?\")
+          \"${red}$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?$reset\")
     } "
 }
 
@@ -333,7 +334,7 @@ noPkgYAML() {
         
     if seqno != 1234 {
         fmt.Println(
-          \"Seqno not = 1234.  Missing config file?\")
+          \"${red$module/${pkg}/$name: Seqno is", seqno, "not = 1234.  Missing config file?$reset\")
     } "
 }
 
@@ -359,7 +360,7 @@ GenGo() {
 	 nports=$(($inps + $outps))
          Debug GenGo $name $* $config  $inps $outps  $nports $cfg_file
          echo "$module/$pkg/${name}:" >> $cfg_file
-         echo "  version: v0.0.1" >> $cfg_file
+         # echo "  version: v0.0.1" >> $cfg_file
 	 
          cat << EOF > ${name}.go 
                 package $pkg2

@@ -1,3 +1,9 @@
+/** \file swconfig.h 
+
+ ** Streamwork configuration includes
+
+ */
+ 
 #ifndef _SWCONFIG_H
 #define _SWCONFIG_H
 
@@ -19,32 +25,41 @@
    exit(1); 							\
 }
 
-String visitSymval(Symval _p_);
-
-int ConfigError(String s);  /* swconfig.c process configuration file */
-
-void visitValidCFG(ValidCFG p);
-
-Ident visitIdent1(Ident i);
-int   visitInteger1(Integer i);
-//void visitDouble(Double d);
-//void visitChar(Char c);
-String visitString1(String s);
-
-/** Configure structure */
+			/** Configure structure */
 struct cfg_ {
-	int   Maxbfsz;
-	int   MaxDepth;
-	int   Tablesize;
-	int   DefaultBufferSize;
-	char *DefaultPath;
-	char *DefaultSourceComp;
-	char *DefaultSinkComp;
-	char *DefaultFilterComp;
-	char *DefaultOrphanComp;
-	char *DefaultLibrary;
-	char *HTMLdir;
+	int   Maxbfsz;			/**<Maximum buffer size */
+	int   MaxDepth;			/**<Maximum subnet depth*/
+	int   Tablesize;		/**<Symbol table size*/
+	int   DefaultBufferSize;	/**<Default buffer size */
+	char *DefaultPath;		/**<Default module path*/
+	char *DefaultSourceComp;	/**<Default source component*/
+	char *DefaultSinkComp;		/**<Default sink component*/
+	char *DefaultFilterComp;	/**<Default filter component*/
+	char *DefaultOrphanComp;	/**<Default orphan component*/
+	char *DefaultLibrary;		/**<Default module library: github.com/... for instance.*/
+	char *HTMLdir;			/**<Directory for html tooltips in network graph*/
 } ;	
+
+#define SetV(S) if (strcmp(key,(#S))==0) { cfg.S = val; }
+#define SetS(S) if (strcmp(key,Filter(#S))==0) { cfg.S = val; }
+#define visitDate(X) 
+
+#define CheckString(S,N)  					\
+  if(!match((S),"([a-zA-Z0-9_.]+)$")) {				\
+	fprintf(stderr,						\
+		"\033[31m%s is not a valid %s.\033[39m\n",	\
+		(S),#N);					\
+	exit(1);						\
+  }
 	
-#endif
+	/* swconfig.c prototypes */
+String 	visitSymval(Symval _p_);
+int 	ConfigError(String s);  /* Process configuration file */
+void 	visitValidCFG(ValidCFG p);
+Ident 	visitIdent1(Ident i);
+int   	visitInteger1(Integer i);
+String  visitModPath(ModPath p);
+String 	visitString1(String s);
+
+#endif  //  _SWCONFIG_H
 

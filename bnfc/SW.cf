@@ -112,16 +112,14 @@ token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
 Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry];
 Validcfgd.		ValidCFG ::= "---" [Entry];
 
-CfgEntrya.		Entry	::=  Heading [KeyVal];
-terminator	   	Entry   "" ;
-
-CfgHeading.		Heading	::= KeyName  ;   
+CfgEntrya.		Entry	::=  KeyVal;
+CfgEntryb.		Entry	::=  KeyName;
+terminator	   	Entry   "" ; 
 
 CfgKeyvalint.		KeyVal	::= KeyName  Integer;
 CfgKeyvalstr.		KeyVal	::= KeyName  String;
 CfgKeyDate.		KeyVal  ::= KeyName  Date;
-CfgKeyvalent.		KeyVal  ::= Entry;     
-terminator	   	KeyVal  "" ;
+--CfgKeyvalent.		KeyVal  ::= Entry;   
 
 KeynameS.		KeyName ::= Symval ":"; 
 KeynameM.		KeyName ::= ModPath Symval ":";

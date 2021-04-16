@@ -1,3 +1,8 @@
+/** \file swsym.h
+
+ ** Streamwork swsym includes
+
+*/
 #ifndef SWSYM_H_
 #define SWSYM_H_
 
@@ -14,7 +19,7 @@ String getSymVar(String name);
 String addSymVar(String name, String val);
 String getSymVar(String name);
 String getConfType(String path);
-void    tabinit();
+void    tabinit();   /**<Create symbol table.*/
 void free_symtab();
 #endif
 

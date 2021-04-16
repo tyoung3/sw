@@ -1,4 +1,4 @@
-/** @file SWGO.C 
+/** @file swgo.c 
 		  Greate a Go program from the network model	
 */
 
@@ -12,10 +12,12 @@
 
 #include <assert.h>
 
-#define P(s) printf("%s\n",(#s));
-#define PE(s) {};
-#define C(s) printf("%s",(#s));
+/** Print string.*/
+#define P(s) printf("%s\n",(#s));	
+#define PE(s) {};  			/**<Print empty string */
+#define C(s) printf("%s",(#s));		/**<Print defined string*/
 
+/**Get timestamp*/
 static String Timestamp()
 {
     time_t ltime;		/* calendar time */
@@ -31,13 +33,14 @@ void genSuffix()
     printf("}\n");
 }
 
-
+/** Print generated module path.*/
 static void genPath(char *s)
 {
     char *importLib  = { defaultLibrary };
     printf("import \"%s/%s\"\n",  importLib,  s);
 }
 
+/** Return true if path is new.*/
 int newPath(char *p)	
 {
 
@@ -47,6 +50,7 @@ int newPath(char *p)
     return 0;
 }
 
+/** Create import paths from process structs.*/
 static void genPaths(Model m)
 {
     Process p;
@@ -67,7 +71,7 @@ static void genPaths(Model m)
 }
 
 
-
+/** Find process port from matching port id */
 static Port findPort(Process p, int id)
 {
     Port pt = p->port;
@@ -85,6 +89,7 @@ static Port findPort(Process p, int id)
     FAIL(findPort, fbfr);
 }
 
+/** Print arguments for process.*/
 static void showArgs(Process p)
 {
     int i = 1;
@@ -100,6 +105,7 @@ static void showArgs(Process p)
 
 }
 
+/** Print Sink process */
 static void showSink(Process p, int id)
 {
 
@@ -114,6 +120,7 @@ static void showSink(Process p, int id)
     printf(" ");
 }
 
+/** Print Source Process */
 static void showSource(Process p, int id, int bfsz)
 {
 
@@ -131,6 +138,7 @@ static void showSource(Process p, int id, int bfsz)
     printf(");\t\n");
 }
 
+/** Assign channel number to source and sink ports.*/
 static int assign_channel(int ch, Stream f)
 {
 
@@ -139,6 +147,7 @@ static int assign_channel(int ch, Stream f)
     return ch;
 }
 
+/** For each stream; assign the channel to source and sink ports.  Must be done after expansion is complete*/ 
 static void assignChannels(Model m)
 {  
     int ch = m->nstreams - 1;
@@ -189,7 +198,6 @@ static int nbrMultiples(Model m)
 };
 #endif
 
-// ?? static void ConnectProcess(Process p, int partn);
 
 /** @todo  Handle unmatched ports by autconnecting to dummy process.  
 */
@@ -240,14 +248,14 @@ static int ComputeNpartitions(Model m) {
 	return nparts;
 }
 
-
+/** Return 's' or blank. */
 String Plural(int n) {
 	if(n==1) 
 		return "";
 	return "s";
 }
 
-
+/** Print orphan data */
 static void ShowOrphan(Process p) {
     printf("%s %s.%s", p->name, p->comp->path, p->comp->name);
     showArgs(p);
@@ -338,6 +346,7 @@ void genPrefix(Model m)
     printf("\n");
 }
 
+/** Return true if channel numbers not lined up */
 static int needaSlice(Port pt)
 {
     Port pt0 = pt;
@@ -374,7 +383,7 @@ static void makeChSlice(Process p, int nstreams)
     } while (pt != p->port);
 }
 
-
+/** Return rightmost path element */
 char *stripPath( char *s1 ) {
 	char *s;
 	char *s2;
@@ -391,7 +400,7 @@ char *stripPath( char *s1 ) {
 	
 }
 
-
+/** print launch process code. */
 static void genLaunch1(Process p)
 {
     int i = 1;
@@ -409,6 +418,7 @@ static void genLaunch1(Process p)
 
 }
 
+/** Generate startup code */
 static void genLaunches(Process p)
 {
     int ch;			/* Assigned channel */
@@ -444,7 +454,7 @@ static void genLaunches(Process p)
     printf("\n");
 }
 
-
+/** Generate Go language Main package code from SW network model.*/
 void genGo(Model model)
 {
     Process p;

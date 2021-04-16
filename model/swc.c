@@ -1,4 +1,4 @@
-/** @file SWC.C 
+/** @file swc.c 
 		  Generate C code  
 */
 
@@ -7,6 +7,7 @@
 #include "model.h"
 #include "sw.h"
 
+/** Print string */
 #define P(s) printf("// %s\n",(#s));
 static void genSuffix() {
 
@@ -14,6 +15,7 @@ static void genSuffix() {
 	printf("}\n");
 }
 
+/** Output prefex msg. */
 static void genPrefix(int nstreams) {
 
 	printf("//  Prefix here. %d streams\n",nstreams);
@@ -23,7 +25,8 @@ static void genPrefix(int nstreams) {
 
 	printf("\t}\n\n");
 }
-	
+
+/** Generate processes.*/	
 static void genProcs(Process p) {	
     
 	while(p) {
@@ -40,7 +43,7 @@ static void genProcs(Process p) {
 }	
 
 
-
+/** Generate C language code from SW network model.*/
 void genC(Model model) {
 	Stream f;
 	Process p;

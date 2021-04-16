@@ -1,4 +1,4 @@
-/** @file SWMAIN.C 
+/** @file swmain.c
 
 */
 #include <stdio.h>
@@ -9,25 +9,27 @@
 #include "swgo.h"
 #include "swsym.h"
 #include "swgraph.h"
+#include "swconfig.h"
 
-/** 
-	@todo Implement Process name expansion. 
+/** @todo Implement Process name expansion. 
 	Ex. "_MONITOR;" launches system monitor
-	@todo Create Man page w/Doxygen
+*/
+/**	@todo Create Man page w/Doxygen
 */
 
 typedef enum
     { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, PROJECT, CMODE = 7 } MODE;
 
-char fbfr[100];
-char *version = { VERSION };
+char fbfr[200];   /**<File name buffer.*/ /** @todo  may need to increase file name buffer size. */
+char *version = { VERSION };  /**<sw version  */
 
-String configfile={"./sw.cfg"};
-static MODE mode = GOMODE;
-static char *fname = { "stdin" };
+String configfile={"./sw.cfg"};   		/**<SW configuration file */
+static MODE mode = GOMODE;			/**<Mode ?? */
+static char *fname = { "stdin" };		/**<Input file name or Standard input. */
 
-ValidSW pValidSW(FILE * inp);
+ValidSW pValidSW(FILE * inp);  /**<True if valid input */
 
+/** True if process structure misconfigured. */
 static int badProc(Process p)
 {
     int i;
@@ -86,6 +88,7 @@ static Port findPrt(Process p, int id)
     return p->port;
 }
 
+/** True is strings are equal */
 int eqs(char *s1, char *s2)
 {
 
@@ -229,6 +232,7 @@ static int verifyOK(Model model)
 
 };
 
+/** sw progam help.*/
 static void Usage()
 {
     fprintf(stderr, "\nUsage:\tsw [-m MODE [ SW_FILE ]\n");
@@ -239,7 +243,7 @@ static void Usage()
 }
 
 
-FILE *input;
+FILE *input;				/**<Input SW file name */
 static FILE *openFile(char *fname)
 {
     input = fopen(fname, "r");

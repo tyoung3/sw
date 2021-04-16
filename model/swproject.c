@@ -1,8 +1,12 @@
-/** @file SWPROJECT.C 
+/** @file swproject.c
 		  Generate a  script to create FBP project files from the network model.
-
+**/
  
- 	@@todo Generate project examples
+/** 
+ 	@todo Generate project examples
+ 	
+ 	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
+ 	
 	@todo Process command arguments. 
 	@todo Restore poc test
 	@todo Document more functions 
@@ -34,7 +38,7 @@
  
 */
 
-/* @@todo Build a web site from github 
+/** @todo Build a web site from github 
 	
 	OBJECTIVE: Build working web site in Docker
 		
@@ -58,10 +62,12 @@
 
 #include <assert.h>
 
+/** Print string */
 #define P(s) printf("%s\n",(#s));
-#define PE(s) {};
-#define C(s) printf("%s",(#s));
+#define PE(s) {};			/**<Print empty string*/
+#define C(s) printf("%s",(#s));		/**<Print String  */
 
+/** Return prefix(aaa) of aaa.bbb  */
 static char *Prefix(char *s) {
 	char *s0;
 	char *s1;
@@ -70,7 +76,7 @@ static char *Prefix(char *s) {
 	s1=s0;
 	
 	while (*s != 0) {
-		if( *s == '.') {
+ 		if( *s == '.') {    /** @todo slash instead of do in module path. */
 			*s1=0;
 			return s0;
 		} else {
@@ -81,6 +87,7 @@ static char *Prefix(char *s) {
 	return s;
 }
 
+/** Return component arguments. */
 static char **getArgs( Model m, Component c) {
 	Stream s;
 	Process p;
@@ -132,7 +139,7 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 	*outp=0;
 }
 
-
+/** Generate a project from network model. */
 void genProject(Model m) {
 	Component c;
 	int inp=0;	// Number of input ports 	

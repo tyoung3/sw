@@ -1,4 +1,4 @@
-/** @file SWGRAPH.C 
+/** @file swgraph.c
 		  Generate Graphviz input(.dot file)  
 */
 
@@ -10,18 +10,20 @@
 #include "swconfig.h"
 
 
-#define P(s) printf("%s\n",(#s));
-#define FIXINDENT(s) {};
-#define C(s) printf("%s,\n",(#s));
+#define P(s) printf("%s\n",(#s));  	/**<Print String*/
+#define FIXINDENT(s) {};		/**<Nullify FIXINDENT */
+#define C(s) printf("%s,\n",(#s));	/**<Print String*/
 
-// Define to remove process ports from graph
+/** Define to remove process ports from graph */
 #define NO_PORTS
 
+/** Type of Component name */
 typedef enum
 { NOCOMP, COMPNAME, WITHPATH } SHOWC;
-static SHOWC showcomp = COMPNAME;
-static char *twoline = "";
+static SHOWC showcomp = COMPNAME; /**<??*/
+static char *twoline = "";	  /**<??*/
 
+/** Find port for id */
 static Port
 findPort (Port pt, int id)
 {
@@ -37,9 +39,10 @@ findPort (Port pt, int id)
     }
   while (pt != pt0);
 
-  return NULL;	       /** @todo error message   */
+  return NULL;	       /** @todo SWGRAPH error message on error   */
 }
 
+/** Assign channel to ports for stream */
 static int
 assign_channel (int ch, Stream f)
 {
@@ -49,6 +52,7 @@ assign_channel (int ch, Stream f)
   return ch;
 }
 
+/** For each stream; assign the channel */
 static void
 assignChannels (Model m)
 {
@@ -64,17 +68,17 @@ assignChannels (Model m)
 }
 
 ///////////////////////////////////////////////////
-#define RB "}"
-#define LB "{"
+#define RB "}"  /**<Right Brace*/
+#define LB "{"  /**<Left Brace*/
 
+/** Generate End Of Block */
 static void
 genSuffix ()
 {
-
-
   printf ("%s\n",RB);
 }
 
+/** Generate beginning of .dot file */
 static void
 genPrefix (char *gname, int nstreams)
 {
@@ -106,12 +110,14 @@ genPrefix (char *gname, int nstreams)
 }
 
 #ifndef NO_PORTS
+/** Generate port data */
 static void genPort (int n)
 {
   printf ("<%i> %i  ", n, n);
 }
 #endif
 
+/** Generate arguments */
 static void genArgs (char **a)
 {
   int i = 1;
@@ -122,6 +128,7 @@ static void genArgs (char **a)
     }
 }
 
+/** return generated URL */
 static char *makeURL (char *comp)
 {
   char bfr[110];
@@ -130,7 +137,7 @@ static char *makeURL (char *comp)
     return strndup (bfr, sizeof (bfr) - 1);
 }
 
-    /* EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */
+    /**  EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */
 static void genProc (char *name, char *comp, char *path, char *host,
 		     char **args)
 {
@@ -156,10 +163,12 @@ static void genProc (char *name, char *comp, char *path, char *host,
 	}
 }
 
+/** End code for process */
 static void endProc ()     {
      printf ("\"\n"); printf ("];\n");	// End proc 
 }
 
+/** Generate graph cluster code */
 static void genCluster1 (char *name)     {
 
      printf ("subgraph \"cluster%s\" %s\n", name,LB);
@@ -167,6 +176,7 @@ static void genCluster1 (char *name)     {
      printf ("URL=\"%s.html\";\n\n", name);
 }
 
+/** Find channel for port */
 static int findChannel (Port p, int id)     {
      Port p0; 
 
@@ -182,6 +192,7 @@ static int findChannel (Port p, int id)     {
      return -1;
 }
 
+/** Generate port code */
 static void showPorts (Stream f, Process src, Process snk, int channel)      {
 #ifndef NO_PORTS
      printf
@@ -264,6 +275,8 @@ static void showPorts (Stream f, Process src, Process snk, int channel)      {
      printf ("\n");
 }
 
+
+/** Generate .dot file from network model. */
 void genGraph (Model model)
      {
      Stream f; Process p; assignChannels (model);
