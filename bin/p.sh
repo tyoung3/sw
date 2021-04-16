@@ -72,7 +72,7 @@ GenCFG() {
     DefaultPath: 	"def"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
-    HTMLdir:	"/home/tyoung3/go/mod/sw/html/" #Where tooltips live
+    HTMLdir:	"${HOME}/go/mod/sw/html/" #Where tooltips live
     DefaultLibrary: "$p"
   limits:
     Maxbfsz:   	10000    #Maximum GO buffer size
@@ -85,7 +85,7 @@ EOF
 GenGo() {
 	 module=$p
 	 Debug GenGo:  $*  module=$module
-	 /home/tyoung3/go/mod/sw/bin/sw -m 5 ${p}.sw > ./gen_$p.sh 	 
+	 ${HOME}/go/mod/sw/bin/sw -m 5 ${p}.sw > ./gen_$p.sh 	 
 	 chmod a+x ./gen_$p.sh 				 
 	 ./gen_$p.sh
 	 		 

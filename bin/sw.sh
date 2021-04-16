@@ -94,20 +94,14 @@ EOF
 
 RunDocker() {    # To install see:  https://docs.docker.com/engine/install/ubuntu/#prerequisites
 	myapp=sw 	
-	docker run -it --rm --name SWdemo  $myapp 
-	
-	## Set EDITOR and BROWSER in docker image. 
-	## Fix PATH.   ORIGINALLY: /go/bin:/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-	##   add /go/mod/sw/bin
-	##   ln -s /go ~/go
-	## swconfig.c:99:5: warning: implicit declaration of function 'visitModPath'; did you mean 'visitIdent1'? [-Wimplicit-function-declaration
+	docker run -it --rm -e MY_APP=ma -e EDITOR=nano -e BROWSER=none --name SWdemo   $myapp
  
 }
 
 BuildDocker() {    # To install see:  https://docs.docker.com/engine/install/ubuntu/#prerequisites
 	myapp=sw
 	docker ps |grep SWdemo 			\
-	|| docker build -t  $myapp .   
+	|| docker build --build-arg EDITOR=nano -t  $myapp .   
 	RunDocker 	
 }
 
