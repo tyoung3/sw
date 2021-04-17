@@ -728,6 +728,19 @@ Extport visitExtPortOut(ExtPortOut _p_)
     }
 }
 
+String visitSymvalu(Symvalu p)
+{
+  switch(p->kind)
+  {
+  case is_Symvaluv:
+    return visitSymval(p->u.symvaluv_.symval_);
+  case is_Symvaluu:
+    return "_";
+  default:
+    badkind(Symvalu);
+  }
+}
+
 /** Get hermit structure */
 Process visitHermt(Hermt _p_)
 {
@@ -737,7 +750,7 @@ Process visitHermt(Hermt _p_)
     type = IS_NET;
     switch (_p_->kind) {
     case is_Hermtx:
-	name = visitSymval(_p_->u.hermtx_.symval_);
+	name = visitSymvalu(_p_->u.hermtx_.symvalu_);
 	p = MakeProcess(net_model,
 			name,
 			visitComp(_p_->u.hermtx_.comp_),
@@ -746,11 +759,12 @@ Process visitHermt(Hermt _p_)
 	return p;
     case is_Hermty:
 	p = MakeProcess(net_model,
-			visitSymval(_p_->u.hermty_.symval_), NULL,
+			visitSymvalu(_p_->u.hermty_.symvalu_), NULL,
 			MakeArg(visitListArgument
 				(_p_->u.hermty_.listargument_), NULL));
 
 	return p;
+#if 0	
     case is_Hermtax:
 	p = MakeProcess(net_model, "_", visitComp(_p_->u.hermtax_.comp_),
 			MakeArg(visitListArgument
@@ -761,6 +775,7 @@ Process visitHermt(Hermt _p_)
 			MakeArg(visitListArgument
 				(_p_->u.hermtay_.listargument_), NULL));
 	return p;
+#endif	
     default:
 	badkind(Hermt);
     }

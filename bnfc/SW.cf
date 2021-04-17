@@ -56,10 +56,13 @@ Arrowr.			Rarrow	 ::=  "-" Buffsize ">";
 Bufszi.			Buffsize ::= Numval;
 Bufsze.			Buffsize ::=; 
 
-Hermtx.			Hermt	::=   Symval  Comp [Argument] ;
-Hermty.			Hermt	::=   Symval  [Argument]  	 ;
-Hermtax.		Hermt	::=   "_"  Comp [Argument]   ;
-Hermtay.		Hermt	::=   "_"  [Argument]   	 ;
+Hermtx.			Hermt	::=   Symvalu  Comp [Argument] ;
+Hermty.			Hermt	::=   Symvalu  [Argument]  	 ;
+--Hermtax.		Hermt	::=   "_"  Comp [Argument]   ;
+--Hermtay.		Hermt	::=   "_"  [Argument]   	 ;
+
+Symvaluv.		Symvalu 	::= Symval	;
+Symvaluu.		Symvalu		::= "_"		; 
 
 Processx.		Proc	::= "(" Symval  Comp [Argument] ")" ;
 Processy.		Proc	::= "(" Symval  [Argument] ")" ;
