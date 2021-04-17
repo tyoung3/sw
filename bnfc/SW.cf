@@ -18,8 +18,6 @@ SWvalid.	 	Valide ::= ValidSW	;
 Valid.			ValidSW ::= [Stm] 	;
 
 Stmx.			Stm	::= S_tream  ; 
---Stmein.			Stm	::= ExtPortIn  	;
---Stmeout.			Stm  	::= ExtPortOut  ; 
 Stmn.			Stm	::= Numassgn ; 
 Stms.			Stm	::= Strassgn ;
 Stmb.			Stm	::= SymAssgn ; 
@@ -58,16 +56,12 @@ Bufsze.			Buffsize ::=;
 
 Hermtx.			Hermt	::=   Symvalu  Comp [Argument] ;
 Hermty.			Hermt	::=   Symvalu  [Argument]  	 ;
---Hermtax.		Hermt	::=   "_"  Comp [Argument]   ;
---Hermtay.		Hermt	::=   "_"  [Argument]   	 ;
 
 Symvaluv.		Symvalu 	::= Symval	;
 Symvaluu.		Symvalu		::= "_"		; 
 
-Processx.		Proc	::= "(" Symval  Comp [Argument] ")" ;
-Processy.		Proc	::= "(" Symval  [Argument] ")" ;
-Processax.		Proc	::= "(" "_"  Comp [Argument] ")" ;
-Processay.		Proc	::= "(" "_"  [Argument] ")" ;
+Processx.		Proc	::= "(" Symvalu  Comp [Argument] ")" ;
+Processy.		Proc	::= "(" Symvalu  [Argument] ")" ;
 
 Portx.			Prt	::= Numval;
 Portni.         	Prt     ::= Numval "." Symval; 

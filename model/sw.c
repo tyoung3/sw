@@ -904,20 +904,20 @@ Process visitProc(Proc _p_)
 
     case is_Processx:
 	return MakeProcess(net_model,
-			   visitSymval(_p_->u.processx_.symval_),
+			   visitSymvalu(_p_->u.processx_.symvalu_),
 			   visitComp(_p_->u.processx_.comp_),
 			   MakeArg(visitListArgument
 				   (_p_->u.processx_.listargument_),
-				   visitSymval(_p_->u.processx_.symval_)));
+				   visitSymvalu(_p_->u.processx_.symvalu_)));
 
     case is_Processy:
 	return MakeProcess(net_model,
-			       visitSymval(_p_->u.processy_.symval_),
+			   visitSymvalu(_p_->u.processy_.symvalu_),
 			   NULL,
 			   MakeArg(visitListArgument
 				   (_p_->u.processy_.listargument_),
 				   NULL));
-
+#if 0
     case is_Processax:		/* Anonymous process */
 	c = visitComp(_p_->u.processax_.comp_);
 	name = MakeAnon(c);
@@ -937,6 +937,7 @@ Process visitProc(Proc _p_)
 			   MakeArg(visitListArgument
 				   (_p_->u.processay_.listargument_),
 				   name));
+#endif				   
     default:
 	badkind(Proc);
     }
