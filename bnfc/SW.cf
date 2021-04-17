@@ -72,9 +72,14 @@ Porte.			Prt	::= ;
 Compx.			Comp	::= Symval;	
 Compn.		    	Comp	::= SubId;
 Compz.			Comp	::= ModPath Symval;
+Compa.			Comp	::= RemPath ;
 
+Modpa.			ModPath ::= "/" Symval;
 Modpx.			ModPath	::= Symval "/";
 Modpy.			ModPath	::= ModPath Symval "/";
+-- Modpz.			ModPath	::= RemPath  ModPath;
+
+RemPatha.		RemPath ::= ValidImport Symval ;
 
 Argumentx.		Argument ::= Stringval;	
 separator	    	Argument   ""; 	
@@ -103,6 +108,7 @@ token	Envar 	  '$' '_' letter  ( letter | digit  )*;   	-- Environment variable
 token	Symvar    '&' letter  ( letter | digit | '_' )* ;  
 token   SubId	  '^' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
 token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
+token   ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Legal remote package import identifier 
 	 
 ----------------------  Streamworks YAML Configuration Interpreter  ----------------------
 

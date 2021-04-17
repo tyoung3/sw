@@ -993,10 +993,21 @@ String visitModPath(ModPath p)
   }
 }
 
+String  visitValidImport(ValidImport p) { return p; }
+
+Component visitRemPath(RemPath p)
+{
+    return  MakeComponent(
+    	visitSymval(p->u.rempatha_.symval_), 
+    	visitValidImport(p->u.rempatha_.validimport_)); 
+}
+
 /** Get component */
 Component visitComp(Comp _p_)
 {
     switch (_p_->kind) {
+    case is_Compa:
+    	return  visitRemPath(_p_->u.compa_.rempath_);
     case is_Compx:
 	return MakeComponent(visitSymval(_p_->u.compx_.symval_),
 			     defaultPath);
