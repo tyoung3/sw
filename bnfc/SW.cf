@@ -74,7 +74,7 @@ Compn.		    	Comp		::= SubId		;
 Compz.			Comp		::= ModPath Symval	;
 Compa.			Comp		::= RemPath 		;
 
-Modpa.			ModPath 	::= "/" Symval		;
+Modpa.			ModPath 	::= "/" Symval	"/"	;
 Modpx.			ModPath		::= Symval "/"		;
 Modpy.			ModPath		::= ModPath Symval "/"	;
 

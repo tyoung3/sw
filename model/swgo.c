@@ -33,11 +33,32 @@ void genSuffix()
     printf("}\n");
 }
 
+String deleteBrace(char *s0) {
+	char *s=s0;
+		
+	do {
+		if(*s == '}') 
+			*s=0;
+		s++;
+	} while(*s !=0);
+
+	return s0; 
+}
+
 /** Print generated module path.*/
-static void genPath(char *s)
+static void genPath(Component  c)
 {
+    char *s=c->path;
     char *importLib  = { defaultLibrary };
-    printf("import \"%s/%s\"\n",  importLib,  s);
+    
+    if(s[0] == '{') {
+    	printf("import \"%s\"\n",  deleteBrace(s+1));
+    } else {
+    if(s[0] == '/') {
+    	printf("import \"%s\"\n",   s);
+    } else {
+    	printf("import \"%s/%s\"\n", importLib,   s);
+    }}	
 }
 
 /** Return true if path is new.*/
@@ -62,7 +83,7 @@ static void genPaths(Model m)
     p = m->proc;
     while (p) {
 	if (newPath(p->comp->path)) {
-	    genPath(p->comp->path);
+	    genPath(p->comp);
 	}
 	p = p->next;
     };

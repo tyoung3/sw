@@ -977,11 +977,20 @@ char *makeModPath(char *pn, char *nn)
     return (strdup(bfr));
 }
 
+String prepend(char *pp, char *ap) {
+	char bfr[300];
+	strncpy(bfr, pp, 300);
+    	strncat(bfr, ap, 300-strlen(bfr) );
+    	return (strdup(bfr));
+}
+
 /** Get module path */
 String visitModPath(ModPath p)
 {
   switch(p->kind)
   {
+  case is_Modpa:
+    return prepend("/", visitSymval(p->u.modpa_.symval_));
   case is_Modpx:
     return(visitSymval(p->u.modpx_.symval_));
   case is_Modpy:
