@@ -154,9 +154,10 @@ void genProject(Model m) {
 	while(c!=NULL) {
 		getPorts(m, c, &inp,&outp); 
 		args=getArgs(m, c);  
-		printf("swgen.sh gs %s %s %s %d %d %s",
-			module ,c->path, getConfType(c->path), inp, outp, c->name);
-		
+		if(c->path[0] != '{') {
+			printf("swgen.sh gs %s %s %s %d %d %s",
+				module ,c->path, getConfType(c->path), inp, outp, c->name);
+		}		
 		int i=0;
 		while( args[i] !=NULL  ) 	
 			 printf(" %s", args[i++]);
