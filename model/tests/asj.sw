@@ -1,7 +1,7 @@
 # ASJ.sw: AutoSplit 
 
 
-(C)<-0(A);
+(C)<IP_t 1-0(A);
 (B)<-0(A);
 (D)<-0(A);
 (E)0<-0(A);

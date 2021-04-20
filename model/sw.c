@@ -15,6 +15,8 @@
 /** Addional checking if DEBUGGING is defined.*/
 #define DEBUGGING
 
+
+static char *iptype_save=NULL;  		/* latest visited IP type */  
 /** Place to store latest visited port. */
 Port LatestPort = NULL;
 /** Place to store latest visited source port. */
@@ -311,6 +313,7 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     f->sink = snk;
     f->next = NULL;
     f->type = type;		/* Defined w/ '<-'  */
+    f->iptype = iptype_save;    /* From visiting arrows */		
     f->next = m->stream;
     m->stream = f;
     if (bs < 0)
@@ -466,15 +469,44 @@ Integer visitBuffsize(Buffsize _p_)
     }
 }
 
+
+String visitSymvalu(Symvalu p)
+{
+  switch(p->kind)
+  {
+  case is_Symvaluv:
+    return visitSymval(p->u.symvaluv_.symval_);
+  case is_Symvaluu:
+    return "_";
+  default:
+    badkind(Symvalu);
+  }
+}
+
+String visitTypeDef(TypeDef p)
+{
+  switch(p->kind)
+  {
+  case is_Typedefa:
+    return visitSymvalu(p->u.typedefa_.symvalu_);
+  case is_Typedefnull:
+    return "";
+  default:  
+	  badkind(TypgDef);
+  }
+}
+
 /** Get left arrow bufferize */
 Integer visitLarrow(Larrow _p_)
 {
+    iptype_save=visitTypeDef(_p_->u.arrowx_.typedef_);
     return visitBuffsize(_p_->u.arrowx_.buffsize_);
 }
 
 /** Get right arrow buffersize */
 Integer visitRarrow(Rarrow _p_)
 {
+    iptype_save=visitTypeDef(_p_->u.arrowr_.typedef_);
     return visitBuffsize(_p_->u.arrowr_.buffsize_);
 }
 
@@ -728,19 +760,6 @@ Extport visitExtPortOut(ExtPortOut _p_)
     }
 }
 
-String visitSymvalu(Symvalu p)
-{
-  switch(p->kind)
-  {
-  case is_Symvaluv:
-    return visitSymval(p->u.symvaluv_.symval_);
-  case is_Symvaluu:
-    return "_";
-  default:
-    badkind(Symvalu);
-  }
-}
-
 /** Get hermit structure */
 Process visitHermt(Hermt _p_)
 {
@@ -880,6 +899,7 @@ void visitListStm(ListStm liststm)
     }
 }
 
+#if 0
 /** Create anonymous component. */
 static char *MakeAnon(Component c)
 {
@@ -892,13 +912,13 @@ static char *MakeAnon(Component c)
     return strndup(bfr, 99);
 
 };
-
+#endif
 
 /** Get process */
 Process visitProc(Proc _p_)
 {
-    Component c;
-    char *name;
+    // Component c;
+    // char *name;
 
     switch (_p_->kind) {
 

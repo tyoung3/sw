@@ -65,7 +65,6 @@ typedef struct Process_ {
 		String name;		/**<Process name */
 		Component comp;    	/**<Pointer to component for this process*/	  
 		Port  port; 	      	/**<Pointer to list of ports for this process*/
-/* Port list */
 		int  nportsIn;		/**<Number of input ports for this process*/
 		int  nportsOut;		/**<Number of output ports for this process*/
 		int  ch;		/**<Low channel number */
@@ -89,6 +88,7 @@ typedef struct Stream_ {
 	int sink_id; 		/**<Sink port number*/
 	int bufsz; 		/**<Buffersize */
 	TYPE  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN*/
+	char *iptype;    	/**< Type of data being sent -- the information packet type*/
 	struct Stream_ *next;	/**<Pointer to next Stream*/
 } Stream_;
 typedef struct Stream_ *Stream;  /**<Pointer to stream */
