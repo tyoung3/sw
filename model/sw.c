@@ -1002,7 +1002,21 @@ String visitModPath(ModPath p)
   }
 }
 
-String  visitValidImport(ValidImport p) { return p; }
+String  visitValidImport(ValidImport s0) { 
+	return s0;
+#if 0
+	char *s=s0;
+
+	while(*s!=0) {
+		if(*s='}') {
+			*s-- = 0;
+		}
+		s++;
+	}	
+
+	return s0+1; 		/* s0+1 drops leading brace,'{';  ex. returns  xyz} from {xyz} */	
+#endif
+}   
 
 Component visitRemPath(RemPath p)
 {

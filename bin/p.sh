@@ -45,9 +45,10 @@ Debug() {
 pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
 
 self=p.sh
-version="0.0.1"  
+version="0.0.2"  
 [ -z $GOPATH ] && Die GOPATH is not set
-dir=$GOPATH/src/gen/
+modpath="github.com/tyoung3/fbp"
+dir=$GOPATH/src/$modpath
 
 Debug Running ${pgm}-$version w/DEBUG args: $*
 
@@ -73,7 +74,7 @@ GenCFG() {
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
     HTMLdir:	"${HOME}/go/mod/sw/html/" #Where tooltips live
-    DefaultLibrary: "$p"
+    DefaultLibrary: "$modpath/$p"
   limits:
     Maxbfsz:   	10000    #Maximum GO buffer size
   SymbolTable:
@@ -131,12 +132,14 @@ Genp() {
 	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
 	echo; Display Generating  go module $p  from $sw 
-	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Display Generating  go module $p  from $sw 
+	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	tdir=$GOPATH/mod/sw/project
+	#tdir=$GOPATH/mod/sw/project
+	replace="replace github.com/tyoung3/fbp/$p => /home/tyoung3/go/src/github.com/tyoung3/fbp/$p"
 	pushd $dir/$p							\
 	   && ( [ -d internal ] || mkdir $* internal )			\
-	   && ( [ -f go.mod ]  || go mod init $p )			\
+	   && ( [ -f go.mod ]  || go mod init $modpath/$p )		\
+	   && echo $replace >> go.mod 			\
 	   && pushd internal || Die Cannot pushd internal		\
 	   	 && [ -f ${p}.sw ] || cp  $sw ${p}.sw			\
 	   	 && GenCFG  > sw.cfg					\

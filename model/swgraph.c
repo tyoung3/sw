@@ -1,5 +1,7 @@
 /** @file swgraph.c
 		  Generate Graphviz input(.dot file)  
+		  
+    @todo remove braces from path here or previously.		  
 */
 
 #include <stdio.h>

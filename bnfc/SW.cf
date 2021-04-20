@@ -48,8 +48,11 @@ Streamy.		S_tream  	::= S_tream Prt Larrow Prt Proc ;
 Streamry.		S_tream  	::= S_tream Prt Rarrow Prt Proc ; 
 --separator		S_tream	 ";" ;  
 
-Arrowx.			Larrow	 	::=  "<" Buffsize "-" 		;
-Arrowr.			Rarrow	 	::=  "-" Buffsize ">" 		; 
+Arrowx.			Larrow	 	::=  "<" TypeDef Buffsize "-" 		;
+Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		; 
+
+Typedefa.		TypeDef		::=  Symvalu 	 			;
+Typedefnull.		TypeDef		::=  ""					;
 
 Bufszi.			Buffsize 	::= Numval ;
 Bufsze.			Buffsize 	::=; 

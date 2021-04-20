@@ -3,20 +3,26 @@
 **/
  
 /** 
- 	@todo Generate project examples
+	@todo Improve module location.  Standardize on .../sw/MODULE/pkg/.... 
+	@todo Restore poc test
+	@todo Type names inside arrows(stream direction indicators). 
+	@todo Make generated test_.go's  deadloack safe. Test w/collate.sw
  	
  	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
  	
 	@todo Process command arguments. 
-	@todo Restore poc test
-	@todo Document more functions 
-	@todo Allow git.hub, etc. imports.  Simplify .sw file requirements.
 	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce n goroutines.
 	@todo Generate man doc(s) from Doxygen
 	@todo Fix generated graph HTMLs
 	@todo Fix swgen arguments w/default generation. Generate in config file
+	@todo Send multiple(N option) IPs in go tests.
+	@todo Make config an option
+	@tdo  Build standard component library(s). 
+ 	@todo Generate project examples
 	
  DONE: 
+	@todo Document more functions 
+	@todo Allow git.hub, etc. imports.  Simplify .sw file requirements.
 	@done Structure in module/modele package.  Pass struct instead of integers.
 	@done Avoid duplicates in YAML config file.
 	@done If component involved in a cycle, then subtask all sends and receives
@@ -24,7 +30,7 @@
 	@done Fix swgo [poc]
 	
  SHELVED:
-	@shelved  Wait on multiple inputs for example and deadlock prevention in ...test_.go files. -> or <- to diffferentiate.
+	@shelved Wait on multiple inputs for example and deadlock prevention in ...test_.go files. -> or <- to diffferentiate.
 	@shelved Generate Init function w/commentary
 	@shelved Update .yaml file instead of replacing it.  Do not erase prev config.
 	@shelved Avoid using .sw file name as module:  use it for program name only. 
@@ -98,6 +104,7 @@ static char **getArgs( Model m, Component c) {
 	s=m->stream;
 	
 	while ( s != NULL ) {
+	    if( ( s->source != NULL) && ( s->sink != NULL) ) { 
 		p=s->source;
 		if ((p->comp == c) & (p->arg[1] !=NULL)) {
 			return p->arg;	
@@ -106,6 +113,7 @@ static char **getArgs( Model m, Component c) {
 		if ((p->comp == c) & (p->arg[1] != NULL)) {
 			return p->arg;	
 		}
+	    }	
 		s = s->next;
 	}
 	
@@ -120,8 +128,9 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 	s=m->stream;
 	
 	while ( s != NULL ) {
+	    if(  (s->source !=NULL) && (s->sink !=NULL ) ) {
 		p=s->source;
-		if (p->comp == c) {
+		if ( p->comp == c ) {
 			*inp=p->nportsIn;
 			*outp=p->nportsOut;
 			return;	
@@ -132,6 +141,7 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 			*outp=p->nportsOut;
 			return;	
 		}
+	    }	
 		s = s->next;
 	}
 	
@@ -154,7 +164,7 @@ void genProject(Model m) {
 	while(c!=NULL) {
 		getPorts(m, c, &inp,&outp); 
 		args=getArgs(m, c);  
-		if(c->path[0] != '{' & c->path[0] != '/') {
+		if((c->path[0] != '{') & (c->path[0] != '/')) {
 			printf("swgen.sh gs %s %s %s %d %d %s",
 				module ,c->path, getConfType(c->path), inp, outp, c->name);
 				int i=0;
