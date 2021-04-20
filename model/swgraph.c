@@ -176,36 +176,7 @@ static void genProc1(Process p,  char *host) {
     }
 }
 
-#if 0
-static void
-genProc (char *name, char *comp, char *path, char *host, char **args)
-{
-
-  printf ("       \"%s\" ", name);
-  printf ("[shape = record,");
-  C (color = "black");
-  printf ("  URL=\"%s\"\n", makeURL (comp));
-  printf (" host=\"%s\" \n", host);
-  printf (" tooltip=\"%s.%s ", path, comp);
-  genArgs (args);
-  printf ("\"\n");
-
-  switch (showcomp)
-    {
-    case NOCOMP:
-      printf ("label=\"{<P> %s ", name);
-      break;
-    case COMPNAME:
-      printf ("label=\"{<P> %s %s %s", name, twoline, comp);
-      genArgs (args);
-      break;
-    case WITHPATH:
-      printf ("label=\"{<P> %s %s %s.%s", name, twoline, path, comp);
-      genArgs (args);
-    }
-}
-#endif
-
+ 
 /** End code for process */
 static void
 endProc ()
@@ -295,15 +266,6 @@ genLinks (Model m)
       f = f->next;
     }				// End while
 }
-
-#ifdef INCORPORATED
-static char *
-genCompPath (Component c)
-{
-  return c->path;
-}
-
-#endif
 
 
 static void
