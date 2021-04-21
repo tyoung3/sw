@@ -113,7 +113,7 @@ Browse () {
 Shell() {
 	export sps1="$PS1"
 	export PS1="\w> "
-	export PATH=$GOPATH/mod/sw/bin:$PATH
+	export PATH=`pwd`/bin:$PATH
 	echo Entering StreamWork shell  
 	exec bash --rcfile .bashrc  
 }

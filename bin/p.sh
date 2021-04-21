@@ -73,7 +73,7 @@ GenCFG() {
     DefaultPath: 	"def"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
-    HTMLdir:	"${HOME}/go/mod/sw/html/" #Where tooltips live
+    HTMLdir:	"${HOME}/go/src/github.com/tyoung3/sw/html/" #Where tooltips live
     DefaultLibrary: "$modpath/$p"
   limits:
     Maxbfsz:   	10000    #Maximum GO buffer size
@@ -86,7 +86,7 @@ EOF
 GenGo() {
 	 module=$p
 	 Debug GenGo:  $*  module=$module
-	 ${HOME}/go/mod/sw/bin/sw -m 5 ${p}.sw > ./gen_$p.sh 	 
+	 ${HOME}/go/src/github.com/sw/bin/sw -m 5 ${p}.sw > ./gen_$p.sh 	 
 	 chmod a+x ./gen_$p.sh 				 
 	 ./gen_$p.sh
 	 		 
@@ -134,7 +134,6 @@ Genp() {
 	echo; Display Generating  go module $p  from $sw 
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	#tdir=$GOPATH/mod/sw/project
 	replace="replace github.com/tyoung3/fbp/$p => /home/tyoung3/go/src/github.com/tyoung3/fbp/$p"
 	pushd $dir/$p							\
 	   && ( [ -d internal ] || mkdir $* internal )			\
