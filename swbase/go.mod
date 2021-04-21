@@ -1,4 +1,4 @@
-module github.com/tyoung3/fbp/swbase
+module github.com/tyoung3/sw/swbase
 
 go 1.14
 
