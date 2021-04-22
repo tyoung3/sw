@@ -20,7 +20,7 @@ func PkgConfig()  *config.Config {
         }
         
         return config.NewConfig([]config.Provider  {
-                config.NewYAMLFile("/home/tyoung3/go/src/github.com/tyoung3/fbp/swbase/swbase.yaml"), 
+                config.NewYAMLFile("/home/tyoung3/go/src/github.com/tyoung3/sw/swbase/html/swbase.yaml"), 
                 config.NewEnvironment(mappings)} )      
 }
 	

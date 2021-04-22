@@ -3,7 +3,7 @@ package swbase
 import "sync"
 import "reflect"
 
-func merge(cs []chan interface{}) {
+func mergex(cs []chan interface{}) {
 	var state = 0
 	
 	ip0 := *new(interface{})
@@ -55,6 +55,6 @@ func Merge(wg *sync.WaitGroup,
 			 
 	defer wg.Done()
 	
-	merge(cs)	
+	mergex(cs)	
 	
 }

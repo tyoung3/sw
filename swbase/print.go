@@ -7,7 +7,7 @@ import "sync"
 Print prints integers and strings received from port 0, prefixed
 with the process identifier(arg[0]) string,
 */
-func Print1(wg *sync.WaitGroup,
+func Print(wg *sync.WaitGroup,
 	arg []string,
 	cs []chan interface{}) {
 

@@ -24,7 +24,7 @@ Name
 Description
 -----------
 
-StreamWork is a Go language, flow-based-programming(FBP) system.  
+StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  
 
 StreamWork reads, analyzes, and executes a StreamWork network 
 definition(ND) file (suffixed: .sw).
@@ -32,13 +32,13 @@ Employing StreamWork, a network definition becomes, in effect, an executable
 script.   
 
 By default, sw generates 
-and builds a single main.go program which imports the StreamWork, FBP backend
-to launch a goroutine 
-for each process,  connect these processes via Go interface channels,
+and builds a single main program which imports the StreamWork base package, sw/swbase,  
+to Launch a goroutine for each process,  connect these processes via Golang interface channels,
 and wait for all processes to finish.  
 
-On option, sw will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree from a network definition file.
-Sw can also be used to build an entire source tree from a .sw file.  
+On option, StreamWork will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree from a network definition file.
+Sw can also be used to build an entire source tree from a .sw file.  Starting with version v0.12.0, Streamwork can also generate
+an entire working project source tree from a network definition, including config logic, and Golang test code.    
 
 The network definition consists of a list of 
 streams(or dataflows) and optional subnet definitions.  
@@ -46,7 +46,7 @@ streams(or dataflows) and optional subnet definitions.
 Each stream definition looks like:
 ```
 (a C) -> (b D);
-   and
+    or 
 (E) <- (F); 
 ```
 and consists of:
@@ -59,7 +59,7 @@ and consists of:
 
 The arrows ("<-" and "->") point from the source process to the sink process. 
 They may include a stream buffer size: e.g. "<10-" and "-2>".  If not included, buffer size defaults to zero.
-Streamwork configuration determines component default names.
+Arrow may also include stream type identifiers; ex.  (_) -int 3> (_); [integer stream with 3 buffers] 
 
 Ex.  
 ```
@@ -77,10 +77,11 @@ The component identifier and arguments may be omitted.
 A component identifier consists of its import path identifier, 
 a slash, '/', and the component name.  If  the path is omitted, 
 'def' is assumed or a configuration default path.  
-If the component name is also ommited, Print1 
-is assumed for sink processes and Gen1 is assumed 
-for source processes.   These defaults can be overridden by 
+If the component name is also ommited, Print
+is assumed for sink processes and Gen is assumed 
+for source processes.   These defaults may be overridden by 
 configuration file defaults or arguments to sw. 
+Streamwork configuration determines component default names.   
  
 Channel arrows consist of ```<```, an optional
 buffersize integer, and ```-```. Example: ```<100-```

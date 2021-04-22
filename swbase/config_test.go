@@ -21,7 +21,7 @@ func TestConfig(t *testing.T) {
 
 	if seqno != 1234 {
 		fmt.Println(
-			"\u001b[31mmerge/def/Print1: Seqno is", seqno, "not = 1234.  Missing config file?\u001b[0m")
+			"\u001b[31TestConfig: Seqno is", seqno, "not = 1234.  Missing config file?\u001b[0m")
 	}
 
 type ip_t struct {   /* Information Packet type */ 
@@ -31,5 +31,5 @@ I int      /* Port number */
 }
 
 
-	fmt.Println("TestPrint1 done.")
+	fmt.Println("TestConfig done.")
 }
