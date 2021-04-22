@@ -343,7 +343,7 @@ genGraph (Model model)
       switch (f->type)
 	{
 	case IS_NET:
-	  printf ("# (%s %s.%s)%d\t\t<- %d(%s %s.%s) \n",
+	  printf ("# (%s %s/%s)%d\t\t<- %d(%s %s/%s) \n",
 		  f->sink->name, f->sink->comp->path,
 		  f->sink->comp->name, f->sink_id,
 		  f->source_id, f->source->name,
@@ -352,7 +352,7 @@ genGraph (Model model)
 	case IS_SUB:
 	  break;
 	case IS_ORPHAN:
-	  printf ("# %s %s.%s\n",
+	  printf ("# %s %s/%s\n",
 		  f->source->name, f->source->comp->path,
 		  f->source->comp->name);
 	}

@@ -12,6 +12,9 @@
 #include "model.h"
 #include "swconfig.h"
 
+
+#define stdPackage  "sw"
+
 extern char *version;  /* In swmain.c from Makefile $VERSION */
 
 /** Terminate with message */

@@ -44,9 +44,9 @@ RunPoC() {
 	echo "(Hello Print1)0 <- 0(World Gen1 \"3\"); " 	\
 	 | tee /tmp/poc.echo 				\
 	 | bin/sw >  $temp/sw/poc/main.go 
-	pushd $temp/sw/poc
-	[ -f go.mod ] || go mod init poc/poc
-	go run main.go 	
+	//pushd $temp/sw/poc
+	// [ -f go.mod ] || go mod init poc/poc
+	go run $temp/sw/poc/main.go  	
 }
 
 		# Create collate.jpg 		

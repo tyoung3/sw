@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "swsym.h"
 #include "model.h"
@@ -51,6 +52,8 @@ static void genPath(Component  c)
     char *s=c->path;
     char *importLib  = { defaultLibrary };
     
+    if( strcmp(s,stdPackage) == 0) 
+    	 return;
     if(s[0] == '{') {
     	printf("import \"%s\"\n",  deleteBrace(s+1));
     } else {
@@ -71,6 +74,8 @@ int newPath(char *p)
     return 0;
 }
 
+#define StringIt(X) #X
+
 /** Create import paths from process structs.*/
 static void genPaths(Model m)
 {
@@ -78,7 +83,7 @@ static void genPaths(Model m)
 
     // P(import "fmt");
     P(import "sync");
-    P(import "github.com/tyoung3/streamwork/fbp");
+    printf("import %s \"github.com/tyoung3/sw/swbase\"\n", stdPackage);
 
     p = m->proc;
     while (p) {
@@ -425,7 +430,7 @@ char *stripPath( char *s1 ) {
 static void genLaunch1(Process p)
 {
     int i = 1;
-    printf("fbp.Launch(&wg,");
+    printf( stdPackage ".Launch(&wg,");
     printf("[]string{\"%s\"", p->name);
 
     if (p->arg) {

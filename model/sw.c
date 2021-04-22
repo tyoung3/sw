@@ -15,7 +15,6 @@
 /** Addional checking if DEBUGGING is defined.*/
 #define DEBUGGING
 
-
 static char *iptype_save=NULL;  		/* latest visited IP type */  
 /** Place to store latest visited port. */
 Port LatestPort = NULL;
@@ -1458,11 +1457,11 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
        (A)id <- y(C);    [ s1 pt  psnk1]  */
        
     /*              AFTER
-       (A)id <- 2(_ poc.Join);  [ s0 pt0 ptn]  
+       (A)id <- 2(_ sw.Join);  [ s0 pt0 ptn]  
        (j)0  <- y(C);           [ s1 pt1   ] 
        (j)1  <- x(B);           [ s2 pt2    ]  */
        
-    c = MakeComponent("Join", "poc");
+    c = MakeComponent("Join", "stdPackage");
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
 
@@ -1544,7 +1543,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
     /*              BEFORE 
        (B)x <- id(A);  [ s0 pt0]
        (C)y <- id(A);  [ s1 pt ]  */
-    c = MakeComponent("Split", "poc");
+    c = MakeComponent("Split", stdPackage);
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
     /*              AFTER
@@ -1647,18 +1646,20 @@ static void fixFan(Model m, Process p)
     }
 }
 
-			/** Insert poc.Join process wherever fanin occurs. */
+/** For all processes(p) Fix fan in and fan out. 
+   * Insert sw.Join  process wherever fanin occurs.
+   * Insert sw.Split process wherever fanout occurs. 
+*/
 static void fixFanInOut(Model m)
 {
     Process p;
 
     p = m->proc;
 
-    while (p) {			/* For all processes(p) Fix fan in and fan out. */
+    while (p) {			
 	fixFan(m, p);
 	p = p->next;
     }
-
 }
 
 /** Add process to model.*/
