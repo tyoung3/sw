@@ -9,15 +9,14 @@ Die () {
 
 
 Debug() {
-	a="a"
-	# echo "Debug: $*"
+	echo SWGRAPH/DEBUG: $* 
 }
 
 SW=~/go/src/github.com/tyoung3/sw/bin/sw
 [ -e $SW     ] || Die $SW is missing 
 $SW -v 
 
-SearchFile() { 
+searchFile() { 
 	Debug SearchFIle $*
 	echo looking for $swfile
 	base=`basename $file`
@@ -34,11 +33,13 @@ GenRun() {
 	Debug GenRun  $file $*
 	swfile=$file
 	[ -f $file ] || searchFile  
+	base=`basename $file .sw`
 	
 	if [ -f $swfile ]; then
 		Debug Got `pwd`/$swfile 
-		$SW -m 3 $swfile > /tmp/${base}.dot || Die Cannot build .dot file
-		dot -Tsvg /tmp/$base.dot > /tmp/${base}.svg || Die Cannot convert .dot file to .svg
+		$SW -m 3 $swfile > /tmp/${base}.dot || Die Cannot build .dot file 
+		dot -Tsvg /tmp/${base}.dot > /tmp/${base}.svg || Die Cannot convert .dot file to .svg
+		Debug Built /tmp/${base}.dot and /tmp/${base}.svg
 		$BROWSER --new-window /tmp/${base}.svg	
 	else 
 		Die $swfile missing

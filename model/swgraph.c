@@ -238,25 +238,37 @@ genLinks (Model m)
   Stream f;
   Process src, snk;
   int channel = 7;
+  char *edgeColor = "purple";
   f = m->stream;
   while (f)
     {
       if (f->type == IS_NET)
 	{
+	  edgeColor = "black";
 	  src = f->source;
 	  snk = f->sink;
 	  channel = findChannel (src->port, f->source_id);
-	  if (f->bufsz < 2)
+	  if(f->bufsz > 1) {
+	  	edgeColor="orange";
+	  }	
+	  if(f->bufsz == 1) {
+	  	edgeColor="green";
+	  }
+	  if(f->bufsz > 99) {
+	  	edgeColor="red";
+	  }
+	 	
+	  if (f->bufsz < 10000)  // ? < 2 
 	    {
 #ifndef NO_PORTS
 	      printf
-		("\"%s\":%i -> \"%s\":%i [label=\"%i\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
+		("\"%s\":%i -> \"%s\":%i [label=\"%i %s\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
 #else
 	      printf
-		("\"%s\"  -> \"%s\"  [label=\"%i\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i: %s\"];\n",
+		("\"%s\"  -> \"%s\"  [color=%s,label=\"%i %s\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
 #endif
-		 src->name, snk->name, channel, f->sink_id, f->source_id,
-		 channel, f->iptype );
+		src->name, snk->name, edgeColor, channel, f->iptype, f->sink_id, f->source_id,
+		   f->bufsz);
 	    }
 	  else
 	    {
