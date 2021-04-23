@@ -151,10 +151,10 @@ static void showSource(Process p, int id, int bfsz, char *iptype)
 {
 
     if (bfsz == defaultBufferSize) {
-	printf("\t\t<%s- %d(%s %s.%s",
+	printf("\t\t<%s-\t%d(%s %s.%s",
 	       iptype, id, p->name, p->comp->path, p->comp->name);
     } else {
-	printf("\t\t<%s %d- ", iptype, bfsz);
+	printf("\t\t<%s %d-\t", iptype, bfsz);
 	if (id > 0)
 	    printf("%d", id);
 	printf("(%s %s.%s", p->name, p->comp->path, p->comp->name);
