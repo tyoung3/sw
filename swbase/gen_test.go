@@ -1,5 +1,11 @@
 package swbase
 
+/*
+	Gen Number Start Increment
+	Emit Number integer IPs bginning with Start, incementing IPs by Increment.
+	E.x Gen "5" "2" "3" should emit 2 5 8 11 14
+*/
+
 import "testing"
 import "fmt"
 import "sync"
@@ -8,17 +14,17 @@ func TestGen(t *testing.T) {
 	var cs []chan interface{}
 	var wg sync.WaitGroup
 
-	arg := []string{"TestGen", "7"}
+	arg := []string{"ABC", "3", "5", "7"}
 
-	fmt.Println(arg[0])
 	cs = append(cs, make(chan interface{}))
 	c := cs[0]
 
 	go func() {
+		defer wg.Done()
 		for {
 			s, ok := <-c
 			if ok == true {
-				fmt.Println("TestGen.go", s)
+				fmt.Println("tGen", s)
 			} else {
 				fmt.Println("TestGen Ended")
 				return
@@ -26,7 +32,7 @@ func TestGen(t *testing.T) {
 		}
 	}()
 
-	wg.Add(1)
+	wg.Add(2)
 	go Gen(&wg, arg, cs)
 	wg.Wait()
 

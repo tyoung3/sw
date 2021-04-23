@@ -1,39 +1,43 @@
 package swbase
 
-
 import "fmt"
 import "sync"
 import "strconv"
 
-// var Version string = "0.0.0"
+var version = "v0.0.0"
 
-/** 
-Gen sends arg[1],  arg[2] long strings to channel cs[0] (out1)
-    Strings consist of the process name
-   and seq. no; i.e. G3-1, G3-2, etc.
+/* 
+Gen sends 'nbr' integers, beginning with 'start', incremented
+by 'inc';  argcuments 1, 2, and 3 respectively over port 0.
 
-   BUG cannot set length, yet.
+#####Examples
+		(Gen will send:
+		1 2 3 4 5 6 7
+
+	 	(Gen "-i" "9" "2" "3") will send:
+	2 5 8 11 14 17 20 23 26
+
+	    (Gen "-i" "3" "17") will send:
+	17 18 19
+
+		(Gen "-i" "4" "-2" "-1") will send:
+	-2 -3 -4 -5
 */
 func Gen(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
-	var n0 = 7
-	var n int
-	//var nb int = 80
 
 	defer wg.Done()
-
-	l := len(arg)
-	if l > 1 {
-		n0, _ = strconv.Atoi(arg[1])
-		/* if l > 2 {
-		    _,_ := strconv.Atoi(arg[2])
-		}
-		*/
-	}
-
 	c := cs[0]
 
-	for n = 1; n < n0+1; n++ {
-		c <- fmt.Sprintf("%s-%d", arg[0], n)
+	fmt.Println(arg[0], " swbase.Gen", arg[1], arg[2], arg[3])
+	nbr, _ := strconv.Atoi(arg[1])
+	start, _ := strconv.Atoi(arg[2])
+	inc, _ := strconv.Atoi(arg[3])
+
+	ip := start
+
+	for n := 0; n < nbr; n++ {
+		c <- ip
+		ip += inc
 	}
 
 	close(c)

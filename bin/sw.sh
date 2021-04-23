@@ -41,7 +41,7 @@ RunPoC() {
 	[ -x bin/sw  ] || pushd ../ 
 	[ -x bin/sw  ] || Die  bin/sw is missing.  Run make 
 	[ -d $temp/sw/poc ] || mkdir -p $temp/sw/poc
-	echo "(Hello Print)0 <- 0(World Gen \"3\"); " 	\
+	echo "(Hello Print)0 <- 0(World Gens \"3\"); " 	\
 	 | tee /tmp/poc.echo 				\
 	 | bin/sw >  $temp/sw/poc.go 
 	 pushd $HOME
