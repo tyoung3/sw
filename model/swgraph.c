@@ -17,7 +17,6 @@
 #define C(s) printf("%s,\n",(#s));	/**<Print String*/
 
 /** Define to remove process ports from graph */
-#define NO_PORTS
 
 /** Type of Component name */
 typedef enum
@@ -112,13 +111,15 @@ genPrefix (char *gname, int nstreams)
 
 }
 
-#ifndef NO_PORTSX
+#ifdef SHOW_PORTS
 /** Generate port data */
 static void
 genPort (int n)
 {
   printf ("<%i> %i  ", n, n);
 }
+#else 
+#define genPort(X) 
 #endif
 
 /** Generate arguments */
@@ -160,7 +161,7 @@ static void genProc1(Process p,  char *host) {
   printf (" tooltip=\"%s.%s ", path, comp);
   genArgs (args);
   printf ("\"\n");
-
+  
   switch (showcomp)
     {
     case NOCOMP:
@@ -220,7 +221,7 @@ findChannel (Port p, int id)
 static void
 showPorts (Stream f, Process src, Process snk, int channel)
 {
-#ifndef NO_PORTS
+#ifdef SHOW_PORTS
   printf
     ("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.i\",taillabel=\"%.i\"",
      tooltip = \"%i[%i]\"];\n",
@@ -258,9 +259,9 @@ genLinks (Model m)
 	  	edgeColor="red";
 	  }
 	 	
-	  if (f->bufsz < 10000)  // ? < 2 
+	  if (f->bufsz < 00)  // ? < 2 
 	    {
-#ifndef NO_PORTS
+#ifdef SHOW_PORTS
 	      printf
 		("\"%s\":%i -> \"%s\":%i [label=\"%i %s\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
 #else
@@ -295,6 +296,7 @@ genProcs (Process p)
 	  genProc1 (p, "taos_");
 	  Port pt;
 	  pt = p->port;
+#ifdef SHOW_PORTS	
 	  printf ("|{");
 	  do
 	    {
@@ -302,11 +304,12 @@ genProcs (Process p)
 	      pt = pt->next;
 	      if (pt != p->port)
 		{
-		  printf ("|");
+		  printf ("|twy");
 		}
 	    }
 	  while (pt != p->port);
 	  printf (" }");
+#endif	  
 	  printf (" }");
 	  endProc ();
 	}
@@ -334,7 +337,7 @@ genGraph (Model model)
   Stream f;
   Process p;
   assignChannels (model);
-  //* Generate commentedgenProc Reconstructed Network Definition */
+  //* Generate commented Reconstructed Network Definition */
   printf ("#########   Expanded Network Definition   ######### \n");
   f = model->stream;
 
