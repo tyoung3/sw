@@ -1,0 +1,7 @@
+<map id="bucket" name="bucket">
+<area shape="rect" id="node1" title="Variable key/value structure." alt="" coords="65,311,130,338"/>
+<area shape="rect" id="node2" href="$struct_component__.html" title="Component structure." alt="" coords="5,5,109,32"/>
+<area shape="rect" id="node5" href="$struct_process__.html" title="Process structure." alt="" coords="129,95,207,121"/>
+<area shape="rect" id="node3" href="$struct_stream__.html" title="Stream structure." alt="" coords="171,199,247,225"/>
+<area shape="rect" id="node4" href="$struct_port__.html" title="Port structure." alt="" coords="301,311,355,338"/>
+</map>

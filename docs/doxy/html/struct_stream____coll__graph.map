@@ -1,0 +1,6 @@
+<map id="Stream_" name="Stream_">
+<area shape="rect" id="node1" title="Stream structure." alt="" coords="55,5,131,32"/>
+<area shape="rect" id="node2" href="$struct_port__.html" title="Port structure." alt="" coords="19,118,73,145"/>
+<area shape="rect" id="node3" href="$struct_process__.html" title="Process structure." alt="" coords="148,216,227,243"/>
+<area shape="rect" id="node4" href="$struct_component__.html" title="Component structure." alt="" coords="255,118,359,145"/>
+</map>
