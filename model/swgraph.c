@@ -259,7 +259,7 @@ genLinks (Model m)
 	  	edgeColor="red";
 	  }
 	 	
-	  if (f->bufsz < 00)  // ? < 2 
+	  if (f->bufsz < 1000000)  // ? < 2 
 	    {
 #ifdef SHOW_PORTS
 	      printf
