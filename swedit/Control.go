@@ -12,6 +12,25 @@ import (
 	"sync"
 )
 
+func uSend(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
+	defer wg2.Done()
+	var ip update
+	
+	ip.name =   arg[0]
+	ip.kind =  "update"
+	ci <- ip
+	// ci <- ip
+}
+
+func rSend(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
+	defer wg2.Done()
+	var ip update
+	
+	ip.name =   arg[0]
+	ip.kind =  "request"
+	ci <- ip
+}
+
 func Control(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
@@ -40,8 +59,8 @@ func Control(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(3)
 
-	go Send(cs[2], &wg2, arg, 2)
-	go Send(cs[1], &wg2, arg, 1)
+	go uSend(cs[2], &wg2, arg, 2)
+	go rSend(cs[1], &wg2, arg, 1)
 	go Recv(cs[0], &wg2, arg, 0)
 	wg2.Wait()
 }

@@ -11,6 +11,37 @@ import (
 	"sync"
 )
 
+type event struct {
+    name string
+    kind string      
+    x    int
+    y    int
+}
+
+type update struct {
+	name string
+	kind string
+}
+
+type change struct {
+	name string
+	kind string
+}
+
+type request struct {
+	name string
+	kind string
+}
+
+func vSend(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
+	defer wg2.Done()
+	var ip change
+	
+	ip.name =   arg[0]
+	ip.kind =  "event"
+	ci <- ip
+}
+
 func View(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
@@ -39,7 +70,7 @@ func View(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(3)
 
-	go Send(cs[2], &wg2, arg, 1)
+	go vSend(cs[2], &wg2, arg, 1)
 	go Recv(cs[0], &wg2, arg, 0)
 	go Recv(cs[1], &wg2, arg, 0)
 	wg2.Wait()

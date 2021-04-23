@@ -11,6 +11,15 @@ import (
 	"sync"
 )
 
+func mSend(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
+	defer wg2.Done()
+	var ip change
+	
+	ip.name =   arg[0]
+	ip.kind =  "change"
+	ci <- ip
+}
+
 func Model(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
@@ -39,7 +48,7 @@ func Model(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(2)
 
-	go Send(cs[1], &wg2, arg, 2)
+	go mSend(cs[1], &wg2, arg, 2)
 	// go Recv(cs[1], &wg2, arg, 1)
 	go Recv(cs[0], &wg2, arg, 0)
 	wg2.Wait()
