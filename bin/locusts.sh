@@ -11,15 +11,15 @@ Die() {
 
 RunLocusts () {
 	temp=/tmp
-	dir=$temp/sw/locusts
+	dir=$temp/sw
 	[ -d /tmp/x/ ] || mkdir /tmp/x || Die Cannot mkdir /tmp/x/
-	mv $dir/* /tmp/x/ 2>&1 >/dev/null
+	#mv $dir/* /tmp/x/ 2>&1 >/dev/null
 	[ -d $dir ] || mkdir -p  $dir || Die Cannot mkdir $dir
-	bin/sw nds/locusts.sw >  $dir/main.go
-	pushd $dir
-	[ -f go.mod ] || go mod init locusts/locusts
+	bin/sw nds/locusts.sw >  $dir/locusts.go
+	# $pushd $dir
+	# [ -f go.mod ] || go mod init locusts/locusts
 	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 
-	go run main.go 		\
+	go run $dir/locusts.go 		\
 	|tee $dir/locusts.txt \
 	| grep MISSOURI 	\
 	&& echo&&echo Dates for Washington brood XIX and brood X, appearing two years early  \

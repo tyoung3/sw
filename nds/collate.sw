@@ -3,8 +3,8 @@
 #          This will cause collate to deadlock if sw.sh p .../collate.sw
 #	   is run.
  
-(C)1	    		<- 0(M  Merge);       
-(C Collate) 		<-  (G0  Gen "12" "1" "2" );    
+(C)1	    		<- 0(M   swutility/Merge);       
+(C swutility/Collate) 	<-  (G0  Gen "12" "1" "2" );    
 (M)2	    		<-  (G1  Gen "5"  "5" "1" );
 (M)IN.1		    	<-  (G2  Gen "8"  "2" "3" );
 
