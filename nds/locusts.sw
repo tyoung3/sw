@@ -9,8 +9,8 @@
 
 #              Partition I 
 # Broods IV and XIX in Missouri in 2019   ?
-(C  swutility/Collate  )0 	  <0- 0(IV_MO   Gen "108" "910" "17" );
-(C)1 	     	    		  <0- 0(XIX_MO   Gen "140" "919" "13" );
+(C  swutility/Collate  )0 	  <int- 0(IV_MO   Gen "108" "910" "17" );
+(C)1 	     	    		  <int- 0(XIX_MO   Gen "140" "919" "13" );
 
 (MISSOURI_IV Print) <0- 2(C);
 (MO_XIX      Print) <0- 3(C);

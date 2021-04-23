@@ -1,6 +1,6 @@
 #!/usr/local/bin/swgo
 # Hello World Example
-(Hello) <- (World);
+(Hello) <string- (World);
 
 {# Produces: 
 Hello World 
