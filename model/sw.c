@@ -15,7 +15,7 @@
 /** Addional checking if DEBUGGING is defined.*/
 #define DEBUGGING
 
-static char *iptype_save=NULL;  		/* latest visited IP type */  
+static char *iptype_save="";  		/* latest visited IP type */  
 /** Place to store latest visited port. */
 Port LatestPort = NULL;
 /** Place to store latest visited source port. */
@@ -312,6 +312,8 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     f->sink = snk;
     f->next = NULL;
     f->type = type;		/* Defined w/ '<-'  */
+    if(iptype_save==NULL) 
+    	iptype_save = "";
     f->iptype = iptype_save;    /* From visiting arrows */		
     f->next = m->stream;
     m->stream = f;
@@ -489,7 +491,7 @@ String visitTypeDef(TypeDef p)
   case is_Typedefa:
     return visitSymvalu(p->u.typedefa_.symvalu_);
   case is_Typedefnull:
-    return "";
+    return defaultIPtype;
   default:  
 	  badkind(TypgDef);
   }

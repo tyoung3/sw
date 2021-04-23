@@ -147,14 +147,14 @@ static void showSink(Process p, int id)
 }
 
 /** Print Source Process */
-static void showSource(Process p, int id, int bfsz)
+static void showSource(Process p, int id, int bfsz, char *iptype)
 {
 
     if (bfsz == defaultBufferSize) {
-	printf("\t\t<- %d(%s %s.%s",
-	       id, p->name, p->comp->path, p->comp->name);
+	printf("\t\t<%s- %d(%s %s.%s",
+	       iptype, id, p->name, p->comp->path, p->comp->name);
     } else {
-	printf("\t\t<%d- ", bfsz);
+	printf("\t\t<%s %d- ", iptype, bfsz);
 	if (id > 0)
 	    printf("%d", id);
 	printf("(%s %s.%s", p->name, p->comp->path, p->comp->name);
@@ -307,7 +307,7 @@ static void showND(Model m)
 			break;
 		case IS_NET:
 	    		showSink(f->sink, f->sink_id);
-	    		showSource(f->source, f->source_id, f->bufsz);
+	    		showSource(f->source, f->source_id, f->bufsz, f->iptype);
 			break;
 		case IS_ORPHAN:
 			ShowOrphan(f->source);
@@ -505,12 +505,15 @@ void genND(Model mod)
     while (f) {
       if( f->type==IS_NET) {
 		if (f->sink->port->id) {
-	    		printf("(%s)%d<-%d(%s); \n", f->sink->name,
-		   		f->sink->port->id, f->source->port->id,
+	    		printf("(%s)%d<%s-%d(%s); \n", f->sink->name,
+		   		f->sink->port->id,
+		   		f->iptype,
+		   		f->source->port->id,
 		   		f->source->name);
 		} else {
-	    		printf(" (%s)%d<-(%s); \n", f->sink->name,
-		   		f->source->port->id, f->source->name);
+	    		printf(" (%s)%d<%s-(%s); \n", f->sink->name,
+		   		f->source->port->id, 
+		   		f->iptype, f->source->name);
 		}
       }  else  {
 	 if( f->type==IS_ORPHAN ) {

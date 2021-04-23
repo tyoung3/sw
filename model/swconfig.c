@@ -44,6 +44,7 @@ static void CfgString(String key, String val)  {
 	SetS(DefaultOrphanComp);
 	SetS(DefaultLibrary);
 	SetS(HTMLdir);
+	SetS(DefaultIPtype);
 };
 
 String visitString1(String s)

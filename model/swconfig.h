@@ -15,6 +15,7 @@
 #define defaultOrphanComp cfg.DefaultOrphanComp
 #define defaultBufferSize cfg.DefaultBufferSize
 #define defaultLibrary	  cfg.DefaultLibrary
+#define defaultIPtype	  cfg.DefaultIPtype
 #define maxbfsz		  cfg.Maxbfsz
 #define maxdepth	  cfg.MaxDepth
 #define TABLESIZE 	  cfg.Tablesize
@@ -37,6 +38,7 @@ struct cfg_ {
 	char *DefaultFilterComp;	/**<Default filter component*/
 	char *DefaultOrphanComp;	/**<Default orphan component*/
 	char *DefaultLibrary;		/**<Default module library: github.com/... for instance.*/
+	char *DefaultIPtype;		/**< Type of data in the stream */
 	char *HTMLdir;			/**<Directory for html tooltips in network graph*/
 } ;	
 
