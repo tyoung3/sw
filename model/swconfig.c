@@ -20,7 +20,7 @@
 #include "swconfig.h"
 
 struct cfg_ cfg = { 0, 10000, 10000, 1000, 
-	"def", "Gen1", "Print1", "Filter1", "defaultLib", "/home/tyoung3/go/mod/sw/html/",NULL };
+	"def", "Gen", "Print", "Filter", "defaultLib", "/home/tyoung3/go/src/github.com/tyoung3/sw/swbase/html/",NULL };
 
 void visitEntry(Entry _p_);
 
@@ -44,6 +44,7 @@ static void CfgString(String key, String val)  {
 	SetS(DefaultOrphanComp);
 	SetS(DefaultLibrary);
 	SetS(HTMLdir);
+	SetS(DefaultIPtype);
 };
 
 String visitString1(String s)

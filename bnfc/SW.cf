@@ -10,122 +10,127 @@
 
 
 
-entrypoints		Valide, ValidSW, ValidCFG    	; 
+entrypoints		Valide, ValidSW, ValidCFG    ; 
 
-CFGvalid.		Valide ::= ValidCFG 	;	
-SWvalid.	 	Valide ::= ValidSW	;
+CFGvalid.		Valide 		::= ValidCFG ;	
+SWvalid.	 	Valide 		::= ValidSW  ;
 
-Valid.			ValidSW ::= [Stm] 	;
+Valid.			ValidSW 	::= [Stm]    ;
 
-Stmx.			Stm	::= S_tream  ; 
---Stmein.			Stm	::= ExtPortIn  	;
---Stmeout.			Stm  	::= ExtPortOut  ; 
-Stmn.			Stm	::= Numassgn ; 
-Stms.			Stm	::= Strassgn ;
-Stmb.			Stm	::= SymAssgn ; 
-Stmh.			Stm	::= Hermt    ; 
-Stmnet.			Stm	::= Subdef   ;  
+Stmx.			Stm		::= S_tream  ; 
+Stmn.			Stm		::= Numassgn ; 
+Stms.			Stm		::= Strassgn ;
+Stmb.			Stm		::= SymAssgn ; 
+Stmh.			Stm		::= Hermt    ; 
+Stmnet.			Stm		::= Subdef   ;  
 terminator	   	Stm   ";" ;
 
-Snet.			Subdef	 ::= SubId "{" [Subnet] "}" ;
+Snet.			Subdef	 	::= SubId "{" [Subnet] "}" ;
 
-Sneth.			Subnet ::= Hermt    	;
-Snets.			Subnet ::= S_tream	;
-Snetin.			Subnet ::= ExtPortIn  	;
-Snetout.		Subnet ::= ExtPortOut  	;
+Sneth.			Subnet 		::= Hermt    	;
+Snets.			Subnet 		::= S_tream	;
+Snetin.			Subnet 		::= ExtPortIn  	;
+Snetout.		Subnet 		::= ExtPortOut  ;
 terminator	    	Subnet  ";" ;
 
-Extin.			ExtPortIn  ::=	Proc Prt Larrow Tab;
-ExtinR.			ExtPortIn  ::=	Tab      Rarrow Prt Proc;
+Extin.			ExtPortIn  	::=	Proc Prt Larrow Tab	;
+ExtinR.			ExtPortIn  	::=	Tab      Rarrow Prt Proc;
 
-Extout.			ExtPortOut ::=	Tab      Larrow Prt Proc;  
-Extoutr.		ExtPortOut ::=	Proc Prt Rarrow Tab;
+Extout.			ExtPortOut 	::=	Tab      Larrow Prt Proc;  
+Extoutr.		ExtPortOut 	::=	Proc Prt Rarrow Tab	;
 
-Tabn.			Tab		 ::= Numval;
-Tabs.			Tab		 ::= Symval;
+Tabn.			Tab		::= Numval  ;
+Tabs.			Tab	 	::= Symval;
 
-Streamx.		S_tream	 ::= Proc Prt 	 Larrow Prt Proc;
-Streamrx.		S_tream  ::= Proc Prt     Rarrow Prt Proc;
-Streamy.		S_tream  ::= S_tream Prt Larrow Prt Proc ;
-Streamry.		S_tream  ::= S_tream Prt Rarrow Prt Proc; 
+Streamx.		S_tream	 	::= Proc Prt 	 Larrow Prt Proc;
+Streamrx.		S_tream  	::= Proc Prt     Rarrow Prt Proc;
+Streamy.		S_tream  	::= S_tream Prt Larrow Prt Proc ;
+Streamry.		S_tream  	::= S_tream Prt Rarrow Prt Proc ; 
 --separator		S_tream	 ";" ;  
 
-Arrowx.			Larrow	 ::=  "<" Buffsize "-";
-Arrowr.			Rarrow	 ::=  "-" Buffsize ">"; 
+Arrowx.			Larrow	 	::=  "<" TypeDef Buffsize "-" 		;
+Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		; 
 
-Bufszi.			Buffsize ::= Numval;
-Bufsze.			Buffsize ::=; 
+Typedefa.		TypeDef		::=  Symvalu 	 			;
+Typedefnull.		TypeDef		::=  ""					;
 
-Hermtx.			Hermt	::=   Symval  Comp [Argument] ;
-Hermty.			Hermt	::=   Symval  [Argument]  	 ;
-Hermtax.		Hermt	::=   "_"  Comp [Argument]   ;
-Hermtay.		Hermt	::=   "_"  [Argument]   	 ;
+Bufszi.			Buffsize 	::= Numval ;
+Bufsze.			Buffsize 	::=; 
 
-Processx.		Proc	::= "(" Symval  Comp [Argument] ")" ;
-Processy.		Proc	::= "(" Symval  [Argument] ")" ;
-Processax.		Proc	::= "(" "_"  Comp [Argument] ")" ;
-Processay.		Proc	::= "(" "_"  [Argument] ")" ;
+Hermtx.			Hermt		::=   Symvalu  Comp [Argument]  ;
+Hermty.			Hermt		::=   Symvalu  [Argument]       ;
 
-Portx.			Prt	::= Numval;
-Portni.         	Prt     ::= Numval "." Symval; 
-Portin.         	Prt     ::= Symval "." Numval; 
-Portn.          	Prt     ::= Symval; 
-Porte.			Prt	::= ;		
+Symvaluv.		Symvalu 	::= Symval			;
+Symvaluu.		Symvalu		::= "_"				; 
 
-Compx.			Comp	::= Symval;	
-Compn.		    	Comp	::= SubId;
-Compz.			Comp	::= ModPath Symval;
+Processx.		Proc		::= "(" Symvalu  Comp [Argument] ")" 	;
+Processy.		Proc		::= "(" Symvalu  [Argument] ")" 	;
 
-Modpx.			ModPath	::= Symval "/";
-Modpy.			ModPath	::= ModPath Symval "/";
+Portx.			Prt		::= Numval		;
+Portni.         	Prt     	::= Numval "." Symval	; 
+Portin.         	Prt     	::= Symval "." Numval	; 
+Portn.          	Prt     	::= Symval		; 
+Porte.			Prt		::= ;		
 
-Argumentx.		Argument ::= Stringval;	
+Compx.			Comp		::= Symval		;	
+Compn.		    	Comp		::= SubId		;
+Compz.			Comp		::= ModPath Symval	;
+Compa.			Comp		::= RemPath 		;
+
+Modpa.			ModPath 	::= "/" Symval	"/"	;
+Modpx.			ModPath		::= Symval "/"		;
+Modpy.			ModPath		::= ModPath Symval "/"	;
+
+RemPatha.		RemPath 	::= ValidImport Symval 	;
+
+Argumentx.		Argument 	::= Stringval		;	
 separator	    	Argument   ""; 	
 
-NumAssgnv.		Numassgn   ::= Numvar "=" Numval;
+NumAssgnv.		Numassgn   	::= Numvar "=" Numval	;
 
-StrAssgnv.		Strassgn   ::= Stringvar "=" Symval;
+StrAssgnv.		Strassgn   	::= Stringvar "=" Symval;
 
-SymAssgni.		SymAssgn   ::= Symvar "=" Symval;  
+SymAssgni.		SymAssgn   	::= Symvar "=" Symval	;  
 
-NumVali.		Numval     ::= Integer;
-NumValv.		Numval	   ::= Numvar;
+NumVali.		Numval     	::= Integer		;
+NumValv.		Numval	   	::= Numvar		;
 				
-StringVals.		Stringval  ::= String;
-StringValv.		Stringval  ::= Stringvar;
-StringVale.		Stringval  ::= Envar;
+StringVals.		Stringval  	::= String		;
+StringValv.		Stringval  	::= Stringvar		;
+StringVale.		Stringval  	::= Envar		;
 
-Symvalv.		Symval	   ::= Symvar;
-Symvali.		Symval	   ::= Id;  
-SymVale.		Symval	   ::= Envar;
+Symvalv.		Symval	   	::= Symvar		;
+Symvali.		Symval	   	::= Id			;  
+SymVale.		Symval	   	::= Envar	;
 
 
-token   Numvar	  '%' letter  ( letter | digit  )*;		
-token	Stringvar '$' letter  ( letter | digit  )*;	
-token	Envar 	  '$' '_' letter  ( letter | digit  )*;   	-- Environment variable
+token   Numvar	  '%' letter  ( letter | digit  )*	;		
+token	Stringvar '$' letter  ( letter | digit  )*	;	
+token	Envar 	  '$' '_' letter  ( letter | digit  )*	;   	-- Environment variable
 token	Symvar    '&' letter  ( letter | digit | '_' )* ;  
 token   SubId	  '^' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
 token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
+token   ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Legal remote package import identifier 
 	 
 ----------------------  Streamworks YAML Configuration Interpreter  ----------------------
 
-Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry];
-Validcfgd.		ValidCFG ::= "---" [Entry];
+Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry] ;
+Validcfgd.		ValidCFG ::= "---" [Entry]	   ;
 
-CfgEntrya.		Entry	::=  KeyVal;
-CfgEntryb.		Entry	::=  KeyName;
+CfgEntrya.		Entry	 ::= KeyVal		;
+CfgEntryb.		Entry	 ::= KeyName		;
 terminator	   	Entry   "" ; 
 
-CfgKeyvalint.		KeyVal	::= KeyName  Integer;
-CfgKeyvalstr.		KeyVal	::= KeyName  String;
-CfgKeyDate.		KeyVal  ::= KeyName  Date;
---CfgKeyvalent.		KeyVal  ::= Entry;   
+CfgKeyvalint.		KeyVal	 ::= KeyName  Integer 	;
+CfgKeyvalstr.		KeyVal	 ::= KeyName  String 	;
+CfgKeyDate.		KeyVal   ::= KeyName  Date    	; 
 
-KeynameS.		KeyName ::= Symval ":"; 
-KeynameM.		KeyName ::= ModPath Symval ":";
+KeynameS.		KeyName  ::= Symval ":"		; 
+KeynameM.		KeyName  ::= ModPath Symval ":" ;
 
 
-token   Date	    (digit digit digit digit)  ('-' digit digit )* 'T'  ( ':' | digit | '-' )* ;       -- Legal Date	
+token   Date	    (digit digit digit digit)  ('-' digit digit )* 'T'  ( ':' | digit | '-' )* ;       -- Legal Date
+
 comment "#";
 comment "{#" "#}";	
 ----------------------   End of Current Language Definition   ----------------------

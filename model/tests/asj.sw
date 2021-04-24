@@ -1,23 +1,7 @@
-# ASJ.sw: AutoSplit 
+# ASJ.sw: Demo autoSplit and edge colors 
 
-
-(C)<-0(A);
-(B)<-0(A);
-(D)<-0(A);
-(E)0<-0(A);
-#(E)0<-(B2);
-
-
-
-{#
-^j {
-(J poc.Split)0 <- 1;
-1      <- 1(J);
-};
-
-(A ^j) <-  (Y);
-(C)    <- 1(A);
-
-(B ^j) <-  (Z);
-(D)    <-  1(B);
-#}
+(C) 	<sw_t 1- 	0(A);
+(B) 	<sw_t 3-     	0(A);
+(D)	<sw_x 2-	0(A);
+(E)	<sw_t 0- 	0(A);
+(F)	<sw_t 100- 	0(A);

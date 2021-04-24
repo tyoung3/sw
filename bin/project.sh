@@ -19,7 +19,7 @@ Die() {
 }
 
 [ -z $GOPATH ] && Die Please set GOPATH to something like ~/go
-bdir=$GOPATH/mod 
+bdir=$GOPATH/src/github.com/tyoung3
 [ -d $bdir ] || Die Please create $bdir 
 src=$bdir
 
@@ -55,7 +55,7 @@ SeeDocs() {
 	https://godoc.org/github.com/tyoung3/streamwork/poc#Github
 	https://github.com/tyoung3/sw/
 	https://goreportcard.com/report/github.com/tyoung3/streamwork
-	file:///home/tyoung3/go/mod/streamwork/ 
+	file:///home/tyoung3/go/src/github.com/tyoung3/streamwork/ 
 	http://localhost:6060/poc
 	$HTML
 	"
@@ -114,7 +114,7 @@ StreamWork:
     DefaultFilterComp: 	"Ex3"  
     DefaultOrphanComp: 	"Ex4"  
     DefaultBufferSize:	 0    #default GO buffersize
-    HTMLdir:		"/home/tyoung3/go/mod/sw/html/" #Where tooltips live
+    HTMLdir:		"/home/tyoung3/go/mosrc/github.com/tyoung3/sw/html/" #Where tooltips live
     DefaultLibrary: 	"example"
   limits:
     Maxbfsz:   	10000    #Maximum GO buffer size
@@ -152,7 +152,7 @@ makeYAML() {
 	    DefaultFilterComp: 	"$defFilter"  
 	    DefaultOrphanComp: 	"$defOrphan"  
 	    DefaultBufferSize:	 0    #default GO buffersize
-	    HTMLdir:		"/home/tyoung3/go/mod/sw/html/" #Where tooltips live
+	    HTMLdir:		"/home/tyoung3/go/src/github.com/tyoung3/sw/html/" #Where tooltips live
 	    DefaultLibrary: 	"$pkg"
 	  limits:
 	    Maxbfsz:   	10000    #Maximum GO buffer size

@@ -3,7 +3,7 @@
 # p.sh:
 #	Purpose:  Generate a Streamwork skeleton project 
 #
-#   Create GO/FBP project(s) from .SW file(s).   
+#   Create GO FBP project(s) from .SW file(s).   
 #   Create directory(if not existing) and skeleton files, 
 #     generate and test example code, and run the example.   
 #   Project sub-directories are created in the current directory.
@@ -45,9 +45,10 @@ Debug() {
 pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
 
 self=p.sh
-version="0.0.1"  
+version="0.0.2"  
 [ -z $GOPATH ] && Die GOPATH is not set
-dir=$GOPATH/src/gen/
+modpath="github.com/tyoung3/fbp"
+dir=$GOPATH/src/$modpath
 
 Debug Running ${pgm}-$version w/DEBUG args: $*
 
@@ -72,12 +73,12 @@ GenCFG() {
     DefaultPath: 	"def"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
-    HTMLdir:	"${HOME}/go/mod/sw/html/" #Where tooltips live
-    DefaultLibrary: "$p"
+    HTMLdir:	"${HOME}/go/src/github.com/tyoung3/sw/swbase/html/"    
+    DefaultLibrary: "$modpath/$p"
   limits:
-    Maxbfsz:   	10000    #Maximum GO buffer size
+    Maxbfsz:   	1000    #Maximum GO buffer size
   SymbolTable:
-    Tablesize:	4000     
+    Tablesize:	1000     
 	
 EOF
 }
@@ -85,7 +86,7 @@ EOF
 GenGo() {
 	 module=$p
 	 Debug GenGo:  $*  module=$module
-	 ${HOME}/go/mod/sw/bin/sw -m 5 ${p}.sw > ./gen_$p.sh 	 
+	 sw -m 5 ${p}.sw > ./gen_$p.sh 	 
 	 chmod a+x ./gen_$p.sh 				 
 	 ./gen_$p.sh
 	 		 
@@ -127,20 +128,22 @@ Genp() {
 		sw=`pwd`/$sw
 	fi
 	
-	Debug sw=$sw p=$p 
+	Debug sw=$sw p=$p $* 
 	[ -f $sw ] || Die Genp: Missing $sw 
 	shift 1 
 	echo; Display Generating  go module $p  from $sw 
-	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Display Generating  go module $p  from $sw 
+	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	tdir=$GOPATH/mod/sw/project
+	replace="replace github.com/tyoung3/sw/$p => /home/tyoung3/go/src/github.com/tyoung3/sw/$p"
+	replace="replace github.com/tyoung3/sw/swbase => /home/tyoung3/go/src/github.com/tyoung3/sw/swbase"
 	pushd $dir/$p							\
 	   && ( [ -d internal ] || mkdir $* internal )			\
-	   && ( [ -f go.mod ]  || go mod init $p )			\
+	   && ( [ -f go.mod ]  || go mod init $modpath/$p )		\
+	   && echo $replace >> go.mod 			\
 	   && pushd internal || Die Cannot pushd internal		\
 	   	 && [ -f ${p}.sw ] || cp  $sw ${p}.sw			\
 	   	 && GenCFG  > sw.cfg					\
-	   	 && Debug internal run sw ${p}.sw			\
+	   	 && Debug internal run sw `pwd`/${p}.sw			\
 	   	 && sw ${p}.sw > ${p}.go				\
 	   	 && GenGo $* 						\
 	   	 && swgraph ${p}.sw 					\

@@ -1,23 +1,23 @@
+**doxy/
+**docs/doxy/
 /home/tyoung3/go/mod/sw/example
 .idea/
-config/
-doxy/*
+_OLD/
+
+docs/
+docs
+*.png
+docs/doxy/html
+docs/doxy/FBP.md
 example/
-testdata/
+fbpx/
 project/ex1/
 project/test/
 
 
 Absyn.?
 AbsynLexer.c
-bnfc/SW.pdf
-FBP.md
-fbp/DocFBP.txt
-fbp/LexFBP.x
-fbp/LexFBP.x	
-fbp/ParFBP.y
-fbp/README
-fbp/run
+bnfc/SW.pdf	
 .gdbinit
 IGNORE*
 Lexer.c
@@ -28,9 +28,7 @@ model/tests/n6.sw
 model/tests/x1.sw
 model/tests/mashup.sw
 Parser.?
-PORTNAMES.md
 Printer.?
-project/sw.tmpl
 Skeleton.?
 tags
 *~
@@ -44,6 +42,3 @@ tags
 *.ps
 *.tex
 *.y
-#*.tgz
-#/Test.c
-#vdfdcp2

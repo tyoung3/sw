@@ -29,11 +29,11 @@ RunCollate () {
 	temp=/tmp
 	[ -d bin ] || pushd ../
 	[ -x bin/sw ]|| Die Cannot find bin/sw -- run make ? 
-	[ -d $temp/sw/collate ] || mkdir -p $temp/sw/collate 
-	bin/sw nds/collate.sw |gofmt >  $temp/sw/collate/main.go
-	pushd $temp/sw/collate
-	[ -f go.mod ] || go mod init collate/collate
-	go run main.go 	 
+	[ -d $temp/sw/ ] || mkdir -p $temp/sw/ 
+	bin/sw nds/collate.sw  >  $temp/sw/collate.go
+	pushd $HOME
+	# [ -f go.mod ] || go mod init collate/collate
+	go run $temp/sw/collate.go 	 
 }
 
 RunPoC() {
@@ -41,12 +41,12 @@ RunPoC() {
 	[ -x bin/sw  ] || pushd ../ 
 	[ -x bin/sw  ] || Die  bin/sw is missing.  Run make 
 	[ -d $temp/sw/poc ] || mkdir -p $temp/sw/poc
-	echo "(Hello Print1)0 <- 0(World Gen1 \"3\"); " 	\
+	echo "(Hello Print)0 <- 0(World Gens \"3\"); " 	\
 	 | tee /tmp/poc.echo 				\
-	 | bin/sw >  $temp/sw/poc/main.go 
-	pushd $temp/sw/poc
-	[ -f go.mod ] || go mod init poc/poc
-	go run main.go 	
+	 | bin/sw >  $temp/sw/poc.go 
+	 pushd $HOME
+	# [ -f go.mod ] || go mod init poc/poc
+	go run $temp/sw/poc.go  	
 }
 
 		# Create collate.jpg 		
@@ -113,7 +113,7 @@ Browse () {
 Shell() {
 	export sps1="$PS1"
 	export PS1="\w> "
-	export PATH=$GOPATH/mod/sw/bin:$PATH
+	export PATH=`pwd`/bin:$PATH
 	echo Entering StreamWork shell  
 	exec bash --rcfile .bashrc  
 }

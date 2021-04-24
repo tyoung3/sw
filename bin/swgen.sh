@@ -9,6 +9,7 @@
 pgm=swgen.sh
 version="0.3.2"
 HTML=fbpgo.html
+export modpath="github.com/tyoung3/fbp"
 
              black="\u001b[30m"
                red="\u001b[31m"
@@ -68,7 +69,7 @@ EOF
 
 }
 
-src=$GOPATH/src/gen
+src=$GOPATH/src/github.com/tyoung3/fbp 
 
 MakeDir2() {
         dir2=$1
@@ -206,7 +207,7 @@ func PkgConfig()  *config.Config {
 "           
         go_config='config "github.com/zpatrick/go-config"'      
         go_config2="$fconfig"
-        go_config3="cfg := PkgConfig(\"/home/tyoung3/go/src/gen/${module}.toml\")
+        go_config3="cfg := PkgConfig(\"$src${module}.toml\")
     bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
     seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
@@ -370,7 +371,7 @@ GenGo() {
                 import (
                         "fmt"
                        "sync"
-                       "$module"
+                       "github.com/tyoung3/fbp/$module"
                 )
                 
 
@@ -412,6 +413,8 @@ EOFNP
 		 wg2.Wait()
            	 }
 EOF
+	 else 
+	 	echo "}" >> ${name}.go
          fi  	 
 
         gofmt -w -s ${name}.go
@@ -578,7 +581,8 @@ type ip_t struct {   /* Information Packet type */
 	}						 
 EOF
 
-    popd
+    popdswgen.sh gs n1 def YAML 1 0 Prt 
+
 
     pushd $src2 || Die Cannot cd  $src2
         Debug GenSkel/subdir `pwd`
@@ -590,7 +594,7 @@ EOF
         	[ -f ${name}.go ]       || GenGo     $inps $outps
         	[ -f ${name}_test.go ]  || GenTestGo $inps $outps
         Debug Generate go.mod at $src/$mdl
-        [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init $module && popd) 
+        [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init ${modpath}/$module && popd) 
         go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
     popd        
 }

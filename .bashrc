@@ -3,6 +3,7 @@ export PS1="\w> "
 alias c='./run c'	
 alias cl='./run cl'
 alias d='./run d'
+alias dir='ls -Fl'
 alias doc='./run doc'
 alias e='exit '
 alias j='./run j'
@@ -19,7 +20,8 @@ Rest() {
 	cat << EOF
 	c		. Build and check StreamWork
 	cl       	. Show release check list. 
-	d  [OPT]	. Build and run this script in docker. 
+	d  [OPT]	. Build and run this script in docker.
+	dir [PATH]	. ls -Fltr [PATH]  
 	doc		. Run and browse Doxygen 
 	j		. Generate collate .SVT
 	jl		. Generage locusts .SVG

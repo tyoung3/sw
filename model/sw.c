@@ -15,6 +15,7 @@
 /** Addional checking if DEBUGGING is defined.*/
 #define DEBUGGING
 
+static char *iptype_save="";  		/* latest visited IP type */  
 /** Place to store latest visited port. */
 Port LatestPort = NULL;
 /** Place to store latest visited source port. */
@@ -311,6 +312,9 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     f->sink = snk;
     f->next = NULL;
     f->type = type;		/* Defined w/ '<-'  */
+    if(iptype_save==NULL) 
+    	iptype_save = "";
+    f->iptype = iptype_save;    /* From visiting arrows */		
     f->next = m->stream;
     m->stream = f;
     if (bs < 0)
@@ -466,15 +470,44 @@ Integer visitBuffsize(Buffsize _p_)
     }
 }
 
+
+String visitSymvalu(Symvalu p)
+{
+  switch(p->kind)
+  {
+  case is_Symvaluv:
+    return visitSymval(p->u.symvaluv_.symval_);
+  case is_Symvaluu:
+    return "_";
+  default:
+    badkind(Symvalu);
+  }
+}
+
+String visitTypeDef(TypeDef p)
+{
+  switch(p->kind)
+  {
+  case is_Typedefa:
+    return visitSymvalu(p->u.typedefa_.symvalu_);
+  case is_Typedefnull:
+    return defaultIPtype;
+  default:  
+	  badkind(TypgDef);
+  }
+}
+
 /** Get left arrow bufferize */
 Integer visitLarrow(Larrow _p_)
 {
+    iptype_save=visitTypeDef(_p_->u.arrowx_.typedef_);
     return visitBuffsize(_p_->u.arrowx_.buffsize_);
 }
 
 /** Get right arrow buffersize */
 Integer visitRarrow(Rarrow _p_)
 {
+    iptype_save=visitTypeDef(_p_->u.arrowr_.typedef_);
     return visitBuffsize(_p_->u.arrowr_.buffsize_);
 }
 
@@ -737,7 +770,7 @@ Process visitHermt(Hermt _p_)
     type = IS_NET;
     switch (_p_->kind) {
     case is_Hermtx:
-	name = visitSymval(_p_->u.hermtx_.symval_);
+	name = visitSymvalu(_p_->u.hermtx_.symvalu_);
 	p = MakeProcess(net_model,
 			name,
 			visitComp(_p_->u.hermtx_.comp_),
@@ -746,11 +779,12 @@ Process visitHermt(Hermt _p_)
 	return p;
     case is_Hermty:
 	p = MakeProcess(net_model,
-			visitSymval(_p_->u.hermty_.symval_), NULL,
+			visitSymvalu(_p_->u.hermty_.symvalu_), NULL,
 			MakeArg(visitListArgument
 				(_p_->u.hermty_.listargument_), NULL));
 
 	return p;
+#if 0	
     case is_Hermtax:
 	p = MakeProcess(net_model, "_", visitComp(_p_->u.hermtax_.comp_),
 			MakeArg(visitListArgument
@@ -761,6 +795,7 @@ Process visitHermt(Hermt _p_)
 			MakeArg(visitListArgument
 				(_p_->u.hermtay_.listargument_), NULL));
 	return p;
+#endif	
     default:
 	badkind(Hermt);
     }
@@ -865,6 +900,7 @@ void visitListStm(ListStm liststm)
     }
 }
 
+#if 0
 /** Create anonymous component. */
 static char *MakeAnon(Component c)
 {
@@ -877,32 +913,32 @@ static char *MakeAnon(Component c)
     return strndup(bfr, 99);
 
 };
-
+#endif
 
 /** Get process */
 Process visitProc(Proc _p_)
 {
-    Component c;
-    char *name;
+    // Component c;
+    // char *name;
 
     switch (_p_->kind) {
 
     case is_Processx:
 	return MakeProcess(net_model,
-			   visitSymval(_p_->u.processx_.symval_),
+			   visitSymvalu(_p_->u.processx_.symvalu_),
 			   visitComp(_p_->u.processx_.comp_),
 			   MakeArg(visitListArgument
 				   (_p_->u.processx_.listargument_),
-				   visitSymval(_p_->u.processx_.symval_)));
+				   visitSymvalu(_p_->u.processx_.symvalu_)));
 
     case is_Processy:
 	return MakeProcess(net_model,
-			       visitSymval(_p_->u.processy_.symval_),
+			   visitSymvalu(_p_->u.processy_.symvalu_),
 			   NULL,
 			   MakeArg(visitListArgument
 				   (_p_->u.processy_.listargument_),
 				   NULL));
-
+#if 0
     case is_Processax:		/* Anonymous process */
 	c = visitComp(_p_->u.processax_.comp_);
 	name = MakeAnon(c);
@@ -922,6 +958,7 @@ Process visitProc(Proc _p_)
 			   MakeArg(visitListArgument
 				   (_p_->u.processay_.listargument_),
 				   name));
+#endif				   
     default:
 	badkind(Proc);
     }
@@ -961,11 +998,20 @@ char *makeModPath(char *pn, char *nn)
     return (strdup(bfr));
 }
 
+String prepend(char *pp, char *ap) {
+	char bfr[300];
+	strncpy(bfr, pp, 300);
+    	strncat(bfr, ap, 300-strlen(bfr) );
+    	return (strdup(bfr));
+}
+
 /** Get module path */
 String visitModPath(ModPath p)
 {
   switch(p->kind)
   {
+  case is_Modpa:
+    return prepend("/", visitSymval(p->u.modpa_.symval_));
   case is_Modpx:
     return(visitSymval(p->u.modpx_.symval_));
   case is_Modpy:
@@ -977,10 +1023,35 @@ String visitModPath(ModPath p)
   }
 }
 
+String  visitValidImport(ValidImport s0) { 
+	return s0;
+#if 0
+	char *s=s0;
+
+	while(*s!=0) {
+		if(*s='}') {
+			*s-- = 0;
+		}
+		s++;
+	}	
+
+	return s0+1; 		/* s0+1 drops leading brace,'{';  ex. returns  xyz} from {xyz} */	
+#endif
+}   
+
+Component visitRemPath(RemPath p)
+{
+    return  MakeComponent(
+    	visitSymval(p->u.rempatha_.symval_), 
+    	visitValidImport(p->u.rempatha_.validimport_)); 
+}
+
 /** Get component */
 Component visitComp(Comp _p_)
 {
     switch (_p_->kind) {
+    case is_Compa:
+    	return  visitRemPath(_p_->u.compa_.rempath_);
     case is_Compx:
 	return MakeComponent(visitSymval(_p_->u.compx_.symval_),
 			     defaultPath);
@@ -1388,11 +1459,11 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
        (A)id <- y(C);    [ s1 pt  psnk1]  */
        
     /*              AFTER
-       (A)id <- 2(_ poc.Join);  [ s0 pt0 ptn]  
+       (A)id <- 2(_ sw.Join);  [ s0 pt0 ptn]  
        (j)0  <- y(C);           [ s1 pt1   ] 
        (j)1  <- x(B);           [ s2 pt2    ]  */
        
-    c = MakeComponent("Join", "poc");
+    c = MakeComponent("Join", "stdPackage");
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
 
@@ -1474,7 +1545,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
     /*              BEFORE 
        (B)x <- id(A);  [ s0 pt0]
        (C)y <- id(A);  [ s1 pt ]  */
-    c = MakeComponent("Split", "poc");
+    c = MakeComponent("Split", stdPackage);
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
     /*              AFTER
@@ -1577,18 +1648,20 @@ static void fixFan(Model m, Process p)
     }
 }
 
-			/** Insert poc.Join process wherever fanin occurs. */
+/** For all processes(p) Fix fan in and fan out. 
+   * Insert sw.Join  process wherever fanin occurs.
+   * Insert sw.Split process wherever fanout occurs. 
+*/
 static void fixFanInOut(Model m)
 {
     Process p;
 
     p = m->proc;
 
-    while (p) {			/* For all processes(p) Fix fan in and fan out. */
+    while (p) {			
 	fixFan(m, p);
 	p = p->next;
     }
-
 }
 
 /** Add process to model.*/

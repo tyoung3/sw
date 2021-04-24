@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "swsym.h"
 #include "model.h"
@@ -33,11 +34,34 @@ void genSuffix()
     printf("}\n");
 }
 
+String deleteBrace(char *s0) {
+	char *s=s0;
+		
+	do {
+		if(*s == '}') 
+			*s=0;
+		s++;
+	} while(*s !=0);
+
+	return s0; 
+}
+
 /** Print generated module path.*/
-static void genPath(char *s)
+static void genPath(Component  c)
 {
+    char *s=c->path;
     char *importLib  = { defaultLibrary };
-    printf("import \"%s/%s\"\n",  importLib,  s);
+    
+    if( strcmp(s,stdPackage) == 0) 
+    	 return;
+    if(s[0] == '{') {
+    	printf("import \"%s\"\n",  deleteBrace(s+1));
+    } else {
+    if(s[0] == '/') {
+    	printf("import \"%s\"\n",   s);
+    } else {
+    	printf("import \"%s/%s\"\n", importLib,   s);
+    }}	
 }
 
 /** Return true if path is new.*/
@@ -50,6 +74,8 @@ int newPath(char *p)
     return 0;
 }
 
+#define StringIt(X) #X
+
 /** Create import paths from process structs.*/
 static void genPaths(Model m)
 {
@@ -57,12 +83,12 @@ static void genPaths(Model m)
 
     // P(import "fmt");
     P(import "sync");
-    P(import "github.com/tyoung3/streamwork/fbp");
+    printf("import %s \"github.com/tyoung3/sw/swbase\"\n", stdPackage);
 
     p = m->proc;
     while (p) {
 	if (newPath(p->comp->path)) {
-	    genPath(p->comp->path);
+	    genPath(p->comp);
 	}
 	p = p->next;
     };
@@ -121,14 +147,14 @@ static void showSink(Process p, int id)
 }
 
 /** Print Source Process */
-static void showSource(Process p, int id, int bfsz)
+static void showSource(Process p, int id, int bfsz, char *iptype)
 {
 
     if (bfsz == defaultBufferSize) {
-	printf("\t\t<- %d(%s %s.%s",
-	       id, p->name, p->comp->path, p->comp->name);
+	printf("\t\t<%s-\t%d(%s %s.%s",
+	       iptype, id, p->name, p->comp->path, p->comp->name);
     } else {
-	printf("\t\t<%d- ", bfsz);
+	printf("\t\t<%s %d-\t", iptype, bfsz);
 	if (id > 0)
 	    printf("%d", id);
 	printf("(%s %s.%s", p->name, p->comp->path, p->comp->name);
@@ -281,7 +307,7 @@ static void showND(Model m)
 			break;
 		case IS_NET:
 	    		showSink(f->sink, f->sink_id);
-	    		showSource(f->source, f->source_id, f->bufsz);
+	    		showSource(f->source, f->source_id, f->bufsz, f->iptype);
 			break;
 		case IS_ORPHAN:
 			ShowOrphan(f->source);
@@ -404,7 +430,7 @@ char *stripPath( char *s1 ) {
 static void genLaunch1(Process p)
 {
     int i = 1;
-    printf("fbp.Launch(&wg,");
+    printf( stdPackage ".Launch(&wg,");
     printf("[]string{\"%s\"", p->name);
 
     if (p->arg) {
@@ -479,12 +505,15 @@ void genND(Model mod)
     while (f) {
       if( f->type==IS_NET) {
 		if (f->sink->port->id) {
-	    		printf("(%s)%d<-%d(%s); \n", f->sink->name,
-		   		f->sink->port->id, f->source->port->id,
+	    		printf("(%s)%d<%s-%d(%s); \n", f->sink->name,
+		   		f->sink->port->id,
+		   		f->iptype,
+		   		f->source->port->id,
 		   		f->source->name);
 		} else {
-	    		printf(" (%s)%d<-(%s); \n", f->sink->name,
-		   		f->source->port->id, f->source->name);
+	    		printf(" (%s)%d<%s-(%s); \n", f->sink->name,
+		   		f->source->port->id, 
+		   		f->iptype, f->source->name);
 		}
       }  else  {
 	 if( f->type==IS_ORPHAN ) {
