@@ -24,34 +24,12 @@
 */
 var NAVTREE =
 [
-  [ "StreamWork", "index.html", [
-    [ "Todo List", "todo.html", null ],
-    [ "Data Structures", "annotated.html", [
-      [ "Data Structures", "annotated.html", "annotated_dup" ],
-      [ "Data Structure Index", "classes.html", null ],
-      [ "Data Fields", "functions.html", [
-        [ "All", "functions.html", null ],
-        [ "Variables", "functions_vars.html", null ]
-      ] ]
-    ] ],
-    [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ],
-      [ "Globals", "globals.html", [
-        [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
-        [ "Typedefs", "globals_type.html", null ],
-        [ "Enumerations", "globals_enum.html", null ],
-        [ "Macros", "globals_defs.html", null ]
-      ] ]
-    ] ]
-  ] ]
+  [ "StreamWork", "index.html", ]
 ];
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"swgo_8c.html#a7a7fd24441e812587011a79a99a32be2"
+"index.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
