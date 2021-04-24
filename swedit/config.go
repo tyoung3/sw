@@ -34,11 +34,11 @@ func Send(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
 func Recv(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
 	defer wg2.Done()
 	
-	for {		
+	//for {		
 		ip, ok := <-ci
 		if ok!=true {
 			return
 		}
 		fmt.Println(arg[0], nport, "Received:", ip)	
-	}	
+	//}	
 }
