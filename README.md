@@ -34,8 +34,7 @@ Go language FBP programs,  the ND described here is language agnostic.  It shoul
 to generate corresponding code in other languages.         
 
 By default, sw generates 
-and builds a single main program which imports the StreamWork base package, sw/swbase,  
-to Launch a goroutine for each process,  connect these processes via Golang interface channels,
+and builds a single main program which imports the StreamWork base package, sw/swbase, to Launch a goroutine for each process,  connects these processes via Golang interface channels,
 and wait for all processes to finish.  A bash script, swgo, will build and run a network definition.
 
 On option, StreamWork will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree from a network definition file.
