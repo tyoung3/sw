@@ -7,15 +7,16 @@ currently being supported with security updates.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 0.12.2    | :white_check_mark: |
+| < 0.12.2  | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+E-mail streamwork_security@twyoung.com to report a vulnerability.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Please do not expect acknowlegement or e-mail responses of any kind.
+Watch the github repo for appropriate updates.   
+
+There are currently no none security problems and we greatly 
+appreciate your help in keeping things that way.  Let us know in your e-mail if you wish to be publicly acknowledged, or not. 
+
