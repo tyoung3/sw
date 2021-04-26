@@ -12,8 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.12.2 - STREAMWORK/FrontEnd
-==============================
+SW-0.12.2 - STREAMWORK
+======================
 
 Name
 ----
@@ -24,7 +24,7 @@ Name
 Description
 -----------
 
-StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  
+StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
 
 StreamWork reads, analyzes, and executes a StreamWork network 
 definition(ND) file (suffix: .sw).

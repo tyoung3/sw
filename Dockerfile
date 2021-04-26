@@ -1,16 +1,16 @@
-FROM golang:1.14
+FROM golang:1.16
 
 LABEL ""Streamwork Demo""
 LABEL maintainer="streamwork@twyoung.com"
 LABEL maintainer="streamwork@twyoung.com" 
 
-# Needs to be in passwd file USER  tyoung3 tyoung3
+# Needs to be in passwd file USER  tyoun g3 tyoung3
 WORKDIR /go/mod/sw
 COPY  .  /go/mod/sw
 
 ARG A_EDITOR="gedit"
 ARG A_BROWSER="chrome"
-ARG PKGS="apt-utils bnfc dialog $EDITOR gdb graphviz libyaml-dev locate texlive-binaries tree"
+ARG PKGS="apt-utils sudo gedit bnfc dialog $EDITOR apt-utils gdb graphviz libyaml-dev less tree locate texlive-binaries openssh-server strongswan  xutils    gedit"
 #  REMOVED: valgrind
 
 ENV BROWSER=$A_BROWSER
@@ -18,17 +18,28 @@ ENV EDITOR="$A_EDITOR"
 ENV APP_NAME="sw"
 ENV MY_APP="Streamwork"
 
-RUN apt-get -y update && apt-get -y upgrade && apt-get -y install  $PKGS
+RUN apt-get -y update && apt-get -y upgrade && apt-get -y install ssh $PKGS
 RUN mkdir /go/src/gen && ln -s /go /root/
 
 RUN echo "deb http://ftp.us.debian.org/debian buster main" >>  /etc/apt/sources.list
-RUN echo "set auto-load safe-path /" 		 >> 	/root/.gdbinit
-RUN echo "Streamwork($APP_NAME).  Built: `date`" > 	/etc/motd 
-RUN echo "export EDITOR=gedit"  		>> 	/root/.bashrc
-RUN echo "export PATH=/go/mod/sw/bin:$PATH" 	>> 	/root/.bashrc
-RUN echo "alias dir='ls -Fltr'"  		>> 	/root/.bashrc 
-RUN echo "alias r='./run'"  			>> 	/root/.bashrc 
+RUN echo "set auto-load safe-path /" 		 >> 	 /root/.gdbinit
+RUN echo "Streamwork($APP_NAME).  Built: `date`" >  /etc /motd 
+RUN echo "export EDITOR=gedit"  		>> 	 /root/.bashrc
+RUN echo "export PATH=/go/mod/sw/bin:$PATH" 	>> 	 /root/.bashrc
+RUN echo "alias dir='ls -Fltr'"  		>> 	 /root/.bashrc 
+RUN echo "alias r='./run'"  			>> 	 /root/.bashrc 
+RUN echo "X11UseLocalhost no" 			>>   /etc/ssh*/*d*fig 
+RUN echo "PrintMotd yes"	 		>>   /etc/ssh*/*d*fig 
+RUN adduser --disabled-password tyoung3  
+RUN adduser --disabled-password guest
+RUN (echo "streamit";echo "streamit")  |passwd tyoung3 
+RUN (echo "streamit";echo "streamit")  |passwd root
+RUN service ssh start
 
+
+
+
+### ping –c 3 172.17.0.2
 
 ##################   The rest of this file is commentary.   ###################################
 
