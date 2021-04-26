@@ -120,8 +120,8 @@ e-mailing streamwork@twyoung.com or  posting a request on Github.
 
 QuickStart (on Linux) 
 ----------
-	* The tyoung3/StreamWork backend is no longer required.  
-	* Sw is written in C.  
+	* The .../tyoung3/StreamWork backend is no longer required.  
+	* Sw is written in C.  The bin directory contains bash scripts invoking sw.   
 	* Download the 'sw' executable from github to any 
 	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
 	* Run 'chmod a+x sw' if necessary. 
