@@ -2,6 +2,7 @@
 
 # SW.sh
 
+version="0.0.1"
 
 ShowGitBranch() {
 	cat <<EOF >/dev/null
@@ -11,10 +12,10 @@ parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-}
-
 export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
+EOF
+}
 
 pgm=sw.sh
 
@@ -121,12 +122,14 @@ Browse () {
 	[ -f $1 ] && $BROWSER $1
 }
 
+
 ## @Shell   Enters a bash subshell 
 Shell() {
-	export sps1="$PS1"
-	export PS1="\w> "
+	#export sps1="$PS1"
+	#export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+	# export PS1="\u@\h \[\033[32m\]\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 	export PATH=`pwd`/bin:$PATH
-	echo Entering StreamWork shell  
+	echo Entering StreamWork shell  PS1=$PS1
 	exec bash --rcfile .bashrc  
 }
 
@@ -148,7 +151,7 @@ case $1 in
 	x) $EDITOR $0;;
 	*) cat << EOF 
 	
-USAGE: 
+sw.sh-$version USAGE: 
 		c		. Make check
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
