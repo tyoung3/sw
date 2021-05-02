@@ -147,6 +147,7 @@ case $1 in
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
+	rm) pandoc -r gfm README.md > /tmp/SW_README.html; $BROWSER /tmp/SW_README.html;;
 	s) shift; Shell $;;
 	x) $EDITOR $0;;
 	*) cat << EOF 
@@ -161,6 +162,7 @@ sw.sh-$version USAGE:
 		jl		. Generage locusts .SVG
 		p  [NAME..]	. Generate project(s) named NAME... 
 		poc		. Build and run Proof of Concept 
+		rm		. View README in $BROWSER 
 		rc		. Build and run Collate program 
 		rl		. Run locusts program
 		s		. Enter SW shell.  'e' or 'exit' to return

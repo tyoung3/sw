@@ -18,7 +18,7 @@ SW-0.12.2 - STREAMWORK
 Name
 ----
 
-         StreamWork - a flow based program(FBP) Go language framework.
+         StreamWork - a flow based program(FBP) Go language framework and code generator.
          
 
 Description
@@ -26,20 +26,24 @@ Description
 
 StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
 
-StreamWork reads, analyzes, and executes a StreamWork network 
-definition(ND) file (suffix: .sw).
+By default, StreamWork reads, parses and analyzes,  a StreamWork network 
+definition(ND) file (suffix: .sw),  then generates () a main Go program. 
+
 Employing StreamWork, a network definition becomes, in effect, an executable
 script.  It can be considered as high level program source.  While StreamWork is concerned with 
 Go language FBP programs,  the ND described here is language agnostic.  It should be possible 
 to generate corresponding code in other languages.         
 
 By default, sw generates 
-and builds a single main program which imports the StreamWork base package, sw/swbase, to Launch a goroutine for each process,  connects these processes via Golang interface channels,
-and wait for all processes to finish.  A bash script, swgo, will build and run a network definition.
+and builds a single main program which imports the StreamWork base package, sw/swbase, to launch a goroutine for each process,  connects these processes via Golang interface channels,
+and waits for all processes to finish.  A bash script, swgo, will build and run a network definition.
 
 On option, StreamWork will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree from a network definition file.
-Sw can also be used to build an entire source tree from a .sw file.  Starting with version v0.12.0, Streamwork can also generate and run
-an entire working project source tree from a network definition, including config logic, and Golang test code.  
+Starting with version v0.12.0, Streamwork can also generate and run
+an entire working project source tree from a network definition, including config logic, and Golang test code.
+
+Network Definition
+------------------
 
 The network definition consists of a list of 
 streams(or dataflows) and optional subnet definitions.  
@@ -51,15 +55,15 @@ Each stream definition looks like:
 (E) <- (F); 
 ```
 and consists of:
-	* processname, component identifier, and optional arguments in parens 
-	* portnumber (defaults to 0), 
-	* right arrow("->") or left arrow("<-), 
-	* portnumber, 
-	* and another processname and component identifier, and optional arguments  in parens 
-	* a statement terminator(';'. 
+  * processname, component identifier, and optional arguments in parens 
+  * portnumber (defaults to 0), 
+  * a stream director:  right arrow("->") or left arrow("<-), 
+  * portnumber, 
+  * and another processname and component identifier, and optional arguments  in parens 
+  * a statement terminator(';'). 
 
-The arrows ("<-" and "->") point from the source process to the sink process.  Arrows may 
-include a type identifier and/or a stream buffer size: e.g. "<10-" and "-2>".  If not included, buffer size defaults to zero.
+The stream director(director) points from the source process to the sink process.  A director may 
+include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B>".  If not included, buffer size defaults to zero.
 Example with anonymous processes:
 ```
   (_) -int 3> (_); [integer stream with buffersize of three] 
