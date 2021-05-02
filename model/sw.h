@@ -33,7 +33,7 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 	}	
 	
 /* sw.c  */
-void 	expandSubnets(Model model);   		/**<Expand Subnets */
+//void 	expandSubnets(Model model);   		/**<Expand Subnets */
 void 	visitDouble(Double d);			/**<Get Double ?*/	
 void 	visitChar(Char c);			/**<Get a char */
 void	visitStm(Stm p);			/**<Get next Statement*/

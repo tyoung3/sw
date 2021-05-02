@@ -98,14 +98,15 @@ typedef enum {SINK,SOURCE} PortType;
 
 /** Extport structure */
 typedef struct Extport_ {
-	PortType type;     /**<Sink or source*/
-	Process source;		/**<Source process */
-	Process sink;		/**<Sink Process*/
+	PortType type;     	/**<Sink or source	*/
+	Process source;		/**<Source process 	*/
+	Process sink;		/**<Sink Process	*/
 
-	String  name;   /**<Port name */
-	int source_id; 	/**<Source port number */
-	int sink_id;    /**<Sink port number */
-	int bufsz;	/**<Buffer size*/
+	String  name;   	/**<Port name 		*/
+	int source_id; 		/**<Source port number 	*/
+	int sink_id;    	/**<Sink port number 	*/
+	char *iptype;		/**<Type identifier 	*/
+	int bufsz;		/**<Buffer size		*/
 	struct Extport_ *next;  /**<Pointer to next Extport*/
 } Extport_;
 typedef struct Extport_ *Extport;  /**<Pointer to Extport */
@@ -123,12 +124,13 @@ typedef struct Subnetm_ *Subnetm;   /**<Pointer to Subnet structure */
 typedef struct Model_ {
 	int       nstreams;	/**< Number of Streams in this network.*/	
 	int       ncomponents;	/**< Number of unique components in the network.*/
-	int       nprocs; 	/**< number of processes */
-	Stream    stream;	/**< pointer to first stream*/
-	Subnetm   subnetm;     	/**< Pointer to first subnet */
-	Process   proc;		/**< Pointer to First Process */
+	int       nprocs; 	/**< number of processes 	*/
+	Stream    stream;	/**< pointer to first stream	*/
+	Subnetm   subnetm;     	/**< Pointer to first subnet 	*/
+	Process   proc;		/**< Pointer to First Process 	*/
         Component comp;	        /**< Pointer to first Conponent */
-	char     *name;		/**< Model Name */
+	char     *name;		/**< Model Name 		*/
+	int	  level;	/**< Subnet depth		*/
 } Model_;
 typedef struct Model_ *Model;	/**<Pointer to Model */
 
