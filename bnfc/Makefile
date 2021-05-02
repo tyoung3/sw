@@ -13,7 +13,7 @@ OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
 all: Skeleton.c TestSW  SW.pdf
 
-check: TestSW xaXPH6Dq
+check: TestSW 
 	./TestSW ../nds/collate.sw >/dev/null
 
 clean:
