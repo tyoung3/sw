@@ -7,6 +7,7 @@ alias dir='ls -Fl'
 alias doc='./run doc'
 alias e='exit '
 alias ga='git add -u'
+alias gb='git branch '
 alias gc='git commit -m '
 alias gs='git status'
 alias j='./run j'
@@ -35,6 +36,7 @@ Rest() {
 	dir [PATH]	. ls -Fltr [PATH]  
 	doc		. Run and browse Doxygen 
 	ga		. Run 'git add -u'
+	gb [OPTS}	. Run 'git branch [OPTS]'
 	gs		. Run 'git status'
 	gc MSG		. Run 'git commit -m MSG
 	j		. Generate collate .SVT
