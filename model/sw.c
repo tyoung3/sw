@@ -16,6 +16,8 @@
 #define DEBUGGING
 
 static char *iptype_save="";  		/* latest visited IP type */  
+static  Process fl = NULL;		/** List of processes to free	*/
+
 /** Place to store latest visited port. */
 Port LatestPort = NULL;
 /** Place to store latest visited source port. */
@@ -139,6 +141,7 @@ Model MakeModel(Stream f)
     m->nstreams = 0;
     m->ncomponents = 0;
     m->nprocs = 0;
+    m->level  = 0;
     m->stream = f;
     m->proc = NULL;
     m->subnetm = NULL;
@@ -292,7 +295,7 @@ Component MakeComponent(Ident name, String path)
 
 /** Make Stream structure */
 static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
-	   Port SourcePort, Port SinkPort)
+	   Port SourcePort, Port SinkPort, char *iptype)
 {
     Stream f;
 
@@ -311,10 +314,7 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     f->source = src;
     f->sink = snk;
     f->next = NULL;
-    f->type = type;		/* Defined w/ '<-'  */
-    if(iptype_save==NULL) 
-    	iptype_save = "";
-    f->iptype = iptype_save;    /* From visiting arrows */		
+    f->type = type;		
     f->next = m->stream;
     m->stream = f;
     if (bs < 0)
@@ -322,11 +322,9 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     if (bs > maxbfsz)
 	bs = maxbfsz;
     f->bufsz = bs;
+    f->iptype = iptype;    /* From visiting arrows */	
 
     switch (type) {
-    	case IS_ORPHAN:
-		// m->nstreams++;
-		break;
     	case IS_NET:
 		m->nstreams++;
 		__attribute__ ((fallthrough));
@@ -334,7 +332,8 @@ static Stream MakeStream(TYPE type, Process src, Process snk, int bs, Model m,
     		f->source_id = fixId(SourcePort->id);
    	 	f->sink_id   = fixId(SinkPort->id);
 		break;
-	default:
+    	case IS_ORPHAN:
+		break;
 		badkind(MakeStream);
     }
 	
@@ -491,7 +490,7 @@ String visitTypeDef(TypeDef p)
   case is_Typedefa:
     return visitSymvalu(p->u.typedefa_.symvalu_);
   case is_Typedefnull:
-    return defaultIPtype;
+    return "";
   default:  
 	  badkind(TypgDef);
   }
@@ -590,7 +589,8 @@ Stream visitS_tream(S_tream _p_)
 	SetSink(snk);
 	SetSource(src);
 	linkPort(src, src_pt);
-	s = MakeStream(type, src, snk, bs, net_model, src_pt, snk_pt);
+	s = MakeStream(type, src, snk, bs, net_model, src_pt, snk_pt, iptype_save);
+	iptype_save="";
 	s->SourcePort = src_pt;
 	s->SinkPort = snk_pt;
 	s->SourcePort->stream = s->SinkPort->stream = s;
@@ -611,7 +611,8 @@ Stream visitS_tream(S_tream _p_)
 	SetSink(snk);
 	bs = visitRarrow(_p_->u.streamrx_.rarrow_);
 	s = MakeStream(type, src, snk, bs, net_model, LatestSrcPort,
-		       LatestPort);
+		       LatestPort, iptype_save);
+	iptype_save="";
 	setStream(LatestSrcPort, s);
 	setStream(LatestPort, s);
 	s->sink_id = LatestPort->id = fixId(LatestPort->id);
@@ -633,7 +634,8 @@ Stream visitS_tream(S_tream _p_)
 	linkPort(snk, pt);
 	SetSink(snk);
 	s2 = MakeStream(type, src, snk, bs, net_model, LatestSrcPort,
-			LatestPort);
+			LatestPort, iptype_save);
+	iptype_save="";
 	s2->SourcePort->stream = s2->SinkPort->stream = s2;
 	s2->SourcePort = LatestSrcPort;
 	s2->SinkPort = LatestPort;
@@ -654,7 +656,8 @@ Stream visitS_tream(S_tream _p_)
 	SetSource(src);
 	pt = visitPrt(_p_->u.streamry_.prt_2);	/* Sink Port */
 	SetSink(snk);
-	s2 = MakeStream(type, src, snk, bs, net_model, src_pt, pt);
+	s2 = MakeStream(type, src, snk, bs, net_model, src_pt, pt, iptype_save);
+	iptype_save="";
 	setStream(src_pt, s2);
 	setStream(pt, s2);
 	s2->sink_id = s->SinkPort->id;
@@ -673,20 +676,19 @@ static String saves = NULL;   /**<Save name ?? */
 /** Create an external port structure. */
 Extport MakeExtport(PortType type, Process p, Port prt, int bs, int id)
 {
-
     Extport ep;
 
-    ep = (Extport) malloc(sizeof(Extport_));
-
-    ep->type = type;
+    ep 		= (Extport) malloc(sizeof(Extport_));
+    ep->type 	= type;
     linkPort(p, prt);
-    ep->name = prt->name = saves;
+    ep->name 	= prt->name = saves;
+    saves 	= NULL;
+    
     if (type == SINK) {
 	ep->sink = p;
 	ep->source = NULL;
 	ep->sink_id = fixId(prt->id);
 	ep->source_id = id;
-	ep->bufsz = bs;
 	SetSink(p);
     } else {
 	ep->source = p;
@@ -696,9 +698,9 @@ Extport MakeExtport(PortType type, Process p, Port prt, int bs, int id)
 	SetSource(p);
     }
 
-    saves = NULL;
-    ep->bufsz = bs;
-    ep->next = NULL;
+    ep->bufsz  = bs;
+    ep->iptype = NULL;
+    ep->next   = NULL;
     return ep;
 }
 
@@ -719,20 +721,26 @@ Integer visitTab(Tab _p_)
 /** Get external input port */
 Extport visitExtPortIn(ExtPortIn _p_)
 {
+    Extport ep; 
     switch (_p_->kind) {
     case is_Extin:
-	return MakeExtport(SINK,
+	ep = MakeExtport(SINK,
 			   visitProc(_p_->u.extin_.proc_),
 			   visitPrt(_p_->u.extin_.prt_),
 			   visitLarrow(_p_->u.extin_.larrow_),
 			   visitTab(_p_->u.extin_.tab_));
-
+	ep->iptype = strdup(iptype_save);
+	iptype_save="";
+        return ep;
     case is_ExtinR:
-	return MakeExtport(SINK,
+	ep = MakeExtport(SINK,
 			   visitProc(_p_->u.extinr_.proc_),
 			   visitPrt(_p_->u.extinr_.prt_),
 			   visitRarrow(_p_->u.extinr_.rarrow_),
 			   visitTab(_p_->u.extinr_.tab_));
+	ep->iptype = strdup(iptype_save);
+	iptype_save="";
+        return ep;
     default:
 	badkind(ExtPortIn);
     }
@@ -742,20 +750,26 @@ Extport visitExtPortIn(ExtPortIn _p_)
 /** Get external output port. */
 Extport visitExtPortOut(ExtPortOut _p_)
 {
-
+    Extport ep;
     switch (_p_->kind) {
     case is_Extout:
-	return MakeExtport(SOURCE,
+	ep = MakeExtport(SOURCE,
 			   visitProc(_p_->u.extout_.proc_),
 			   visitPrt(_p_->u.extout_.prt_),
 			   visitLarrow(_p_->u.extout_.larrow_),
 			   visitTab(_p_->u.extout_.tab_));
+	ep->iptype = strdup(iptype_save);
+	iptype_save="";
+	return ep;		   
     case is_Extoutr:
 	return MakeExtport(SOURCE,
 			   visitProc(_p_->u.extoutr_.proc_),
 			   visitPrt(_p_->u.extoutr_.prt_),
 			   visitRarrow(_p_->u.extoutr_.rarrow_),
 			   visitTab(_p_->u.extoutr_.tab_));
+	ep->iptype = strdup(iptype_save);
+	iptype_save="";
+	return ep;
     default:
 	badkind(ExtPortOut);
     }
@@ -766,7 +780,6 @@ Process visitHermt(Hermt _p_)
 {
     char *name;
     Process p;
-
     type = IS_NET;
     switch (_p_->kind) {
     case is_Hermtx:
@@ -1151,7 +1164,7 @@ static void Expand2(Model m, Process p, Stream s)
     src->nportsOut++;
     snk->nportsIn++;
     bs = s->bufsz;
-    ns = MakeStream(type, src, snk, bs, m, psrc, psnk);
+    ns = MakeStream(type, src, snk, bs, m, psrc, psnk, s->iptype);
     ns->sink_id = s->sink_id;
     ns->source_id = s->source_id;
     ns->bufsz = s->bufsz;
@@ -1177,7 +1190,7 @@ static Port copyPort(Port p0)
 
 static Extport extprtList = NULL;   /**<Anchor for external port list */
 /**  Add external port to list of unmatched external ports.
-     Match ports laterfindAmatchingPort
+     Match ports later
 */
 static int findAmatchingPort(Model m, Process p, Extport ep)
 {
@@ -1194,9 +1207,9 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
 	srcname = makeName(p->name, fixName(ep->source->name));
 	p2 = getProc(srcname);
 	if (!p2) {
-	    p2 = MakeProcess(m, srcname, ep->source->comp,
-			     ep->source->arg);
+	    p2 = MakeProcess(m, srcname, ep->source->comp, ep->source->arg);
 	}
+	
 	pt = MakePort(ep->source_id, ep->name);
     } else {
 	snkname = makeName(p->name, fixName(ep->sink->name));
@@ -1208,6 +1221,7 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
     }
     p2->depth = p->depth + 1;
     ep2 = MakeExtport(ep->type, p2, pt, ep->bufsz, -1);
+    ep2->iptype = ep->iptype;
     ep2->next = extprtList;
     ep2->source_id = ep->source_id;
     ep2->sink_id = ep->sink_id;
@@ -1230,7 +1244,7 @@ static void Expand3(Model m, Process p, Extport ep)
 
     if (ep->type == SOURCE) {
 	pt = p->port;		/** Find matching sink port  */
-	while (pt) {
+	if (pt) {
 	    do {
 		pt->id = fixId(pt->id);
 		if (pt->id == ep->sink_id) {
@@ -1244,6 +1258,8 @@ static void Expand3(Model m, Process p, Extport ep)
 		    s->source = pnew;
 		    if (ep->bufsz > s->bufsz)
 			s->bufsz = ep->bufsz;
+		    if( (ep->iptype) != NULL )	
+			    s->iptype = ep->iptype;	
 		    pnew->nportsOut++;
 		    pnew->depth = p->depth + 1;
 		    ptc = copyPort(pt);
@@ -1276,6 +1292,8 @@ static void Expand3(Model m, Process p, Extport ep)
 		    s->sink = pnew;
 		    if (ep->bufsz > s->bufsz)
 			s->bufsz = ep->bufsz;
+		    if( (ep->iptype) != NULL )	
+		     	s->iptype = ep->iptype;	
 		    pnew->nportsIn++;
 		    ptc = copyPort(pt);
 		    ptc->stream = s;
@@ -1283,15 +1301,14 @@ static void Expand3(Model m, Process p, Extport ep)
 		    linkPort(pnew, ptc);
 		    pnew->depth = p->depth + 1;
 		    if (s->sink->comp == NULL) {
-			s->sink->comp =
-			    MakeComponent(defaultSinkComp, defaultPath);
+			s->sink->comp = MakeComponent(defaultSinkComp, defaultPath);
 		    }
 		    if (s->source->comp == NULL) {
 			s->source->comp =
 			    MakeComponent(defaultSourceComp, defaultPath);
 		    }
 		    s->SinkPort = ptc;
-		    s->SinkPort->match = s->SourcePort;
+		    s->SinkPort->match   = s->SourcePort;
 		    s->SourcePort->match = s->SinkPort;
 		    VerifyStream(s);
 		    return;
@@ -1348,14 +1365,14 @@ static void expandSub(Model m, Process p)
 }
 
 /** Add process to list to be freed.  */
-static void FreeLater(Process * fl, Process p)
+static void FreeLater(Process *fl, Process p)
 {
     p->next = *fl;
     *fl = p;
 }
 
 /** Free discarded process structure memory. */
-static void FreeExpandedProcesses(Process * fl)
+static void FreeExpandedProcesses(Process *fl)
 {
     Process pn;
 
@@ -1366,25 +1383,23 @@ static void FreeExpandedProcesses(Process * fl)
     }
     *fl = NULL;
 }
-
+    
 	/** While some process contains a subnet component, 
-	   expand that component subnet. 
-	 */
-void expandSubnets(Model m)
+	   expand that component subnet. */
+static void expandSubnets(Model m)
 {
     Process p, pp, ps;
-    Process fl = NULL;		/** List of processes to free */
-
-    int more;
+    int more;			/** 1=could be more subnets  	*/
+    int level=0;		/** subnet level 	 	*/ 
 
     do {
 	p = m->proc;
 	pp = NULL;
-	more = 0;
+	more = 0; 
 	while (p) {
 	    if (p->comp) {
 		if (p->comp->path[0] == '_') {	/* Is a subnet */
-		    more = 1;
+		    more = 1; 
 		    m->nprocs--;
 		    ps = p;
 		    if (pp)	// delink p from process chain.     
@@ -1398,13 +1413,15 @@ void expandSubnets(Model m)
 		    break;
 		}
 	    }
+	    level += more;
 	    pp = p;
 	    p = p->next;
 	}
-	FreeExpandedProcesses(&fl);
     }
     while (more);
-
+    
+    if(level > m->level) 
+    	m->level = level;
 }
 
 
@@ -1475,7 +1492,7 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
     s0 = pt0->stream;
 
     s2 = MakeStream(IS_NET, pt0->stream->source, j,
-		    pt0->stream->bufsz, m, pt0, pt);
+		    pt0->stream->bufsz, m, pt0, pt, pt0->stream->iptype);
     s2->SourcePort = s0->SourcePort;
 
     s0->source = j;
@@ -1559,7 +1576,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
     s0 = pt0->stream;
 
     s2 = MakeStream(IS_NET, pt0->stream->source, j,
-		    pt0->stream->bufsz, m, pt0, pt);
+		    pt0->stream->bufsz, m, pt0, pt, pt0->stream->iptype );
 
     s2->sink_id = 0;
     s2->source_id = pt0->id;
@@ -1688,7 +1705,7 @@ static void linkProc(Model m, Process p)
 /** MAX(A,B) returns highest of A or B */
 #define MAX(A,B) ( (A>B)? A: B)
 
-/** Slow, bubble sort */
+/** Slow, bubble sort to put ports for process p in order by port ID */
 static void SortPorts(Process p)
 {
     Port pt0, pt1, pt2, ptw;
@@ -1759,8 +1776,8 @@ static void createStream(Model m, Extport ep, Extport ep2)
 
 
     s = MakeStream(IS_NET, ep->source, ep2->sink,
-		   MAX(ep->bufsz, ep2->bufsz), m, srcpt, snkpt);
-
+		   MAX(ep->bufsz, ep2->bufsz), m, srcpt, snkpt, ep2->iptype);
+	
     linkProc(m, ep->source);
     linkProc(m, ep2->sink);
 	
@@ -1827,7 +1844,7 @@ static int Matched(Extport ep2) {
 static int isaMatch(Extport ep2, Extport ep)
 {
 
-    if(Matched(ep2) )
+    if(Matched(ep2) )  /** Create a new stream if external port is matched.*/ 
 		return 0;
 
 
@@ -1870,7 +1887,8 @@ static void findSink(Model m, Extport ep)
 }
 
 	/** Match source ports to appropriate sink ports 
-	    then identify and mark orphan processes, creating orphan streams */
+	    then identify and mark any leftover orphan processes, creating orphan streams 
+	 */
 static void autolink(Model m)
 {
     Extport ep;
@@ -1880,7 +1898,7 @@ static void autolink(Model m)
     type = IS_NET;
     while (ep) {
 	if (ep->type == SOURCE) {
-	    findSink(m, ep);
+	    findSink(m, ep);          /** Create a new stream if external port is matched.*/ 
 	}
 	ep = ep->next;
     }
@@ -1890,20 +1908,40 @@ static void autolink(Model m)
     while(p) {
 	if(p->nportsIn + p->nportsOut == 0) {
 		p->kind=IS_ORPHAN;	
-		MakeStream(IS_ORPHAN,  p, NULL, -1, m, NULL, NULL);
+		MakeStream(IS_ORPHAN,  p, NULL, -1, m, NULL, NULL,"");
 	}
 	p=p->next;
     }	
 }
 
-/** Return model structure by examining the SW parse tree. */
-Model visitValidSW(ValidSW _p_)
-{				/* Parse visit root */
+static void removeDeadStreams(Model m) {
+	Stream s, sp;
+	
+	s=m->stream;
+	while(s != NULL) {
+	     if(s->source->comp != NULL) {
+		if(  (s->source->comp->path[0] == '_') ) {  /* if subnet, remove stream */
+			if(s==m->stream) {
+				m->stream=s->next;
+			} else {
+				sp->next = s->next;
+				s=sp;
+			} 
+			//free(s);
+		}
+	     }	
+	     sp=s; s=s->next;
+	}
+}
 
+/** Convert the parse tree into a SW network model. */
+Model visitValidSW(ValidSW _p_)  { 
     net_model = MakeModel(NULL);
-    visitListStm(_p_->u.valid_.liststm_);
-    fixFanInOut(net_model);
-    expandSubnets(net_model);
-    autolink(net_model);
+    visitListStm(_p_->u.valid_.liststm_);	/* Visit the root of the parse tree to begin.    */
+    fixFanInOut(net_model);			/* Insert Join and Split processes as necessary. */
+    expandSubnets(net_model);   
+    autolink(net_model);			/* Connect orphan ports.  			 */
+    removeDeadStreams(net_model);	        /* Some streams could have all subnet components.*/
+    FreeExpandedProcesses(&fl);                 /* Need to remove dead streams first. 		 */
     return net_model;
 }

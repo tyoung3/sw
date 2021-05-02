@@ -103,7 +103,7 @@ ${PGM}: ${OBJS} ${SWOBJS}
 swsym.o: swsym.c swsym.h 
 	${CC} ${CCFLAGS} -c  swsym.c -o swsym.o
 
-swconfig.o: swconfig.c sw.h
+swconfig.o: swconfig.c sw.h swconfig.h
 	${CC} ${CCFLAGS} -c  swconfig.c -o swconfig.o
 		
 sw.o: sw.c sw.h swsym.h ${HEADERS} model.h
