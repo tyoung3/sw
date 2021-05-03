@@ -18,8 +18,6 @@
 static char *iptype_save="";  		/* latest visited IP type */  
 static  Process fl = NULL;		/** List of processes to free	*/
 
-/** Place to store latest visited port. */
-Port LatestPort = NULL;
 /** Place to store latest visited source port. */
 Port LatestSrcPort = NULL;  
 /** Current network type. */
@@ -569,7 +567,8 @@ static void SetSink(Process p)
     p->nportsIn++;
 }
 
-
+static Process lastProc=NULL;
+ 
 /** Get stream structure */
 Stream visitS_tream(S_tream _p_)
 {
@@ -581,7 +580,7 @@ Stream visitS_tream(S_tream _p_)
     switch (_p_->kind) {
     case is_Streamx:
 	bs = visitLarrow(_p_->u.streamx_.larrow_);
-	src = visitProc(_p_->u.streamx_.proc_2);
+	lastProc = src = visitProc(_p_->u.streamx_.proc_2);
 	snk = visitProc(_p_->u.streamx_.proc_1);
 	src_pt = visitPrt(_p_->u.streamx_.prt_2);
 	snk_pt = visitPrt(_p_->u.streamx_.prt_1);
@@ -605,17 +604,17 @@ Stream visitS_tream(S_tream _p_)
 	LatestSrcPort = visitPrt(_p_->u.streamrx_.prt_1);
 	linkPort(src, LatestSrcPort);
 	SetSource(src);
-	snk = visitProc(_p_->u.streamrx_.proc_2);
-	LatestPort = visitPrt(_p_->u.streamrx_.prt_2);
-	linkPort(snk, LatestPort);
+	lastProc = snk = visitProc(_p_->u.streamrx_.proc_2);
+	pt = visitPrt(_p_->u.streamrx_.prt_2);
+	linkPort(snk, pt);
 	SetSink(snk);
 	bs = visitRarrow(_p_->u.streamrx_.rarrow_);
 	s = MakeStream(type, src, snk, bs, net_model, LatestSrcPort,
-		       LatestPort, iptype_save);
+		       pt, iptype_save);
 	iptype_save="";
 	setStream(LatestSrcPort, s);
-	setStream(LatestPort, s);
-	s->sink_id = LatestPort->id = fixId(LatestPort->id);
+	setStream(pt, s);
+	s->sink_id = pt->id = fixId(pt->id);
 	s->source_id = LatestSrcPort->id = fixId(LatestSrcPort->id);
 	s->SinkPort->match = s->SourcePort;
 	s->SourcePort->match = s->SinkPort;
@@ -624,45 +623,48 @@ Stream visitS_tream(S_tream _p_)
 
     case is_Streamy:
 	s = visitS_tream(_p_->u.streamy_.s_tream_);
-	snk = s->source;
-	LatestPort = pt = visitPrt(_p_->u.streamy_.prt_1);
+	snk = lastProc;
+	pt = visitPrt(_p_->u.streamy_.prt_1);
 	bs = visitLarrow(_p_->u.streamy_.larrow_);
 	LatestSrcPort = visitPrt(_p_->u.streamy_.prt_2);
-	src = visitProc(_p_->u.streamy_.proc_);
+	lastProc = src = visitProc(_p_->u.streamy_.proc_);
 	linkPort(src, LatestSrcPort);
 	SetSource(src);
 	linkPort(snk, pt);
 	SetSink(snk);
 	s2 = MakeStream(type, src, snk, bs, net_model, LatestSrcPort,
-			LatestPort, iptype_save);
+			pt, iptype_save);
 	iptype_save="";
 	s2->SourcePort->stream = s2->SinkPort->stream = s2;
 	s2->SourcePort = LatestSrcPort;
-	s2->SinkPort = LatestPort;
+	s2->SinkPort = pt;
 	s2->SourcePort->stream = s2->SinkPort->stream = s2;
-	s2->sink_id = LatestPort->id = fixId(LatestPort->id);
+	s2->sink_id = pt->id = fixId(pt->id);
 	s2->source_id = LatestSrcPort->id = fixId(LatestSrcPort->id);
 	s2->SinkPort->match = s2->SourcePort;
 	s2->SourcePort->match = s2->SinkPort;
 	VerifyStream(s2);
 	return s2;
     case is_Streamry:
-	s = visitS_tream(_p_->u.streamry_.s_tream_);
-	snk = visitProc(_p_->u.streamry_.proc_);
-	bs = visitRarrow(_p_->u.streamry_.rarrow_);
-	src = s->sink;
-	src_pt = visitPrt(_p_->u.streamry_.prt_1);	/* Source Port */
+	s 	 = visitS_tream(_p_->u.streamry_.s_tream_);
+	src 	 = lastProc;
+	lastProc = snk = visitProc(_p_->u.streamry_.proc_);
+	bs 	 = visitRarrow(_p_->u.streamry_.rarrow_);
+	src_pt 	 = visitPrt(_p_->u.streamry_.prt_1);	/* Source Port */
 	linkPort(src, src_pt);
 	SetSource(src);
-	pt = visitPrt(_p_->u.streamry_.prt_2);	/* Sink Port */
+	pt 	 = visitPrt(_p_->u.streamry_.prt_2);	/* Sink Port */
+	pt->id 	 = fixId(pt->id);
+	linkPort(snk, pt);
 	SetSink(snk);
-	s2 = MakeStream(type, src, snk, bs, net_model, src_pt, pt, iptype_save);
-	iptype_save="";
+	s2 		= MakeStream(type, src, snk, bs, net_model, src_pt, pt, iptype_save);
+	iptype_save   	= "";
+	s2->SinkPort = pt;
 	setStream(src_pt, s2);
 	setStream(pt, s2);
-	s2->sink_id = s->SinkPort->id;
-	s2->source_id = src_pt->id;
-	s2->SinkPort->match = s2->SourcePort;
+	s2->sink_id 	= pt->id;
+	s2->source_id 	= src_pt->id;
+	s2->SinkPort->match   = s2->SourcePort;
 	s2->SourcePort->match = s2->SinkPort;
 	VerifyStream(s2);
 	return s2;
