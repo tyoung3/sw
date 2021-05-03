@@ -569,7 +569,9 @@ static void SetSink(Process p)
     p->nportsIn++;
 }
 
-
+static Process lastProc=NULL;
+static Port    lastPort=NULL;
+ 
 /** Get stream structure */
 Stream visitS_tream(S_tream _p_)
 {
@@ -581,9 +583,9 @@ Stream visitS_tream(S_tream _p_)
     switch (_p_->kind) {
     case is_Streamx:
 	bs = visitLarrow(_p_->u.streamx_.larrow_);
-	src = visitProc(_p_->u.streamx_.proc_2);
+	lastProc = src = visitProc(_p_->u.streamx_.proc_2);
 	snk = visitProc(_p_->u.streamx_.proc_1);
-	src_pt = visitPrt(_p_->u.streamx_.prt_2);
+	lastPort = src_pt = visitPrt(_p_->u.streamx_.prt_2);
 	snk_pt = visitPrt(_p_->u.streamx_.prt_1);
 	linkPort(snk, snk_pt);
 	SetSink(snk);
@@ -605,7 +607,7 @@ Stream visitS_tream(S_tream _p_)
 	LatestSrcPort = visitPrt(_p_->u.streamrx_.prt_1);
 	linkPort(src, LatestSrcPort);
 	SetSource(src);
-	snk = visitProc(_p_->u.streamrx_.proc_2);
+	lastProc = snk = visitProc(_p_->u.streamrx_.proc_2);
 	LatestPort = visitPrt(_p_->u.streamrx_.prt_2);
 	linkPort(snk, LatestPort);
 	SetSink(snk);
@@ -624,11 +626,11 @@ Stream visitS_tream(S_tream _p_)
 
     case is_Streamy:
 	s = visitS_tream(_p_->u.streamy_.s_tream_);
-	snk = s->source;
+	snk = lastProc;
 	LatestPort = pt = visitPrt(_p_->u.streamy_.prt_1);
 	bs = visitLarrow(_p_->u.streamy_.larrow_);
 	LatestSrcPort = visitPrt(_p_->u.streamy_.prt_2);
-	src = visitProc(_p_->u.streamy_.proc_);
+	lastProc = src = visitProc(_p_->u.streamy_.proc_);
 	linkPort(src, LatestSrcPort);
 	SetSource(src);
 	linkPort(snk, pt);
@@ -648,13 +650,15 @@ Stream visitS_tream(S_tream _p_)
 	return s2;
     case is_Streamry:
 	s = visitS_tream(_p_->u.streamry_.s_tream_);
-	snk = visitProc(_p_->u.streamry_.proc_);
+	src = lastProc;
+	lastProc = snk = visitProc(_p_->u.streamry_.proc_);
 	bs = visitRarrow(_p_->u.streamry_.rarrow_);
-	src = s->sink;
 	src_pt = visitPrt(_p_->u.streamry_.prt_1);	/* Source Port */
 	linkPort(src, src_pt);
 	SetSource(src);
 	pt = visitPrt(_p_->u.streamry_.prt_2);	/* Sink Port */
+	pt->id = fixId(pt->id);
+	snk->port =pt;
 	SetSink(snk);
 	s2 = MakeStream(type, src, snk, bs, net_model, src_pt, pt, iptype_save);
 	iptype_save="";
