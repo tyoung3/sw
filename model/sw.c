@@ -651,6 +651,7 @@ Stream visitS_tream(S_tream _p_)
 	lastProc = snk = visitProc(_p_->u.streamry_.proc_);
 	bs 	 = visitRarrow(_p_->u.streamry_.rarrow_);
 	src_pt 	 = visitPrt(_p_->u.streamry_.prt_1);	/* Source Port */
+	src_pt->id = fixId(src_pt->id);
 	linkPort(src, src_pt);
 	SetSource(src);
 	pt 	 = visitPrt(_p_->u.streamry_.prt_2);	/* Sink Port */
@@ -1751,6 +1752,17 @@ static void SortPorts(Process p)
     }
 }
 
+int typesDontMatch( char *s1, char *s2) {
+	if( s1 == NULL) 
+		return 0;
+	if( s2 == NULL) 
+		return 0;
+	if(strcmp(s1,s2) == 0 ) 
+		return 0;
+			
+	return 1;			
+}
+
 /** Create a new stream structure. */
 static void createStream(Model m, Extport ep, Extport ep2)
 {
@@ -1776,7 +1788,9 @@ static void createStream(Model m, Extport ep, Extport ep2)
 	}
     }
 
-
+    if(typesDontMatch(ep->iptype, ep2->iptype)) {
+    	FAIL(createStream, "Type mismatch"); 
+    }
     s = MakeStream(IS_NET, ep->source, ep2->sink,
 		   MAX(ep->bufsz, ep2->bufsz), m, srcpt, snkpt, ep2->iptype);
 	
