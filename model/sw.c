@@ -1466,6 +1466,16 @@ static void fixStream(Stream s2)
 
 }
 
+static int typeOK( char *s1, char *s2) { 
+	if( s1 == NULL) 
+		return 1;
+	if( s2 == NULL) 
+		return 1;
+	if(strcmp(s1,s2) == 0 ) 
+		return 1;	
+	
+	return 0;
+}
 			/** Fix Fan in */
 static void fixFan2(Model m, Process p, Port pt0, Port pt)
 {
@@ -1480,8 +1490,9 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
        
     /*              AFTER
        (A)id <- 2(_ sw.Join);  [ s0 pt0 ptn]  
-       (j)0  <- y(C);           [ s1 pt1   ] 
-       (j)1  <- x(B);           [ s2 pt2    ]  */
+       (j)1  <- x(B);          [ s2 pt2   ]  
+       (j)0  <- y(C);          [ s1 pt1   ] 
+    */
        
     c = MakeComponent("Join", "stdPackage");
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
@@ -1493,6 +1504,16 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
 
     s1 = pt->stream;
     s0 = pt0->stream;
+    
+    if(! typeOK(s0->iptype, s1->iptype)) {
+	sprintf(fbfr,
+		"Type Mismatch for (%s) -%s>  and (%s) -%s>\n",
+		s0->source->name,
+		s0->iptype,
+		s1->source->name,
+		s1->iptype );
+    	FAIL(fixFan2, fbfr); 
+    }
 
     s2 = MakeStream(IS_NET, pt0->stream->source, j,
 		    pt0->stream->bufsz, m, pt0, pt, pt0->stream->iptype);
@@ -1752,17 +1773,6 @@ static void SortPorts(Process p)
     }
 }
 
-int typesDontMatch( char *s1, char *s2) {
-	if( s1 == NULL) 
-		return 0;
-	if( s2 == NULL) 
-		return 0;
-	if(strcmp(s1,s2) == 0 ) 
-		return 0;
-			
-	return 1;			
-}
-
 /** Create a new stream structure. */
 static void createStream(Model m, Extport ep, Extport ep2)
 {
@@ -1788,9 +1798,18 @@ static void createStream(Model m, Extport ep, Extport ep2)
 	}
     }
 
-    if(typesDontMatch(ep->iptype, ep2->iptype)) {
-    	FAIL(createStream, "Type mismatch"); 
-    }
+    if(! typeOK(ep->iptype, ep2->iptype)) {
+        char fbfr[100];
+        
+	sprintf(fbfr,
+		"Type Mismatch for (%s) -%s>  and (%s) -%s>\n",
+		ep->name,
+		ep->iptype,
+		ep2->name,
+		ep2->iptype );
+    	FAIL(createStream, fbfr); 
+    } 
+    
     s = MakeStream(IS_NET, ep->source, ep2->sink,
 		   MAX(ep->bufsz, ep2->bufsz), m, srcpt, snkpt, ep2->iptype);
 	
@@ -1956,6 +1975,7 @@ Model visitValidSW(ValidSW _p_)  {
     visitListStm(_p_->u.valid_.liststm_);	/* Visit the root of the parse tree to begin.    */
     fixFanInOut(net_model);			/* Insert Join and Split processes as necessary. */
     expandSubnets(net_model);   
+    fixFanInOut(net_model);  
     autolink(net_model);			/* Connect orphan ports.  			 */
     removeDeadStreams(net_model);	        /* Some streams could have all subnet components.*/
     FreeExpandedProcesses(&fl);                 /* Need to remove dead streams first. 		 */

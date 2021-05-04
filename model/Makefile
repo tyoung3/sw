@@ -1,7 +1,7 @@
 CC = gcc
 
 PGM = ../bin/sw
-CCFLAGS = -g -W -Wall
+CCFLAGS = --static -g -pg -W -Wall
 
 VERSION = \"0.12.2\"
 
