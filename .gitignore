@@ -16,7 +16,7 @@ project/ex1/
 project/test/
 
 
-Absyn.?
+#Absyn.?
 AbsynLexer.c
 bnfc/SW.pdf	
 .gdbinit
