@@ -651,6 +651,7 @@ Stream visitS_tream(S_tream _p_)
 	lastProc = snk = visitProc(_p_->u.streamry_.proc_);
 	bs 	 = visitRarrow(_p_->u.streamry_.rarrow_);
 	src_pt 	 = visitPrt(_p_->u.streamry_.prt_1);	/* Source Port */
+	src_pt->id = fixId(src_pt->id);
 	linkPort(src, src_pt);
 	SetSource(src);
 	pt 	 = visitPrt(_p_->u.streamry_.prt_2);	/* Sink Port */
@@ -1144,6 +1145,31 @@ static int CheckDepth(int d)
     return d + 1;
 }
 
+static int typeOK( char *s1, char *s2) { 
+	if( s1 == NULL || *s1 == 0) 
+		return 1;
+	if( s2 == NULL || *s2 == 0) 
+		return 1;
+	if(strcmp(s1,s2) == 0 ) 
+		return 1;	
+	
+	return 0;
+}
+
+static void checkIPtype(char *msg, char *srcType, char *snkType, char *srcName, char *snkName) {
+    
+    if(! typeOK(srcType, snkType)) {
+	sprintf(fbfr,
+		"%s: Type Mismatch for (%s) -%s>  and (%s) -%s>\n",
+		msg,
+		srcName, 
+		srcType,
+		snkName,
+		snkType);
+    	FAIL(msg, fbfr);
+    }
+}
+
 /** Expand a subnet*/
 static void Expand2(Model m, Process p, Stream s)
 {
@@ -1260,7 +1286,8 @@ static void Expand3(Model m, Process p, Extport ep)
 		    s->source = pnew;
 		    if (ep->bufsz > s->bufsz)
 			s->bufsz = ep->bufsz;
-		    if( (ep->iptype) != NULL )	
+		    checkIPtype("Expand3A", ep->iptype, s->iptype,s->source->name,ep->name); 	
+		    if( ( ep->iptype && ep->iptype[0]) != 0 )	
 			    s->iptype = ep->iptype;	
 		    pnew->nportsOut++;
 		    pnew->depth = p->depth + 1;
@@ -1294,7 +1321,8 @@ static void Expand3(Model m, Process p, Extport ep)
 		    s->sink = pnew;
 		    if (ep->bufsz > s->bufsz)
 			s->bufsz = ep->bufsz;
-		    if( (ep->iptype) != NULL )	
+		    checkIPtype("Expand3B",s->iptype, ep->iptype,s->source->name,ep->name); 	
+		    if( (ep->iptype && ep->iptype[0]) != 0 )	
 		     	s->iptype = ep->iptype;	
 		    pnew->nportsIn++;
 		    ptc = copyPort(pt);
@@ -1464,7 +1492,6 @@ static void fixStream(Stream s2)
 
 
 }
-
 			/** Fix Fan in */
 static void fixFan2(Model m, Process p, Port pt0, Port pt)
 {
@@ -1479,8 +1506,9 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
        
     /*              AFTER
        (A)id <- 2(_ sw.Join);  [ s0 pt0 ptn]  
-       (j)0  <- y(C);           [ s1 pt1   ] 
-       (j)1  <- x(B);           [ s2 pt2    ]  */
+       (j)1  <- x(B);          [ s2 pt2   ]  
+       (j)0  <- y(C);          [ s1 pt1   ] 
+    */
        
     c = MakeComponent("Join", "stdPackage");
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
@@ -1493,6 +1521,14 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
     s1 = pt->stream;
     s0 = pt0->stream;
 
+    checkIPtype("FixFan2", s0->iptype, s1->iptype, s0->source->name, s1->source->name );     
+    
+    if(s0->iptype == NULL || s0->iptype[0] == 0)
+    	s0->iptype = s1->iptype;
+    	
+    if(s1->iptype == NULL || s1->iptype[0] == 0) 
+       s1->iptype = s0->iptype;	
+
     s2 = MakeStream(IS_NET, pt0->stream->source, j,
 		    pt0->stream->bufsz, m, pt0, pt, pt0->stream->iptype);
     s2->SourcePort = s0->SourcePort;
@@ -1502,7 +1538,6 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
     s0->SourcePort->stream = s0;
     s0->source_id = ptn->id;
     ptn->stream = s0;
-
 
     s2->sink_id = 1;
     assert(s0->SinkPort->stream == s0);
@@ -1564,26 +1599,33 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
     /*              BEFORE 
        (B)x <- id(A);  [ s0 pt0]
        (C)y <- id(A);  [ s1 pt ]  */
+    /*              AFTER
+       (B)x <-  1(j);  [ s0 pt0]  
+       (C)y <-  2(j;   [ s1    ] 
+       (j)0 <- id(A);  [ s2    ]  */
+
     c = MakeComponent("Split", stdPackage);
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
-    /*              AFTER
-       (B)x <-  1(j);  [ s0 pt0]  
-       (C)y <-  2(j;        [ s1    ] 
-       (j)0 <- id(A);  [ s2    ]  */
-
 
     pt1 = MakePort(1, "");
     pt2 = MakePort(2, "");
     s0 = pt0->stream;
+    s1 = pt->stream;
 
+    checkIPtype("fixFanOut", s0->iptype, s1->iptype, s0->source->name, s1->sink->name); 
+     
+    if(s0->iptype == NULL || s0->iptype[0] == 0) 
+    	s0->iptype = s1->iptype;
+    	 
     s2 = MakeStream(IS_NET, pt0->stream->source, j,
 		    pt0->stream->bufsz, m, pt0, pt, pt0->stream->iptype );
+		    
+    s0->iptype = s1->iptype = s2->iptype ;		    
 
     s2->sink_id = 0;
     s2->source_id = pt0->id;
 
-    s1 = pt->stream;
     s1->SourcePort = pt2;
     s1->source = j;
     s1->source_id = 2;
@@ -1776,7 +1818,8 @@ static void createStream(Model m, Extport ep, Extport ep2)
 	}
     }
 
-
+    checkIPtype("createStream", ep->iptype, ep2->iptype, ep->name, ep2->name); 
+    
     s = MakeStream(IS_NET, ep->source, ep2->sink,
 		   MAX(ep->bufsz, ep2->bufsz), m, srcpt, snkpt, ep2->iptype);
 	
@@ -1942,6 +1985,7 @@ Model visitValidSW(ValidSW _p_)  {
     visitListStm(_p_->u.valid_.liststm_);	/* Visit the root of the parse tree to begin.    */
     fixFanInOut(net_model);			/* Insert Join and Split processes as necessary. */
     expandSubnets(net_model);   
+    fixFanInOut(net_model);  
     autolink(net_model);			/* Connect orphan ports.  			 */
     removeDeadStreams(net_model);	        /* Some streams could have all subnet components.*/
     FreeExpandedProcesses(&fl);                 /* Need to remove dead streams first. 		 */

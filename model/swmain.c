@@ -58,7 +58,7 @@ static int badProc(Process p)
 			p->name, i);
 		FAIL(badProc, fbfr);
 	    }
-	    if (port->id != i) {
+	    if (port->id > i) {
 		sprintf(fbfr,
 			"(%s) port[%i] is %i, should be = %i.\n",
 			p->name, i, port->id, i);

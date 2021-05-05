@@ -294,9 +294,9 @@ genProcs (Process p)
 		  p->comp->path, p->comp->name, p->nportsIn + p->nportsOut);
 	  // genProc (p->name, p->comp->name, p->comp->path, "taos_", p->arg);
 	  genProc1 (p, "taos_");
+#ifdef SHOW_PORTS	
 	  Port pt;
 	  pt = p->port;
-#ifdef SHOW_PORTS	
 	  printf ("|{");
 	  do
 	    {
