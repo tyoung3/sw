@@ -21,6 +21,8 @@ Name
          StreamWork - a flow based program(FBP) Go language framework and code generator.
          
 
+[![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
+
 Description
 -----------
 
