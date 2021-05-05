@@ -29,7 +29,7 @@ model/swconfigx.c
 model/tests/n6.sw
 model/tests/x1.sw
 model/tests/mashup.sw
-Parser.?
+#Parser.?
 Printer.?
 Skeleton.?
 tags
