@@ -37,7 +37,7 @@ tags
 *.bak
 *.dot
 *.dvi
-*.l
+#*.l
 *.log
 *.o
 *.OLD
