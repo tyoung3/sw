@@ -4,10 +4,10 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
 You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+     http://www.apache.org/licenses/LICENSE-2.0[![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
+distributed under the License is distributed on an "AS IS" BASIS,[![CodeQL](https://github.com/tyoung3/sw/actions/wo[![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)rkflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
@@ -15,12 +15,11 @@ limitations under the License.
 SW-0.12.2 - STREAMWORK
 ======================
 
-Name
-----
-
-         StreamWork - a flow based program(FBP) Go language framework and code generator.
+StreamWork
+==========
          
-
+   Flow based program(FBP) Go language framework and code generator.
+         
 [![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
 
 Description
