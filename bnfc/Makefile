@@ -27,7 +27,7 @@ SW.tex:  SW.cf
 	
 SW.pdf:	SW.tex
 #	( pdftex ../bnfc/SW.tex; echo  )
-	( pdftex SW.tex || echo )	
+	( pdflatex SW.tex || echo )	
 		
 Skeleton.c: SW.cf
 	bnfc  --c SW.cf
