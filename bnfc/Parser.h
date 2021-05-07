@@ -39,7 +39,7 @@ typedef union
   Numval numval_;
   Stringval stringval_;
   Symval symval_;
-  ValidCFG validcfg_;
+  ValidConfig validconfig_;
   Entry entry_;
   ListEntry listentry_;
   KeyVal keyval_;
@@ -86,8 +86,8 @@ Valide  pValide(FILE *inp);
 Valide psValide(const char *str);
 ValidSW  pValidSW(FILE *inp);
 ValidSW psValidSW(const char *str);
-ValidCFG  pValidCFG(FILE *inp);
-ValidCFG psValidCFG(const char *str);
+ValidConfig  pValidConfig(FILE *inp);
+ValidConfig psValidConfig(const char *str);
 
 
 #endif

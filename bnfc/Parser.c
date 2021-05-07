@@ -91,7 +91,7 @@ extern void yyerror(const char *str);
 
 Valide YY_RESULT_Valide_ = 0;
 ValidSW YY_RESULT_ValidSW_ = 0;
-ValidCFG YY_RESULT_ValidCFG_ = 0;
+ValidConfig YY_RESULT_ValidConfig_ = 0;
 
 Valide pValide(FILE *inp)
 {
@@ -153,7 +153,7 @@ ValidSW psValidSW(const char *str)
   }
 }
 
-ValidCFG pValidCFG(FILE *inp)
+ValidConfig pValidConfig(FILE *inp)
 {
   SW_init_lexer(inp);
   int result = yyparse();
@@ -163,10 +163,10 @@ ValidCFG pValidCFG(FILE *inp)
   }
   else
   { /* Success */
-    return YY_RESULT_ValidCFG_;
+    return YY_RESULT_ValidConfig_;
   }
 }
-ValidCFG psValidCFG(const char *str)
+ValidConfig psValidConfig(const char *str)
 {
   YY_BUFFER_STATE buf;
   SW_init_lexer(0);
@@ -179,7 +179,7 @@ ValidCFG psValidCFG(const char *str)
   }
   else
   { /* Success */
-    return YY_RESULT_ValidCFG_;
+    return YY_RESULT_ValidConfig_;
   }
 }
 
@@ -349,7 +349,7 @@ union YYSTYPE
   Numval numval_;
   Stringval stringval_;
   Symval symval_;
-  ValidCFG validcfg_;
+  ValidConfig validconfig_;
   Entry entry_;
   ListEntry listentry_;
   KeyVal keyval_;
@@ -448,7 +448,7 @@ enum yysymbol_kind_t
   YYSYMBOL_Numval = 57,                    /* Numval  */
   YYSYMBOL_Stringval = 58,                 /* Stringval  */
   YYSYMBOL_Symval = 59,                    /* Symval  */
-  YYSYMBOL_ValidCFG = 60,                  /* ValidCFG  */
+  YYSYMBOL_ValidConfig = 60,               /* ValidConfig  */
   YYSYMBOL_Entry = 61,                     /* Entry  */
   YYSYMBOL_ListEntry = 62,                 /* ListEntry  */
   YYSYMBOL_KeyVal = 63,                    /* KeyVal  */
@@ -858,7 +858,7 @@ static const char *const yytname[] =
   "ListSubnet", "ExtPortIn", "ExtPortOut", "Tab", "DataFlow", "Larrow",
   "Rarrow", "TypeDef", "Buffsize", "Hermt", "Symvalu", "Proc", "Prt",
   "Comp", "ModPath", "RemPath", "Argument", "ListArgument", "Numassgn",
-  "Strassgn", "SymAssgn", "Numval", "Stringval", "Symval", "ValidCFG",
+  "Strassgn", "SymAssgn", "Numval", "Stringval", "Symval", "ValidConfig",
   "Entry", "ListEntry", "KeyVal", "KeyName", YY_NULLPTR
 };
 
@@ -1599,9 +1599,9 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* Valide: ValidCFG  */
+  case 2: /* Valide: ValidConfig  */
 #line 276 "SW.y"
-                  { (yyval.valide_) = make_CFGvalid((yyvsp[0].validcfg_)); YY_RESULT_Valide_= (yyval.valide_); }
+                     { (yyval.valide_) = make_CFGvalid((yyvsp[0].validconfig_)); YY_RESULT_Valide_= (yyval.valide_); }
 #line 1606 "Parser.c"
     break;
 
@@ -2001,15 +2001,15 @@ yyreduce:
 #line 2002 "Parser.c"
     break;
 
-  case 69: /* ValidCFG: _SYMB_12 ListEntry  */
+  case 69: /* ValidConfig: _SYMB_12 ListEntry  */
 #line 373 "SW.y"
-                              { (yyval.validcfg_) = make_Validcfg(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidCFG_= (yyval.validcfg_); }
+                                 { (yyval.validconfig_) = make_Validcfg(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidConfig_= (yyval.validconfig_); }
 #line 2008 "Parser.c"
     break;
 
-  case 70: /* ValidCFG: _SYMB_13 ListEntry  */
+  case 70: /* ValidConfig: _SYMB_13 ListEntry  */
 #line 374 "SW.y"
-                       { (yyval.validcfg_) = make_Validcfgd(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidCFG_= (yyval.validcfg_); }
+                       { (yyval.validconfig_) = make_Validcfgd(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidConfig_= (yyval.validconfig_); }
 #line 2014 "Parser.c"
     break;
 

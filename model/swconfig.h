@@ -57,7 +57,7 @@ struct cfg_ {
 	/* swconfig.c prototypes */
 String 	visitSymval(Symval _p_);
 int 	ConfigError(String s);  /* Process configuration file */
-void 	visitValidCFG(ValidCFG p);
+void 	visitValidConfig(ValidConfig p);
 Ident 	visitIdent1(Ident i);
 int   	visitInteger1(Integer i);
 String  visitModPath(ModPath p);

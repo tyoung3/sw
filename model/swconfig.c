@@ -140,7 +140,7 @@ void visitListEntry(ListEntry listentry)
     listentry = listentry->listentry_;
   }
 }
-void visitValidCFG(ValidCFG _p_)
+void visitValidConfig(ValidConfig _p_)
 {
     visitListEntry(_p_->u.validcfg_.listentry_);
 }
@@ -169,7 +169,7 @@ int match(const char *string, const char *pattern)
 
 /** Parse config file, validate, and set cfg struct */
 int ConfigError(String s) {
-  ValidCFG parse_tree;
+  ValidConfig parse_tree;
   FILE *file;
 
   file = fopen(s, "rb");
@@ -178,9 +178,9 @@ int ConfigError(String s) {
 	return 0;  /** Missing config file is OK */
   }
   
-  parse_tree = pValidCFG(file);
+  parse_tree = pValidConfig(file);
   if (parse_tree) { 
-	visitValidCFG(parse_tree);
+	visitValidConfig(parse_tree);
   } else {
 	fprintf(stderr,"Config file: \'%s\'  parse error.\n", s);
 	return 1;

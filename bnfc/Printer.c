@@ -102,11 +102,11 @@ char *printValidSW(ValidSW p)
   ppValidSW(p, 0);
   return buf_;
 }
-char *printValidCFG(ValidCFG p)
+char *printValidConfig(ValidConfig p)
 {
   _n_ = 0;
   bufReset();
-  ppValidCFG(p, 0);
+  ppValidConfig(p, 0);
   return buf_;
 }
 char *showValide(Valide p)
@@ -123,11 +123,11 @@ char *showValidSW(ValidSW p)
   shValidSW(p);
   return buf_;
 }
-char *showValidCFG(ValidCFG p)
+char *showValidConfig(ValidConfig p)
 {
   _n_ = 0;
   bufReset();
-  shValidCFG(p);
+  shValidConfig(p);
   return buf_;
 }
 void ppValide(Valide p, int _i_)
@@ -136,7 +136,7 @@ void ppValide(Valide p, int _i_)
   {
   case is_CFGvalid:
     if (_i_ > 0) renderC(_L_PAREN);
-    ppValidCFG(p->u.cfgvalid_.validcfg_, 0);
+    ppValidConfig(p->u.cfgvalid_.validconfig_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -972,7 +972,7 @@ void ppSymval(Symval p, int _i_)
   }
 }
 
-void ppValidCFG(ValidCFG p, int _i_)
+void ppValidConfig(ValidConfig p, int _i_)
 {
   switch(p->kind)
   {
@@ -994,7 +994,7 @@ void ppValidCFG(ValidCFG p, int _i_)
 
 
   default:
-    fprintf(stderr, "Error: bad kind field when printing ValidCFG!\n");
+    fprintf(stderr, "Error: bad kind field when printing ValidConfig!\n");
     exit(1);
   }
 }
@@ -1194,7 +1194,7 @@ void shValide(Valide p)
 
     bufAppendC(' ');
 
-    shValidCFG(p->u.cfgvalid_.validcfg_);
+    shValidConfig(p->u.cfgvalid_.validconfig_);
 
     bufAppendC(')');
 
@@ -2346,7 +2346,7 @@ void shSymval(Symval p)
   }
 }
 
-void shValidCFG(ValidCFG p)
+void shValidConfig(ValidConfig p)
 {
   switch(p->kind)
   {
@@ -2376,7 +2376,7 @@ void shValidCFG(ValidCFG p)
     break;
 
   default:
-    fprintf(stderr, "Error: bad kind field when showing ValidCFG!\n");
+    fprintf(stderr, "Error: bad kind field when showing ValidConfig!\n");
     exit(1);
   }
 }

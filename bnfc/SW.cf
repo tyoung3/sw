@@ -1,9 +1,9 @@
 --  SW.cf  
 --              StreamWork prototype network definition language
 
-entrypoints		Valide, ValidSW, ValidCFG    ; 
+entrypoints		Valide, ValidSW, ValidConfig    ; 
 
-CFGvalid.		Valide 		::= ValidCFG ;	
+CFGvalid.		Valide 		::= ValidConfig;	
 SWvalid.	 	Valide 		::= ValidSW  ;
 
 Valid.			ValidSW 	::= [Stm]    ;
@@ -105,8 +105,8 @@ token   ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Le
 	 
 ----------------------  StreamWork YAML Configuration Interpreter  ----------------------
 
-Validcfg.	 	ValidCFG ::= "StreamWork:" [Entry] ;
-Validcfgd.		ValidCFG ::= "---" [Entry]	   ;
+Validcfg.	 	ValidConfig ::= "StreamWork:" [Entry] ;
+Validcfgd.		ValidConfig ::= "---" [Entry]	   ;
 
 CfgEntrya.		Entry	 ::= KeyVal		;
 CfgEntryb.		Entry	 ::= KeyName		;

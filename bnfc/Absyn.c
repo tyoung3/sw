@@ -6,7 +6,7 @@
 
 
 /********************   CFGvalid    ********************/
-Valide make_CFGvalid(ValidCFG p1)
+Valide make_CFGvalid(ValidConfig p1)
 {
     Valide tmp = (Valide) malloc(sizeof(*tmp));
     if (!tmp)
@@ -15,7 +15,7 @@ Valide make_CFGvalid(ValidCFG p1)
         exit(1);
     }
     tmp->kind = is_CFGvalid;
-    tmp->u.cfgvalid_.validcfg_ = p1;
+    tmp->u.cfgvalid_.validconfig_ = p1;
     return tmp;
 }
 /********************   SWvalid    ********************/
@@ -849,9 +849,9 @@ Symval make_SymVale(Envar p1)
     tmp->u.symvale_.envar_ = p1;
     return tmp;
 }/********************   Validcfg    ********************/
-ValidCFG make_Validcfg(ListEntry p1)
+ValidConfig make_Validcfg(ListEntry p1)
 {
-    ValidCFG tmp = (ValidCFG) malloc(sizeof(*tmp));
+    ValidConfig tmp = (ValidConfig) malloc(sizeof(*tmp));
     if (!tmp)
     {
         fprintf(stderr, "Error: out of memory when allocating Validcfg!\n");
@@ -862,9 +862,9 @@ ValidCFG make_Validcfg(ListEntry p1)
     return tmp;
 }
 /********************   Validcfgd    ********************/
-ValidCFG make_Validcfgd(ListEntry p1)
+ValidConfig make_Validcfgd(ListEntry p1)
 {
-    ValidCFG tmp = (ValidCFG) malloc(sizeof(*tmp));
+    ValidConfig tmp = (ValidConfig) malloc(sizeof(*tmp));
     if (!tmp)
     {
         fprintf(stderr, "Error: out of memory when allocating Validcfgd!\n");

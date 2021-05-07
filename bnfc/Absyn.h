@@ -83,8 +83,8 @@ struct Stringval_;
 typedef struct Stringval_ *Stringval;
 struct Symval_;
 typedef struct Symval_ *Symval;
-struct ValidCFG_;
-typedef struct ValidCFG_ *ValidCFG;
+struct ValidConfig_;
+typedef struct ValidConfig_ *ValidConfig;
 struct Entry_;
 typedef struct Entry_ *Entry;
 struct KeyVal_;
@@ -101,12 +101,12 @@ struct Valide_
   enum { is_CFGvalid, is_SWvalid } kind;
   union
   {
-    struct { ValidCFG validcfg_; } cfgvalid_;
+    struct { ValidConfig validconfig_; } cfgvalid_;
     struct { ValidSW validsw_; } swvalid_;
   } u;
 };
 
-Valide make_CFGvalid(ValidCFG p0);
+Valide make_CFGvalid(ValidConfig p0);
 Valide make_SWvalid(ValidSW p0);
 
 struct ValidSW_
@@ -504,7 +504,7 @@ Symval make_Symvalv(Symvar p0);
 Symval make_Symvali(Id p0);
 Symval make_SymVale(Envar p0);
 
-struct ValidCFG_
+struct ValidConfig_
 {
 
   enum { is_Validcfg, is_Validcfgd } kind;
@@ -515,8 +515,8 @@ struct ValidCFG_
   } u;
 };
 
-ValidCFG make_Validcfg(ListEntry p0);
-ValidCFG make_Validcfgd(ListEntry p0);
+ValidConfig make_Validcfg(ListEntry p0);
+ValidConfig make_Validcfgd(ListEntry p0);
 
 struct Entry_
 {

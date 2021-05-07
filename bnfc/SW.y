@@ -15,7 +15,7 @@ extern void yyerror(const char *str);
 
 Valide YY_RESULT_Valide_ = 0;
 ValidSW YY_RESULT_ValidSW_ = 0;
-ValidCFG YY_RESULT_ValidCFG_ = 0;
+ValidConfig YY_RESULT_ValidConfig_ = 0;
 
 Valide pValide(FILE *inp)
 {
@@ -77,7 +77,7 @@ ValidSW psValidSW(const char *str)
   }
 }
 
-ValidCFG pValidCFG(FILE *inp)
+ValidConfig pValidConfig(FILE *inp)
 {
   SW_init_lexer(inp);
   int result = yyparse();
@@ -87,10 +87,10 @@ ValidCFG pValidCFG(FILE *inp)
   }
   else
   { /* Success */
-    return YY_RESULT_ValidCFG_;
+    return YY_RESULT_ValidConfig_;
   }
 }
-ValidCFG psValidCFG(const char *str)
+ValidConfig psValidConfig(const char *str)
 {
   YY_BUFFER_STATE buf;
   SW_init_lexer(0);
@@ -103,7 +103,7 @@ ValidCFG psValidCFG(const char *str)
   }
   else
   { /* Success */
-    return YY_RESULT_ValidCFG_;
+    return YY_RESULT_ValidConfig_;
   }
 }
 
@@ -199,7 +199,7 @@ ListEntry reverseListEntry(ListEntry l)
   Numval numval_;
   Stringval stringval_;
   Symval symval_;
-  ValidCFG validcfg_;
+  ValidConfig validconfig_;
   Entry entry_;
   ListEntry listentry_;
   KeyVal keyval_;
@@ -262,7 +262,7 @@ ListEntry reverseListEntry(ListEntry l)
 %type <numval_> Numval
 %type <stringval_> Stringval
 %type <symval_> Symval
-%type <validcfg_> ValidCFG
+%type <validconfig_> ValidConfig
 %type <entry_> Entry
 %type <listentry_> ListEntry
 %type <keyval_> KeyVal
@@ -273,7 +273,7 @@ ListEntry reverseListEntry(ListEntry l)
 
 %start Valide
 %%
-Valide : ValidCFG { $$ = make_CFGvalid($1); YY_RESULT_Valide_= $$; }
+Valide : ValidConfig { $$ = make_CFGvalid($1); YY_RESULT_Valide_= $$; }
   | ValidSW { $$ = make_SWvalid($1); YY_RESULT_Valide_= $$; }
 ;
 ValidSW : ListStm { $$ = make_Valid(reverseListStm($1)); YY_RESULT_ValidSW_= $$; }
@@ -370,8 +370,8 @@ Symval : _SYMB_18 { $$ = make_Symvalv($1);  }
   | _SYMB_20 { $$ = make_Symvali($1);  }
   | _SYMB_17 { $$ = make_SymVale($1);  }
 ;
-ValidCFG : _SYMB_12 ListEntry { $$ = make_Validcfg(reverseListEntry($2)); YY_RESULT_ValidCFG_= $$; }
-  | _SYMB_13 ListEntry { $$ = make_Validcfgd(reverseListEntry($2)); YY_RESULT_ValidCFG_= $$; }
+ValidConfig : _SYMB_12 ListEntry { $$ = make_Validcfg(reverseListEntry($2)); YY_RESULT_ValidConfig_= $$; }
+  | _SYMB_13 ListEntry { $$ = make_Validcfgd(reverseListEntry($2)); YY_RESULT_ValidConfig_= $$; }
 ;
 Entry : KeyVal { $$ = make_CfgEntrya($1);  }
   | KeyName { $$ = make_CfgEntryb($1);  }

@@ -19,7 +19,7 @@ void backup(void);
 
 char *printValide(Valide p);
 char *printValidSW(ValidSW p);
-char *printValidCFG(ValidCFG p);
+char *printValidConfig(ValidConfig p);
 
 void ppValide(Valide p, int i);
 void ppValidSW(ValidSW p, int i);
@@ -51,7 +51,7 @@ void ppSymAssgn(SymAssgn p, int i);
 void ppNumval(Numval p, int i);
 void ppStringval(Stringval p, int i);
 void ppSymval(Symval p, int i);
-void ppValidCFG(ValidCFG p, int i);
+void ppValidConfig(ValidConfig p, int i);
 void ppEntry(Entry p, int i);
 void ppListEntry(ListEntry p, int i);
 void ppKeyVal(KeyVal p, int i);
@@ -59,7 +59,7 @@ void ppKeyName(KeyName p, int i);
 
 char *showValide(Valide p);
 char *showValidSW(ValidSW p);
-char *showValidCFG(ValidCFG p);
+char *showValidConfig(ValidConfig p);
 
 void shValide(Valide p);
 void shValidSW(ValidSW p);
@@ -91,7 +91,7 @@ void shSymAssgn(SymAssgn p);
 void shNumval(Numval p);
 void shStringval(Stringval p);
 void shSymval(Symval p);
-void shValidCFG(ValidCFG p);
+void shValidConfig(ValidConfig p);
 void shEntry(Entry p);
 void shListEntry(ListEntry p);
 void shKeyVal(KeyVal p);
