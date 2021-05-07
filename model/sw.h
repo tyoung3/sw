@@ -38,7 +38,7 @@ void 	visitDouble(Double d);			/**<Get Double ?*/
 void 	visitChar(Char c);			/**<Get a char */
 void	visitStm(Stm p);			/**<Get next Statement*/
 void 	visitListStm(ListStm p);		/**<Get list of statements*/
-Stream	visitS_tream(S_tream p);		/**<Get next stream*/
+Stream	visitDataFlow(DataFlow p);		/**<Get next stream*/
 Process visitProc(Proc p);			/**<Get Process*/
 Port    visitPrt(Prt p);			/**<Get Port*/
 Component visitComp(Comp p);			/**<Get Component*/

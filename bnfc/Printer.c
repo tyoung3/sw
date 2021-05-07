@@ -179,7 +179,7 @@ void ppStm(Stm p, int _i_)
   {
   case is_Stmx:
     if (_i_ > 0) renderC(_L_PAREN);
-    ppS_tream(p->u.stmx_.s_tream_, 0);
+    ppDataFlow(p->u.stmx_.dataflow_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -279,7 +279,7 @@ void ppSubnet(Subnet p, int _i_)
 
   case is_Snets:
     if (_i_ > 0) renderC(_L_PAREN);
-    ppS_tream(p->u.snets_.s_tream_, 0);
+    ppDataFlow(p->u.snets_.dataflow_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -411,7 +411,7 @@ void ppTab(Tab p, int _i_)
   }
 }
 
-void ppS_tream(S_tream p, int _i_)
+void ppDataFlow(DataFlow p, int _i_)
 {
   switch(p->kind)
   {
@@ -439,7 +439,7 @@ void ppS_tream(S_tream p, int _i_)
 
   case is_Streamy:
     if (_i_ > 0) renderC(_L_PAREN);
-    ppS_tream(p->u.streamy_.s_tream_, 0);
+    ppDataFlow(p->u.streamy_.dataflow_, 0);
     ppPrt(p->u.streamy_.prt_1, 0);
     ppLarrow(p->u.streamy_.larrow_, 0);
     ppPrt(p->u.streamy_.prt_2, 0);
@@ -450,7 +450,7 @@ void ppS_tream(S_tream p, int _i_)
 
   case is_Streamry:
     if (_i_ > 0) renderC(_L_PAREN);
-    ppS_tream(p->u.streamry_.s_tream_, 0);
+    ppDataFlow(p->u.streamry_.dataflow_, 0);
     ppPrt(p->u.streamry_.prt_1, 0);
     ppRarrow(p->u.streamry_.rarrow_, 0);
     ppPrt(p->u.streamry_.prt_2, 0);
@@ -461,7 +461,7 @@ void ppS_tream(S_tream p, int _i_)
 
 
   default:
-    fprintf(stderr, "Error: bad kind field when printing S_tream!\n");
+    fprintf(stderr, "Error: bad kind field when printing DataFlow!\n");
     exit(1);
   }
 }
@@ -1252,7 +1252,7 @@ void shStm(Stm p)
 
     bufAppendC(' ');
 
-    shS_tream(p->u.stmx_.s_tream_);
+    shDataFlow(p->u.stmx_.dataflow_);
 
     bufAppendC(')');
 
@@ -1392,7 +1392,7 @@ void shSubnet(Subnet p)
 
     bufAppendC(' ');
 
-    shS_tream(p->u.snets_.s_tream_);
+    shDataFlow(p->u.snets_.dataflow_);
 
     bufAppendC(')');
 
@@ -1577,7 +1577,7 @@ void shTab(Tab p)
   }
 }
 
-void shS_tream(S_tream p)
+void shDataFlow(DataFlow p)
 {
   switch(p->kind)
   {
@@ -1628,7 +1628,7 @@ void shS_tream(S_tream p)
 
     bufAppendC(' ');
 
-    shS_tream(p->u.streamy_.s_tream_);
+    shDataFlow(p->u.streamy_.dataflow_);
   bufAppendC(' ');
     shPrt(p->u.streamy_.prt_1);
   bufAppendC(' ');
@@ -1648,7 +1648,7 @@ void shS_tream(S_tream p)
 
     bufAppendC(' ');
 
-    shS_tream(p->u.streamry_.s_tream_);
+    shDataFlow(p->u.streamry_.dataflow_);
   bufAppendC(' ');
     shPrt(p->u.streamry_.prt_1);
   bufAppendC(' ');
@@ -1663,7 +1663,7 @@ void shS_tream(S_tream p)
     break;
 
   default:
-    fprintf(stderr, "Error: bad kind field when showing S_tream!\n");
+    fprintf(stderr, "Error: bad kind field when showing DataFlow!\n");
     exit(1);
   }
 }

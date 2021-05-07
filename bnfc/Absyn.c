@@ -43,7 +43,7 @@ ValidSW make_Valid(ListStm p1)
     tmp->u.valid_.liststm_ = p1;
     return tmp;
 }/********************   Stmx    ********************/
-Stm make_Stmx(S_tream p1)
+Stm make_Stmx(DataFlow p1)
 {
     Stm tmp = (Stm) malloc(sizeof(*tmp));
     if (!tmp)
@@ -52,7 +52,7 @@ Stm make_Stmx(S_tream p1)
         exit(1);
     }
     tmp->kind = is_Stmx;
-    tmp->u.stmx_.s_tream_ = p1;
+    tmp->u.stmx_.dataflow_ = p1;
     return tmp;
 }
 /********************   Stmn    ********************/
@@ -158,7 +158,7 @@ Subnet make_Sneth(Hermt p1)
     return tmp;
 }
 /********************   Snets    ********************/
-Subnet make_Snets(S_tream p1)
+Subnet make_Snets(DataFlow p1)
 {
     Subnet tmp = (Subnet) malloc(sizeof(*tmp));
     if (!tmp)
@@ -167,7 +167,7 @@ Subnet make_Snets(S_tream p1)
         exit(1);
     }
     tmp->kind = is_Snets;
-    tmp->u.snets_.s_tream_ = p1;
+    tmp->u.snets_.dataflow_ = p1;
     return tmp;
 }
 /********************   Snetin    ********************/
@@ -295,9 +295,9 @@ Tab make_Tabs(Symval p1)
     tmp->u.tabs_.symval_ = p1;
     return tmp;
 }/********************   Streamx    ********************/
-S_tream make_Streamx(Proc p1, Prt p2, Larrow p3, Prt p4, Proc p5)
+DataFlow make_Streamx(Proc p1, Prt p2, Larrow p3, Prt p4, Proc p5)
 {
-    S_tream tmp = (S_tream) malloc(sizeof(*tmp));
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
     if (!tmp)
     {
         fprintf(stderr, "Error: out of memory when allocating Streamx!\n");
@@ -312,9 +312,9 @@ S_tream make_Streamx(Proc p1, Prt p2, Larrow p3, Prt p4, Proc p5)
     return tmp;
 }
 /********************   Streamrx    ********************/
-S_tream make_Streamrx(Proc p1, Prt p2, Rarrow p3, Prt p4, Proc p5)
+DataFlow make_Streamrx(Proc p1, Prt p2, Rarrow p3, Prt p4, Proc p5)
 {
-    S_tream tmp = (S_tream) malloc(sizeof(*tmp));
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
     if (!tmp)
     {
         fprintf(stderr, "Error: out of memory when allocating Streamrx!\n");
@@ -329,16 +329,16 @@ S_tream make_Streamrx(Proc p1, Prt p2, Rarrow p3, Prt p4, Proc p5)
     return tmp;
 }
 /********************   Streamy    ********************/
-S_tream make_Streamy(S_tream p1, Prt p2, Larrow p3, Prt p4, Proc p5)
+DataFlow make_Streamy(DataFlow p1, Prt p2, Larrow p3, Prt p4, Proc p5)
 {
-    S_tream tmp = (S_tream) malloc(sizeof(*tmp));
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
     if (!tmp)
     {
         fprintf(stderr, "Error: out of memory when allocating Streamy!\n");
         exit(1);
     }
     tmp->kind = is_Streamy;
-    tmp->u.streamy_.s_tream_ = p1;
+    tmp->u.streamy_.dataflow_ = p1;
     tmp->u.streamy_.prt_1 = p2;
     tmp->u.streamy_.larrow_ = p3;
     tmp->u.streamy_.prt_2 = p4;
@@ -346,16 +346,16 @@ S_tream make_Streamy(S_tream p1, Prt p2, Larrow p3, Prt p4, Proc p5)
     return tmp;
 }
 /********************   Streamry    ********************/
-S_tream make_Streamry(S_tream p1, Prt p2, Rarrow p3, Prt p4, Proc p5)
+DataFlow make_Streamry(DataFlow p1, Prt p2, Rarrow p3, Prt p4, Proc p5)
 {
-    S_tream tmp = (S_tream) malloc(sizeof(*tmp));
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
     if (!tmp)
     {
         fprintf(stderr, "Error: out of memory when allocating Streamry!\n");
         exit(1);
     }
     tmp->kind = is_Streamry;
-    tmp->u.streamry_.s_tream_ = p1;
+    tmp->u.streamry_.dataflow_ = p1;
     tmp->u.streamry_.prt_1 = p2;
     tmp->u.streamry_.rarrow_ = p3;
     tmp->u.streamry_.prt_2 = p4;

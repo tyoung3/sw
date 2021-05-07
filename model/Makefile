@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = --static -g -pg -W -Wall
 
-VERSION = \"0.12.2\"
+VERSION = \"0.13.0\"
 
 LATEX = latex
 DVIPS = dvips
@@ -28,14 +28,14 @@ poc:	.phony
 
 .phony:  ${PGM} ../bin/sw.sh
 
-SW.ps: SW.dvi
+SW.ps:	  SW.dvi
 	${DVIPS} SW.dvi -o SW.ps
 	
 SW.dvi: ../bnfc/SW.tex
 	${LATEX} -output-format=dvi ../bnfc/SW.tex
         
 SW.pdf:  ../bnfc/SW.tex
-	( pdftex ../bnfc/SW.tex; echo OK ) 
+	( pdftex -output-format=pdf ../bnfc/SW.tex; echo OK ) 
             
 ../bnfc/Absyn.o: ../bnfc/Absyn.c 
 	make -C ../bnfc

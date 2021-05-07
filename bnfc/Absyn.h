@@ -45,8 +45,8 @@ struct ExtPortOut_;
 typedef struct ExtPortOut_ *ExtPortOut;
 struct Tab_;
 typedef struct Tab_ *Tab;
-struct S_tream_;
-typedef struct S_tream_ *S_tream;
+struct DataFlow_;
+typedef struct DataFlow_ *DataFlow;
 struct Larrow_;
 typedef struct Larrow_ *Larrow;
 struct Rarrow_;
@@ -127,7 +127,7 @@ struct Stm_
   enum { is_Stmx, is_Stmn, is_Stms, is_Stmb, is_Stmh, is_Stmnet } kind;
   union
   {
-    struct { S_tream s_tream_; } stmx_;
+    struct { DataFlow dataflow_; } stmx_;
     struct { Numassgn numassgn_; } stmn_;
     struct { Strassgn strassgn_; } stms_;
     struct { SymAssgn symassgn_; } stmb_;
@@ -136,7 +136,7 @@ struct Stm_
   } u;
 };
 
-Stm make_Stmx(S_tream p0);
+Stm make_Stmx(DataFlow p0);
 Stm make_Stmn(Numassgn p0);
 Stm make_Stms(Strassgn p0);
 Stm make_Stmb(SymAssgn p0);
@@ -169,14 +169,14 @@ struct Subnet_
   union
   {
     struct { Hermt hermt_; } sneth_;
-    struct { S_tream s_tream_; } snets_;
+    struct { DataFlow dataflow_; } snets_;
     struct { ExtPortIn extportin_; } snetin_;
     struct { ExtPortOut extportout_; } snetout_;
   } u;
 };
 
 Subnet make_Sneth(Hermt p0);
-Subnet make_Snets(S_tream p0);
+Subnet make_Snets(DataFlow p0);
 Subnet make_Snetin(ExtPortIn p0);
 Subnet make_Snetout(ExtPortOut p0);
 
@@ -229,7 +229,7 @@ struct Tab_
 Tab make_Tabn(Numval p0);
 Tab make_Tabs(Symval p0);
 
-struct S_tream_
+struct DataFlow_
 {
 
   enum { is_Streamx, is_Streamrx, is_Streamy, is_Streamry } kind;
@@ -237,15 +237,15 @@ struct S_tream_
   {
     struct { Larrow larrow_; Proc proc_1, proc_2; Prt prt_1, prt_2; } streamx_;
     struct { Proc proc_1, proc_2; Prt prt_1, prt_2; Rarrow rarrow_; } streamrx_;
-    struct { Larrow larrow_; Proc proc_; Prt prt_1, prt_2; S_tream s_tream_; } streamy_;
-    struct { Proc proc_; Prt prt_1, prt_2; Rarrow rarrow_; S_tream s_tream_; } streamry_;
+    struct { DataFlow dataflow_; Larrow larrow_; Proc proc_; Prt prt_1, prt_2; } streamy_;
+    struct { DataFlow dataflow_; Proc proc_; Prt prt_1, prt_2; Rarrow rarrow_; } streamry_;
   } u;
 };
 
-S_tream make_Streamx(Proc p0, Prt p1, Larrow p2, Prt p3, Proc p4);
-S_tream make_Streamrx(Proc p0, Prt p1, Rarrow p2, Prt p3, Proc p4);
-S_tream make_Streamy(S_tream p0, Prt p1, Larrow p2, Prt p3, Proc p4);
-S_tream make_Streamry(S_tream p0, Prt p1, Rarrow p2, Prt p3, Proc p4);
+DataFlow make_Streamx(Proc p0, Prt p1, Larrow p2, Prt p3, Proc p4);
+DataFlow make_Streamrx(Proc p0, Prt p1, Rarrow p2, Prt p3, Proc p4);
+DataFlow make_Streamy(DataFlow p0, Prt p1, Larrow p2, Prt p3, Proc p4);
+DataFlow make_Streamry(DataFlow p0, Prt p1, Rarrow p2, Prt p3, Proc p4);
 
 struct Larrow_
 {

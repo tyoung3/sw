@@ -19,7 +19,7 @@ typedef union
   ExtPortIn extportin_;
   ExtPortOut extportout_;
   Tab tab_;
-  S_tream s_tream_;
+  DataFlow dataflow_;
   Larrow larrow_;
   Rarrow rarrow_;
   TypeDef typedef_;

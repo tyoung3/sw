@@ -179,7 +179,7 @@ ListEntry reverseListEntry(ListEntry l)
   ExtPortIn extportin_;
   ExtPortOut extportout_;
   Tab tab_;
-  S_tream s_tream_;
+  DataFlow dataflow_;
   Larrow larrow_;
   Rarrow rarrow_;
   TypeDef typedef_;
@@ -242,7 +242,7 @@ ListEntry reverseListEntry(ListEntry l)
 %type <extportin_> ExtPortIn
 %type <extportout_> ExtPortOut
 %type <tab_> Tab
-%type <s_tream_> S_tream
+%type <dataflow_> DataFlow
 %type <larrow_> Larrow
 %type <rarrow_> Rarrow
 %type <typedef_> TypeDef
@@ -278,7 +278,7 @@ Valide : ValidCFG { $$ = make_CFGvalid($1); YY_RESULT_Valide_= $$; }
 ;
 ValidSW : ListStm { $$ = make_Valid(reverseListStm($1)); YY_RESULT_ValidSW_= $$; }
 ;
-Stm : S_tream { $$ = make_Stmx($1);  }
+Stm : DataFlow { $$ = make_Stmx($1);  }
   | Numassgn { $$ = make_Stmn($1);  }
   | Strassgn { $$ = make_Stms($1);  }
   | SymAssgn { $$ = make_Stmb($1);  }
@@ -291,7 +291,7 @@ ListStm : /* empty */ { $$ = 0;  }
 Subdef : _SYMB_19 _SYMB_1 ListSubnet _SYMB_2 { $$ = make_Snet($1, reverseListSubnet($3));  }
 ;
 Subnet : Hermt { $$ = make_Sneth($1);  }
-  | S_tream { $$ = make_Snets($1);  }
+  | DataFlow { $$ = make_Snets($1);  }
   | ExtPortIn { $$ = make_Snetin($1);  }
   | ExtPortOut { $$ = make_Snetout($1);  }
 ;
@@ -307,10 +307,10 @@ ExtPortOut : Tab Larrow Prt Proc { $$ = make_Extout($1, $2, $3, $4);  }
 Tab : Numval { $$ = make_Tabn($1);  }
   | Symval { $$ = make_Tabs($1);  }
 ;
-S_tream : Proc Prt Larrow Prt Proc { $$ = make_Streamx($1, $2, $3, $4, $5);  }
+DataFlow : Proc Prt Larrow Prt Proc { $$ = make_Streamx($1, $2, $3, $4, $5);  }
   | Proc Prt Rarrow Prt Proc { $$ = make_Streamrx($1, $2, $3, $4, $5);  }
-  | S_tream Prt Larrow Prt Proc { $$ = make_Streamy($1, $2, $3, $4, $5);  }
-  | S_tream Prt Rarrow Prt Proc { $$ = make_Streamry($1, $2, $3, $4, $5);  }
+  | DataFlow Prt Larrow Prt Proc { $$ = make_Streamy($1, $2, $3, $4, $5);  }
+  | DataFlow Prt Rarrow Prt Proc { $$ = make_Streamry($1, $2, $3, $4, $5);  }
 ;
 Larrow : _SYMB_3 TypeDef Buffsize _SYMB_4 { $$ = make_Arrowx($2, $3);  }
 ;

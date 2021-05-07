@@ -329,7 +329,7 @@ union YYSTYPE
   ExtPortIn extportin_;
   ExtPortOut extportout_;
   Tab tab_;
-  S_tream s_tream_;
+  DataFlow dataflow_;
   Larrow larrow_;
   Rarrow rarrow_;
   TypeDef typedef_;
@@ -428,7 +428,7 @@ enum yysymbol_kind_t
   YYSYMBOL_ExtPortIn = 37,                 /* ExtPortIn  */
   YYSYMBOL_ExtPortOut = 38,                /* ExtPortOut  */
   YYSYMBOL_Tab = 39,                       /* Tab  */
-  YYSYMBOL_S_tream = 40,                   /* S_tream  */
+  YYSYMBOL_DataFlow = 40,                  /* DataFlow  */
   YYSYMBOL_Larrow = 41,                    /* Larrow  */
   YYSYMBOL_Rarrow = 42,                    /* Rarrow  */
   YYSYMBOL_TypeDef = 43,                   /* TypeDef  */
@@ -855,7 +855,7 @@ static const char *const yytname[] =
   "_SYMB_13", "_SYMB_14", "_SYMB_15", "_SYMB_16", "_SYMB_17", "_SYMB_18",
   "_SYMB_19", "_SYMB_20", "_SYMB_21", "_SYMB_22", "_STRING_", "_INTEGER_",
   "$accept", "Valide", "ValidSW", "Stm", "ListStm", "Subdef", "Subnet",
-  "ListSubnet", "ExtPortIn", "ExtPortOut", "Tab", "S_tream", "Larrow",
+  "ListSubnet", "ExtPortIn", "ExtPortOut", "Tab", "DataFlow", "Larrow",
   "Rarrow", "TypeDef", "Buffsize", "Hermt", "Symvalu", "Proc", "Prt",
   "Comp", "ModPath", "RemPath", "Argument", "ListArgument", "Numassgn",
   "Strassgn", "SymAssgn", "Numval", "Stringval", "Symval", "ValidCFG",
@@ -1617,9 +1617,9 @@ yyreduce:
 #line 1618 "Parser.c"
     break;
 
-  case 5: /* Stm: S_tream  */
+  case 5: /* Stm: DataFlow  */
 #line 281 "SW.y"
-              { (yyval.stm_) = make_Stmx((yyvsp[0].s_tream_));  }
+               { (yyval.stm_) = make_Stmx((yyvsp[0].dataflow_));  }
 #line 1624 "Parser.c"
     break;
 
@@ -1677,9 +1677,9 @@ yyreduce:
 #line 1678 "Parser.c"
     break;
 
-  case 15: /* Subnet: S_tream  */
+  case 15: /* Subnet: DataFlow  */
 #line 294 "SW.y"
-            { (yyval.subnet_) = make_Snets((yyvsp[0].s_tream_));  }
+             { (yyval.subnet_) = make_Snets((yyvsp[0].dataflow_));  }
 #line 1684 "Parser.c"
     break;
 
@@ -1743,27 +1743,27 @@ yyreduce:
 #line 1744 "Parser.c"
     break;
 
-  case 26: /* S_tream: Proc Prt Larrow Prt Proc  */
+  case 26: /* DataFlow: Proc Prt Larrow Prt Proc  */
 #line 310 "SW.y"
-                                   { (yyval.s_tream_) = make_Streamx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+                                    { (yyval.dataflow_) = make_Streamx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
 #line 1750 "Parser.c"
     break;
 
-  case 27: /* S_tream: Proc Prt Rarrow Prt Proc  */
+  case 27: /* DataFlow: Proc Prt Rarrow Prt Proc  */
 #line 311 "SW.y"
-                             { (yyval.s_tream_) = make_Streamrx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+                             { (yyval.dataflow_) = make_Streamrx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
 #line 1756 "Parser.c"
     break;
 
-  case 28: /* S_tream: S_tream Prt Larrow Prt Proc  */
+  case 28: /* DataFlow: DataFlow Prt Larrow Prt Proc  */
 #line 312 "SW.y"
-                                { (yyval.s_tream_) = make_Streamy((yyvsp[-4].s_tream_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+                                 { (yyval.dataflow_) = make_Streamy((yyvsp[-4].dataflow_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
 #line 1762 "Parser.c"
     break;
 
-  case 29: /* S_tream: S_tream Prt Rarrow Prt Proc  */
+  case 29: /* DataFlow: DataFlow Prt Rarrow Prt Proc  */
 #line 313 "SW.y"
-                                { (yyval.s_tream_) = make_Streamry((yyvsp[-4].s_tream_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+                                 { (yyval.dataflow_) = make_Streamry((yyvsp[-4].dataflow_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
 #line 1768 "Parser.c"
     break;
 

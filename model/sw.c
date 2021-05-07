@@ -570,7 +570,7 @@ static void SetSink(Process p)
 static Process lastProc=NULL;
  
 /** Get stream structure */
-Stream visitS_tream(S_tream _p_)
+Stream visitdataflow(DataFlow _p_)
 {
     Process snk, src;
     Port pt, src_pt, snk_pt;
@@ -622,7 +622,7 @@ Stream visitS_tream(S_tream _p_)
 	return s;
 
     case is_Streamy:
-	s = visitS_tream(_p_->u.streamy_.s_tream_);
+	s = visitdataflow(_p_->u.streamy_.dataflow_);
 	snk = lastProc;
 	pt = visitPrt(_p_->u.streamy_.prt_1);
 	bs = visitLarrow(_p_->u.streamy_.larrow_);
@@ -646,7 +646,7 @@ Stream visitS_tream(S_tream _p_)
 	VerifyStream(s2);
 	return s2;
     case is_Streamry:
-	s 	 = visitS_tream(_p_->u.streamry_.s_tream_);
+	s 	 = visitdataflow(_p_->u.streamry_.dataflow_);
 	src 	 = lastProc;
 	lastProc = snk = visitProc(_p_->u.streamry_.proc_);
 	bs 	 = visitRarrow(_p_->u.streamry_.rarrow_);
@@ -671,7 +671,7 @@ Stream visitS_tream(S_tream _p_)
 	return s2;
 
     default:
-	badkind(S_tream);
+	badkind(dataflow);
     }
 }
 
@@ -839,7 +839,7 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 	    p->comp = MakeComponent(p->name, defaultPath);
 	return MakeSubnetm(id, NULL, eport, eport);
     case is_Snets:
-	s = visitS_tream(_p_->u.snets_.s_tream_);
+	s = visitdataflow(_p_->u.snets_.dataflow_);
 	return MakeSubnetm(id, s, eport, eport);
     case is_Snetin:
 	return MakeSubnetm(id, s,
@@ -881,7 +881,7 @@ void visitStm(Stm _p_)
     type = IS_NET;
     switch (_p_->kind) {
     case is_Stmx:
-	visitS_tream(_p_->u.stmx_.s_tream_);
+	visitdataflow(_p_->u.stmx_.dataflow_);
 	return;
     case is_Stmn:
 	visitNumassgn(_p_->u.stmn_.numassgn_);

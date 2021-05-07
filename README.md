@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.12.2 - STREAMWORK
+SW-0.13.0 - STREAMWORK
 ======================
 
 StreamWork
@@ -303,7 +303,7 @@ Ex.  ```A<-B;``` expands to
 	* Added ability to generate a complete project and run the Go code from a network definition file. 
 	
 	* Changed dot(.) in component identifier to a slash(/) to permit  module paths 
-	  such as githum.com/....   So (P def.Gen)  is now (P def/Gen).
+	  such as github.com/....   So (P def.Gen)  is now (P def/Gen).
 	  
 0.12.2
 ------
@@ -318,6 +318,14 @@ Ex.  ```A<-B;``` expands to
 	  Print, Gen, and Gens. 
 	       
 	* Created swutility package containing Merge and Collate components. 
+	
+0.13.0
+------
+	* Added Pass component to ...sw/swbase package
+	
+	* Fixes to dataflow type processing  	
+	
+	* Fix build process and installed build badge	 
 	
 SW Language Notes
 --------------------
