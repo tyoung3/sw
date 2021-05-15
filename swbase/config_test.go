@@ -4,7 +4,7 @@ import "testing"
 import "fmt"
 
 func TestConfig(t *testing.T) {
-	cfg 	 := PkgConfig()
+	cfg 	 := pkgConfig()
 	bs, _ 	 := cfg.IntOr("swbase.buffersize", -1)
 	seqno, _ := cfg.IntOr("swbase.seqno", 2)
 	title, _ := cfg.StringOr("swbase.title", "n/a")

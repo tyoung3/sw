@@ -1,5 +1,3 @@
-/*Package swutility contains a small set of merge and collate components.  
-*/ 
 package swutility
 
 import "sync"
@@ -79,10 +77,9 @@ func match(cs []chan interface{}) {
 	}
 }
 
-/* 
-Collate compares IPs from two channels(0,1).  Matching IPs are
-   sent to channels 2 and 3, while mismatches from (0,1) are sent to (4,5)
-   respectively.
+/*Collate compares IPs from two channels(0,1).  
+Matching IPs are sent to channels 2 and 3, 
+while mismatches from (0,1) are sent to (4,5) respectively.
 */
 func Collate(wg *sync.WaitGroup, 
 			 arg []string, 

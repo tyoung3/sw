@@ -13,7 +13,7 @@ I int      /* Port number */
 
 /* PkgConfig initializes the go-config package.
 See: https://github.com/zpatrick/go-config for details*/
-func PkgConfig()  *config.Config {
+func pkgConfig()  *config.Config {
         mappings := map[string]string{
                 "BUFFERSIZE": "buffersize",
                 "SEQNO": "seqno=7",
@@ -25,7 +25,7 @@ func PkgConfig()  *config.Config {
 }
 	
    
-func  Send( ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int ) {
+func  send( ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int ) {
 defer wg2.Done()
 var ip ip_t
 ip.I = nport
@@ -33,7 +33,7 @@ ip.P = arg[0]
 ci   <- ip
 }	
 
-func  Recv( ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int ) {
+func  recv( ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int ) {
 defer wg2.Done()
 ip, _ := <- ci   
 fmt.Println( arg[0], nport,  "received:", ip)

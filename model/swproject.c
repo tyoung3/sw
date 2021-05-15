@@ -3,9 +3,6 @@
 **/
  
 /** 
-	@todo Improve module location.  Standardize on .../sw/MODULE/pkg/.... 
-	@todo Restore poc test
-	@todo Type names inside arrows(stream direction indicators). 
 	@todo Make generated test_.go's  deadloack safe. Test w/collate.sw
  	
  	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
@@ -21,8 +18,11 @@
  	@todo Generate project examples
 	
  DONE: 
-	@todo Document more functions 
-	@todo Allow git.hub, etc. imports.  Simplify .sw file requirements.
+	@done Improve module location.  Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase 
+	@done  Restore poc test
+	@done  Type names inside arrows(stream direction indicators). 
+	@done  Document more functions 
+	@done  Allow git.hub, etc. imports.  Simplify .sw file requirements.
 	@done Structure in module/modele package.  Pass struct instead of integers.
 	@done Avoid duplicates in YAML config file.
 	@done If component involved in a cycle, then subtask all sends and receives
