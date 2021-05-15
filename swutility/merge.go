@@ -45,9 +45,7 @@ func merge(cs []chan interface{}) {
 		
 }
 
-/* 
-Merge compares input from channels 1 and 2 sending
-   the lowest data to channel 0. 
+/* Merge compares input from channels 1 and 2 sending the lowest data to channel 0. 
 */
 func Merge(wg *sync.WaitGroup, 
 			 arg []string, 
