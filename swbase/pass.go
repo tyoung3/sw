@@ -13,7 +13,6 @@ import (
 	"sync"
 	str "strconv"
 	"math"
-	// "fmt"
 	"math/rand"
 )
 
@@ -40,7 +39,7 @@ func Pass(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	// var delay int=1;  // Delay for one second.
 	
 	defer wg.Done()
-	cfg := PkgConfig()
+	cfg := pkgConfig()
 	delay, _ := cfg.IntOr("delay", 1000)   /* Mean milliseconds delay; Poison distributed */
 	if(len(arg) > 1 ) {
 		delay, _ = str.Atoi(arg[1]);

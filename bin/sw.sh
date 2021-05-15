@@ -143,7 +143,7 @@ case $1 in
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
-	p)  shift;p.sh g  $*;;
+	p)  shift;project.sh g  $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
