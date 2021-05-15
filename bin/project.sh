@@ -129,20 +129,21 @@ Genp() {
 	fi
 	
 	Debug sw=$sw p=$p $* 
-	[ -f $sw ] || Die Genp: Missing $sw 
+	[ -f $sw ] || Die Genp: Cannot locate $sw 
 	shift 1 
 	echo; Display Generating  go module $p  from $sw 
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	replace="replace github.com/tyoung3/sw/$p => /home/tyoung3/go/src/github.com/tyoung3/sw/$p"
-	replace="replace github.com/tyoung3/sw/swbase => /home/tyoung3/go/src/github.com/tyoung3/sw/swbase"
+	replace="replace github.com/tyoung3/sw/swbase => $HOME/go/src/github.com/tyoung3/sw/swbase"
 	pushd $dir/$p							\
 	   && ( [ -d internal ] || mkdir $* internal )			\
-	   && ( [ -f go.mod ]  || go mod init $modpath/$p )		\
-	   && echo $replace >> go.mod 			\
-	   && pushd internal || Die Cannot pushd internal		\
-	   	 && [ -f ${p}.sw ] || cp  $sw ${p}.sw			\
-	   	 && GenCFG  > sw.cfg					\
+	   && ( [ -f go.mod ]  						\
+	      || (go mod init $modpath/$p; echo $replace >> go.mod  ))	\
+	   && pushd internal || Die Cannot pushd internal		
+	         [ -f ${p}.go ] && mv  ${p}.go ${p}.go.bak
+	   	    ([ -f ${p}.sw ] && mv ${p}.sw ${p}.sw.bak) || true  \
+	   	 && cp  $sw ${p}.sw					\
+	   	 && [ -f sw.cfg ]  || GenCFG  > sw.cfg			\
 	   	 && Debug internal run sw `pwd`/${p}.sw			\
 	   	 && sw ${p}.sw > ${p}.go				\
 	   	 && GenGo $* 						\
