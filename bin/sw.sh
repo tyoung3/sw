@@ -138,8 +138,8 @@ case $1 in
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
-	doc)shift; doxygen docs/Doxyfile&&Browse .docs/doxy/html/todo.html	\
-		&&Browse .docs/doxy/html/bug.html ;;
+	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/todo.html	\
+		&&Browse ./docs/doxy/html/bug.html ;;
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
