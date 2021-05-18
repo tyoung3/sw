@@ -68,7 +68,7 @@ extern char fbfr[];
 
 	/* swsym.c */
 int getPathColor(String path);
-#define  ncolors 9     
+#define  ncolors 10    
 
 	/* swgraph.c */
 extern String fcolors[]; 

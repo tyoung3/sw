@@ -17,7 +17,7 @@
 #define C(s) printf("%s,\n",(#s));	/**<Print String*/
 
   
-String fcolors[]={"powderblue",  "red", "orange",  "yellow", "lightgreen",  "violet", "brown", "gray", "white"}; 
+String fcolors[]={"lightblue", "gold", "red", "orange",  "yellow", "lightgreen",  "violet",  "brown", "gray", "white"}; 
     
 /** Define to remove process ports from graph */
 
