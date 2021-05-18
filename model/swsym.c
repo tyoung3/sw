@@ -26,6 +26,7 @@ struct bucket {
     } u;  /**<Union of return values */
     char *tag;			/**<??*/	
     int nrefs;			/**<Number of references to symbol */
+    int serno;			/** object serial number */
     struct bucket *link;	/**<??*/
     struct bucket *next;	/**<??*/
 } bucket;  /**<Variable key/value structure.*/
@@ -258,6 +259,26 @@ String getConfType(char *path)
     }
     
     return b->u.type;
+}
+
+int getPathColor(char *p) {
+    bucketp b;
+    char key[1000];key[0] = '<';
+    static int color_i=0; 
+    
+    key[1] = 0;
+    strncat(key, p, 999);
+
+    b = lookup(key);
+    
+    if(b->nrefs==0) {
+    	b->serno=color_i++;
+    	if(color_i >= ncolors) 
+    		color_i=0;
+    } 
+    
+    b->nrefs++;
+    return b->serno;
 }
 
 /** Find path for key */

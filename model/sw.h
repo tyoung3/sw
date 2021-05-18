@@ -65,5 +65,13 @@ void genC(Model model);
 extern String configfile;
 extern struct cfg_ cfg;
 extern char fbfr[]; 	
+
+	/* swsym.c */
+int getPathColor(String path);
+#define  ncolors 10    
+
+	/* swgraph.c */
+extern String fcolors[]; 
+    
 #endif   // SW_H_
 
