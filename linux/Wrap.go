@@ -15,6 +15,7 @@ import (
 	"os"
 	"os/exec"
 	"sync"
+	"time"
 )
 
 /**  send: Write data from stdout or stderr to ci* one line at a time.*/
@@ -26,10 +27,13 @@ func send(stdoutStderr io.ReadCloser, ci chan interface{}, wg2 *sync.WaitGroup, 
 	for {
 		line, _, err := buf.ReadLine()
 		if err != nil {
+			if err != nil {
+				return
+			}
 			if err == io.EOF {
 				return 
 			} else {
-				fmt.Println("WRAP/recv: ReadLine error on port ", nport)
+				fmt.Println("WRAP/send: ReadLine error on port ", nport)
 				log.Fatal(err)
 			}
 		}
@@ -48,6 +52,7 @@ func recv(stdin io.WriteCloser, ci chan interface{}, wg2 *sync.WaitGroup, arg []
 	for {
 		ip, ok := <-ci
 		if ok != true {
+			time.Sleep(50 * time.Millisecond)
 			return
 		}
 		ipt := ip.(string)
@@ -69,16 +74,16 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
 
-	cmd := exec.Command(arg[1], arg[2], arg[3]) //, arg[2], arg[3])
+	cmd := exec.Command(arg[1], arg[2], arg[3]) 
+	
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		log.Fatal(err)
+	}
 	
 	stdout, err2 := cmd.StdoutPipe()
 	if err2 != nil {
 		log.Fatal(err2)
-	}
-
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		log.Fatal(err)
 	}
 
 	stderr, err3 := cmd.StderrPipe()
