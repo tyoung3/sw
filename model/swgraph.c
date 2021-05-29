@@ -28,8 +28,7 @@ static SHOWC showcomp = COMPNAME; /**<??*/
 static char *twoline = "";	  /**<??*/
 
 /** Find port for id */
-static Port
-findPort (Port pt, int id)
+static Port findPort (Port pt, int id)
 {
   Port pt0 = pt;
 
@@ -100,7 +99,7 @@ genPrefix (char *gname, int nstreams)
   printf (",bgcolor=\"gray65\"]");
 
   // FIXINDENT(\();
-  C (node[shape = record);
+  C (node[shape = Mrecord);
      C (fontsize = "18"); C (fontcolor = black); C (fontname = "Helvetica");
      C (color = black); C (fillcolor = powderblue); C (style = filled);
      P (height = .2);
@@ -114,6 +113,7 @@ genPrefix (char *gname, int nstreams)
 
 }
 
+#undef SHOW_PORTS   // Do not show ports in table format 
 #ifdef SHOW_PORTS
 /** Generate port data */
 static void
@@ -155,10 +155,9 @@ static void genProc1(Process p,  char *host) {
   char *comp=p->comp->name;
   char *name=p->name;
   char *path=p->comp->path;
-  static int  fc_i=1;
   
   printf ("       \"%s\" ", name);
-  printf ("[shape = record,");
+  printf ("[shape = Mrecord,");
   C (color = "black");
   printf ("fillcolor=%s", fcolors[getPathColor(p->comp->path)]);
   printf ("  URL=\"%s\"\n", makeURL (comp));
@@ -201,6 +200,7 @@ genCluster1 (char *name)
   printf ("URL=\"%s.html\";\n\n", name);
 }
 
+
 /** Find channel for port */
 static int
 findChannel (Port p, int id)
@@ -227,15 +227,23 @@ static void
 showPorts (Stream f, Process src, Process snk, int channel)
 {
 #ifdef SHOW_PORTS
-  printf
-    ("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.i\",taillabel=\"%.i\"",
-     tooltip = \"%i[%i]\"];\n",
+  printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.2i\",taillabel=\"%.2i\",tooltip = \"%i[%i]\"];\n", 
+     src->name,f->source_id,
+     snk->name, f->sink_id, channel, f->sink_id, f->source_id, channel, f->bufsz);
 #else
-  printf
-    ("\"%s\" -> \"%s\" [label=\"%i\",headlabel=\"%.i\",taillabel=\"%.i\",	tooltip=\"%i[%i]\"];\n",
-#endif
+  printf("\"%s\" -> \"%s\"       [label=\"%i]\",  headlabel=\"%.i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
      src->name,
      snk->name, channel, f->sink_id, f->source_id, channel, f->bufsz);
+#endif
+}
+
+static char *addDot(char *n) {
+	static char s[100];
+	
+	strncpy(s,n,99);
+	if(n[0] != 0) 
+		strncat(s,".",99);
+	return strdup(s);
 }
 
 static void
@@ -243,6 +251,8 @@ genLinks (Model m)
 {				// [label="C Miss"];
   Stream f;
   Process src, snk;
+  char *srcPortName;
+  char *snkPortName;         
   int channel = 7;
   char *edgeColor = "purple";
   f = m->stream;
@@ -264,24 +274,29 @@ genLinks (Model m)
 	  	edgeColor="red";
 	  }
 	 	
+	  srcPortName=addDot((findPort(src->port, f->source_id)->name));
+	  
+	  snkPortName=addDot(findPort(snk->port, f->sink_id)->name);	
 	  if (f->bufsz < 1000000)  // ? < 2 
 	    {
 #ifdef SHOW_PORTS
 	      printf
-		("\"%s\":%i -> \"%s\":%i [label=\"%i %s\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
+		("\"%s\":%i -> \"%s\":%i [color=%s,label=\"%i %s\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+		src->name, f->source_id, snk->name, f->sink_id,  edgeColor, channel, f->iptype, f->sink_id, f->source_id,
+		   f->bufsz);
 #else
 	      printf
-		("\"%s\"  -> \"%s\"  [color=%s,label=\"%i %s\",headlabel=\"%.i\",taillabel=\"%.i\",tooltip=\"%i\"];\n",
-#endif
-		src->name, snk->name, edgeColor, channel, f->iptype, f->sink_id, f->source_id,
+		("\"%s\"  -> \"%s\"  [color=%s,label=\"%i %s\",headlabel=\"%s%i\",taillabel=\"%s%i\",tooltip=\"%i\"];\n",
+		src->name, snk->name, edgeColor, channel, f->iptype, snkPortName, f->sink_id, srcPortName,f->source_id,
 		   f->bufsz);
+#endif
 	    }
 	  else
 	    {
 	      showPorts (f, src, snk, channel);
 	    }
 	}			// End if IS_NET             
-      f = f->next;
+      f = f->next; 		// Get next stream
     }				// End while
 }
 
