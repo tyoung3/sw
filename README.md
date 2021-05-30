@@ -4,10 +4,10 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
 You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0[![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,[![CodeQL](https://github.com/tyoung3/sw/actions/wo[![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)rkflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
+distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
@@ -28,7 +28,7 @@ Description
 StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
 
 By default, StreamWork reads, parses and analyzes,  a StreamWork network 
-definition(ND) file (suffix: .sw),  then generates () a main Go program. 
+definition(ND) file (suffix: .sw),  then generates a main Go program. 
 
 Employing StreamWork, a network definition becomes, in effect, an executable
 script.  It can be considered as high level program source.  While StreamWork is concerned with 
@@ -36,12 +36,27 @@ Go language FBP programs,  the ND described here is language agnostic.  It shoul
 to generate corresponding code in other languages.         
 
 By default, sw generates 
-and builds a single main program which imports the StreamWork base package, sw/swbase, to launch a goroutine for each process,  connects these processes via Golang interface channels,
-and waits for all processes to finish.  A bash script, swgo, will build and run a network definition.
+and builds a single main Go program which:  
 
-On option, StreamWork will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree from a network definition file.
+  * imports sw compatible component package(s),  
+  * launches a goroutine for each component instance (process),  
+  * connects these processes via Golang interface channels, and 
+  * waits for all processes to finish.  
+
+On option, StreamWork will read, parse and interpret a network definition file then  create either a:
+ 
+ * a Go main program,
+ * GraphViz .dot file, 
+ * an abstract syntax tree, or  
+ * a linearized tree. 
+
 Starting with version v0.12.0, Streamwork can also generate and run
 an entire working project source tree from a network definition, including config logic, and Golang test code.
+
+	
+A bash script, swgo, will build and run a network definition.
+
+Another bash script, swgraph, will display a graphic image(.svg) of a network definition.
 
 Network Definition
 ------------------
@@ -56,6 +71,7 @@ Each stream definition looks like:
 (E) <- (F); 
 ```
 and consists of:
+
   * processname, component identifier, and optional arguments in parens 
   * portnumber (defaults to 0), 
   * a stream director:  right arrow("->") or left arrow("<-), 
@@ -85,13 +101,11 @@ The component identifier and arguments will default if omitted.
 
 A component identifier consists of its import module/package identifier, 
 a slash, '/', and the component name.   All Go component names should be capitalized.
-If  the path is omitted, 
-'def' or a configuration default path is assumed.  
-If the component name is also ommited, Print
+If  the path is omitted,  a configuration default path is assumed.  
+If the component name is also omitted, Print
 is assumed for sink processes and Gen is assumed 
-for source processes.   These defaults may be overridden by 
-configuration file defaults or arguments to sw. 
-Streamwork configuration determines component default names.   
+for source processes.   These defaults can be overridden by 
+configuration file defaults or arguments to sw.  
  
 Channel arrows consist of ```<```, an optional type identifier,
 an optional buffersize integer, and ```-```. Example: ```<100-```
@@ -109,22 +123,25 @@ Sw versions are backward compatible within the same major
 version(currently v0).  (v0.12.2 is somewhat major, however.)  
 
 Sw builds a network model in memory, then optionally generates
-either an abstract syntax tree, 
-a linearized tree(a network definition recronstruction), 
-a GraphViz .dot file, 
-a complete working project tree, 
-or Go source code from the network model.
+either 
+  
+  * an abstract syntax tree, 
+  * a linearized tree(a network definition recronstruction), 
+  * a GraphViz .dot file, 
+  * a complete working project tree, 
+  * or Go source code from the network model.
 
 C and other languages could also be generated, but this has not been implemented.
 JavaFBP is also possible.   
 
 Comments and critiques are welcome.    Contributors are encouraged.  
 
-Please do not submit code before contacting the project; by 
-e-mailing streamwork@twyoung.com or  posting a request on Github.     
+Please do not submit code before contacting the project.  Contact by 
+e-mailing streamwork@twyoung.com  is preferred to posting a request on Github .     
 
 QuickStart (on Linux) 
 ----------
+
 	* The .../tyoung3/StreamWork backend is no longer required.  
 	* Sw is written in C.  The bin directory contains bash scripts invoking sw.   
 	* Download the 'sw' executable from github to any 
@@ -345,13 +362,9 @@ definition leading to awkward(confusing) syntax rules.
 In the future, there may be a few exceptions to the 
 semi-colon rule for special pre-interpreter commands, like INCLUDE.
 
-The, ```<-```,  token is used to be consistent with its 
+The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
 "(A) -> (B)1 <- (C);"  is valid.   
-
-Comments in the SW.cf language definition file provide 
-clues to possible future language additions.  
-We strive for backward compatibility.
 
 Collate/Merge Example
 ---------------------
@@ -370,8 +383,6 @@ Match0 Int: 9
 Match0 Int: 11
 Match0 Int: 17
 Match0 Int: 23
-
-Running: 
 
 
 Hello World
