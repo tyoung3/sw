@@ -19,7 +19,7 @@ import (
 )
 
 /**  send: Write data from stdout or stderr to ci* one line at a time.*/
-func send(stdoutStderr io.ReadCloser, ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
+func send(stdoutStderr io.ReadCloser, ci chan interface{}, wg2 *sync.WaitGroup) {
 
 	defer wg2.Done()
 	defer close(ci)
@@ -27,24 +27,15 @@ func send(stdoutStderr io.ReadCloser, ci chan interface{}, wg2 *sync.WaitGroup, 
 	for {
 		line, _, err := buf.ReadLine()
 		if err != nil {
-			if err != nil {
-				return
-			}
-			if err == io.EOF {
-				return 
-			} else {
-				fmt.Println("WRAP/send: ReadLine error on port ", nport)
-				log.Fatal(err)
-			}
+			return
 		}
 		msg := string(line)
 		ci <- msg
-		
 	}
 }
 
 /** recv:  Write data from ci to stdin(pipe). */
-func recv(stdin io.WriteCloser, ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
+func recv(stdin io.WriteCloser, ci chan interface{}, wg2 *sync.WaitGroup) {
 
 	defer stdin.Close()
 	defer wg2.Done()
@@ -81,33 +72,35 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 		log.Fatal(err)
 	}
 	
-	stdout, err2 := cmd.StdoutPipe()
-	if err2 != nil {
-		log.Fatal(err2)
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	stderr, err3 := cmd.StderrPipe()
-	if err3 != nil {
-		log.Fatal(err3)
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	var wg2 sync.WaitGroup
 	wg2.Add(3)
 
-	go recv(stdin,  cs[0], &wg2, arg, 0)
-	go send(stdout, cs[1], &wg2, arg, 1)
-	go send(stderr, cs[2], &wg2, arg, 2)
-	 
-	if err4 := cmd.Start(); err4 != nil {
+	go recv(stdin,  cs[0], &wg2)
+	go send(stdout, cs[1], &wg2)
+	go send(stderr, cs[2], &wg2)
+		 
+	if err := cmd.Start(); err != nil {
 		fmt.Println("WRAP: command start error")
-		log.Fatal(err4)
-	}
-
-	err5 := cmd.Wait()
-	if err5 != nil {
-		fmt.Println("WRAP: command wait error")
 		log.Fatal(err)
 	}
+
+	errc := cmd.Wait()
+	if errc != nil {
+		fmt.Println("WRAP: command wait error")
+		log.Fatal(errc)
+	}
+	//close(cs[0])
+	//stdin.Close()
 	wg2.Wait()
 }
 
