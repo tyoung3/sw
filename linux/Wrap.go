@@ -12,46 +12,43 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 	"os/exec"
 	"sync"
-	"time"
+	// "time"
 )
 
 /**  send: Write data from stdout or stderr to ci* one line at a time.*/
-func send(stdoutStderr io.ReadCloser, ci chan interface{}, wg2 *sync.WaitGroup) {
+func send(stdoutStderr *io.ReadCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 
 	defer wg2.Done()
-	defer close(ci)
-	buf := bufio.NewReader(stdoutStderr)
+	defer close(*ci)
+	buf := bufio.NewReader(*stdoutStderr)
+	
 	for {
 		line, _, err := buf.ReadLine()
 		if err != nil {
 			return
 		}
 		msg := string(line)
-		ci <- msg
+		*ci <- msg
 	}
 }
 
 /** recv:  Write data from ci to stdin(pipe). */
-func recv(stdin io.WriteCloser, ci chan interface{}, wg2 *sync.WaitGroup) {
+func recv(stdin *io.WriteCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 
-	defer stdin.Close()
+	defer (*stdin).Close()
 	defer wg2.Done()
 
 	for {
-		ip, ok := <-ci
+		ip, ok := <-*ci
 		if ok != true {
-			time.Sleep(50 * time.Millisecond)
+			//time.Sleep(0 * time.Millisecond)
 			return
 		}
 		ipt := ip.(string)
-		_, err := io.WriteString(stdin, ipt)
-
+		_, err := io.WriteString(*stdin, ipt)
 		if err != nil {
-			fmt.Println("WRAP/recv	: Fprintf error.")
-			fmt.Fprintf(os.Stderr, "WRAP/recv: Fprintf: %v\n", err)
 			log.Fatal(err)
 		}
 	}
@@ -85,9 +82,9 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(3)
 
-	go recv(stdin,  cs[0], &wg2)
-	go send(stdout, cs[1], &wg2)
-	go send(stderr, cs[2], &wg2)
+	go recv(&stdin,  &cs[0], &wg2)
+	go send(&stdout, &cs[1], &wg2)
+	go send(&stderr, &cs[2], &wg2)
 		 
 	if err := cmd.Start(); err != nil {
 		fmt.Println("WRAP: command start error")
@@ -99,8 +96,6 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 		fmt.Println("WRAP: command wait error")
 		log.Fatal(errc)
 	}
-	//close(cs[0])
-	//stdin.Close()
 	wg2.Wait()
 }
 

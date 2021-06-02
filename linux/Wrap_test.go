@@ -30,19 +30,19 @@ func TestSkel_Wrap(t *testing.T) {
 	}
 
 	wg.Add(4)
-
-	go func() {
-		var nbr int=0
+			// Send 4 lines of text
+	go func() {		
 		defer wg.Done()
+		var nbr int=0
 		for nbr < 4 {
 			nbr = nbr +1 
-			cs[0] <- msg(nbr)  // Send 4 lines of text	
+			cs[0] <- msg(nbr)  	
 		}
 		close(cs[0])
 		return
 	}()
-
-	go func() {
+			// Display stdout 
+	go func() {				
 		defer wg.Done()
 		for {
 			ip, ok := <-cs[1]
@@ -52,10 +52,9 @@ func TestSkel_Wrap(t *testing.T) {
 			fmt.Println("TestWrap/chan-1/IP: ", ip)
 		}
 	}()
-
+			// Display stderr
 	go func() {
 		defer wg.Done()
-		return
 		for {
 			ip, ok := <-cs[2]
 			if ok != true {
@@ -64,8 +63,8 @@ func TestSkel_Wrap(t *testing.T) {
 			fmt.Println("TestWrap: chan:", 2, "IP:", ip)
 		}
 	}()
-
+			
 	go Wrap(&wg, arg, cs)
 	wg.Wait()
-	fmt.Println("TS: TestWrap Ended")
+	fmt.Println("TestWrap Ended")
 }
