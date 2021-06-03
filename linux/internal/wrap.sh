@@ -36,5 +36,6 @@ Benchmark() {
 
 case $1 in 
 	b) shift; Benchmark $* ;;
+	g) pushd $2 ; go mod graph |tee /tmp/g.out | ~/go/bin/modv  |tee /tmp/m.out | dot -T svg > /tmp/d.svg && $BROWSER /tmp/d.svg;;
 	*) Default;;
 esac	

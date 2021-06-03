@@ -12,7 +12,7 @@ import "sync"
 import "strings"
 
 	
-func msg(n int) string  {
+func msg(n int) string  {              // Serialize message output
 	var bfr strings.Builder
 	
 	fmt.Fprintf(&bfr, "msg-%d\n", n)
@@ -30,7 +30,7 @@ func TestSkel_Wrap(t *testing.T) {
 	}
 
 	wg.Add(4)
-			// Send 4 lines of text
+			// Send 4 lines of text to stdin
 	go func() {		
 		defer wg.Done()
 		var nbr int=0
@@ -46,10 +46,8 @@ func TestSkel_Wrap(t *testing.T) {
 		defer wg.Done()
 		for {
 			ip, ok := <-cs[1]
-			if ok != true {
-				return
-			}
-			fmt.Println("TestWrap/chan-1/IP: ", ip)
+			if ok != true { return}
+			fmt.Println("TestWrap/chan-1: ", ip)
 		}
 	}()
 			// Display stderr
@@ -57,10 +55,8 @@ func TestSkel_Wrap(t *testing.T) {
 		defer wg.Done()
 		for {
 			ip, ok := <-cs[2]
-			if ok != true {
-				return
-			}
-			fmt.Println("TestWrap: chan:", 2, "IP:", ip)
+			if ok != true { return}
+			fmt.Println("TestWrap/chan-2:", ip)
 		}
 	}()
 			
