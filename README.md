@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.13.0 - STREAMWORK
+SW-0.13.1 - STREAMWORK
 ======================
 
 StreamWork
@@ -326,6 +326,10 @@ Ex.  ```A<-B;``` expands to
 	* Fixes to dataflow type processing  	
 	
 	* Fix build process and installed build badge	 
+	
+0.13.1
+------
+	* Installed linux/Wrap function to encapsulate *Nix executables.	
 	
 SW Language Notes
 --------------------
