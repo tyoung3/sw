@@ -13,6 +13,7 @@ import (
 	"log"
 	"os/exec"
 	"sync"
+	"time"
 )
 
 /**  send: Write data from stdout or stderr to channel 1 or 2, respectively, one line at a time.*/
@@ -38,11 +39,13 @@ func recv(stdin *io.WriteCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 
 	for {
 		ip, ok := <-*ci
-		if ok != true { return }
+		if ok != true { time.Sleep(50 * time.Millisecond); return }  // Sleep prevents truncated output 
 		ipt := ip.(string)
 		_, err := io.WriteString(*stdin, ipt)
 		if err != nil { log.Fatal(err)}
 	}
+	
+	
 }
 
 /* Wrap  launches the specified linux executable and

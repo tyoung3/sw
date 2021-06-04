@@ -23,7 +23,7 @@ func TestSkel_Wrap(t *testing.T) {
 	var cs []chan interface{}
 	var wg sync.WaitGroup
 
-	arg := []string{"cat", "cat", "-", "internal/wrap.txt"}
+	arg := []string{"cat", "/usr/bin/cat", "internal/wrap.txt", "-"}
 
 	for i := 0; i < 2+1; i++ {
 		cs = append(cs, make(chan interface{}, 0))
