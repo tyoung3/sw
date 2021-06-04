@@ -3,6 +3,7 @@
 /home/tyoung3/go/mod/sw/example
 .idea/
 _OLD/
+_IGNORE*
 swedit/
 
 docs/
@@ -11,7 +12,7 @@ docs
 docs/doxy/html
 docs/doxy/FBP.md
 example/
-fbpx/
+fbpx/IGNORE_swedit
 project/ex1/
 project/test/
 
@@ -19,7 +20,7 @@ project/test/
 #Absyn.?
 AbsynLexer.c
 bnfc/SW.pdf	
-.gdbinit
+.gdbinitIGNORE_swedit
 gmon.out
 IGNORE*
 Lexer.c
