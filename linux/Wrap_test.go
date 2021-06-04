@@ -47,7 +47,7 @@ func TestSkel_Wrap(t *testing.T) {
 		for {
 			ip, ok := <-cs[1]
 			if ok != true { return}
-			fmt.Println("TestWrap/chan-1: ", ip)
+			fmt.Println("TestWrap/stdout: ", ip)
 		}
 	}()
 			// Display stderr
@@ -56,7 +56,7 @@ func TestSkel_Wrap(t *testing.T) {
 		for {
 			ip, ok := <-cs[2]
 			if ok != true { return}
-			fmt.Println("TestWrap/chan-2:", ip)
+			fmt.Println("TestWrap/stderr:", ip)
 		}
 	}()
 			

@@ -53,8 +53,8 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
 
-	cmd := exec.Command(arg[1])  /** ?? Allow for variable number of arguments. */
-	cmd.Args = arg
+	cmd := exec.Command(arg[1],arg[2],arg[3])  /** ?? Allow for variable number of arguments. */
+	// cmd.Args = arg  // causes arg[1]: 'no such file...' error.
 	
 	stdin, err := cmd.StdinPipe()
 	if err != nil { log.Fatal(err) }
