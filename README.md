@@ -346,8 +346,8 @@ Ex.  ```A<-B;``` expands to
 	
 0.13.1
 ------
-	* Added linux/Wrap component
-		
+	* Installed linux/Wrap function to encapsulate *Nix executables.	
+	
 SW Language Notes
 --------------------
 Statements in the StreamWork network definition language, are 
