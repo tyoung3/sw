@@ -44,7 +44,7 @@ SW.pdf:  ../bnfc/SW.tex
 check_go: 
 	cd ../; go test ./...
 	
-check:  check_go
+check:  #check_go
 	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  >/dev/null
 	${PGM}  -v 
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
