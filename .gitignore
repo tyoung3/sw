@@ -10,8 +10,7 @@ swedit/
 docs/
 docs
 *.png
-docs/doxy/html
-docs/doxy/FBP.mdmerge_test.go
+docs/doxy
 example/
 fbpx/IGNORE_swedit
 project/ex1/

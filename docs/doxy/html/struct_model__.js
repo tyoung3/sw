@@ -1,6 +1,7 @@
 var struct_model__ =
 [
     [ "comp", "struct_model__.html#a25c1e24f268f66c1ab9ce9b9cea49f55", null ],
+    [ "level", "struct_model__.html#acf4d33ee4cff36f69b924471174dcb11", null ],
     [ "name", "struct_model__.html#a5ac083a645d964373f022d03df4849c8", null ],
     [ "ncomponents", "struct_model__.html#ae1d2f947cb76019bf3c919b2681ec89e", null ],
     [ "nprocs", "struct_model__.html#ad7c4c17cf720ee538e27c02ab356ed6b", null ],

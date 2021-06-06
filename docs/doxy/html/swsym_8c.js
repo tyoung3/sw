@@ -15,6 +15,7 @@ var swsym_8c =
     [ "getComponent", "swsym_8c.html#aacdac83f8afdc3feaf168ca1dec78a12", null ],
     [ "getConfType", "swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a", null ],
     [ "getPath", "swsym_8c.html#a6938fa2374e6f15d94b295e745e89a30", null ],
+    [ "getPathColor", "swsym_8c.html#ab9dd3244836c3417ce989931c7a382b1", null ],
     [ "getProc", "swsym_8c.html#a2e084318dec8f55087198d0a61aa6e78", null ],
     [ "getStringVar", "swsym_8c.html#ac688ca2738ece01f8305019952fc4e76", null ],
     [ "getSymVar", "swsym_8c.html#a5b98e12ae507968d12525984bb1b2ac6", null ],
