@@ -22,6 +22,8 @@ StreamWork
          
 [![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw](https://goreportcard.com/report/github.com/tyoung3/sw)
+
 Description
 -----------
 
