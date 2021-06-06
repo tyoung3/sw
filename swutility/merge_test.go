@@ -17,14 +17,14 @@ func TestMerge(t *testing.T) {
 
 	// sw.Print(&wg, []string{"PrintM"},  cs[0:1])
 
-	wg.Add(1) 
+	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		for  {
+		for {
 			ip, ok := <-cs[0]
 			if ok != true {
 				return
-			} 
+			}
 			fmt.Println(ip)
 		}
 	}()
@@ -56,8 +56,8 @@ func TestMerge(t *testing.T) {
 		wg.Done()
 	}()
 
-	go Merge(&wg, []string{"Merge" }, cs[0:3])
+	go Merge(&wg, []string{"Merge"}, cs[0:3])
 	wg.Wait()
-	fmt.Println("TestMerge ended");
+	fmt.Println("TestMerge ended")
 
 }

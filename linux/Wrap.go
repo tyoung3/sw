@@ -22,12 +22,14 @@ func send(stdoutStderr *io.ReadCloser, ci *chan interface{}, wg2 *sync.WaitGroup
 	defer wg2.Done()
 	defer close(*ci)
 	buf := bufio.NewReader(*stdoutStderr)
-	
+
 	for {
 		line, _, err := buf.ReadLine()
-		if err != nil { return }
+		if err != nil {
+			return
+		}
 		msg := string(line)
-		*ci <- msg +  "\n"
+		*ci <- msg + "\n"
 	}
 }
 
@@ -39,44 +41,58 @@ func recv(stdin *io.WriteCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 
 	for {
 		ip, ok := <-*ci
-		if ok != true { time.Sleep(50 * time.Millisecond); return }  // Sleep prevents truncated output 
+		if ok != true {
+			time.Sleep(50 * time.Millisecond)
+			return
+		} // Sleep prevents truncated output
 		ipt := ip.(string)
 		_, err := io.WriteString(*stdin, ipt)
-		if err != nil { log.Fatal(err)}
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
-	
-	
+
 }
 
 /*Wrap  launches the specified linux executable and
-separate goroutines to a) forward all text lines from channel 0(cs[0]) to the 
+separate goroutines to a) forward all text lines from channel 0(cs[0]) to the
 executable's stdin pipe; b) forward text lines from the stdout pipe to channel 1;
 and c) forward text lines from stderr to channel 2.*/
 func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
 
-	cmd := exec.Command(arg[1],arg[2],arg[3])  /** ?? Allow for variable number of arguments. */
+	cmd := exec.Command(arg[1], arg[2], arg[3]) /** ?? Allow for variable number of arguments. */
 	// cmd.Args = arg  // causes arg[1]: 'no such file...' error.
-	
+
 	stdin, err := cmd.StdinPipe()
-	if err != nil { log.Fatal(err) }
-	
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	stdout, err := cmd.StdoutPipe()
-	if err != nil { log.Fatal(err) }
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	stderr, err := cmd.StderrPipe()
-	if err != nil { log.Fatal(err) }
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	var wg2 sync.WaitGroup
 	wg2.Add(3)
 
-	go recv(&stdin,  &cs[0], &wg2)
+	go recv(&stdin, &cs[0], &wg2)
 	go send(&stdout, &cs[1], &wg2)
 	go send(&stderr, &cs[2], &wg2)
-		 
-	if err := cmd.Start(); err != nil { log.Fatal(err)}
-	if err := cmd.Wait();  err != nil { log.Fatal(err)}
+
+	if err := cmd.Start(); err != nil {
+		log.Fatal(err)
+	}
+	if err := cmd.Wait(); err != nil {
+		log.Fatal(err)
+	}
 	wg2.Wait()
 }
 

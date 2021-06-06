@@ -2,7 +2,7 @@ package swutility
 
 import (
 	"fmt"
-     sw	"github.com/tyoung3/sw/swbase"
+	sw "github.com/tyoung3/sw/swbase"
 	"sync"
 	"testing"
 )
@@ -21,8 +21,8 @@ func TestCollate(t *testing.T) {
 
 	sw.Launch(&wg, []string{"Match0"}, sw.Print, cs[2:3])
 	sw.Launch(&wg, []string{"Match1"}, sw.Print, cs[3:4])
-	sw.Launch(&wg, []string{"Miss0"},  sw.Print, cs[4:5])
-	sw.Launch(&wg, []string{"Miss1"},  sw.Print, cs[5:6])
+	sw.Launch(&wg, []string{"Miss0"}, sw.Print, cs[4:5])
+	sw.Launch(&wg, []string{"Miss1"}, sw.Print, cs[5:6])
 
 	wg.Add(1)
 	go func() {
