@@ -24,11 +24,11 @@ func TestSkel_Pass(t *testing.T) {
 	wg.Add(2)
 	go func() {
 		cs[0] <- 5
-		//fmt.Println("TestSkel: Done sending");	
-		ip,_  := <- cs[1]
+		//fmt.Println("TestSkel: Done sending");
+		ip, _ := <-cs[1]
 		fmt.Println("TestSkel_Pass/IP:", ip)
 		fmt.Println("TestSkel_Pass Ended")
-		close(cs[0]) 
+		close(cs[0])
 		wg.Done()
 		return
 	}()

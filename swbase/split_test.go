@@ -21,10 +21,10 @@ func TestSplit2(t *testing.T) {
 
 	// wg1.Add(1)
 	go Launch(&wg1, []string{"S"}, Split, cs[0:4])
-	Launch(&wg1, []string{"Q", "3"},  Gens, cs[0:1])
-	Launch(&wg1, []string{"A2"},  Print, cs[1:2])
-	Launch(&wg1, []string{"A1"},  Print, cs[2:3])
-	Launch(&wg1, []string{"A3"},  Print, cs[3:4])
+	Launch(&wg1, []string{"Q", "3"}, Gens, cs[0:1])
+	Launch(&wg1, []string{"A2"}, Print, cs[1:2])
+	Launch(&wg1, []string{"A1"}, Print, cs[2:3])
+	Launch(&wg1, []string{"A3"}, Print, cs[3:4])
 
 	wg1.Wait()
 

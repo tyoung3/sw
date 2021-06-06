@@ -4,7 +4,7 @@ package swutility
 import "sync"
 import "fmt"
 
-/* StreamWork component MergeInt sends all input from channels cs[1:n] to channel cs[0] in order of arrival.
+/*MergeInt sends all input from channels cs[1:n] to channel cs[0] in order of arrival.
 */
 func MergeInt(wg *sync.WaitGroup, cs ...chan interface{}) {
 	var wg1 sync.WaitGroup
