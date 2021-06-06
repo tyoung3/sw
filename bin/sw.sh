@@ -96,7 +96,7 @@ On Master
 		* git merge --no-ff BRANCH_NAME(Ex. Fix_Comp_names) (gm BRANCH) 
 
 New version?:		
-		* change version in Makefile and Doxygen and rebuild 
+		* Change version in README.md, Makefile, and Doxygen and rebuild.
 		* git tag	
 		* [git tag -a  New_VERSION ] 
 		* git commit -m "v0.0.?"  (gc "COMMIT MESSAGE")

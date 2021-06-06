@@ -1,7 +1,5 @@
 /** @file swgraph.c
-		  Generate Graphviz input(.dot file)  
-		  
-    @todo remove braces from path here or previously.		  
+		  Generate Graphviz input(.dot file)  	  
 */
 
 #include <stdio.h>
@@ -16,14 +14,11 @@
 #define FIXINDENT(s) {};		/**<Nullify FIXINDENT */
 #define C(s) printf("%s,\n",(#s));	/**<Print String*/
 
-  
+/* Process colors in graph */  
 String fcolors[]={"lightblue", "gold", "red", "orange",  "yellow", "lightgreen",  "violet",  "brown", "gray", "white"}; 
-    
-/** Define to remove process ports from graph */
 
 /** Type of Component name */
-typedef enum
-{ NOCOMP, COMPNAME, WITHPATH } SHOWC;
+typedef enum { NOCOMP, COMPNAME, WITHPATH } SHOWC;
 static SHOWC showcomp = COMPNAME; /**<??*/
 static char *twoline = "";	  /**<??*/
 
@@ -312,7 +307,6 @@ genProcs (Process p)
 	  printf ("#(%s %s.%s) %d ports\n",
 		  p->name,
 		  p->comp->path, p->comp->name, p->nportsIn + p->nportsOut);
-	  // genProc (p->name, p->comp->name, p->comp->path, "taos_", p->arg);
 	  genProc1 (p, "taos_");
 #ifdef SHOW_PORTS	
 	  Port pt;
