@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = --static -g -pg -W -Wall
 
-VERSION = \"0.13.1\"
+VERSION = \"0.13.2\"
 
 LATEX = latex
 DVIPS = dvips
@@ -29,7 +29,8 @@ poc:	.phony
 .phony:  ${PGM} ../bin/sw.sh
 
 SW.ps:	  SW.dvi
-	${DVIPS} SW.dvi -o SW.ps
+	${DVIPS} SW.dvi -o SW.ps git push --set-upstream origin wiki
+
 	
 SW.dvi: ../bnfc/SW.tex
 	${LATEX} -output-format=dvi ../bnfc/SW.tex
@@ -40,7 +41,10 @@ SW.pdf:  ../bnfc/SW.tex
 ../bnfc/Absyn.o: ../bnfc/Absyn.c 
 	make -C ../bnfc
 
-check:
+check_go: 
+	cd ../; go test ./...
+	
+check:  #check_go
 	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  >/dev/null
 	${PGM}  -v 
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
@@ -52,7 +56,7 @@ check:
 	${PGM}  tests/ae.sw  >/dev/null
 	${PGM}  tests/aef.sw  >/dev/null
 	${PGM}       ../nds/locusts.sw  >/dev/null
-	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
+	${PGM}  -m 1 ../nds/collate.sw  >/dev/null  
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 4 tests/java.sw     >/dev/null	 
@@ -61,7 +65,8 @@ check:
 	${PGM}  tests/asj.sw   >/dev/null
 	${PGM}  tests/aj2.sw   >/dev/null
 	${PGM}  tests/aaR.sw  >/dev/null
-	${PGM}  tests/h1.sw   >/dev/null
+	${PGM}  tests/h1.sw   >/dev/null  
+
 	${PGM}  tests/h2.sw   >/dev/null
 	${PGM}  tests/n1.sw   >/dev/null
 	${PGM}  tests/n2.sw   >/dev/null
@@ -72,7 +77,8 @@ check:
 	${PGM} -m 2 tests/subnet1.sw   >/dev/null
 	${PGM} -m 2 tests/sn2.sw   >/dev/null
 	${PGM}  tests/lr.sw   >/dev/null
-	${PGM}  tests/lrR.sw   >/dev/null
+	${PGM}  tests/lrR.sw   >/dev/null  
+
 	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/var.sw   >/dev/null
 	${PGM}  tests/module.sw   >/dev/null

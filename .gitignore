@@ -4,13 +4,11 @@
 .idea/
 _OLD/
 _IGNORE*
+_*
 swedit/
 
-docs/
-docs
+docs/doxy/
 *.png
-docs/doxy/html
-docs/doxy/FBP.md
 example/
 fbpx/IGNORE_swedit
 project/ex1/

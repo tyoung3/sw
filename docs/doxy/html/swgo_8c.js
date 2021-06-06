@@ -3,6 +3,7 @@ var swgo_8c =
     [ "C", "swgo_8c.html#a1bc9e245eb0feb1e3156859b8262db60", null ],
     [ "P", "swgo_8c.html#a1bb183938acb879d5c2795cf007f8ffa", null ],
     [ "PE", "swgo_8c.html#a0c505f929f4a562b4a8ca52a2dfb75b4", null ],
+    [ "StringIt", "swgo_8c.html#a574ed1f148151abea264693a3e3599e5", null ],
     [ "deleteBrace", "swgo_8c.html#a8a2ad4c30da8f92c0188e2752c5627b2", null ],
     [ "genGo", "swgo_8c.html#a94eb76b475eeed814c94a2bd3194ffe5", null ],
     [ "genND", "swgo_8c.html#a3ed80aaf96d4b7b4c62b48d5977bf520", null ],

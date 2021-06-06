@@ -1,8 +1,7 @@
-# COLLATE.sw
-# WARNING: pocMerge sends output on channel 0(Zero) contrary to convention. 
-#          This will cause collate to deadlock if sw.sh p .../collate.sw
-#	   is run.
- 
+# COLLATE.SW: Streamwork Network Definition Example
+
+# WARNING: Merge sends output on channel 0(Zero) contrary to convention(channel 1). 
+
 (C swutility/Collate) 	<1-  (G0  Gen "12" "1" "2" );  
 (C)1	    		<2- 0(M   swutility/Merge);      
 (M)2	    		<int-  (G1  Gen "5"  "5" "1" );

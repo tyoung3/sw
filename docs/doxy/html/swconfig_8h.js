@@ -23,5 +23,5 @@ var swconfig_8h =
     [ "visitModPath", "swconfig_8h.html#aeb333668c822af919084de6bd1987d8d", null ],
     [ "visitString1", "swconfig_8h.html#a1fd5756381161cb36c2efa2623cf790f", null ],
     [ "visitSymval", "swconfig_8h.html#a05a6ecb05d7d8f2ce16d8e0bfc16f3b3", null ],
-    [ "visitValidCFG", "swconfig_8h.html#a8a4fe2549cbce999859cd5f88bd69516", null ]
+    [ "visitValidConfig", "swconfig_8h.html#ac5a8f0d9ede6949713073b18d2fb063e", null ]
 ];

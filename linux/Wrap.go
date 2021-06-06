@@ -27,7 +27,7 @@ func send(stdoutStderr *io.ReadCloser, ci *chan interface{}, wg2 *sync.WaitGroup
 		line, _, err := buf.ReadLine()
 		if err != nil { return }
 		msg := string(line)
-		*ci <- msg
+		*ci <- msg +  "\n"
 	}
 }
 

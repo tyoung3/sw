@@ -1,6 +1,7 @@
 var struct_extport__ =
 [
     [ "bufsz", "struct_extport__.html#a06ef3c535bb99bb1169410ef7b65260b", null ],
+    [ "iptype", "struct_extport__.html#af481095fd32548e7e00f864ab679aa7f", null ],
     [ "name", "struct_extport__.html#a9a2326f35466e54c36c070829245c557", null ],
     [ "next", "struct_extport__.html#aa88480e6e3a5a722e63cda7b4e8b75c1", null ],
     [ "sink", "struct_extport__.html#a44765c084caec03c4d343856d9a77ad1", null ],
