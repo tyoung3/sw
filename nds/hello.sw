@@ -1,4 +1,5 @@
-# Hello World Example
+#HELLO.SW: Hello World Streamwork Network Definition Example
+
 (Hello Print1)0 <int- 0(World Gen1 "3");
 
 {# Produces 

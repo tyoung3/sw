@@ -1,4 +1,4 @@
-# merge.sw
+# merge.sw: Streamwork Network Definition Example
  
 (P  Print1) 		<-     2(M   poc/Collate "--merge"); 
 (M)0	    		<- 	(G1  poc/Gen1 "6000000"  "0" "2" );
