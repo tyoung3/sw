@@ -5,6 +5,7 @@ var structbucket =
     [ "next", "structbucket.html#af04ca37f70cdb3fb038407bc3faf676c", null ],
     [ "nrefs", "structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3", null ],
     [ "proc", "structbucket.html#aaff6edf735603bcb397fd59d5207e2d1", null ],
+    [ "serno", "structbucket.html#a74213bbd9406b699625af34c20453507", null ],
     [ "stream", "structbucket.html#acf61c5ce83175966a9f98e459c1de9a7", null ],
     [ "string", "structbucket.html#aa806c1231201d3bb50a22e47bf55b966", null ],
     [ "tag", "structbucket.html#a7bb5e40c10df6a41df64bda1f4bb3e26", null ],

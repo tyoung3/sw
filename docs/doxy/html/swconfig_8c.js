@@ -9,6 +9,6 @@ var swconfig_8c =
     [ "visitKeyVal", "swconfig_8c.html#a0ff1d9eb5f9e6d64cc917955daa174cd", null ],
     [ "visitListEntry", "swconfig_8c.html#a62acb57a03f6ed8a7db705d05352fc5f", null ],
     [ "visitString1", "swconfig_8c.html#a1fd5756381161cb36c2efa2623cf790f", null ],
-    [ "visitValidCFG", "swconfig_8c.html#af18ccfc1b9b40771ad44755c320a3da2", null ],
+    [ "visitValidConfig", "swconfig_8c.html#a36b3c5d67f76ea45b758e388e4e538e8", null ],
     [ "cfg", "swconfig_8c.html#a5900c556b80c06652df8b0c57a4a73a3", null ]
 ];
