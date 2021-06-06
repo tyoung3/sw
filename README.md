@@ -350,21 +350,30 @@ Ex.  ```A<-B;``` expands to
 	
 SW Language Notes
 --------------------
-Statements in the StreamWork network definition language, are 
-terminated with a semi-colon.  Semi-colons in code are like 
+
+The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it 
+directly interpretable, without preprocessing.  
+
+As it happens, SW has no reserved words making it natural language
+agnostic.  There is no guarantee this condition will continue, however, every effort 
+will be made to ensure that all currently valid SW statements will remain valid.  Should 
+this prove impossible,  the major version will be changed, i.e. to v1.0.0. 
+
+Statements in SW, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
 they tell the reader (and the interpreter) when
 you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
-Without semi-colons, line breaks become part of the language 
-definition leading to awkward(confusing) syntax rules.  
+
+Additionally, without semi-colons, line breaks become part of the language 
+definition leading to awkward, confusing syntax rules.  
 
 In the future, there may be a few exceptions to the 
 semi-colon rule for special pre-interpreter commands, like INCLUDE.
 
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
-"(A) -> (B)1 <- (C);"  is valid.   
+"(A) -> (B)1 <- (C);"  is valid SW.   
 
 Collate/Merge Example
 ---------------------
