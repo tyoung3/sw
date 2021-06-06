@@ -21,7 +21,7 @@ StreamWork
    Flow based program(FBP) Go language framework and code generator.
          
 [![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
-![StreamWork Stats](https://github-readme-stats.vercel.app/api?username=tyoung3/sw&show_icons=true)
+![StreamWork Stats](https://github-readme-stats.vercel.app/api?username=tyoung3&show_icons=true)
 
 Description
 -----------
