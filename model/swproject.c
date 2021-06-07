@@ -3,8 +3,6 @@
 **/
  
 /** 
-	@todo Make generated test_.go's  deadloack safe. Test w/collate.sw
- 	
  	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
  	
 	@todo Process command arguments. 
@@ -18,6 +16,7 @@
  	@todo Generate project examples
 	
  DONE: 
+	@todo Make generated test_.go's  deadlock safe. Test w/collate.sw
 	@done Improve module location.  Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase 
 	@done  Restore poc test
 	@done  Type names inside arrows(stream direction indicators). 

@@ -1,6 +1,7 @@
 var swsym_8c =
 [
     [ "bucket", "structbucket.html", "structbucket" ],
+    [ "BUFFSIZE", "swsym_8c.html#a39912bfe2a55f30e269196f9141d845d", null ],
     [ "COUNT_SYMS", "swsym_8c.html#a6e6682097d1a13248480e6bf7211356e", null ],
     [ "FREE", "swsym_8c.html#a25875003b43b81a4302256caa4a13599", null ],
     [ "NEW", "swsym_8c.html#ad47bcaeb6a32d146af1ad46876b1e083", null ],

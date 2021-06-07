@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.13.2 - STREAMWORK
+SW-0.13.3 - STREAMWORK
 ======================
 
 StreamWork
@@ -21,9 +21,8 @@ StreamWork
    Flow based program(FBP) Go language framework and code generator.
          
 [![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
-
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Description
 -----------

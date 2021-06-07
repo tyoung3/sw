@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.13.2</span>
+   &#160;<span id="projectnumber">0.13.3</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('sw_8h.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -95,15 +96,17 @@ $(document).ready(function(){initNavTree('sw_8h.html',''); initResizable(); });
 <div class="textblock"><code>#include &quot;<a class="el" href="swmain_8h_source.html">swmain.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="model_8h_source.html">model.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="swconfig_8h_source.html">swconfig.h</a>&quot;</code><br />
+<code>#include &quot;string.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sw.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="sw_8h__incl.png" border="0" usemap="#model_2sw_8h" alt=""/></div>
 <map name="model_2sw_8h" id="model_2sw_8h">
-<area shape="rect" title=" " alt="" coords="286,5,382,32"/>
-<area shape="rect" href="swmain_8h.html" title=" " alt="" coords="211,80,297,107"/>
+<area shape="rect" title=" " alt="" coords="354,5,450,32"/>
+<area shape="rect" href="swmain_8h.html" title=" " alt="" coords="195,80,281,107"/>
 <area shape="rect" href="model_8h.html" title=" " alt="" coords="257,155,331,181"/>
-<area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="372,80,464,107"/>
+<area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="356,80,448,107"/>
+<area shape="rect" title=" " alt="" coords="389,155,460,181"/>
 <area shape="rect" title=" " alt="" coords="5,244,124,271"/>
 <area shape="rect" title=" " alt="" coords="148,244,267,271"/>
 <area shape="rect" title=" " alt="" coords="291,229,470,285"/>
@@ -115,16 +118,17 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="sw_8h__dep__incl.png" border="0" usemap="#model_2sw_8hdep" alt=""/></div>
 <map name="model_2sw_8hdep" id="model_2sw_8hdep">
-<area shape="rect" title=" " alt="" coords="566,5,662,32"/>
-<area shape="rect" href="sw_8c.html" title=" " alt="" coords="5,80,100,107"/>
-<area shape="rect" href="swc_8c.html" title=" " alt="" coords="124,80,227,107"/>
-<area shape="rect" href="swconfig_8c.html" title=" " alt="" coords="251,80,387,107"/>
-<area shape="rect" href="swgo_8c.html" title=" " alt="" coords="411,80,523,107"/>
-<area shape="rect" href="swgraph_8c.html" title=" " alt="" coords="547,80,681,107"/>
-<area shape="rect" href="swjavafbp_8c_source.html" title=" " alt="" coords="705,80,851,107"/>
-<area shape="rect" href="swmain_8c.html" title=" " alt="" coords="875,80,1004,107"/>
-<area shape="rect" href="swproject_8c.html" title=" " alt="" coords="1029,80,1170,107"/>
-<area shape="rect" href="swsym_8c.html" title=" " alt="" coords="1195,80,1319,107"/>
+<area shape="rect" title=" " alt="" coords="446,5,542,32"/>
+<area shape="rect" href="sw_8c.html" title=" " alt="" coords="5,155,100,181"/>
+<area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="268,80,405,107"/>
+<area shape="rect" href="swconfig_8c.html" title=" " alt="" coords="125,155,261,181"/>
+<area shape="rect" href="swgraph_8c.html" title=" " alt="" coords="285,155,418,181"/>
+<area shape="rect" href="swmain_8c.html" title=" " alt="" coords="443,155,572,181"/>
+<area shape="rect" href="swsym_8c.html" title=" " alt="" coords="596,155,720,181"/>
+<area shape="rect" href="swc_8c.html" title=" " alt="" coords="583,80,685,107"/>
+<area shape="rect" href="swgo_8c.html" title=" " alt="" coords="710,80,822,107"/>
+<area shape="rect" href="swjavafbp_8c_source.html" title=" " alt="" coords="847,80,992,107"/>
+<area shape="rect" href="swproject_8c.html" title=" " alt="" coords="1017,80,1158,107"/>
 </map>
 </div>
 </div>
@@ -141,12 +145,27 @@ Macros</h2></td></tr>
 <tr class="memitem:ab788f5d81c5f8dc3a3e69fbe468732c0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8h.html#ab788f5d81c5f8dc3a3e69fbe468732c0">FAIL</a>(F,  S)</td></tr>
 <tr class="memdesc:ab788f5d81c5f8dc3a3e69fbe468732c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abort message.  <a href="sw_8h.html#ab788f5d81c5f8dc3a3e69fbe468732c0">More...</a><br /></td></tr>
 <tr class="separator:ab788f5d81c5f8dc3a3e69fbe468732c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8e0b81a04ffb1a43fe7d38fc0505bc3"><td class="memItemLeft" align="right" valign="top"><a id="aa8e0b81a04ffb1a43fe7d38fc0505bc3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>strncat</b>(X,  Y,  Z)&#160;&#160;&#160;mystrncat(X,Y,Z)</td></tr>
+<tr class="separator:aa8e0b81a04ffb1a43fe7d38fc0505bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d985ff37f0c554d3f36da815d230033"><td class="memItemLeft" align="right" valign="top"><a id="a1d985ff37f0c554d3f36da815d230033"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>ncolors</b>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:a1d985ff37f0c554d3f36da815d230033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a2efe6d463d80744789f228f5dc4baa39"><td class="memItemLeft" align="right" valign="top"><a id="a2efe6d463d80744789f228f5dc4baa39"></a>
+typedef char *&#160;</td><td class="memItemRight" valign="bottom"><b>String</b></td></tr>
+<tr class="separator:a2efe6d463d80744789f228f5dc4baa39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a0aee928c2844a269966e4832fd2255c5"><td class="memItemLeft" align="right" valign="top"><a id="a0aee928c2844a269966e4832fd2255c5"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>strncat</b> (char *dest, const char *src, size_t n)</td></tr>
+<tr class="separator:a0aee928c2844a269966e4832fd2255c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a622e0ddd334c2e7358db0ff36e62d"><td class="memItemLeft" align="right" valign="top"><a id="a67a622e0ddd334c2e7358db0ff36e62d"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><b>mystrncat</b> (char *d, char *s, size_t n)</td></tr>
+<tr class="separator:a67a622e0ddd334c2e7358db0ff36e62d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a839b01ea6bc8b2206417c3ea0e9bf76f"><td class="memItemLeft" align="right" valign="top"><a id="a839b01ea6bc8b2206417c3ea0e9bf76f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8h.html#a839b01ea6bc8b2206417c3ea0e9bf76f">visitDouble</a> (Double d)</td></tr>
 <tr class="memdesc:a839b01ea6bc8b2206417c3ea0e9bf76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Double ? <br /></td></tr>
@@ -279,7 +298,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 </div><!-- fragment -->
 <p>Abort message. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8h_source.html#l00028">28</a> of file <a class="el" href="sw_8h_source.html">sw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8h_source.html#l00035">35</a> of file <a class="el" href="sw_8h_source.html">sw.h</a>.</p>
 
 </div>
 </div>
@@ -305,7 +324,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 </div><!-- fragment -->
 <p>Terminate with message. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8h_source.html#l00022">22</a> of file <a class="el" href="sw_8h_source.html">sw.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8h_source.html#l00029">29</a> of file <a class="el" href="sw_8h_source.html">sw.h</a>.</p>
 
 </div>
 </div>
@@ -385,7 +404,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get argument. </p>
 <p>Get argument. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01086">1086</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01024">1024</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -408,7 +427,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get Component. </p>
 <p>Get Component. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01066">1066</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01004">1004</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -431,7 +450,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get integer. </p>
 <p>Get integer. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01113">1113</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01051">1051</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -454,7 +473,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get argument list. </p>
 <p>Get argument list. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01099">1099</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01037">1037</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -477,7 +496,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get list of statements. </p>
 <p>Get list of statements. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00910">910</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00898">898</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -500,7 +519,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get Process. </p>
 <p>Get Process. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00935">935</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00909">909</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -523,7 +542,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get Port. </p>
 <p>Get Port. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00984">984</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00934">934</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -546,7 +565,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get next Statement. </p>
 <p>Get next Statement. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00877">877</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00865">865</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -569,7 +588,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Get string. </p>
 <p>Get string. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01119">1119</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01057">1057</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -615,7 +634,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 <p>Build model from parse tree. </p>
 <p>Build model from parse tree. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01983">1983</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01920">1920</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -634,7 +653,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> []</td>
 
 <p>sw version <br  />
  </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>may need to increase file name buffer size.</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>may need to increase file name buffer size.</dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="swmain_8c_source.html#l00024">24</a> of file <a class="el" href="swmain_8c_source.html">swmain.c</a>.</p>
 
