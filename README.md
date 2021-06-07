@@ -351,6 +351,10 @@ Ex.  ```A<-B;``` expands to
 ------
 	* Installed linux/Wrap function to encapsulate *Nix executables.	
 	
+0.13.2
+------
+	* Minor changes. Code cleaning.  Added license badge. 	
+	
 SW Language Notes
 --------------------
 
