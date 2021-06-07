@@ -61,7 +61,7 @@ static int VerifyStream(Stream s)
 
 static Subnetm linkSubnet(Model m, char *name)
 {
-    Subnetm sn2 = m->subnetm;
+    Subnetm sn2;
 
     sn2 = m->subnetm;
     if (!sn2) {
@@ -622,7 +622,7 @@ Stream visitdataflow(DataFlow _p_)
 	return s;
 
     case is_Streamy:
-	s = visitdataflow(_p_->u.streamy_.dataflow_);
+	visitdataflow(_p_->u.streamy_.dataflow_);
 	snk = lastProc;
 	pt = visitPrt(_p_->u.streamy_.prt_1);
 	bs = visitLarrow(_p_->u.streamy_.larrow_);
@@ -646,7 +646,7 @@ Stream visitdataflow(DataFlow _p_)
 	VerifyStream(s2);
 	return s2;
     case is_Streamry:
-	s 	 = visitdataflow(_p_->u.streamry_.dataflow_);
+	 visitdataflow(_p_->u.streamry_.dataflow_);
 	src 	 = lastProc;
 	lastProc = snk = visitProc(_p_->u.streamry_.proc_);
 	bs 	 = visitRarrow(_p_->u.streamry_.rarrow_);
@@ -910,7 +910,7 @@ void visitStm(Stm _p_)
 void visitListStm(ListStm liststm)
 {
 
-    while (liststm != 0) {
+    while (liststm != NULL) {
 	visitStm(liststm->stm_);
 	liststm = liststm->liststm_;
     }

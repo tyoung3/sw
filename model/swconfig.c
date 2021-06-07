@@ -4,11 +4,6 @@
 
 */
  
-/*** BNFC-Generated Visitor Traversal Skeleton. ***/
-/* This traverses the abstract syntax tree.
-   To use, copy Skeleton.h and Skeleton.c to
-   new files. */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

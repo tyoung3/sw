@@ -56,10 +56,11 @@ On option, StreamWork will read, parse and interpret a network definition file t
 Starting with version v0.12.0, Streamwork can also generate and run
 an entire working project source tree from a network definition, including config logic, and Golang test code.
 
-	
 A bash script, swgo, will build and run a network definition.
 
 Another bash script, swgraph, will display a graphic image(.svg) of a network definition.
+The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
+data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
 
 Network Definition
 ------------------

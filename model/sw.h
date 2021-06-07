@@ -11,9 +11,16 @@
 #include "swmain.h"
 #include "model.h"
 #include "swconfig.h"
+#include "string.h"
 
+#ifndef String 
+typedef char* String;
+#endif
 
 #define stdPackage  "sw"
+char *strncat(char *dest, const char *src, size_t n);
+
+char *mystrncat(char *d, char *s, size_t n);
 
 extern char *version;  /* In swmain.c from Makefile $VERSION */
 
@@ -62,6 +69,8 @@ void genProject(Model model);
 void genC(Model model); 
 
 	/* swmain.c */
+#undef strncat
+#define strncat(X,Y,Z) mystrncat(X,Y,Z)  
 extern String configfile;
 extern struct cfg_ cfg;
 extern char fbfr[]; 	

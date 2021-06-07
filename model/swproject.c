@@ -82,7 +82,7 @@ static char *Prefix(char *s) {
 	s1=s0;
 	
 	while (*s != 0) {
- 		if( *s == '.') {    /** @todo slash instead of do in module path. */
+ 		if( *s == '.') {     
 			*s1=0;
 			return s0;
 		} else {

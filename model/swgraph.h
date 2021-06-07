@@ -5,6 +5,8 @@
 #ifndef SWGRAPH_H_
 #define SWGRAPH_H_
 
+#include "model.h"
+
 void genGraph(Model model);
 
 
