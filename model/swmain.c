@@ -255,12 +255,6 @@ FILE *input;				/**<Input SW file name */
 static FILE *openFile(char *fname)
 {
     input = fopen(fname, "r");
-#if 0
-    if (!input) {
-	sprintf(fbfr, "Error opening input file: %s.", fname);
-	FAIL(openFile, fbfr);
-    }
-#endif
     return input;
 }
 

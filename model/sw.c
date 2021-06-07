@@ -800,18 +800,6 @@ Process visitHermt(Hermt _p_)
 				(_p_->u.hermty_.listargument_), NULL));
 
 	return p;
-#if 0	
-    case is_Hermtax:
-	p = MakeProcess(net_model, "_", visitComp(_p_->u.hermtax_.comp_),
-			MakeArg(visitListArgument
-				(_p_->u.hermtax_.listargument_), NULL));
-	return p;
-    case is_Hermtay:
-	p = MakeProcess(net_model, "_", NULL,
-			MakeArg(visitListArgument
-				(_p_->u.hermtay_.listargument_), NULL));
-	return p;
-#endif	
     default:
 	badkind(Hermt);
     }
@@ -916,26 +904,9 @@ void visitListStm(ListStm liststm)
     }
 }
 
-#if 0
-/** Create anonymous component. */
-static char *MakeAnon(Component c)
-{
-    static char bfr[100];
-
-    if (c == NULL)
-	return bfr;
-
-    sprintf(bfr, "_%s", c->name);	// @BUG too many dupes  ???
-    return strndup(bfr, 99);
-
-};
-#endif
 
 /** Get process */
-Process visitProc(Proc _p_)
-{
-    // Component c;
-    // char *name;
+Process visitProc(Proc _p_) {
 
     switch (_p_->kind) {
 
@@ -954,27 +925,6 @@ Process visitProc(Proc _p_)
 			   MakeArg(visitListArgument
 				   (_p_->u.processy_.listargument_),
 				   NULL));
-#if 0
-    case is_Processax:		/* Anonymous process */
-	c = visitComp(_p_->u.processax_.comp_);
-	name = MakeAnon(c);
-	return MakeProcess(net_model,
-			   name,
-			   c,
-			   MakeArg(visitListArgument
-				   (_p_->u.processax_.listargument_),
-				   name));
-	break;
-
-    case is_Processay:		/* Anonymous process */
-	name = MakeAnon(NULL);
-	return MakeProcess(net_model,
-			   name,
-			   NULL,
-			   MakeArg(visitListArgument
-				   (_p_->u.processay_.listargument_),
-				   name));
-#endif				   
     default:
 	badkind(Proc);
     }
@@ -1041,18 +991,6 @@ String visitModPath(ModPath p)
 
 String  visitValidImport(ValidImport s0) { 
 	return s0;
-#if 0
-	char *s=s0;
-
-	while(*s!=0) {
-		if(*s='}') {
-			*s-- = 0;
-		}
-		s++;
-	}	
-
-	return s0+1; 		/* s0+1 drops leading brace,'{';  ex. returns  xyz} from {xyz} */	
-#endif
 }   
 
 Component visitRemPath(RemPath p)
@@ -1437,7 +1375,6 @@ static void expandSubnets(Model m)
 		    else {
 			m->proc = p->next;
 		    }
-		    p = pp;
 		    expandSub(m, ps);
 		    FreeLater(&fl, ps);	/* Pointers to ps still exist. */
 		    break;
@@ -1783,7 +1720,7 @@ static void SortPorts(Process p)
 		    pt2->next = pt1;
 		    pt1->prev = pt2;
 		    ptw = pt1;
-		    pt1 = pt2;
+		   //pt1 = pt2;
 		    pt2 = ptw;
 		}
 	    }
@@ -1965,7 +1902,7 @@ static void removeDeadStreams(Model m) {
 	s=m->stream;
 	while(s != NULL) {
 	     if(s->source->comp != NULL) {
-		if(  (s->source->comp->path[0] == '_') ) {  /* if subnet, remove stream */
+		if(  s->source->comp->path[0] == '_' ) {  /* if subnet, remove stream */
 			if(s==m->stream) {
 				m->stream=s->next;
 			} else {
