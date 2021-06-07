@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.13.2 - STREAMWORK
+SW-0.13.3 - STREAMWORK
 ======================
 
 StreamWork
@@ -21,9 +21,8 @@ StreamWork
    Flow based program(FBP) Go language framework and code generator.
          
 [![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
-
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Description
 -----------
@@ -56,10 +55,11 @@ On option, StreamWork will read, parse and interpret a network definition file t
 Starting with version v0.12.0, Streamwork can also generate and run
 an entire working project source tree from a network definition, including config logic, and Golang test code.
 
-	
 A bash script, swgo, will build and run a network definition.
 
 Another bash script, swgraph, will display a graphic image(.svg) of a network definition.
+The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
+data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
 
 Network Definition
 ------------------

@@ -9,7 +9,7 @@ var searchData=
   ['genproject_44',['genProject',['../sw_8h.html#ae7b844aa821628e0c3591827bb2830f3',1,'genProject(Model model):&#160;swproject.c'],['../swproject_8c.html#a18029eac035942e41480c322753e56bf',1,'genProject(Model m):&#160;swproject.c']]],
   ['gensuffix_45',['genSuffix',['../swgo_8c.html#a7a7fd24441e812587011a79a99a32be2',1,'swgo.c']]],
   ['getcomponent_46',['getComponent',['../swsym_8c.html#aacdac83f8afdc3feaf168ca1dec78a12',1,'getComponent(char *name, char *path):&#160;swsym.c'],['../swsym_8h.html#aacdac83f8afdc3feaf168ca1dec78a12',1,'getComponent(char *name, char *path):&#160;swsym.c']]],
-  ['getconftype_47',['getConfType',['../swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a',1,'swsym.c']]],
+  ['getconftype_47',['getConfType',['../swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a',1,'getConfType(char *path):&#160;swsym.c'],['../swsym_8h.html#af35720c5756a004c9f16fe9ab83887b0',1,'getConfType(String path):&#160;swsym.c']]],
   ['getenvvar_48',['getEnvVar',['../sw_8c.html#ae255306f57929068384469e380faddf6',1,'sw.c']]],
   ['getpath_49',['getPath',['../swsym_8c.html#a6938fa2374e6f15d94b295e745e89a30',1,'getPath(char *name):&#160;swsym.c'],['../swsym_8h.html#a28bb1cbb39f315ae03737cd36c443886',1,'getPath(char *key):&#160;swsym.c']]],
   ['getproc_50',['getProc',['../swsym_8c.html#a2e084318dec8f55087198d0a61aa6e78',1,'getProc(char *key):&#160;swsym.c'],['../swsym_8h.html#a2e084318dec8f55087198d0a61aa6e78',1,'getProc(char *key):&#160;swsym.c']]],

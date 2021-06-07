@@ -29,6 +29,14 @@ static char *fname = { "stdin" };		/**<Input file name or Standard input. */
 
 ValidSW pValidSW(FILE * inp);  /**<True if valid input */
 
+
+char *mystrncat(char *d, char *s, size_t n) {
+	if( sizeof(d) + sizeof(s) >= (n-1) ) {
+		abort(); 
+	}
+	return strcat(d,s);
+}
+
 /** True if process structure misconfigured. */
 static int badProc(Process p)
 {
@@ -247,12 +255,6 @@ FILE *input;				/**<Input SW file name */
 static FILE *openFile(char *fname)
 {
     input = fopen(fname, "r");
-#if 0
-    if (!input) {
-	sprintf(fbfr, "Error opening input file: %s.", fname);
-	FAIL(openFile, fbfr);
-    }
-#endif
     return input;
 }
 

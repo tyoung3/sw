@@ -7,6 +7,9 @@
 #ifndef _SWCONFIG_H
 #define _SWCONFIG_H
 
+#include "sw.h"
+#include <string.h>
+
 #define htmldir		  cfg.HTMLdir
 #define defaultPath 	  cfg.DefaultPath
 #define defaultSourceComp cfg.DefaultSourceComp

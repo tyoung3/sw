@@ -14,6 +14,7 @@
 #include "sw.h"
 #include "swconfig.h"
 
+#define BUFFSIZE 200
 
 /** Variable key/value structure. */
 struct bucket {
@@ -195,13 +196,13 @@ String addSymVar(String name, String val) {
 Component addComponent(char *name, char *path, Component c)
 {
     bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '^';
     key[1] = 0;
-    strncat(key, path, 999);
-    strncat(key, ".", 999);
-    strncat(key, name, 999);
+    strncat(key, path, BUFFSIZE);
+    strncat(key, ".", BUFFSIZE);
+    strncat(key, name, BUFFSIZE);
     b = lookup(key);
     b->u.comp = c;
     return b->u.comp;
@@ -211,13 +212,13 @@ Component addComponent(char *name, char *path, Component c)
 Component getComponent(char *name, char *path)
 {
     bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '^';
     key[1] = 0;
-    strncat(key, path, 999);
-    strncat(key, ".", 999);
-    strncat(key, name, 999);
+    strncat(key, path, BUFFSIZE);
+    strncat(key, ".", BUFFSIZE);
+    strncat(key, name, BUFFSIZE);
     b = lookup(key);
     return b->u.comp;
 }
@@ -245,11 +246,11 @@ Process getProc(char *key)
 String getConfType(char *path)
 {
    bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '#';
     key[1] = 0;
-    strncat(key, path, 999);
+    strncat(key, path, BUFFSIZE);
 
 
     b = lookup(key);
@@ -263,11 +264,11 @@ String getConfType(char *path)
 
 int getPathColor(char *p) {
     bucketp b;
-    char key[1000];key[0] = '<';
+    char key[BUFFSIZE+1]; key[0] = '<';
     static int color_i=0; 
     
     key[1] = 0;
-    strncat(key, p, 999);
+    strncat(key, p, BUFFSIZE);
 
     b = lookup(key);
     
@@ -285,11 +286,11 @@ int getPathColor(char *p) {
 int getPath(char *name)
 {
     bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '<';
     key[1] = 0;
-    strncat(key, name, 999);
+    strncat(key, name, BUFFSIZE);
 
     b = lookup(key);
     b->nrefs++;
