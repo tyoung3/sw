@@ -41,6 +41,7 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 	
 /* sw.c  */
 //void 	expandSubnets(Model model);   		/**<Expand Subnets */
+
 void 	visitDouble(Double d);			/**<Get Double ?*/	
 void 	visitChar(Char c);			/**<Get a char */
 void	visitStm(Stm p);			/**<Get next Statement*/
@@ -51,7 +52,8 @@ Port    visitPrt(Prt p);			/**<Get Port*/
 Component visitComp(Comp p);			/**<Get Component*/
 Argument visitArgument(Argument p);		/**<Get argument*/
 ListArgument visitListArgument(ListArgument p);	/**<Get argument list*/
-Model 	visitValidSW(ValidSW p);		/**<Build model from parse tree*/
+Model 	visitValidSW(Model, ValidSW p);		/**<Build model from parse tree*/
+Model MakeModel(Stream f);
 Ident visitIdent(Ident i);		      	/**<Get port number */
 Integer visitInteger(Integer i); 		/**<Get integer*/
 String visitString(String s);			/**<Get string*/

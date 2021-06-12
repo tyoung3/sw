@@ -1917,8 +1917,9 @@ static void removeDeadStreams(Model m) {
 }
 
 /** Convert the parse tree into a SW network model. */
-Model visitValidSW(ValidSW _p_)  { 
-    net_model = MakeModel(NULL);
+Model visitValidSW(Model model, ValidSW _p_)  { 
+    // net_model = MakeModel(NULL);
+    net_model = model;
     visitListStm(_p_->u.valid_.liststm_);	/* Visit the root of the parse tree to begin.    */
     fixFanInOut(net_model);			/* Insert Join and Split processes as necessary. */
     expandSubnets(net_model);   

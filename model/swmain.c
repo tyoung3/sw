@@ -331,10 +331,12 @@ int main(int argc, char **argv)
     }
 
     parse_tree = pValidSW(input);	/** Parse network definition */
-
+   
     if (parse_tree) {
+       
 	tabinit();	/** set symbol table */
-	model = visitValidSW(parse_tree);	/** Build model */
+	model = MakeModel(NULL);
+	visitValidSW(model, parse_tree);	/** Build model */
 	model->name = baseOf(fname);
 	if (verifyOK(model)) {
 	    if (!model->proc) {
