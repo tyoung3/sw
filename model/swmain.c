@@ -314,6 +314,17 @@ static int BadArg(int argc, char **argv)
     return 0;
 }
 
+static void IncludeFile(Model model, char *fname) {
+	 ValidSW parse_tree = NULL;
+	  
+	 input = openFile(fname);
+	 if(input==NULL) {
+	 	FAIL(Cannot open, fname);
+	 }
+	 parse_tree = pValidSW(input);
+	 visitValidSW(model, parse_tree);
+}
+
 int main(int argc, char **argv)
 {
     ValidSW parse_tree = NULL;
@@ -337,6 +348,7 @@ int main(int argc, char **argv)
 	tabinit();	/** set symbol table */
 	model = MakeModel(NULL);
 	visitValidSW(model, parse_tree);	/** Build model */
+	IncludeFile(model, "model/tests/inc.isw");  
 	model->name = baseOf(fname);
 	if (verifyOK(model)) {
 	    if (!model->proc) {

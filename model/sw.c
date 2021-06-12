@@ -1917,6 +1917,7 @@ static void removeDeadStreams(Model m) {
 }
 
 /** Convert the parse tree into a SW network model. */
+
 Model visitValidSW(Model model, ValidSW _p_)  { 
     // net_model = MakeModel(NULL);
     net_model = model;
