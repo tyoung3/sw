@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = --static -g -pg -W -Wall
 
-VERSION = \"0.13.3\"
+VERSION = \"0.13.4\"
 
 LATEX = latex
 DVIPS = dvips
@@ -82,6 +82,7 @@ check:  #check_go
 	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/var.sw   >/dev/null
 	${PGM}  tests/module.sw   >/dev/null
+	${PGM}  tests/inc.sw   >/dev/null
 	# ?? breaks  github workflow ../bin/sw.sh poc     
 
 

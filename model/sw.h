@@ -27,7 +27,7 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 /** Terminate with message */
 #define FAIL1(S) { 					\
 	fprintf(stderr,"\033[31mFAIL: SW/%s\033[39m\n",(#S));	\
-	exit(1);					\
+	exit(EXIT_FAILURE);					\
 	}
 
 		/**  Abort message */
@@ -36,7 +36,7 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 		"\033[31mSW/%s/FAIL: %s\033[39m\n",	\
 		(#F),								\
 		(S)   );							\
-		exit(1);							\
+		exit(EXIT_FAILURE);							\
 	}	
 	
 /* sw.c  */

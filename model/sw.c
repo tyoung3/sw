@@ -10,7 +10,9 @@
 #include "swconfig.h"
 #include "swsym.h"
 #include "model.h"
-#include <assert.h>
+#include <assert.h>       
+#include <sys/stat.h>
+
 
 #define DEBUGGING
 
@@ -861,6 +863,13 @@ void visitSubdef(Subdef _p_)
 }
 
 static char *findFile(char *s) {
+	struct stat sb;
+
+	if (lstat(s, &sb) == -1) {
+               perror("lstat");
+               FAIL(Cannot locate, s);
+           }
+
 	return s;
 }
 
