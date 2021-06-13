@@ -860,21 +860,22 @@ void visitSubdef(Subdef _p_)
 	//		    visitSymval(_p_->u.snet_.symval_));
 }
 
+static char *findFile(char *s) {
+	return s;
+}
 
 /** Get network statement. */
 void visitStm(Stm _p_)
 {
-    Process p;
-
+    Process p;     
+    ValidSW pt;
     type = IS_NET;
+    
     switch (_p_->kind) {
     case is_Stminc:
-       {ValidSW pt;
-             pt = IncludeFile("/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw");  
-             visitListStm(pt->u.valid_.liststm_);
-       }   
-           visitString(_p_->u.stminc_.string_);
-    break;
+         pt = IncludeFile(visitString(findFile(_p_->u.stminc_.string_)));  
+         visitListStm(pt->u.valid_.liststm_);
+         return;
     case is_Stmx:
 	visitdataflow(_p_->u.stmx_.dataflow_);
 	return;
