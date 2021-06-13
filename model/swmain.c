@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
@@ -314,15 +315,21 @@ static int BadArg(int argc, char **argv)
     return 0;
 }
 
-static void IncludeFile(Model model, char *fname) {
+ValidSW IncludeFile( char *fname) {
 	 ValidSW parse_tree = NULL;
 	  
+	 fclose(input); 
 	 input = openFile(fname);
 	 if(input==NULL) {
+	 	perror(fname);
+ 		//      #include <errno.h>
 	 	FAIL(Cannot open, fname);
 	 }
 	 parse_tree = pValidSW(input);
-	 visitValidSW(model, parse_tree);
+	 if(parse_tree == NULL) {
+	 	FAIL(Cannot parse, fname);
+	 }
+	 return parse_tree;
 }
 
 int main(int argc, char **argv)
@@ -348,7 +355,6 @@ int main(int argc, char **argv)
 	tabinit();	/** set symbol table */
 	model = MakeModel(NULL);
 	visitValidSW(model, parse_tree);	/** Build model */
-	IncludeFile(model, "model/tests/inc.isw");  
 	model->name = baseOf(fname);
 	if (verifyOK(model)) {
 	    if (!model->proc) {

@@ -177,6 +177,14 @@ void ppStm(Stm p, int _i_)
 {
   switch(p->kind)
   {
+  case is_Stminc:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppInclude(p->u.stminc_.include_, 0);
+    ppString(p->u.stminc_.string_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
   case is_Stmx:
     if (_i_ > 0) renderC(_L_PAREN);
     ppDataFlow(p->u.stmx_.dataflow_, 0);
@@ -972,6 +980,31 @@ void ppSymval(Symval p, int _i_)
   }
 }
 
+void ppInclude(Include p, int _i_)
+{
+  switch(p->kind)
+  {
+  case is_Inc1:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderS("include");
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_Inc2:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderS("INCLUDE");
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Include!\n");
+    exit(1);
+  }
+}
+
 void ppValidConfig(ValidConfig p, int _i_)
 {
   switch(p->kind)
@@ -1245,6 +1278,20 @@ void shStm(Stm p)
 {
   switch(p->kind)
   {
+  case is_Stminc:
+    bufAppendC('(');
+
+    bufAppendS("Stminc");
+
+    bufAppendC(' ');
+
+    shInclude(p->u.stminc_.include_);
+  bufAppendC(' ');
+    shString(p->u.stminc_.string_);
+
+    bufAppendC(')');
+
+    break;
   case is_Stmx:
     bufAppendC('(');
 
@@ -2342,6 +2389,33 @@ void shSymval(Symval p)
 
   default:
     fprintf(stderr, "Error: bad kind field when showing Symval!\n");
+    exit(1);
+  }
+}
+
+void shInclude(Include p)
+{
+  switch(p->kind)
+  {
+  case is_Inc1:
+
+    bufAppendS("Inc1");
+
+
+
+
+    break;
+  case is_Inc2:
+
+    bufAppendS("Inc2");
+
+
+
+
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when showing Include!\n");
     exit(1);
   }
 }

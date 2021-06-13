@@ -83,6 +83,8 @@ struct Stringval_;
 typedef struct Stringval_ *Stringval;
 struct Symval_;
 typedef struct Symval_ *Symval;
+struct Include_;
+typedef struct Include_ *Include;
 struct ValidConfig_;
 typedef struct ValidConfig_ *ValidConfig;
 struct Entry_;
@@ -124,9 +126,10 @@ ValidSW make_Valid(ListStm p0);
 struct Stm_
 {
 
-  enum { is_Stmx, is_Stmn, is_Stms, is_Stmb, is_Stmh, is_Stmnet } kind;
+  enum { is_Stminc, is_Stmx, is_Stmn, is_Stms, is_Stmb, is_Stmh, is_Stmnet } kind;
   union
   {
+    struct { Include include_; String string_; } stminc_;
     struct { DataFlow dataflow_; } stmx_;
     struct { Numassgn numassgn_; } stmn_;
     struct { Strassgn strassgn_; } stms_;
@@ -136,6 +139,7 @@ struct Stm_
   } u;
 };
 
+Stm make_Stminc(Include p0, String p1);
 Stm make_Stmx(DataFlow p0);
 Stm make_Stmn(Numassgn p0);
 Stm make_Stms(Strassgn p0);
@@ -503,6 +507,18 @@ struct Symval_
 Symval make_Symvalv(Symvar p0);
 Symval make_Symvali(Id p0);
 Symval make_SymVale(Envar p0);
+
+struct Include_
+{
+
+  enum { is_Inc1, is_Inc2 } kind;
+  union
+  {
+  } u;
+};
+
+Include make_Inc1(void);
+Include make_Inc2(void);
 
 struct ValidConfig_
 {

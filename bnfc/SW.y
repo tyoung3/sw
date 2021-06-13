@@ -199,6 +199,7 @@ ListEntry reverseListEntry(ListEntry l)
   Numval numval_;
   Stringval stringval_;
   Symval symval_;
+  Include include_;
   ValidConfig validconfig_;
   Entry entry_;
   ListEntry listentry_;
@@ -223,14 +224,16 @@ ListEntry reverseListEntry(ListEntry l)
 %token _SYMB_12    /*   StreamWork:   */
 %token _SYMB_13    /*   ---   */
 %token _SYMB_14    /*   :   */
-%token<string_> _SYMB_15    /*   Numvar   */
-%token<string_> _SYMB_16    /*   Stringvar   */
-%token<string_> _SYMB_17    /*   Envar   */
-%token<string_> _SYMB_18    /*   Symvar   */
-%token<string_> _SYMB_19    /*   SubId   */
-%token<string_> _SYMB_20    /*   Id   */
-%token<string_> _SYMB_21    /*   ValidImport   */
-%token<string_> _SYMB_22    /*   Date   */
+%token _SYMB_15    /*   INCLUDE   */
+%token _SYMB_16    /*   include   */
+%token<string_> _SYMB_17    /*   Numvar   */
+%token<string_> _SYMB_18    /*   Stringvar   */
+%token<string_> _SYMB_19    /*   Envar   */
+%token<string_> _SYMB_20    /*   Symvar   */
+%token<string_> _SYMB_21    /*   SubId   */
+%token<string_> _SYMB_22    /*   Id   */
+%token<string_> _SYMB_23    /*   ValidImport   */
+%token<string_> _SYMB_24    /*   Date   */
 
 %type <valide_> Valide
 %type <validsw_> ValidSW
@@ -262,6 +265,7 @@ ListEntry reverseListEntry(ListEntry l)
 %type <numval_> Numval
 %type <stringval_> Stringval
 %type <symval_> Symval
+%type <include_> Include
 %type <validconfig_> ValidConfig
 %type <entry_> Entry
 %type <listentry_> ListEntry
@@ -278,7 +282,8 @@ Valide : ValidConfig { $$ = make_CFGvalid($1); YY_RESULT_Valide_= $$; }
 ;
 ValidSW : ListStm { $$ = make_Valid(reverseListStm($1)); YY_RESULT_ValidSW_= $$; }
 ;
-Stm : DataFlow { $$ = make_Stmx($1);  }
+Stm : Include _STRING_ { $$ = make_Stminc($1, $2);  }
+  | DataFlow { $$ = make_Stmx($1);  }
   | Numassgn { $$ = make_Stmn($1);  }
   | Strassgn { $$ = make_Stms($1);  }
   | SymAssgn { $$ = make_Stmb($1);  }
@@ -288,7 +293,7 @@ Stm : DataFlow { $$ = make_Stmx($1);  }
 ListStm : /* empty */ { $$ = 0;  }
   | ListStm Stm _SYMB_0 { $$ = make_ListStm($2, $1);  }
 ;
-Subdef : _SYMB_19 _SYMB_1 ListSubnet _SYMB_2 { $$ = make_Snet($1, reverseListSubnet($3));  }
+Subdef : _SYMB_21 _SYMB_1 ListSubnet _SYMB_2 { $$ = make_Snet($1, reverseListSubnet($3));  }
 ;
 Subnet : Hermt { $$ = make_Sneth($1);  }
   | DataFlow { $$ = make_Snets($1);  }
@@ -338,7 +343,7 @@ Prt : Numval { $$ = make_Portx($1);  }
   | /* empty */ { $$ = make_Porte();  }
 ;
 Comp : Symval { $$ = make_Compx($1);  }
-  | _SYMB_19 { $$ = make_Compn($1);  }
+  | _SYMB_21 { $$ = make_Compn($1);  }
   | ModPath Symval { $$ = make_Compz($1, $2);  }
   | RemPath { $$ = make_Compa($1);  }
 ;
@@ -346,29 +351,32 @@ ModPath : _SYMB_10 Symval _SYMB_10 { $$ = make_Modpa($2);  }
   | Symval _SYMB_10 { $$ = make_Modpx($1);  }
   | ModPath Symval _SYMB_10 { $$ = make_Modpy($1, $2);  }
 ;
-RemPath : _SYMB_21 Symval { $$ = make_RemPatha($1, $2);  }
+RemPath : _SYMB_23 Symval { $$ = make_RemPatha($1, $2);  }
 ;
 Argument : Stringval { $$ = make_Argumentx($1);  }
 ;
 ListArgument : /* empty */ { $$ = 0;  }
   | ListArgument Argument { $$ = make_ListArgument($2, $1);  }
 ;
-Numassgn : _SYMB_15 _SYMB_11 Numval { $$ = make_NumAssgnv($1, $3);  }
+Numassgn : _SYMB_17 _SYMB_11 Numval { $$ = make_NumAssgnv($1, $3);  }
 ;
-Strassgn : _SYMB_16 _SYMB_11 Symval { $$ = make_StrAssgnv($1, $3);  }
+Strassgn : _SYMB_18 _SYMB_11 Symval { $$ = make_StrAssgnv($1, $3);  }
 ;
-SymAssgn : _SYMB_18 _SYMB_11 Symval { $$ = make_SymAssgni($1, $3);  }
+SymAssgn : _SYMB_20 _SYMB_11 Symval { $$ = make_SymAssgni($1, $3);  }
 ;
 Numval : _INTEGER_ { $$ = make_NumVali($1);  }
-  | _SYMB_15 { $$ = make_NumValv($1);  }
+  | _SYMB_17 { $$ = make_NumValv($1);  }
 ;
 Stringval : _STRING_ { $$ = make_StringVals($1);  }
-  | _SYMB_16 { $$ = make_StringValv($1);  }
-  | _SYMB_17 { $$ = make_StringVale($1);  }
+  | _SYMB_18 { $$ = make_StringValv($1);  }
+  | _SYMB_19 { $$ = make_StringVale($1);  }
 ;
-Symval : _SYMB_18 { $$ = make_Symvalv($1);  }
-  | _SYMB_20 { $$ = make_Symvali($1);  }
-  | _SYMB_17 { $$ = make_SymVale($1);  }
+Symval : _SYMB_20 { $$ = make_Symvalv($1);  }
+  | _SYMB_22 { $$ = make_Symvali($1);  }
+  | _SYMB_19 { $$ = make_SymVale($1);  }
+;
+Include : _SYMB_16 { $$ = make_Inc1();  }
+  | _SYMB_15 { $$ = make_Inc2();  }
 ;
 ValidConfig : _SYMB_12 ListEntry { $$ = make_Validcfg(reverseListEntry($2)); YY_RESULT_ValidConfig_= $$; }
   | _SYMB_13 ListEntry { $$ = make_Validcfgd(reverseListEntry($2)); YY_RESULT_ValidConfig_= $$; }
@@ -381,7 +389,7 @@ ListEntry : /* empty */ { $$ = 0;  }
 ;
 KeyVal : KeyName _INTEGER_ { $$ = make_CfgKeyvalint($1, $2);  }
   | KeyName _STRING_ { $$ = make_CfgKeyvalstr($1, $2);  }
-  | KeyName _SYMB_22 { $$ = make_CfgKeyDate($1, $2);  }
+  | KeyName _SYMB_24 { $$ = make_CfgKeyDate($1, $2);  }
 ;
 KeyName : Symval _SYMB_14 { $$ = make_KeynameS($1);  }
   | ModPath Symval _SYMB_14 { $$ = make_KeynameM($1, $2);  }

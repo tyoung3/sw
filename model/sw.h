@@ -76,6 +76,7 @@ void genC(Model model);
 extern String configfile;
 extern struct cfg_ cfg;
 extern char fbfr[]; 	
+ValidSW IncludeFile( char *fname);
 
 	/* swsym.c */
 int getPathColor(String path);

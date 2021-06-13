@@ -8,6 +8,7 @@ SWvalid.	 	Valide 		::= ValidSW  ;
 
 Valid.			ValidSW 	::= [Stm]    ;
 
+Stminc.			Stm		::= Include String;
 Stmx.			Stm		::= DataFlow  ; 
 Stmn.			Stm		::= Numassgn ; 
 Stms.			Stm		::= Strassgn ;
@@ -94,6 +95,8 @@ Symvalv.		Symval	   	::= Symvar		;
 Symvali.		Symval	   	::= Id			;  
 SymVale.		Symval	   	::= Envar	;
 
+Inc1.		  	Include   	::= "include" 		;
+Inc2.			Include		::= "INCLUDE"		;
 
 token   Numvar	  '%' letter  ( letter | digit  )*	;		
 token	Stringvar '$' letter  ( letter | digit  )*	;	

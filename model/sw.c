@@ -10,9 +10,8 @@
 #include "swconfig.h"
 #include "swsym.h"
 #include "model.h"
-
 #include <assert.h>
-/** Addional checking if DEBUGGING is defined.*/
+
 #define DEBUGGING
 
 static char *iptype_save="";  		/* latest visited IP type */  
@@ -20,6 +19,7 @@ static  Process fl = NULL;		/** List of processes to free	*/
 
 /** Place to store latest visited source port. */
 Port LatestSrcPort = NULL;  
+
 /** Current network type. */
 TYPE type = IS_NET;
 
@@ -868,6 +868,13 @@ void visitStm(Stm _p_)
 
     type = IS_NET;
     switch (_p_->kind) {
+    case is_Stminc:
+       {ValidSW pt;
+             pt = IncludeFile("/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw");  
+             visitListStm(pt->u.valid_.liststm_);
+       }   
+           visitString(_p_->u.stminc_.string_);
+    break;
     case is_Stmx:
 	visitdataflow(_p_->u.stmx_.dataflow_);
 	return;
@@ -1917,11 +1924,13 @@ static void removeDeadStreams(Model m) {
 }
 
 /** Convert the parse tree into a SW network model. */
-
-Model visitValidSW(Model model, ValidSW _p_)  { 
-    // net_model = MakeModel(NULL);
+Model visitValidSW(Model model, ValidSW _p_)  {
+   
     net_model = model;
     visitListStm(_p_->u.valid_.liststm_);	/* Visit the root of the parse tree to begin.    */
+
+      
+      
     fixFanInOut(net_model);			/* Insert Join and Split processes as necessary. */
     expandSubnets(net_model);   
     fixFanInOut(net_model);  

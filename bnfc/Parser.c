@@ -303,8 +303,10 @@ extern int SWdebug;
     _SYMB_20 = 279,                /* _SYMB_20  */
     _SYMB_21 = 280,                /* _SYMB_21  */
     _SYMB_22 = 281,                /* _SYMB_22  */
-    _STRING_ = 282,                /* _STRING_  */
-    _INTEGER_ = 283                /* _INTEGER_  */
+    _SYMB_23 = 282,                /* _SYMB_23  */
+    _SYMB_24 = 283,                /* _SYMB_24  */
+    _STRING_ = 284,                /* _STRING_  */
+    _INTEGER_ = 285                /* _INTEGER_  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -349,6 +351,7 @@ union YYSTYPE
   Numval numval_;
   Stringval stringval_;
   Symval symval_;
+  Include include_;
   ValidConfig validconfig_;
   Entry entry_;
   ListEntry listentry_;
@@ -356,7 +359,7 @@ union YYSTYPE
   KeyName keyname_;
 
 
-#line 360 "Parser.c"
+#line 363 "Parser.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -415,44 +418,47 @@ enum yysymbol_kind_t
   YYSYMBOL__SYMB_20 = 24,                  /* _SYMB_20  */
   YYSYMBOL__SYMB_21 = 25,                  /* _SYMB_21  */
   YYSYMBOL__SYMB_22 = 26,                  /* _SYMB_22  */
-  YYSYMBOL__STRING_ = 27,                  /* _STRING_  */
-  YYSYMBOL__INTEGER_ = 28,                 /* _INTEGER_  */
-  YYSYMBOL_YYACCEPT = 29,                  /* $accept  */
-  YYSYMBOL_Valide = 30,                    /* Valide  */
-  YYSYMBOL_ValidSW = 31,                   /* ValidSW  */
-  YYSYMBOL_Stm = 32,                       /* Stm  */
-  YYSYMBOL_ListStm = 33,                   /* ListStm  */
-  YYSYMBOL_Subdef = 34,                    /* Subdef  */
-  YYSYMBOL_Subnet = 35,                    /* Subnet  */
-  YYSYMBOL_ListSubnet = 36,                /* ListSubnet  */
-  YYSYMBOL_ExtPortIn = 37,                 /* ExtPortIn  */
-  YYSYMBOL_ExtPortOut = 38,                /* ExtPortOut  */
-  YYSYMBOL_Tab = 39,                       /* Tab  */
-  YYSYMBOL_DataFlow = 40,                  /* DataFlow  */
-  YYSYMBOL_Larrow = 41,                    /* Larrow  */
-  YYSYMBOL_Rarrow = 42,                    /* Rarrow  */
-  YYSYMBOL_TypeDef = 43,                   /* TypeDef  */
-  YYSYMBOL_Buffsize = 44,                  /* Buffsize  */
-  YYSYMBOL_Hermt = 45,                     /* Hermt  */
-  YYSYMBOL_Symvalu = 46,                   /* Symvalu  */
-  YYSYMBOL_Proc = 47,                      /* Proc  */
-  YYSYMBOL_Prt = 48,                       /* Prt  */
-  YYSYMBOL_Comp = 49,                      /* Comp  */
-  YYSYMBOL_ModPath = 50,                   /* ModPath  */
-  YYSYMBOL_RemPath = 51,                   /* RemPath  */
-  YYSYMBOL_Argument = 52,                  /* Argument  */
-  YYSYMBOL_ListArgument = 53,              /* ListArgument  */
-  YYSYMBOL_Numassgn = 54,                  /* Numassgn  */
-  YYSYMBOL_Strassgn = 55,                  /* Strassgn  */
-  YYSYMBOL_SymAssgn = 56,                  /* SymAssgn  */
-  YYSYMBOL_Numval = 57,                    /* Numval  */
-  YYSYMBOL_Stringval = 58,                 /* Stringval  */
-  YYSYMBOL_Symval = 59,                    /* Symval  */
-  YYSYMBOL_ValidConfig = 60,               /* ValidConfig  */
-  YYSYMBOL_Entry = 61,                     /* Entry  */
-  YYSYMBOL_ListEntry = 62,                 /* ListEntry  */
-  YYSYMBOL_KeyVal = 63,                    /* KeyVal  */
-  YYSYMBOL_KeyName = 64                    /* KeyName  */
+  YYSYMBOL__SYMB_23 = 27,                  /* _SYMB_23  */
+  YYSYMBOL__SYMB_24 = 28,                  /* _SYMB_24  */
+  YYSYMBOL__STRING_ = 29,                  /* _STRING_  */
+  YYSYMBOL__INTEGER_ = 30,                 /* _INTEGER_  */
+  YYSYMBOL_YYACCEPT = 31,                  /* $accept  */
+  YYSYMBOL_Valide = 32,                    /* Valide  */
+  YYSYMBOL_ValidSW = 33,                   /* ValidSW  */
+  YYSYMBOL_Stm = 34,                       /* Stm  */
+  YYSYMBOL_ListStm = 35,                   /* ListStm  */
+  YYSYMBOL_Subdef = 36,                    /* Subdef  */
+  YYSYMBOL_Subnet = 37,                    /* Subnet  */
+  YYSYMBOL_ListSubnet = 38,                /* ListSubnet  */
+  YYSYMBOL_ExtPortIn = 39,                 /* ExtPortIn  */
+  YYSYMBOL_ExtPortOut = 40,                /* ExtPortOut  */
+  YYSYMBOL_Tab = 41,                       /* Tab  */
+  YYSYMBOL_DataFlow = 42,                  /* DataFlow  */
+  YYSYMBOL_Larrow = 43,                    /* Larrow  */
+  YYSYMBOL_Rarrow = 44,                    /* Rarrow  */
+  YYSYMBOL_TypeDef = 45,                   /* TypeDef  */
+  YYSYMBOL_Buffsize = 46,                  /* Buffsize  */
+  YYSYMBOL_Hermt = 47,                     /* Hermt  */
+  YYSYMBOL_Symvalu = 48,                   /* Symvalu  */
+  YYSYMBOL_Proc = 49,                      /* Proc  */
+  YYSYMBOL_Prt = 50,                       /* Prt  */
+  YYSYMBOL_Comp = 51,                      /* Comp  */
+  YYSYMBOL_ModPath = 52,                   /* ModPath  */
+  YYSYMBOL_RemPath = 53,                   /* RemPath  */
+  YYSYMBOL_Argument = 54,                  /* Argument  */
+  YYSYMBOL_ListArgument = 55,              /* ListArgument  */
+  YYSYMBOL_Numassgn = 56,                  /* Numassgn  */
+  YYSYMBOL_Strassgn = 57,                  /* Strassgn  */
+  YYSYMBOL_SymAssgn = 58,                  /* SymAssgn  */
+  YYSYMBOL_Numval = 59,                    /* Numval  */
+  YYSYMBOL_Stringval = 60,                 /* Stringval  */
+  YYSYMBOL_Symval = 61,                    /* Symval  */
+  YYSYMBOL_Include = 62,                   /* Include  */
+  YYSYMBOL_ValidConfig = 63,               /* ValidConfig  */
+  YYSYMBOL_Entry = 64,                     /* Entry  */
+  YYSYMBOL_ListEntry = 65,                 /* ListEntry  */
+  YYSYMBOL_KeyVal = 66,                    /* KeyVal  */
+  YYSYMBOL_KeyName = 67                    /* KeyName  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -765,19 +771,19 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   164
+#define YYLAST   161
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  29
+#define YYNTOKENS  31
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  36
+#define YYNNTS  37
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  79
+#define YYNRULES  82
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  131
+#define YYNSTATES  135
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   283
+#define YYMAXUTOK   285
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -819,21 +825,22 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28
+      25,    26,    27,    28,    29,    30
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   276,   276,   277,   279,   281,   282,   283,   284,   285,
-     286,   288,   289,   291,   293,   294,   295,   296,   298,   299,
-     301,   302,   304,   305,   307,   308,   310,   311,   312,   313,
-     315,   317,   319,   320,   322,   323,   325,   326,   328,   329,
-     331,   332,   334,   335,   336,   337,   338,   340,   341,   342,
-     343,   345,   346,   347,   349,   351,   353,   354,   356,   358,
-     360,   362,   363,   365,   366,   367,   369,   370,   371,   373,
-     374,   376,   377,   379,   380,   382,   383,   384,   386,   387
+       0,   280,   280,   281,   283,   285,   286,   287,   288,   289,
+     290,   291,   293,   294,   296,   298,   299,   300,   301,   303,
+     304,   306,   307,   309,   310,   312,   313,   315,   316,   317,
+     318,   320,   322,   324,   325,   327,   328,   330,   331,   333,
+     334,   336,   337,   339,   340,   341,   342,   343,   345,   346,
+     347,   348,   350,   351,   352,   354,   356,   358,   359,   361,
+     363,   365,   367,   368,   370,   371,   372,   374,   375,   376,
+     378,   379,   381,   382,   384,   385,   387,   388,   390,   391,
+     392,   394,   395
 };
 #endif
 
@@ -853,13 +860,14 @@ static const char *const yytname[] =
   "_SYMB_1", "_SYMB_2", "_SYMB_3", "_SYMB_4", "_SYMB_5", "_SYMB_6",
   "_SYMB_7", "_SYMB_8", "_SYMB_9", "_SYMB_10", "_SYMB_11", "_SYMB_12",
   "_SYMB_13", "_SYMB_14", "_SYMB_15", "_SYMB_16", "_SYMB_17", "_SYMB_18",
-  "_SYMB_19", "_SYMB_20", "_SYMB_21", "_SYMB_22", "_STRING_", "_INTEGER_",
-  "$accept", "Valide", "ValidSW", "Stm", "ListStm", "Subdef", "Subnet",
-  "ListSubnet", "ExtPortIn", "ExtPortOut", "Tab", "DataFlow", "Larrow",
-  "Rarrow", "TypeDef", "Buffsize", "Hermt", "Symvalu", "Proc", "Prt",
-  "Comp", "ModPath", "RemPath", "Argument", "ListArgument", "Numassgn",
-  "Strassgn", "SymAssgn", "Numval", "Stringval", "Symval", "ValidConfig",
-  "Entry", "ListEntry", "KeyVal", "KeyName", YY_NULLPTR
+  "_SYMB_19", "_SYMB_20", "_SYMB_21", "_SYMB_22", "_SYMB_23", "_SYMB_24",
+  "_STRING_", "_INTEGER_", "$accept", "Valide", "ValidSW", "Stm",
+  "ListStm", "Subdef", "Subnet", "ListSubnet", "ExtPortIn", "ExtPortOut",
+  "Tab", "DataFlow", "Larrow", "Rarrow", "TypeDef", "Buffsize", "Hermt",
+  "Symvalu", "Proc", "Prt", "Comp", "ModPath", "RemPath", "Argument",
+  "ListArgument", "Numassgn", "Strassgn", "SymAssgn", "Numval",
+  "Stringval", "Symval", "Include", "ValidConfig", "Entry", "ListEntry",
+  "KeyVal", "KeyName", YY_NULLPTR
 };
 
 static const char *
@@ -876,16 +884,17 @@ static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
      265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278,   279,   280,   281,   282,   283
+     275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
+     285
 };
 #endif
 
-#define YYPACT_NINF (-47)
+#define YYPACT_NINF (-53)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-46)
+#define YYTABLE_NINF (-47)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -894,20 +903,20 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      60,   -47,   -47,    22,   -47,   124,   -47,   140,   140,   -47,
-     -47,     5,    13,    16,   -47,    21,    35,   -47,    41,   -47,
-      82,   -47,   128,    61,   -47,   -47,   -47,   -47,    32,   -47,
-      32,     2,   -47,   -47,    95,   128,   -10,    32,    32,   -47,
-     -47,   -47,   -47,   117,    37,    51,   -47,    32,   -47,    32,
-     -47,    75,    58,   117,    67,    20,   -47,   -47,   -47,   -47,
-     -47,   -47,    -8,   -47,   -47,   -47,   109,     5,     5,    61,
-      61,    32,   -10,   -47,    75,    70,   -47,   -47,   -47,   -47,
-     -47,    61,    61,   -47,   -47,   -47,    31,   -47,   -47,    93,
-     -47,   -47,   117,    90,   -47,    61,   -47,   119,   -10,   -47,
-     -10,    87,    87,   -47,   -47,    87,    87,   -47,   -47,    61,
-      61,   117,   100,   -47,   104,   -47,   -47,   -47,   -47,    87,
-      87,    61,    61,   -47,   -47,   -47,   -47,   -47,    44,    94,
-     -47
+      26,   -53,   -53,    11,   -53,   114,   -53,   118,   118,   -53,
+     -53,    15,   -53,   -53,    -1,     2,   -53,     7,    32,   -53,
+      27,   -53,    30,   -53,   104,   122,   -53,   -53,   -53,   -53,
+      19,   127,   -53,   127,    59,   -53,   -53,    58,   104,   -14,
+     127,   127,   -53,   -53,   -53,   -53,    75,    51,    87,   -53,
+     127,   -53,   127,   -53,    84,    91,    75,   -53,    95,    66,
+     -53,   -53,   -53,   -53,   -53,   -53,    -2,   -53,   -53,   -53,
+      93,    15,    15,   122,   122,   127,   -14,   -53,    84,   101,
+     -53,   -53,   -53,   -53,   -53,   122,   122,   -53,   -53,   -53,
+       1,   -53,   -53,   143,   -53,   -53,    75,    55,   -53,   122,
+     -53,   147,   -14,   -53,   -14,   111,   111,   -53,   -53,   111,
+     111,   -53,   -53,   122,   122,    75,   141,   -53,   117,   -53,
+     -53,   -53,   -53,   111,   111,   122,   122,   -53,   -53,   -53,
+     -53,   -53,    44,    97,   -53
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -915,38 +924,38 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-      11,    73,    73,     0,     3,     4,     2,    69,    70,     1,
-      39,     0,     0,     0,    68,    66,     0,    67,     0,    10,
-      46,     9,    56,    46,     6,     7,     8,    38,     0,    66,
-       0,     0,    74,    71,    72,    56,     0,     0,     0,    18,
-      12,    62,    61,     0,    42,    45,    48,     0,    56,     0,
-      50,    37,    47,     0,     0,     0,    52,    78,    77,    76,
-      75,    56,     0,    58,    59,    60,     0,    33,    33,    46,
-      46,     0,     0,    54,    36,    49,    64,    65,    63,    57,
-      55,    46,    46,    51,    53,    79,     0,    41,    13,     0,
-      16,    17,     0,    46,    14,    46,    24,    38,    35,    32,
-      35,     0,     0,    43,    44,     0,     0,    40,    19,    46,
-      46,     0,     0,    34,     0,    28,    29,    26,    27,     0,
-       0,    46,    46,    30,    31,    22,    21,    20,    24,    25,
-      23
+      12,    76,    76,     0,     3,     4,     2,    72,    73,     1,
+      40,     0,    71,    70,     0,     0,    69,    67,     0,    68,
+       0,    11,    47,    10,    57,    47,     7,     8,     9,    39,
+       0,     0,    67,     0,     0,    77,    74,    75,    57,     0,
+       0,     0,    19,    13,    63,    62,     0,    43,    46,    49,
+       0,    57,     0,    51,    38,    48,     0,     5,     0,     0,
+      53,    81,    80,    79,    78,    57,     0,    59,    60,    61,
+       0,    34,    34,    47,    47,     0,     0,    55,    37,    50,
+      65,    66,    64,    58,    56,    47,    47,    52,    54,    82,
+       0,    42,    14,     0,    17,    18,     0,    47,    15,    47,
+      25,    39,    36,    33,    36,     0,     0,    44,    45,     0,
+       0,    41,    20,    47,    47,     0,     0,    35,     0,    29,
+      30,    27,    28,     0,     0,    47,    47,    31,    32,    23,
+      22,    21,    25,    26,    24
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -47,   -47,   -47,   -47,   -47,   -47,   -47,   -47,   -47,   -47,
-      17,    63,   -46,   -43,    64,    36,    74,     3,   -27,   -22,
-     106,   -14,   -47,   -47,   -24,   -47,   -47,   -47,   -31,   -47,
-      -5,   -47,   -47,   153,   -47,   -47
+     -53,   -53,   -53,   -53,   -53,   -53,   -53,   -53,   -53,   -53,
+     -34,    86,   -52,   -44,    85,    54,    89,    -3,   -12,   -24,
+     123,    -9,   -53,   -53,   -33,   -53,   -53,   -53,   -30,   -53,
+      -5,   -53,   -53,   -53,   158,   -53,   -53
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     3,     4,    18,     5,    19,    89,    66,    90,    91,
-      92,    20,    69,    70,    98,   112,    21,    22,    23,    43,
-      48,    30,    50,    79,    51,    24,    25,    26,    44,    80,
-      45,     6,    32,     7,    33,    34
+      -1,     3,     4,    20,     5,    21,    93,    70,    94,    95,
+      96,    22,    73,    74,   102,   116,    23,    24,    25,    46,
+      51,    33,    53,    83,    54,    26,    27,    28,    47,    84,
+      48,    30,     6,    35,     7,    36,    37
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -954,90 +963,92 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      27,    53,    31,    31,    87,    63,    27,    81,    49,    41,
-      82,    62,    76,    77,    35,    10,    56,    52,    42,    78,
-      57,    49,     9,    54,    74,    55,    14,    29,    36,    17,
-      52,    37,    64,    65,    84,    96,    38,    86,    85,    95,
-      39,   104,    73,   107,    75,    40,   109,   101,   102,   110,
-      71,    76,    77,    14,    29,   -42,    17,    71,    78,   105,
-     106,    97,    27,    27,    72,   121,   103,   113,   122,   113,
-      99,    99,    56,   111,   115,   116,     1,     2,   117,   118,
-      41,    83,    14,    29,    84,    17,    -5,   119,   120,    42,
-     128,   128,   125,   126,   -15,    76,    77,   108,    11,   105,
-     106,    41,    78,    14,    29,   -45,    17,    72,   123,    41,
-      42,    14,    29,   124,    17,    88,   129,   129,    42,    10,
-      11,    58,    59,    60,    67,    68,   -25,   -25,    41,    93,
-      14,    29,   100,    17,    10,    11,   114,    42,   127,   130,
-      94,    61,    28,    12,    13,    14,    15,    16,    17,    14,
-      29,    46,    17,    47,    28,     8,     0,     0,     0,     0,
-       0,    14,    29,     0,    17
+      29,    56,    34,    34,    85,    66,    29,    44,    38,    67,
+      91,     9,    86,   111,    39,    52,    45,    40,    78,    55,
+      80,    81,    41,    80,    81,    10,    58,    82,    59,    52,
+      82,    43,    90,    55,    -6,    68,    69,    42,    16,    32,
+     100,    19,     1,     2,   113,    77,   108,    79,    57,   105,
+     106,    44,   114,    16,    32,   -43,    19,    75,    99,   -16,
+      45,   109,   110,   125,    75,   101,    29,    29,   103,   103,
+     107,   126,   117,    60,   117,   115,    44,    61,    16,    32,
+      88,    19,    71,    72,    89,    45,    62,    63,    64,   123,
+     124,   131,   134,   119,   120,   132,   132,   121,   122,    92,
+      76,   109,   110,    10,    11,    60,    80,    81,   -46,    87,
+      76,   129,   130,    82,    44,    88,    16,    32,    31,    19,
+     133,   133,    11,    45,    10,    11,   128,    16,    32,    49,
+      19,    50,    31,    12,    13,    14,    15,    16,    17,    18,
+      19,    16,    32,    44,    19,    16,    32,   112,    19,   127,
+      16,    32,    45,    19,   -26,   -26,    97,   104,   118,    98,
+       8,    65
 };
 
 static const yytype_int8 yycheck[] =
 {
-       5,    23,     7,     8,    12,    36,    11,    53,    22,    19,
-      53,    35,    20,    21,    11,    10,    14,    22,    28,    27,
-      18,    35,     0,    28,    48,    30,    21,    22,    15,    24,
-      35,    15,    37,    38,    14,    66,    15,    61,    18,    66,
-       5,    72,    47,    12,    49,     4,    92,    69,    70,    92,
-      13,    20,    21,    21,    22,    11,    24,    13,    27,    81,
-      82,    66,    67,    68,    13,   111,    71,    98,   111,   100,
-      67,    68,    14,    95,   101,   102,    16,    17,   105,   106,
-      19,    14,    21,    22,    14,    24,     4,   109,   110,    28,
-     121,   122,   119,   120,     4,    20,    21,     4,    11,   121,
-     122,    19,    27,    21,    22,    11,    24,    13,     8,    19,
-      28,    21,    22,     9,    24,     6,   121,   122,    28,    10,
-      11,    26,    27,    28,     7,     8,     7,     8,    19,    66,
-      21,    22,    68,    24,    10,    11,   100,    28,   121,   122,
-      66,    35,    14,    19,    20,    21,    22,    23,    24,    21,
-      22,    23,    24,    25,    14,     2,    -1,    -1,    -1,    -1,
-      -1,    21,    22,    -1,    24
+       5,    25,     7,     8,    56,    38,    11,    21,    11,    39,
+      12,     0,    56,    12,    15,    24,    30,    15,    51,    24,
+      22,    23,    15,    22,    23,    10,    31,    29,    33,    38,
+      29,     4,    65,    38,     4,    40,    41,     5,    23,    24,
+      70,    26,    16,    17,    96,    50,    76,    52,    29,    73,
+      74,    21,    96,    23,    24,    11,    26,    13,    70,     4,
+      30,    85,    86,   115,    13,    70,    71,    72,    71,    72,
+      75,   115,   102,    14,   104,    99,    21,    18,    23,    24,
+      14,    26,     7,     8,    18,    30,    28,    29,    30,   113,
+     114,   125,   126,   105,   106,   125,   126,   109,   110,     6,
+      13,   125,   126,    10,    11,    14,    22,    23,    11,    14,
+      13,   123,   124,    29,    21,    14,    23,    24,    14,    26,
+     125,   126,    11,    30,    10,    11,     9,    23,    24,    25,
+      26,    27,    14,    19,    20,    21,    22,    23,    24,    25,
+      26,    23,    24,    21,    26,    23,    24,     4,    26,     8,
+      23,    24,    30,    26,     7,     8,    70,    72,   104,    70,
+       2,    38
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    16,    17,    30,    31,    33,    60,    62,    62,     0,
-      10,    11,    19,    20,    21,    22,    23,    24,    32,    34,
-      40,    45,    46,    47,    54,    55,    56,    59,    14,    22,
-      50,    59,    61,    63,    64,    46,    15,    15,    15,     5,
-       4,    19,    28,    48,    57,    59,    23,    25,    49,    50,
-      51,    53,    59,    48,    59,    59,    14,    18,    26,    27,
-      28,    49,    53,    57,    59,    59,    36,     7,     8,    41,
-      42,    13,    13,    59,    53,    59,    20,    21,    27,    52,
-      58,    41,    42,    14,    14,    18,    53,    12,     6,    35,
-      37,    38,    39,    40,    45,    47,    57,    59,    43,    46,
-      43,    48,    48,    59,    57,    48,    48,    12,     4,    41,
-      42,    48,    44,    57,    44,    47,    47,    47,    47,    48,
-      48,    41,    42,     8,     9,    47,    47,    39,    57,    59,
-      39
+       0,    16,    17,    32,    33,    35,    63,    65,    65,     0,
+      10,    11,    19,    20,    21,    22,    23,    24,    25,    26,
+      34,    36,    42,    47,    48,    49,    56,    57,    58,    61,
+      62,    14,    24,    52,    61,    64,    66,    67,    48,    15,
+      15,    15,     5,     4,    21,    30,    50,    59,    61,    25,
+      27,    51,    52,    53,    55,    61,    50,    29,    61,    61,
+      14,    18,    28,    29,    30,    51,    55,    59,    61,    61,
+      38,     7,     8,    43,    44,    13,    13,    61,    55,    61,
+      22,    23,    29,    54,    60,    43,    44,    14,    14,    18,
+      55,    12,     6,    37,    39,    40,    41,    42,    47,    49,
+      59,    61,    45,    48,    45,    50,    50,    61,    59,    50,
+      50,    12,     4,    43,    44,    50,    46,    59,    46,    49,
+      49,    49,    49,    50,    50,    43,    44,     8,     9,    49,
+      49,    41,    59,    61,    41
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    29,    30,    30,    31,    32,    32,    32,    32,    32,
-      32,    33,    33,    34,    35,    35,    35,    35,    36,    36,
-      37,    37,    38,    38,    39,    39,    40,    40,    40,    40,
-      41,    42,    43,    43,    44,    44,    45,    45,    46,    46,
-      47,    47,    48,    48,    48,    48,    48,    49,    49,    49,
-      49,    50,    50,    50,    51,    52,    53,    53,    54,    55,
-      56,    57,    57,    58,    58,    58,    59,    59,    59,    60,
-      60,    61,    61,    62,    62,    63,    63,    63,    64,    64
+       0,    31,    32,    32,    33,    34,    34,    34,    34,    34,
+      34,    34,    35,    35,    36,    37,    37,    37,    37,    38,
+      38,    39,    39,    40,    40,    41,    41,    42,    42,    42,
+      42,    43,    44,    45,    45,    46,    46,    47,    47,    48,
+      48,    49,    49,    50,    50,    50,    50,    50,    51,    51,
+      51,    51,    52,    52,    52,    53,    54,    55,    55,    56,
+      57,    58,    59,    59,    60,    60,    60,    61,    61,    61,
+      62,    62,    63,    63,    64,    64,    65,    65,    66,    66,
+      66,    67,    67
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     0,     3,     4,     1,     1,     1,     1,     0,     3,
-       4,     4,     4,     4,     1,     1,     5,     5,     5,     5,
-       4,     4,     1,     0,     1,     0,     3,     2,     1,     1,
-       5,     4,     1,     3,     3,     1,     0,     1,     1,     2,
-       1,     3,     2,     3,     2,     1,     0,     2,     3,     3,
-       3,     1,     1,     1,     1,     1,     1,     1,     1,     2,
-       2,     1,     1,     0,     2,     2,     2,     2,     2,     3
+       0,     2,     1,     1,     1,     2,     1,     1,     1,     1,
+       1,     1,     0,     3,     4,     1,     1,     1,     1,     0,
+       3,     4,     4,     4,     4,     1,     1,     5,     5,     5,
+       5,     4,     4,     1,     0,     1,     0,     3,     2,     1,
+       1,     5,     4,     1,     3,     3,     1,     0,     1,     1,
+       2,     1,     3,     2,     3,     2,     1,     0,     2,     3,
+       3,     3,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     2,     2,     1,     1,     0,     2,     2,     2,
+       2,     2,     3
 };
 
 
@@ -1600,475 +1611,493 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* Valide: ValidConfig  */
-#line 276 "SW.y"
+#line 280 "SW.y"
                      { (yyval.valide_) = make_CFGvalid((yyvsp[0].validconfig_)); YY_RESULT_Valide_= (yyval.valide_); }
-#line 1606 "Parser.c"
+#line 1617 "Parser.c"
     break;
 
   case 3: /* Valide: ValidSW  */
-#line 277 "SW.y"
+#line 281 "SW.y"
             { (yyval.valide_) = make_SWvalid((yyvsp[0].validsw_)); YY_RESULT_Valide_= (yyval.valide_); }
-#line 1612 "Parser.c"
+#line 1623 "Parser.c"
     break;
 
   case 4: /* ValidSW: ListStm  */
-#line 279 "SW.y"
-                  { (yyval.validsw_) = make_Valid(reverseListStm((yyvsp[0].liststm_))); YY_RESULT_ValidSW_= (yyval.validsw_); }
-#line 1618 "Parser.c"
-    break;
-
-  case 5: /* Stm: DataFlow  */
-#line 281 "SW.y"
-               { (yyval.stm_) = make_Stmx((yyvsp[0].dataflow_));  }
-#line 1624 "Parser.c"
-    break;
-
-  case 6: /* Stm: Numassgn  */
-#line 282 "SW.y"
-             { (yyval.stm_) = make_Stmn((yyvsp[0].numassgn_));  }
-#line 1630 "Parser.c"
-    break;
-
-  case 7: /* Stm: Strassgn  */
 #line 283 "SW.y"
-             { (yyval.stm_) = make_Stms((yyvsp[0].strassgn_));  }
-#line 1636 "Parser.c"
+                  { (yyval.validsw_) = make_Valid(reverseListStm((yyvsp[0].liststm_))); YY_RESULT_ValidSW_= (yyval.validsw_); }
+#line 1629 "Parser.c"
     break;
 
-  case 8: /* Stm: SymAssgn  */
-#line 284 "SW.y"
-             { (yyval.stm_) = make_Stmb((yyvsp[0].symassgn_));  }
-#line 1642 "Parser.c"
-    break;
-
-  case 9: /* Stm: Hermt  */
+  case 5: /* Stm: Include _STRING_  */
 #line 285 "SW.y"
-          { (yyval.stm_) = make_Stmh((yyvsp[0].hermt_));  }
-#line 1648 "Parser.c"
+                       { (yyval.stm_) = make_Stminc((yyvsp[-1].include_), (yyvsp[0].string_));  }
+#line 1635 "Parser.c"
     break;
 
-  case 10: /* Stm: Subdef  */
+  case 6: /* Stm: DataFlow  */
 #line 286 "SW.y"
-           { (yyval.stm_) = make_Stmnet((yyvsp[0].subdef_));  }
-#line 1654 "Parser.c"
+             { (yyval.stm_) = make_Stmx((yyvsp[0].dataflow_));  }
+#line 1641 "Parser.c"
     break;
 
-  case 11: /* ListStm: %empty  */
+  case 7: /* Stm: Numassgn  */
+#line 287 "SW.y"
+             { (yyval.stm_) = make_Stmn((yyvsp[0].numassgn_));  }
+#line 1647 "Parser.c"
+    break;
+
+  case 8: /* Stm: Strassgn  */
 #line 288 "SW.y"
-                      { (yyval.liststm_) = 0;  }
-#line 1660 "Parser.c"
+             { (yyval.stm_) = make_Stms((yyvsp[0].strassgn_));  }
+#line 1653 "Parser.c"
     break;
 
-  case 12: /* ListStm: ListStm Stm _SYMB_0  */
+  case 9: /* Stm: SymAssgn  */
 #line 289 "SW.y"
-                        { (yyval.liststm_) = make_ListStm((yyvsp[-1].stm_), (yyvsp[-2].liststm_));  }
-#line 1666 "Parser.c"
+             { (yyval.stm_) = make_Stmb((yyvsp[0].symassgn_));  }
+#line 1659 "Parser.c"
     break;
 
-  case 13: /* Subdef: _SYMB_19 _SYMB_1 ListSubnet _SYMB_2  */
+  case 10: /* Stm: Hermt  */
+#line 290 "SW.y"
+          { (yyval.stm_) = make_Stmh((yyvsp[0].hermt_));  }
+#line 1665 "Parser.c"
+    break;
+
+  case 11: /* Stm: Subdef  */
 #line 291 "SW.y"
-                                             { (yyval.subdef_) = make_Snet((yyvsp[-3].string_), reverseListSubnet((yyvsp[-1].listsubnet_)));  }
-#line 1672 "Parser.c"
+           { (yyval.stm_) = make_Stmnet((yyvsp[0].subdef_));  }
+#line 1671 "Parser.c"
     break;
 
-  case 14: /* Subnet: Hermt  */
+  case 12: /* ListStm: %empty  */
 #line 293 "SW.y"
-               { (yyval.subnet_) = make_Sneth((yyvsp[0].hermt_));  }
-#line 1678 "Parser.c"
+                      { (yyval.liststm_) = 0;  }
+#line 1677 "Parser.c"
     break;
 
-  case 15: /* Subnet: DataFlow  */
+  case 13: /* ListStm: ListStm Stm _SYMB_0  */
 #line 294 "SW.y"
-             { (yyval.subnet_) = make_Snets((yyvsp[0].dataflow_));  }
-#line 1684 "Parser.c"
+                        { (yyval.liststm_) = make_ListStm((yyvsp[-1].stm_), (yyvsp[-2].liststm_));  }
+#line 1683 "Parser.c"
     break;
 
-  case 16: /* Subnet: ExtPortIn  */
-#line 295 "SW.y"
-              { (yyval.subnet_) = make_Snetin((yyvsp[0].extportin_));  }
-#line 1690 "Parser.c"
-    break;
-
-  case 17: /* Subnet: ExtPortOut  */
+  case 14: /* Subdef: _SYMB_21 _SYMB_1 ListSubnet _SYMB_2  */
 #line 296 "SW.y"
-               { (yyval.subnet_) = make_Snetout((yyvsp[0].extportout_));  }
-#line 1696 "Parser.c"
+                                             { (yyval.subdef_) = make_Snet((yyvsp[-3].string_), reverseListSubnet((yyvsp[-1].listsubnet_)));  }
+#line 1689 "Parser.c"
     break;
 
-  case 18: /* ListSubnet: %empty  */
+  case 15: /* Subnet: Hermt  */
 #line 298 "SW.y"
-                         { (yyval.listsubnet_) = 0;  }
-#line 1702 "Parser.c"
+               { (yyval.subnet_) = make_Sneth((yyvsp[0].hermt_));  }
+#line 1695 "Parser.c"
     break;
 
-  case 19: /* ListSubnet: ListSubnet Subnet _SYMB_0  */
+  case 16: /* Subnet: DataFlow  */
 #line 299 "SW.y"
-                              { (yyval.listsubnet_) = make_ListSubnet((yyvsp[-1].subnet_), (yyvsp[-2].listsubnet_));  }
-#line 1708 "Parser.c"
+             { (yyval.subnet_) = make_Snets((yyvsp[0].dataflow_));  }
+#line 1701 "Parser.c"
     break;
 
-  case 20: /* ExtPortIn: Proc Prt Larrow Tab  */
+  case 17: /* Subnet: ExtPortIn  */
+#line 300 "SW.y"
+              { (yyval.subnet_) = make_Snetin((yyvsp[0].extportin_));  }
+#line 1707 "Parser.c"
+    break;
+
+  case 18: /* Subnet: ExtPortOut  */
 #line 301 "SW.y"
-                                { (yyval.extportin_) = make_Extin((yyvsp[-3].proc_), (yyvsp[-2].prt_), (yyvsp[-1].larrow_), (yyvsp[0].tab_));  }
-#line 1714 "Parser.c"
+               { (yyval.subnet_) = make_Snetout((yyvsp[0].extportout_));  }
+#line 1713 "Parser.c"
     break;
 
-  case 21: /* ExtPortIn: Tab Rarrow Prt Proc  */
-#line 302 "SW.y"
-                        { (yyval.extportin_) = make_ExtinR((yyvsp[-3].tab_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
-#line 1720 "Parser.c"
+  case 19: /* ListSubnet: %empty  */
+#line 303 "SW.y"
+                         { (yyval.listsubnet_) = 0;  }
+#line 1719 "Parser.c"
     break;
 
-  case 22: /* ExtPortOut: Tab Larrow Prt Proc  */
+  case 20: /* ListSubnet: ListSubnet Subnet _SYMB_0  */
 #line 304 "SW.y"
-                                 { (yyval.extportout_) = make_Extout((yyvsp[-3].tab_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
-#line 1726 "Parser.c"
+                              { (yyval.listsubnet_) = make_ListSubnet((yyvsp[-1].subnet_), (yyvsp[-2].listsubnet_));  }
+#line 1725 "Parser.c"
     break;
 
-  case 23: /* ExtPortOut: Proc Prt Rarrow Tab  */
-#line 305 "SW.y"
-                        { (yyval.extportout_) = make_Extoutr((yyvsp[-3].proc_), (yyvsp[-2].prt_), (yyvsp[-1].rarrow_), (yyvsp[0].tab_));  }
-#line 1732 "Parser.c"
+  case 21: /* ExtPortIn: Proc Prt Larrow Tab  */
+#line 306 "SW.y"
+                                { (yyval.extportin_) = make_Extin((yyvsp[-3].proc_), (yyvsp[-2].prt_), (yyvsp[-1].larrow_), (yyvsp[0].tab_));  }
+#line 1731 "Parser.c"
     break;
 
-  case 24: /* Tab: Numval  */
+  case 22: /* ExtPortIn: Tab Rarrow Prt Proc  */
 #line 307 "SW.y"
-             { (yyval.tab_) = make_Tabn((yyvsp[0].numval_));  }
-#line 1738 "Parser.c"
+                        { (yyval.extportin_) = make_ExtinR((yyvsp[-3].tab_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+#line 1737 "Parser.c"
     break;
 
-  case 25: /* Tab: Symval  */
-#line 308 "SW.y"
-           { (yyval.tab_) = make_Tabs((yyvsp[0].symval_));  }
-#line 1744 "Parser.c"
+  case 23: /* ExtPortOut: Tab Larrow Prt Proc  */
+#line 309 "SW.y"
+                                 { (yyval.extportout_) = make_Extout((yyvsp[-3].tab_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+#line 1743 "Parser.c"
     break;
 
-  case 26: /* DataFlow: Proc Prt Larrow Prt Proc  */
+  case 24: /* ExtPortOut: Proc Prt Rarrow Tab  */
 #line 310 "SW.y"
-                                    { (yyval.dataflow_) = make_Streamx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
-#line 1750 "Parser.c"
+                        { (yyval.extportout_) = make_Extoutr((yyvsp[-3].proc_), (yyvsp[-2].prt_), (yyvsp[-1].rarrow_), (yyvsp[0].tab_));  }
+#line 1749 "Parser.c"
     break;
 
-  case 27: /* DataFlow: Proc Prt Rarrow Prt Proc  */
-#line 311 "SW.y"
-                             { (yyval.dataflow_) = make_Streamrx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
-#line 1756 "Parser.c"
-    break;
-
-  case 28: /* DataFlow: DataFlow Prt Larrow Prt Proc  */
+  case 25: /* Tab: Numval  */
 #line 312 "SW.y"
-                                 { (yyval.dataflow_) = make_Streamy((yyvsp[-4].dataflow_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
-#line 1762 "Parser.c"
+             { (yyval.tab_) = make_Tabn((yyvsp[0].numval_));  }
+#line 1755 "Parser.c"
     break;
 
-  case 29: /* DataFlow: DataFlow Prt Rarrow Prt Proc  */
+  case 26: /* Tab: Symval  */
 #line 313 "SW.y"
-                                 { (yyval.dataflow_) = make_Streamry((yyvsp[-4].dataflow_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
-#line 1768 "Parser.c"
+           { (yyval.tab_) = make_Tabs((yyvsp[0].symval_));  }
+#line 1761 "Parser.c"
     break;
 
-  case 30: /* Larrow: _SYMB_3 TypeDef Buffsize _SYMB_4  */
+  case 27: /* DataFlow: Proc Prt Larrow Prt Proc  */
 #line 315 "SW.y"
-                                          { (yyval.larrow_) = make_Arrowx((yyvsp[-2].typedef_), (yyvsp[-1].buffsize_));  }
-#line 1774 "Parser.c"
+                                    { (yyval.dataflow_) = make_Streamx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+#line 1767 "Parser.c"
     break;
 
-  case 31: /* Rarrow: _SYMB_4 TypeDef Buffsize _SYMB_5  */
+  case 28: /* DataFlow: Proc Prt Rarrow Prt Proc  */
+#line 316 "SW.y"
+                             { (yyval.dataflow_) = make_Streamrx((yyvsp[-4].proc_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+#line 1773 "Parser.c"
+    break;
+
+  case 29: /* DataFlow: DataFlow Prt Larrow Prt Proc  */
 #line 317 "SW.y"
-                                          { (yyval.rarrow_) = make_Arrowr((yyvsp[-2].typedef_), (yyvsp[-1].buffsize_));  }
-#line 1780 "Parser.c"
+                                 { (yyval.dataflow_) = make_Streamy((yyvsp[-4].dataflow_), (yyvsp[-3].prt_), (yyvsp[-2].larrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+#line 1779 "Parser.c"
     break;
 
-  case 32: /* TypeDef: Symvalu  */
-#line 319 "SW.y"
-                  { (yyval.typedef_) = make_Typedefa((yyvsp[0].symvalu_));  }
-#line 1786 "Parser.c"
+  case 30: /* DataFlow: DataFlow Prt Rarrow Prt Proc  */
+#line 318 "SW.y"
+                                 { (yyval.dataflow_) = make_Streamry((yyvsp[-4].dataflow_), (yyvsp[-3].prt_), (yyvsp[-2].rarrow_), (yyvsp[-1].prt_), (yyvsp[0].proc_));  }
+#line 1785 "Parser.c"
     break;
 
-  case 33: /* TypeDef: %empty  */
+  case 31: /* Larrow: _SYMB_3 TypeDef Buffsize _SYMB_4  */
 #line 320 "SW.y"
-                { (yyval.typedef_) = make_Typedefnull();  }
-#line 1792 "Parser.c"
+                                          { (yyval.larrow_) = make_Arrowx((yyvsp[-2].typedef_), (yyvsp[-1].buffsize_));  }
+#line 1791 "Parser.c"
     break;
 
-  case 34: /* Buffsize: Numval  */
+  case 32: /* Rarrow: _SYMB_4 TypeDef Buffsize _SYMB_5  */
 #line 322 "SW.y"
-                  { (yyval.buffsize_) = make_Bufszi((yyvsp[0].numval_));  }
-#line 1798 "Parser.c"
+                                          { (yyval.rarrow_) = make_Arrowr((yyvsp[-2].typedef_), (yyvsp[-1].buffsize_));  }
+#line 1797 "Parser.c"
     break;
 
-  case 35: /* Buffsize: %empty  */
-#line 323 "SW.y"
-                { (yyval.buffsize_) = make_Bufsze();  }
-#line 1804 "Parser.c"
+  case 33: /* TypeDef: Symvalu  */
+#line 324 "SW.y"
+                  { (yyval.typedef_) = make_Typedefa((yyvsp[0].symvalu_));  }
+#line 1803 "Parser.c"
     break;
 
-  case 36: /* Hermt: Symvalu Comp ListArgument  */
+  case 34: /* TypeDef: %empty  */
 #line 325 "SW.y"
-                                  { (yyval.hermt_) = make_Hermtx((yyvsp[-2].symvalu_), (yyvsp[-1].comp_), reverseListArgument((yyvsp[0].listargument_)));  }
-#line 1810 "Parser.c"
+                { (yyval.typedef_) = make_Typedefnull();  }
+#line 1809 "Parser.c"
     break;
 
-  case 37: /* Hermt: Symvalu ListArgument  */
-#line 326 "SW.y"
-                         { (yyval.hermt_) = make_Hermty((yyvsp[-1].symvalu_), reverseListArgument((yyvsp[0].listargument_)));  }
-#line 1816 "Parser.c"
+  case 35: /* Buffsize: Numval  */
+#line 327 "SW.y"
+                  { (yyval.buffsize_) = make_Bufszi((yyvsp[0].numval_));  }
+#line 1815 "Parser.c"
     break;
 
-  case 38: /* Symvalu: Symval  */
+  case 36: /* Buffsize: %empty  */
 #line 328 "SW.y"
-                 { (yyval.symvalu_) = make_Symvaluv((yyvsp[0].symval_));  }
-#line 1822 "Parser.c"
+                { (yyval.buffsize_) = make_Bufsze();  }
+#line 1821 "Parser.c"
     break;
 
-  case 39: /* Symvalu: _SYMB_6  */
-#line 329 "SW.y"
-            { (yyval.symvalu_) = make_Symvaluu();  }
-#line 1828 "Parser.c"
+  case 37: /* Hermt: Symvalu Comp ListArgument  */
+#line 330 "SW.y"
+                                  { (yyval.hermt_) = make_Hermtx((yyvsp[-2].symvalu_), (yyvsp[-1].comp_), reverseListArgument((yyvsp[0].listargument_)));  }
+#line 1827 "Parser.c"
     break;
 
-  case 40: /* Proc: _SYMB_7 Symvalu Comp ListArgument _SYMB_8  */
+  case 38: /* Hermt: Symvalu ListArgument  */
 #line 331 "SW.y"
-                                                 { (yyval.proc_) = make_Processx((yyvsp[-3].symvalu_), (yyvsp[-2].comp_), reverseListArgument((yyvsp[-1].listargument_)));  }
-#line 1834 "Parser.c"
+                         { (yyval.hermt_) = make_Hermty((yyvsp[-1].symvalu_), reverseListArgument((yyvsp[0].listargument_)));  }
+#line 1833 "Parser.c"
     break;
 
-  case 41: /* Proc: _SYMB_7 Symvalu ListArgument _SYMB_8  */
-#line 332 "SW.y"
-                                         { (yyval.proc_) = make_Processy((yyvsp[-2].symvalu_), reverseListArgument((yyvsp[-1].listargument_)));  }
-#line 1840 "Parser.c"
+  case 39: /* Symvalu: Symval  */
+#line 333 "SW.y"
+                 { (yyval.symvalu_) = make_Symvaluv((yyvsp[0].symval_));  }
+#line 1839 "Parser.c"
     break;
 
-  case 42: /* Prt: Numval  */
+  case 40: /* Symvalu: _SYMB_6  */
 #line 334 "SW.y"
-             { (yyval.prt_) = make_Portx((yyvsp[0].numval_));  }
-#line 1846 "Parser.c"
+            { (yyval.symvalu_) = make_Symvaluu();  }
+#line 1845 "Parser.c"
     break;
 
-  case 43: /* Prt: Numval _SYMB_9 Symval  */
-#line 335 "SW.y"
-                          { (yyval.prt_) = make_Portni((yyvsp[-2].numval_), (yyvsp[0].symval_));  }
-#line 1852 "Parser.c"
-    break;
-
-  case 44: /* Prt: Symval _SYMB_9 Numval  */
+  case 41: /* Proc: _SYMB_7 Symvalu Comp ListArgument _SYMB_8  */
 #line 336 "SW.y"
-                          { (yyval.prt_) = make_Portin((yyvsp[-2].symval_), (yyvsp[0].numval_));  }
-#line 1858 "Parser.c"
+                                                 { (yyval.proc_) = make_Processx((yyvsp[-3].symvalu_), (yyvsp[-2].comp_), reverseListArgument((yyvsp[-1].listargument_)));  }
+#line 1851 "Parser.c"
     break;
 
-  case 45: /* Prt: Symval  */
+  case 42: /* Proc: _SYMB_7 Symvalu ListArgument _SYMB_8  */
 #line 337 "SW.y"
-           { (yyval.prt_) = make_Portn((yyvsp[0].symval_));  }
-#line 1864 "Parser.c"
+                                         { (yyval.proc_) = make_Processy((yyvsp[-2].symvalu_), reverseListArgument((yyvsp[-1].listargument_)));  }
+#line 1857 "Parser.c"
     break;
 
-  case 46: /* Prt: %empty  */
-#line 338 "SW.y"
-                { (yyval.prt_) = make_Porte();  }
-#line 1870 "Parser.c"
+  case 43: /* Prt: Numval  */
+#line 339 "SW.y"
+             { (yyval.prt_) = make_Portx((yyvsp[0].numval_));  }
+#line 1863 "Parser.c"
     break;
 
-  case 47: /* Comp: Symval  */
+  case 44: /* Prt: Numval _SYMB_9 Symval  */
 #line 340 "SW.y"
-              { (yyval.comp_) = make_Compx((yyvsp[0].symval_));  }
-#line 1876 "Parser.c"
+                          { (yyval.prt_) = make_Portni((yyvsp[-2].numval_), (yyvsp[0].symval_));  }
+#line 1869 "Parser.c"
     break;
 
-  case 48: /* Comp: _SYMB_19  */
+  case 45: /* Prt: Symval _SYMB_9 Numval  */
 #line 341 "SW.y"
-             { (yyval.comp_) = make_Compn((yyvsp[0].string_));  }
-#line 1882 "Parser.c"
+                          { (yyval.prt_) = make_Portin((yyvsp[-2].symval_), (yyvsp[0].numval_));  }
+#line 1875 "Parser.c"
     break;
 
-  case 49: /* Comp: ModPath Symval  */
+  case 46: /* Prt: Symval  */
 #line 342 "SW.y"
-                   { (yyval.comp_) = make_Compz((yyvsp[-1].modpath_), (yyvsp[0].symval_));  }
-#line 1888 "Parser.c"
+           { (yyval.prt_) = make_Portn((yyvsp[0].symval_));  }
+#line 1881 "Parser.c"
     break;
 
-  case 50: /* Comp: RemPath  */
+  case 47: /* Prt: %empty  */
 #line 343 "SW.y"
-            { (yyval.comp_) = make_Compa((yyvsp[0].rempath_));  }
-#line 1894 "Parser.c"
+                { (yyval.prt_) = make_Porte();  }
+#line 1887 "Parser.c"
     break;
 
-  case 51: /* ModPath: _SYMB_10 Symval _SYMB_10  */
+  case 48: /* Comp: Symval  */
 #line 345 "SW.y"
-                                   { (yyval.modpath_) = make_Modpa((yyvsp[-1].symval_));  }
-#line 1900 "Parser.c"
+              { (yyval.comp_) = make_Compx((yyvsp[0].symval_));  }
+#line 1893 "Parser.c"
     break;
 
-  case 52: /* ModPath: Symval _SYMB_10  */
+  case 49: /* Comp: _SYMB_21  */
 #line 346 "SW.y"
-                    { (yyval.modpath_) = make_Modpx((yyvsp[-1].symval_));  }
-#line 1906 "Parser.c"
+             { (yyval.comp_) = make_Compn((yyvsp[0].string_));  }
+#line 1899 "Parser.c"
     break;
 
-  case 53: /* ModPath: ModPath Symval _SYMB_10  */
+  case 50: /* Comp: ModPath Symval  */
 #line 347 "SW.y"
-                            { (yyval.modpath_) = make_Modpy((yyvsp[-2].modpath_), (yyvsp[-1].symval_));  }
-#line 1912 "Parser.c"
+                   { (yyval.comp_) = make_Compz((yyvsp[-1].modpath_), (yyvsp[0].symval_));  }
+#line 1905 "Parser.c"
     break;
 
-  case 54: /* RemPath: _SYMB_21 Symval  */
-#line 349 "SW.y"
-                          { (yyval.rempath_) = make_RemPatha((yyvsp[-1].string_), (yyvsp[0].symval_));  }
-#line 1918 "Parser.c"
+  case 51: /* Comp: RemPath  */
+#line 348 "SW.y"
+            { (yyval.comp_) = make_Compa((yyvsp[0].rempath_));  }
+#line 1911 "Parser.c"
     break;
 
-  case 55: /* Argument: Stringval  */
+  case 52: /* ModPath: _SYMB_10 Symval _SYMB_10  */
+#line 350 "SW.y"
+                                   { (yyval.modpath_) = make_Modpa((yyvsp[-1].symval_));  }
+#line 1917 "Parser.c"
+    break;
+
+  case 53: /* ModPath: Symval _SYMB_10  */
 #line 351 "SW.y"
-                     { (yyval.argument_) = make_Argumentx((yyvsp[0].stringval_));  }
-#line 1924 "Parser.c"
+                    { (yyval.modpath_) = make_Modpx((yyvsp[-1].symval_));  }
+#line 1923 "Parser.c"
     break;
 
-  case 56: /* ListArgument: %empty  */
-#line 353 "SW.y"
-                           { (yyval.listargument_) = 0;  }
-#line 1930 "Parser.c"
+  case 54: /* ModPath: ModPath Symval _SYMB_10  */
+#line 352 "SW.y"
+                            { (yyval.modpath_) = make_Modpy((yyvsp[-2].modpath_), (yyvsp[-1].symval_));  }
+#line 1929 "Parser.c"
     break;
 
-  case 57: /* ListArgument: ListArgument Argument  */
+  case 55: /* RemPath: _SYMB_23 Symval  */
 #line 354 "SW.y"
-                          { (yyval.listargument_) = make_ListArgument((yyvsp[0].argument_), (yyvsp[-1].listargument_));  }
-#line 1936 "Parser.c"
+                          { (yyval.rempath_) = make_RemPatha((yyvsp[-1].string_), (yyvsp[0].symval_));  }
+#line 1935 "Parser.c"
     break;
 
-  case 58: /* Numassgn: _SYMB_15 _SYMB_11 Numval  */
+  case 56: /* Argument: Stringval  */
 #line 356 "SW.y"
-                                    { (yyval.numassgn_) = make_NumAssgnv((yyvsp[-2].string_), (yyvsp[0].numval_));  }
-#line 1942 "Parser.c"
+                     { (yyval.argument_) = make_Argumentx((yyvsp[0].stringval_));  }
+#line 1941 "Parser.c"
     break;
 
-  case 59: /* Strassgn: _SYMB_16 _SYMB_11 Symval  */
+  case 57: /* ListArgument: %empty  */
 #line 358 "SW.y"
-                                    { (yyval.strassgn_) = make_StrAssgnv((yyvsp[-2].string_), (yyvsp[0].symval_));  }
-#line 1948 "Parser.c"
+                           { (yyval.listargument_) = 0;  }
+#line 1947 "Parser.c"
     break;
 
-  case 60: /* SymAssgn: _SYMB_18 _SYMB_11 Symval  */
-#line 360 "SW.y"
-                                    { (yyval.symassgn_) = make_SymAssgni((yyvsp[-2].string_), (yyvsp[0].symval_));  }
-#line 1954 "Parser.c"
+  case 58: /* ListArgument: ListArgument Argument  */
+#line 359 "SW.y"
+                          { (yyval.listargument_) = make_ListArgument((yyvsp[0].argument_), (yyvsp[-1].listargument_));  }
+#line 1953 "Parser.c"
     break;
 
-  case 61: /* Numval: _INTEGER_  */
-#line 362 "SW.y"
-                   { (yyval.numval_) = make_NumVali((yyvsp[0].int_));  }
-#line 1960 "Parser.c"
+  case 59: /* Numassgn: _SYMB_17 _SYMB_11 Numval  */
+#line 361 "SW.y"
+                                    { (yyval.numassgn_) = make_NumAssgnv((yyvsp[-2].string_), (yyvsp[0].numval_));  }
+#line 1959 "Parser.c"
     break;
 
-  case 62: /* Numval: _SYMB_15  */
+  case 60: /* Strassgn: _SYMB_18 _SYMB_11 Symval  */
 #line 363 "SW.y"
-             { (yyval.numval_) = make_NumValv((yyvsp[0].string_));  }
-#line 1966 "Parser.c"
+                                    { (yyval.strassgn_) = make_StrAssgnv((yyvsp[-2].string_), (yyvsp[0].symval_));  }
+#line 1965 "Parser.c"
     break;
 
-  case 63: /* Stringval: _STRING_  */
+  case 61: /* SymAssgn: _SYMB_20 _SYMB_11 Symval  */
 #line 365 "SW.y"
-                     { (yyval.stringval_) = make_StringVals((yyvsp[0].string_));  }
-#line 1972 "Parser.c"
+                                    { (yyval.symassgn_) = make_SymAssgni((yyvsp[-2].string_), (yyvsp[0].symval_));  }
+#line 1971 "Parser.c"
     break;
 
-  case 64: /* Stringval: _SYMB_16  */
-#line 366 "SW.y"
-             { (yyval.stringval_) = make_StringValv((yyvsp[0].string_));  }
-#line 1978 "Parser.c"
-    break;
-
-  case 65: /* Stringval: _SYMB_17  */
+  case 62: /* Numval: _INTEGER_  */
 #line 367 "SW.y"
-             { (yyval.stringval_) = make_StringVale((yyvsp[0].string_));  }
-#line 1984 "Parser.c"
+                   { (yyval.numval_) = make_NumVali((yyvsp[0].int_));  }
+#line 1977 "Parser.c"
     break;
 
-  case 66: /* Symval: _SYMB_18  */
-#line 369 "SW.y"
-                  { (yyval.symval_) = make_Symvalv((yyvsp[0].string_));  }
-#line 1990 "Parser.c"
+  case 63: /* Numval: _SYMB_17  */
+#line 368 "SW.y"
+             { (yyval.numval_) = make_NumValv((yyvsp[0].string_));  }
+#line 1983 "Parser.c"
+    break;
+
+  case 64: /* Stringval: _STRING_  */
+#line 370 "SW.y"
+                     { (yyval.stringval_) = make_StringVals((yyvsp[0].string_));  }
+#line 1989 "Parser.c"
+    break;
+
+  case 65: /* Stringval: _SYMB_18  */
+#line 371 "SW.y"
+             { (yyval.stringval_) = make_StringValv((yyvsp[0].string_));  }
+#line 1995 "Parser.c"
+    break;
+
+  case 66: /* Stringval: _SYMB_19  */
+#line 372 "SW.y"
+             { (yyval.stringval_) = make_StringVale((yyvsp[0].string_));  }
+#line 2001 "Parser.c"
     break;
 
   case 67: /* Symval: _SYMB_20  */
-#line 370 "SW.y"
-             { (yyval.symval_) = make_Symvali((yyvsp[0].string_));  }
-#line 1996 "Parser.c"
-    break;
-
-  case 68: /* Symval: _SYMB_17  */
-#line 371 "SW.y"
-             { (yyval.symval_) = make_SymVale((yyvsp[0].string_));  }
-#line 2002 "Parser.c"
-    break;
-
-  case 69: /* ValidConfig: _SYMB_12 ListEntry  */
-#line 373 "SW.y"
-                                 { (yyval.validconfig_) = make_Validcfg(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidConfig_= (yyval.validconfig_); }
-#line 2008 "Parser.c"
-    break;
-
-  case 70: /* ValidConfig: _SYMB_13 ListEntry  */
 #line 374 "SW.y"
-                       { (yyval.validconfig_) = make_Validcfgd(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidConfig_= (yyval.validconfig_); }
-#line 2014 "Parser.c"
+                  { (yyval.symval_) = make_Symvalv((yyvsp[0].string_));  }
+#line 2007 "Parser.c"
     break;
 
-  case 71: /* Entry: KeyVal  */
+  case 68: /* Symval: _SYMB_22  */
+#line 375 "SW.y"
+             { (yyval.symval_) = make_Symvali((yyvsp[0].string_));  }
+#line 2013 "Parser.c"
+    break;
+
+  case 69: /* Symval: _SYMB_19  */
 #line 376 "SW.y"
-               { (yyval.entry_) = make_CfgEntrya((yyvsp[0].keyval_));  }
-#line 2020 "Parser.c"
+             { (yyval.symval_) = make_SymVale((yyvsp[0].string_));  }
+#line 2019 "Parser.c"
     break;
 
-  case 72: /* Entry: KeyName  */
-#line 377 "SW.y"
-            { (yyval.entry_) = make_CfgEntryb((yyvsp[0].keyname_));  }
-#line 2026 "Parser.c"
+  case 70: /* Include: _SYMB_16  */
+#line 378 "SW.y"
+                   { (yyval.include_) = make_Inc1();  }
+#line 2025 "Parser.c"
     break;
 
-  case 73: /* ListEntry: %empty  */
+  case 71: /* Include: _SYMB_15  */
 #line 379 "SW.y"
-                        { (yyval.listentry_) = 0;  }
-#line 2032 "Parser.c"
+             { (yyval.include_) = make_Inc2();  }
+#line 2031 "Parser.c"
     break;
 
-  case 74: /* ListEntry: ListEntry Entry  */
-#line 380 "SW.y"
-                    { (yyval.listentry_) = make_ListEntry((yyvsp[0].entry_), (yyvsp[-1].listentry_));  }
-#line 2038 "Parser.c"
+  case 72: /* ValidConfig: _SYMB_12 ListEntry  */
+#line 381 "SW.y"
+                                 { (yyval.validconfig_) = make_Validcfg(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidConfig_= (yyval.validconfig_); }
+#line 2037 "Parser.c"
     break;
 
-  case 75: /* KeyVal: KeyName _INTEGER_  */
+  case 73: /* ValidConfig: _SYMB_13 ListEntry  */
 #line 382 "SW.y"
-                           { (yyval.keyval_) = make_CfgKeyvalint((yyvsp[-1].keyname_), (yyvsp[0].int_));  }
-#line 2044 "Parser.c"
+                       { (yyval.validconfig_) = make_Validcfgd(reverseListEntry((yyvsp[0].listentry_))); YY_RESULT_ValidConfig_= (yyval.validconfig_); }
+#line 2043 "Parser.c"
     break;
 
-  case 76: /* KeyVal: KeyName _STRING_  */
-#line 383 "SW.y"
-                     { (yyval.keyval_) = make_CfgKeyvalstr((yyvsp[-1].keyname_), (yyvsp[0].string_));  }
-#line 2050 "Parser.c"
-    break;
-
-  case 77: /* KeyVal: KeyName _SYMB_22  */
+  case 74: /* Entry: KeyVal  */
 #line 384 "SW.y"
-                     { (yyval.keyval_) = make_CfgKeyDate((yyvsp[-1].keyname_), (yyvsp[0].string_));  }
-#line 2056 "Parser.c"
+               { (yyval.entry_) = make_CfgEntrya((yyvsp[0].keyval_));  }
+#line 2049 "Parser.c"
     break;
 
-  case 78: /* KeyName: Symval _SYMB_14  */
-#line 386 "SW.y"
-                          { (yyval.keyname_) = make_KeynameS((yyvsp[-1].symval_));  }
-#line 2062 "Parser.c"
+  case 75: /* Entry: KeyName  */
+#line 385 "SW.y"
+            { (yyval.entry_) = make_CfgEntryb((yyvsp[0].keyname_));  }
+#line 2055 "Parser.c"
     break;
 
-  case 79: /* KeyName: ModPath Symval _SYMB_14  */
+  case 76: /* ListEntry: %empty  */
 #line 387 "SW.y"
+                        { (yyval.listentry_) = 0;  }
+#line 2061 "Parser.c"
+    break;
+
+  case 77: /* ListEntry: ListEntry Entry  */
+#line 388 "SW.y"
+                    { (yyval.listentry_) = make_ListEntry((yyvsp[0].entry_), (yyvsp[-1].listentry_));  }
+#line 2067 "Parser.c"
+    break;
+
+  case 78: /* KeyVal: KeyName _INTEGER_  */
+#line 390 "SW.y"
+                           { (yyval.keyval_) = make_CfgKeyvalint((yyvsp[-1].keyname_), (yyvsp[0].int_));  }
+#line 2073 "Parser.c"
+    break;
+
+  case 79: /* KeyVal: KeyName _STRING_  */
+#line 391 "SW.y"
+                     { (yyval.keyval_) = make_CfgKeyvalstr((yyvsp[-1].keyname_), (yyvsp[0].string_));  }
+#line 2079 "Parser.c"
+    break;
+
+  case 80: /* KeyVal: KeyName _SYMB_24  */
+#line 392 "SW.y"
+                     { (yyval.keyval_) = make_CfgKeyDate((yyvsp[-1].keyname_), (yyvsp[0].string_));  }
+#line 2085 "Parser.c"
+    break;
+
+  case 81: /* KeyName: Symval _SYMB_14  */
+#line 394 "SW.y"
+                          { (yyval.keyname_) = make_KeynameS((yyvsp[-1].symval_));  }
+#line 2091 "Parser.c"
+    break;
+
+  case 82: /* KeyName: ModPath Symval _SYMB_14  */
+#line 395 "SW.y"
                             { (yyval.keyname_) = make_KeynameM((yyvsp[-2].modpath_), (yyvsp[-1].symval_));  }
-#line 2068 "Parser.c"
+#line 2097 "Parser.c"
     break;
 
 
-#line 2072 "Parser.c"
+#line 2101 "Parser.c"
 
       default: break;
     }
@@ -2267,7 +2296,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 390 "SW.y"
+#line 398 "SW.y"
 
 void yyerror(const char *str)
 {
