@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.13.3 - STREAMWORK
+SW-0.13.4 - STREAMWORK
 ======================
 
 StreamWork
@@ -65,7 +65,12 @@ Network Definition
 ------------------
 
 The network definition consists of a list of 
-streams(or dataflows) and optional subnet definitions.  
+streams(or dataflows), subnet definitions,
+and  INCLUDE FILE statements.  
+
+INCLUDEd files are also network definitions which may in turn contain
+INCLUDE statements.  Exceeding 100 levels of includes will 
+cause program termination.
 
 Each stream definition looks like:
 ```
@@ -355,6 +360,10 @@ Ex.  ```A<-B;``` expands to
 ------
 	* Minor changes. Code cleaning.  Added license badge. 	
 	
+0.13.4
+------
+	* Include file implemented	
+	
 SW Language Notes
 --------------------
 
@@ -374,9 +383,6 @@ Imagine trying to read a book without any periods (or initial capitals).
 
 Additionally, without semi-colons, line breaks become part of the language 
 definition leading to awkward, confusing syntax rules.  
-
-In the future, there may be a few exceptions to the 
-semi-colon rule for special pre-interpreter commands, like INCLUDE.
 
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:

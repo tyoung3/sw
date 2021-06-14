@@ -1,6 +1,6 @@
 #  DEFAULT_IMPORT_PATH  
 
-(A  Comp1)0<-0(B poc/Comp2);
+(A2  Comp1)0<-0(B2 poc/Comp2);
 
 (Hello) -> (World); 
 

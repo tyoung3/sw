@@ -891,17 +891,24 @@ static char *findFile(char *s) {
         FAIL(Cannot locate, s);
 }
 
+#define MAX_INCLUDE_LEVEL 100
 /** Get network statement. */
 void visitStm(Stm _p_)
 {
     Process p;     
     ValidSW pt;
+    static includeLevel=0;
+    
     type = IS_NET;
     
     switch (_p_->kind) {
     case is_Stminc:
          pt = IncludeFile(visitString(findFile(_p_->u.stminc_.string_)));  
+         includeLevel++;
+         if(includeLevel>MAX_INCLUDE_LEVEL) 
+         	FAIL(INCLUDE statement recursion, "MAX_INCLUDE_LEVEL exceeded");
          visitListStm(pt->u.valid_.liststm_);
+         includeLevel--;
          return;
     case is_Stmx:
 	visitdataflow(_p_->u.stmx_.dataflow_);

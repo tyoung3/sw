@@ -6,5 +6,5 @@ INCLUDE "inc.isw";
 (X ^N)1 <- 1(Y ^M);
 (X ^N)2 <- 2(Y ^M);
 
-include "../model/tests/inc2.isw"; 
+#include "../model/tests/inc3.isw"; 
 
