@@ -38,6 +38,7 @@ static void CfgString(String key, String val)  {
 	SetS(DefaultFilterComp);
 	SetS(DefaultOrphanComp);
 	SetS(DefaultLibrary);
+	SetS(IncludePath);
 	SetS(HTMLdir);
 };
 

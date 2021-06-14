@@ -25,22 +25,21 @@ char *mystrncat(char *d, char *s, size_t n);
 extern char *version;  /* In swmain.c from Makefile $VERSION */
 
 /** Terminate with message */
-#define FAIL1(S) { 					\
+#define FAIL1(S) { 						\
 	fprintf(stderr,"\033[31mFAIL: SW/%s\033[39m\n",(#S));	\
 	exit(EXIT_FAILURE);					\
 	}
 
 		/**  Abort message */
-#define FAIL(F,S) { 						\
-	fprintf(stderr,							\
-		"\033[31mSW/%s/FAIL: %s\033[39m\n",	\
-		(#F),								\
-		(S)   );							\
-		exit(EXIT_FAILURE);							\
+#define FAIL(F,S) { 					\
+	fprintf(stderr,					\
+		"\033[31mFAIL: SW/%s: %s\033[39m\n",	\
+		(#F),					\
+		(S)   );				\
+		exit(EXIT_FAILURE);			\
 	}	
 	
 /* sw.c  */
-//void 	expandSubnets(Model model);   		/**<Expand Subnets */
 
 void 	visitDouble(Double d);			/**<Get Double ?*/	
 void 	visitChar(Char c);			/**<Get a char */

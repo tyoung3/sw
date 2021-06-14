@@ -862,15 +862,33 @@ void visitSubdef(Subdef _p_)
 	//		    visitSymval(_p_->u.snet_.symval_));
 }
 
-static char *findFile(char *s) {
+#define BUFFSIZE 1000
+static char *Exists(char *s) {
 	struct stat sb;
+	char bfr[BUFFSIZE+1];
+	
+	if(lstat(s, &sb) == 0)
+		return s; 
+	
+	if(includePath==NULL) 
+		return NULL;
+		
+	strncpy(bfr,includePath,BUFFSIZE);
+	if( lstat( strncat(bfr,s,BUFFSIZE), &sb ) == 0 ) 
+		return strdup(bfr);
+			
+	return NULL;		
+}
 
-	if (lstat(s, &sb) == -1) {
-               perror("lstat");
-               FAIL(Cannot locate, s);
-           }
-
-	return s;
+static char *findFile(char *s) {
+	char *s2;
+	
+	s2=Exists(s);
+	
+	if(s2 != NULL )
+		return s2;
+		
+        FAIL(Cannot locate, s);
 }
 
 /** Get network statement. */
