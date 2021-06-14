@@ -50,6 +50,7 @@ check:  #check_go
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/fail_include.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	${PGM}  tests/aa.sw  >/dev/null
 	${PGM}  tests/ab.sw  >/dev/null
 	${PGM}  tests/ad.sw  >/dev/null
