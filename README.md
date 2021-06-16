@@ -60,7 +60,9 @@ A bash script, swgo, will build and run a network definition.
 Another bash script, swgraph, will display a graphic image(.svg) of a network definition 
 ![for instance:](/images/collate.svg)
 Processes are colored such that all components in a package have the same color.
-Not shown here are the tooltips and html references. 
+Not shown here are the tooltips and html references.  Arrows are colored according
+to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
+are not guaranteed to remain unchanged in future sw versions. 
 
 The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
 data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
