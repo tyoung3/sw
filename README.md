@@ -58,7 +58,7 @@ an entire working project source tree from a network definition, including confi
 A bash script, swgo, will build and run a network definition.
 
 Another bash script, swgraph, will display a graphic image(.svg) of a network definition:
-(/images/collate.png)
+[GitHub](/images/collate.png)
 The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
 data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
 
