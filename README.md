@@ -61,7 +61,7 @@ A bash script, swgo, will build and run a network definition.
 # Format: ![Alt Text](url)
 
 Another bash script, swgraph, will display a graphic image(.svg) of a network definition 
-![for instance:](/images/collate.png)
+![for instance:](/images/collate.svg)
 The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
 data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
 
