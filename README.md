@@ -57,9 +57,6 @@ an entire working project source tree from a network definition, including confi
 
 A bash script, swgo, will build and run a network definition.
 
-#![GitHub Logo](/images/logo.png)
-# Format: ![Alt Text](url)
-
 Another bash script, swgraph, will display a graphic image(.svg) of a network definition 
 ![for instance:](/images/collate.svg)
 Processes are colored such that all components in a package have the same color.
