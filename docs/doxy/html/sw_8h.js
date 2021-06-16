@@ -1,5 +1,6 @@
 var sw_8h =
 [
+    [ "BUFFSIZE", "sw_8h.html#a39912bfe2a55f30e269196f9141d845d", null ],
     [ "FAIL", "sw_8h.html#ab788f5d81c5f8dc3a3e69fbe468732c0", null ],
     [ "FAIL1", "sw_8h.html#acdff610e82d54e32b6d71e8e6e7f9cd7", null ],
     [ "ncolors", "sw_8h.html#a1d985ff37f0c554d3f36da815d230033", null ],
@@ -10,7 +11,9 @@ var sw_8h =
     [ "genJavaFBP", "sw_8h.html#a5f87cc6f43a3e9312bf839f4239afcdc", null ],
     [ "genProject", "sw_8h.html#ae7b844aa821628e0c3591827bb2830f3", null ],
     [ "getPathColor", "sw_8h.html#a46073303a3465d04d6441e16a8b1235f", null ],
+    [ "IncludeFile", "sw_8h.html#aa4534b5e8db0f777bea5c0de09675ce0", null ],
     [ "MakeComponent", "sw_8h.html#afb5a3c4c5dced441bb45fce7d4e60284", null ],
+    [ "MakeModel", "sw_8h.html#a68fce783b4412d15bb949e98e020b9f2", null ],
     [ "makeModPath", "sw_8h.html#aa9101d521bc3839f6b44bea6d7ff3527", null ],
     [ "mystrncat", "sw_8h.html#a67a622e0ddd334c2e7358db0ff36e62d", null ],
     [ "strncat", "sw_8h.html#a0aee928c2844a269966e4832fd2255c5", null ],
@@ -28,7 +31,7 @@ var sw_8h =
     [ "visitStm", "sw_8h.html#ac89d7b9922b171328760e7f9cbd7ef54", null ],
     [ "visitString", "sw_8h.html#a1f63deb7164cb52c1e0de9d2e8cae750", null ],
     [ "visitStringval", "sw_8h.html#a6345ad7c8110164b1de905d1072633ab", null ],
-    [ "visitValidSW", "sw_8h.html#a79bbc86e504d8dce5dc67f08316e5179", null ],
+    [ "visitValidSW", "sw_8h.html#a1e9a7d9e9b25eacfece9bd55098dfd19", null ],
     [ "cfg", "sw_8h.html#a5900c556b80c06652df8b0c57a4a73a3", null ],
     [ "configfile", "sw_8h.html#a7b641c81adb45d9bc216ffb0fe84c25a", null ],
     [ "fbfr", "sw_8h.html#a375c8c44fe63f0d981a0606ea79a4adc", null ],

@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.13.3</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('sw_8c.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
@@ -100,20 +101,22 @@ $(document).ready(function(){initNavTree('sw_8c.html',''); initResizable(); });
 <code>#include &quot;<a class="el" href="swsym_8h_source.html">swsym.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="model_8h_source.html">model.h</a>&quot;</code><br />
 <code>#include &lt;assert.h&gt;</code><br />
+<code>#include &lt;sys/stat.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for sw.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="sw_8c__incl.png" border="0" usemap="#model_2sw_8c" alt=""/></div>
 <map name="model_2sw_8c" id="model_2sw_8c">
-<area shape="rect" title=" " alt="" coords="283,5,377,32"/>
+<area shape="rect" title=" " alt="" coords="325,5,420,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,76,107"/>
 <area shape="rect" title=" " alt="" coords="101,80,167,107"/>
 <area shape="rect" title=" " alt="" coords="253,229,324,256"/>
-<area shape="rect" href="sw_8h.html" title=" " alt="" coords="342,80,393,107"/>
+<area shape="rect" href="sw_8h.html" title=" " alt="" coords="347,80,398,107"/>
 <area shape="rect" href="model_8h.html" title=" " alt="" coords="534,229,609,256"/>
 <area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="243,155,335,181"/>
 <area shape="rect" href="swsym_8h.html" title=" " alt="" coords="570,155,650,181"/>
 <area shape="rect" title=" " alt="" coords="725,80,799,107"/>
+<area shape="rect" title=" " alt="" coords="823,80,909,107"/>
 <area shape="rect" href="swmain_8h.html" title=" " alt="" coords="410,155,495,181"/>
 <area shape="rect" title=" " alt="" coords="283,319,401,345"/>
 <area shape="rect" title=" " alt="" coords="425,319,544,345"/>
@@ -127,13 +130,15 @@ Include dependency graph for sw.c:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a7180786c98af534f76855fef6f1b97ab"><td class="memItemLeft" align="right" valign="top"><a id="a7180786c98af534f76855fef6f1b97ab"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#a7180786c98af534f76855fef6f1b97ab">DEBUGGING</a></td></tr>
-<tr class="memdesc:a7180786c98af534f76855fef6f1b97ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Addional checking if DEBUGGING is defined. <br /></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DEBUGGING</b></td></tr>
 <tr class="separator:a7180786c98af534f76855fef6f1b97ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaaca8cb6d45b98587486e33736b9a32e"><td class="memItemLeft" align="right" valign="top"><a id="aaaca8cb6d45b98587486e33736b9a32e"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#aaaca8cb6d45b98587486e33736b9a32e">visitId</a>(i)&#160;&#160;&#160;(String) i</td></tr>
 <tr class="memdesc:aaaca8cb6d45b98587486e33736b9a32e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get Id. <br /></td></tr>
 <tr class="separator:aaaca8cb6d45b98587486e33736b9a32e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafe4bba8deb3c1d5d016032a4c1abc14"><td class="memItemLeft" align="right" valign="top"><a id="aafe4bba8deb3c1d5d016032a4c1abc14"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>MAX_INCLUDE_LEVEL</b>&#160;&#160;&#160;100</td></tr>
+<tr class="separator:aafe4bba8deb3c1d5d016032a4c1abc14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad935f1ff1a50822e317bdb321ce991ad"><td class="memItemLeft" align="right" valign="top"><a id="ad935f1ff1a50822e317bdb321ce991ad"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#ad935f1ff1a50822e317bdb321ce991ad">MAX</a>(A,  B)&#160;&#160;&#160;( (A&gt;B)? A: B)</td></tr>
 <tr class="memdesc:ad935f1ff1a50822e317bdb321ce991ad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sw_8c.html#ad935f1ff1a50822e317bdb321ce991ad" title="MAX(A,B) returns highest of A or B.">MAX(A,B)</a> returns highest of A or B. <br /></td></tr>
@@ -141,6 +146,13 @@ Macros</h2></td></tr>
 <tr class="memitem:a308b56a330326f9a9f9047de29c4f645"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#a308b56a330326f9a9f9047de29c4f645">MATCH</a>(SRC,  SNK)</td></tr>
 <tr class="memdesc:a308b56a330326f9a9f9047de29c4f645"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="sw_8c.html#a308b56a330326f9a9f9047de29c4f645" title="MATCH(SRC,SNK) is true if port names match.">MATCH(SRC,SNK)</a> is true if port names match.  <a href="sw_8c.html#a308b56a330326f9a9f9047de29c4f645">More...</a><br /></td></tr>
 <tr class="separator:a308b56a330326f9a9f9047de29c4f645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:adb42db0a0b780591d4ae64f1f887400d"><td class="memItemLeft" align="right" valign="top"><a id="adb42db0a0b780591d4ae64f1f887400d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>PREFIX_MODE</b> { <b>SET</b>, 
+<b>GET</b>
+ }</td></tr>
+<tr class="separator:adb42db0a0b780591d4ae64f1f887400d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -251,8 +263,9 @@ Integer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#a3368bd9f60469e9f51f00aa239813a50">visitSubdef</a> (Subdef _p_)</td></tr>
 <tr class="memdesc:a3368bd9f60469e9f51f00aa239813a50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get subnet definition. <br /></td></tr>
 <tr class="separator:a3368bd9f60469e9f51f00aa239813a50"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada715f01661a9b7a8fb915d293122b7c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#ada715f01661a9b7a8fb915d293122b7c">visitStm</a> (Stm _p_)</td></tr>
-<tr class="memdesc:ada715f01661a9b7a8fb915d293122b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get network statement.  <a href="sw_8c.html#ada715f01661a9b7a8fb915d293122b7c">More...</a><br /></td></tr>
+<tr class="memitem:ada715f01661a9b7a8fb915d293122b7c"><td class="memItemLeft" align="right" valign="top"><a id="ada715f01661a9b7a8fb915d293122b7c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#ada715f01661a9b7a8fb915d293122b7c">visitStm</a> (Stm _p_)</td></tr>
+<tr class="memdesc:ada715f01661a9b7a8fb915d293122b7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get next Statement. <br /></td></tr>
 <tr class="separator:ada715f01661a9b7a8fb915d293122b7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a101ff8e7276c2a222c0e4e8a11ee5ff6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#a101ff8e7276c2a222c0e4e8a11ee5ff6">visitListStm</a> (ListStm liststm)</td></tr>
 <tr class="memdesc:a101ff8e7276c2a222c0e4e8a11ee5ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get network statement list.  <a href="sw_8c.html#a101ff8e7276c2a222c0e4e8a11ee5ff6">More...</a><br /></td></tr>
@@ -295,9 +308,9 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>visitValidImport</b
 <tr class="memitem:a1f63deb7164cb52c1e0de9d2e8cae750"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#a1f63deb7164cb52c1e0de9d2e8cae750">visitString</a> (String s)</td></tr>
 <tr class="memdesc:a1f63deb7164cb52c1e0de9d2e8cae750"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get String.  <a href="sw_8c.html#a1f63deb7164cb52c1e0de9d2e8cae750">More...</a><br /></td></tr>
 <tr class="separator:a1f63deb7164cb52c1e0de9d2e8cae750"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a932ff8dba08523944b2314958bc50985"><td class="memItemLeft" align="right" valign="top"><a class="el" href="model_8h.html#ae8833ff2695744120df409ec7e543e80">Model</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#a932ff8dba08523944b2314958bc50985">visitValidSW</a> (ValidSW _p_)</td></tr>
-<tr class="memdesc:a932ff8dba08523944b2314958bc50985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the parse tree into a SW network model.  <a href="sw_8c.html#a932ff8dba08523944b2314958bc50985">More...</a><br /></td></tr>
-<tr class="separator:a932ff8dba08523944b2314958bc50985"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada7d08993ac595ce911702921710161a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="model_8h.html#ae8833ff2695744120df409ec7e543e80">Model</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c.html#ada7d08993ac595ce911702921710161a">visitValidSW</a> (<a class="el" href="model_8h.html#ae8833ff2695744120df409ec7e543e80">Model</a> model, ValidSW _p_)</td></tr>
+<tr class="memdesc:ada7d08993ac595ce911702921710161a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert the parse tree into a SW network model.  <a href="sw_8c.html#ada7d08993ac595ce911702921710161a">More...</a><br /></td></tr>
+<tr class="separator:ada7d08993ac595ce911702921710161a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -359,7 +372,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p><a class="el" href="sw_8c.html#a308b56a330326f9a9f9047de29c4f645" title="MATCH(SRC,SNK) is true if port names match.">MATCH(SRC,SNK)</a> is true if port names match. </p>
 <p>?? </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01780">1780</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01844">1844</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -393,7 +406,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Make Component structure. </p>
 <p>Create component structure. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00267">267</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00288">288</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -416,7 +429,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get process argument. </p>
 <p>Get argument. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01024">1024</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01088">1088</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -439,7 +452,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get component. </p>
 <p>Get Component. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01004">1004</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01068">1068</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -462,7 +475,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get Integer. </p>
 <p>Get integer. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01051">1051</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01115">1115</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -485,7 +498,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get list of arguments. </p>
 <p>Get argument list. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01037">1037</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01101">1101</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -508,7 +521,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get network statement list. </p>
 <p>Get list of statements. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00898">898</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00962">962</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -531,7 +544,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get process. </p>
 <p>Get Process. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00909">909</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00973">973</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -554,30 +567,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get port. </p>
 <p>Get Port. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00934">934</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
-
-</div>
-</div>
-<a id="ada715f01661a9b7a8fb915d293122b7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada715f01661a9b7a8fb915d293122b7c">&#9670;&nbsp;</a></span>visitStm()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void visitStm </td>
-          <td>(</td>
-          <td class="paramtype">Stm&#160;</td>
-          <td class="paramname"><em>_p_</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Get network statement. </p>
-<p>Get next Statement. </p>
-
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00865">865</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00998">998</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -600,7 +590,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get String. </p>
 <p>Get string. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01057">1057</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01121">1121</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -623,7 +613,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Get String value. </p>
 <p>&lt;Get String value</p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00374">374</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00395">395</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -651,12 +641,12 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00427">427</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00448">448</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
-<a id="a932ff8dba08523944b2314958bc50985"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a932ff8dba08523944b2314958bc50985">&#9670;&nbsp;</a></span>visitValidSW()</h2>
+<a id="ada7d08993ac595ce911702921710161a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada7d08993ac595ce911702921710161a">&#9670;&nbsp;</a></span>visitValidSW()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -664,9 +654,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
         <tr>
           <td class="memname"><a class="el" href="model_8h.html#ae8833ff2695744120df409ec7e543e80">Model</a> visitValidSW </td>
           <td>(</td>
-          <td class="paramtype">ValidSW&#160;</td>
-          <td class="paramname"><em>_p_</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="model_8h.html#ae8833ff2695744120df409ec7e543e80">Model</a>&#160;</td>
+          <td class="paramname"><em>model</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">ValidSW&#160;</td>
+          <td class="paramname"><em>_p_</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -674,7 +674,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
 <p>Convert the parse tree into a SW network model. </p>
 <p>Build model from parse tree. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01920">1920</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l01984">1984</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
@@ -695,13 +695,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw_8c
  </p>
 <p>Place to store latest visited source port. </p>
 
-<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00022">22</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sw_8c_source.html#l00024">24</a> of file <a class="el" href="sw_8c_source.html">sw.c</a>.</p>
 
 </div>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aswmain_8c_html_afd27aa508055273f164776e5f11ad320"><div class="ttname"><a href="swmain_8c.html#afd27aa508055273f164776e5f11ad320">eqs</a></div><div class="ttdeci">int eqs(char *s1, char *s2)</div><div class="ttdoc">True is strings are equal.</div><div class="ttdef"><b>Definition:</b> <a href="swmain_8c_source.html#l00100">swmain.c:100</a></div></div>
+<div class="ttc" id="aswmain_8c_html_afd27aa508055273f164776e5f11ad320"><div class="ttname"><a href="swmain_8c.html#afd27aa508055273f164776e5f11ad320">eqs</a></div><div class="ttdeci">int eqs(char *s1, char *s2)</div><div class="ttdoc">True is strings are equal.</div><div class="ttdef"><b>Definition:</b> <a href="swmain_8c_source.html#l00095">swmain.c:95</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

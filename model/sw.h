@@ -13,6 +13,8 @@
 #include "swconfig.h"
 #include "string.h"
 
+#define BUFFSIZE 1000
+
 #ifndef String 
 typedef char* String;
 #endif
@@ -38,6 +40,9 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */
 		(S)   );				\
 		exit(EXIT_FAILURE);			\
 	}	
+
+
+
 	
 /* sw.c  */
 

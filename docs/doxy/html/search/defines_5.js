@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['new_356',['NEW',['../swsym_8c.html#ad47bcaeb6a32d146af1ad46876b1e083',1,'swsym.c']]],
-  ['new2_357',['NEW2',['../swsym_8c.html#a20ef9f05f81df4c942c0276808046124',1,'swsym.c']]]
+  ['p_356',['P',['../swc_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swc.c'],['../swgo_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swgo.c'],['../swgraph_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swgraph.c'],['../swproject_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swproject.c']]],
+  ['pe_357',['PE',['../swgo_8c.html#a0c505f929f4a562b4a8ca52a2dfb75b4',1,'PE():&#160;swgo.c'],['../swproject_8c.html#a0c505f929f4a562b4a8ca52a2dfb75b4',1,'PE():&#160;swproject.c']]]
 ];

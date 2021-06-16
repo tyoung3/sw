@@ -85,6 +85,7 @@ check:  #check_go
 	${PGM}  tests/module.sw   >/dev/null
 	${PGM}  tests/inc.sw   >/dev/null
 	${PGM}  tests/combo.sw   >/dev/null
+	${PGM}  tests/prefix.sw   >/dev/null
 	# ?? breaks  github workflow ../bin/sw.sh poc     
 
 

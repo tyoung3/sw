@@ -57,7 +57,8 @@ an entire working project source tree from a network definition, including confi
 
 A bash script, swgo, will build and run a network definition.
 
-Another bash script, swgraph, will display a graphic image(.svg) of a network definition.
+Another bash script, swgraph, will display a graphic image(.svg) of a network definition:
+(/images/collate.png)
 The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
 data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
 
@@ -362,7 +363,8 @@ Ex.  ```A<-B;``` expands to
 	
 0.13.4
 ------
-	* Include file implemented	
+	* Include file implemented
+	* Process string prefix implemented	
 	
 SW Language Notes
 --------------------
@@ -370,7 +372,7 @@ SW Language Notes
 The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it 
 directly interpretable, without preprocessing.  
 
-As it happens, SW has no reserved words making it natural language
+As it happens, SW has just two reserved words(INCLUDE and PREFIX) making it relatively natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
 will be made to ensure that all currently valid SW statements will remain valid.  Should 
 this prove impossible,  the major version will be changed, i.e. to v1.0.0. 

@@ -177,6 +177,14 @@ void ppStm(Stm p, int _i_)
 {
   switch(p->kind)
   {
+  case is_StmPrefix:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppPrefix(p->u.stmprefix_.prefix_, 0);
+    ppString(p->u.stmprefix_.string_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
   case is_Stminc:
     if (_i_ > 0) renderC(_L_PAREN);
     ppInclude(p->u.stminc_.include_, 0);
@@ -1005,6 +1013,31 @@ void ppInclude(Include p, int _i_)
   }
 }
 
+void ppPrefix(Prefix p, int _i_)
+{
+  switch(p->kind)
+  {
+  case is_Prefu:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderS("PREFIX");
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_Prefl:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderS("prefix");
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Prefix!\n");
+    exit(1);
+  }
+}
+
 void ppValidConfig(ValidConfig p, int _i_)
 {
   switch(p->kind)
@@ -1278,6 +1311,20 @@ void shStm(Stm p)
 {
   switch(p->kind)
   {
+  case is_StmPrefix:
+    bufAppendC('(');
+
+    bufAppendS("StmPrefix");
+
+    bufAppendC(' ');
+
+    shPrefix(p->u.stmprefix_.prefix_);
+  bufAppendC(' ');
+    shString(p->u.stmprefix_.string_);
+
+    bufAppendC(')');
+
+    break;
   case is_Stminc:
     bufAppendC('(');
 
@@ -2416,6 +2463,33 @@ void shInclude(Include p)
 
   default:
     fprintf(stderr, "Error: bad kind field when showing Include!\n");
+    exit(1);
+  }
+}
+
+void shPrefix(Prefix p)
+{
+  switch(p->kind)
+  {
+  case is_Prefu:
+
+    bufAppendS("Prefu");
+
+
+
+
+    break;
+  case is_Prefl:
+
+    bufAppendS("Prefl");
+
+
+
+
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when showing Prefix!\n");
     exit(1);
   }
 }

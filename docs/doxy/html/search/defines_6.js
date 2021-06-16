@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['p_358',['P',['../swc_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swc.c'],['../swgo_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swgo.c'],['../swgraph_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swgraph.c'],['../swproject_8c.html#a1bb183938acb879d5c2795cf007f8ffa',1,'P():&#160;swproject.c']]],
-  ['pe_359',['PE',['../swgo_8c.html#a0c505f929f4a562b4a8ca52a2dfb75b4',1,'PE():&#160;swgo.c'],['../swproject_8c.html#a0c505f929f4a562b4a8ca52a2dfb75b4',1,'PE():&#160;swproject.c']]]
+  ['rb_358',['RB',['../swgraph_8c.html#a171160a766f85c8816b898ed24d28408',1,'swgraph.c']]],
+  ['register_359',['REGISTER',['../swsym_8c.html#a9b6de0e26f74363b0c360e2a4020f035',1,'swsym.c']]]
 ];

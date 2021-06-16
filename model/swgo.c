@@ -111,7 +111,7 @@ static Port findPort(Process p, int id)
 	pt = pt->next;
     } while (pt != pt0);
 
-    sprintf(fbfr, "Process %s Port %i mismatch\n", p->name, id);
+    snprintf(fbfr, BUFFSIZE, "Process %s Port %i mismatch\n", p->name, id);
     FAIL(findPort, fbfr);
 }
 
@@ -333,7 +333,7 @@ void genPrefix(Model m)
     int nstreams = m->nstreams;
     int bfrtbl[m->nstreams + 10];
     int i;
-    Stream f = m->stream;
+    Stream f;
 
     P(package main);
     printf("\n/");
@@ -359,7 +359,7 @@ void genPrefix(Model m)
 	f = f->next;
     }
     i = 0;
-    f = m->stream;
+    // f = m->stream;
     while (i < nstreams) {
 	if (bfrtbl[i] > 0) {
 	    printf("cs = append(cs,make(chan interface{},%i))\n",

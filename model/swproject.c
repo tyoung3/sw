@@ -3,21 +3,21 @@
 **/
  
 /** 
-	@todo Add PREFIX statement to prefix process names with a string. 
  	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
- 	
-	@todo Process command arguments. 
-	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce n goroutines.
-	@todo Generate man doc(s) from Doxygen
-	@todo Fix generated graph HTMLs
+	@todo Process command/config arguments. 
+	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines.
 	@todo Fix swgen arguments w/default generation. Generate in config file
 	@todo Send multiple(N option) IPs in go tests.
-	@todo Make config an option
-	@tdo  Build standard component library(s). 
+	@todo Make config an option 
  	@todo Generate project examples
+ 	@todo Graph .ISW files (prevent 'no processes' message.
+ 	@todo Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
+	@todo Create Man pages w/Doxygen
+
 	
  DONE: 
-	@todo Make generated test_.go's  deadlock safe. Test w/collate.sw
+	@done Add PREFIX statement to prefix process names with a string. 
+	@done Make generated test_.go's  deadlock safe. Test w/collate.sw
 	@done Improve module location.  Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase 
 	@done  Restore poc test
 	@done  Type names inside arrows(stream direction indicators). 
@@ -74,7 +74,7 @@
 #define C(s) printf("%s",(#s));		/**<Print String  */
 
 /** Return prefix(aaa) of aaa.bbb  */
-static char *Prefix(char *s) {
+static char *getPrefix(char *s) {
 	char *s0;
 	char *s1;
 
@@ -159,7 +159,7 @@ void genProject(Model m) {
 	char **args;  // Process arguments
 	
 	c=m->comp;
-	module=Prefix(m->name);   // Strip off suffix: .sw
+	module=getPrefix(m->name);   // Strip off suffix: .sw
 	
 	while(c!=NULL) {
 		getPorts(m, c, &inp,&outp); 
