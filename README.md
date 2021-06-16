@@ -132,7 +132,7 @@ some components (Print, for instance) can process strings and integers;
 some just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
-version(currently v0).  (v0.12.2 is somewhat major, however.)  
+version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)  
 
 Sw builds a network model in memory, then optionally generates
 either 
@@ -159,7 +159,7 @@ QuickStart (on Linux)
 	* Download the 'sw' executable from github to any 
 	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```sw -v``` to check that the version is at least v0.12.2
+	* Run ```sw -v``` to check the version.
 	 
 ```	
 echo "(Foo) <- (Bar);" | sw > /tmp/fb.go 
