@@ -71,15 +71,15 @@ data storage access code.  Currently, data storage code must be contained within
 Network Definition
 ------------------
 
-The network definition consists of a list of 
-streams(or dataflows), subnet definitions,
-and  INCLUDE FILE statements.  
+The network definition file consists of a list of 
+streams(or dataflows); and may also contain subnet definitions, INCLUDE and PREFIX statements, and
+comments.  
 
 INCLUDEd files are also network definitions which may in turn contain
 INCLUDE statements.  Exceeding 100 levels of includes will 
 cause program termination.
 
-Each stream definition looks like:
+A stream definition looks like:
 ```
 (a C) -> (b D);
     or 
