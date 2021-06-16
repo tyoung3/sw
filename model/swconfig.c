@@ -15,7 +15,7 @@
 #include "swconfig.h"
 
 struct cfg_ cfg = { 0, 10000, 10000, 1000, 
-	"def", "Gen", "Print", "Filter", "defaultLib", "/home/tyoung3/go/src/github.com/tyoung3/sw/swbase/html/",NULL };
+	"def", "Gen", "Print", "Filter", "defaultLib", "/home/tyoung3/go/src/github.com/tyoung3/sw/lib", "/home/tyoung3/go/src/github.com/tyoung3/sw/swbase/html/",NULL };
 
 void visitEntry(Entry _p_);
 
@@ -38,6 +38,7 @@ static void CfgString(String key, String val)  {
 	SetS(DefaultFilterComp);
 	SetS(DefaultOrphanComp);
 	SetS(DefaultLibrary);
+	SetS(IncludePath);
 	SetS(HTMLdir);
 };
 

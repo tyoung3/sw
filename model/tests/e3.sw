@@ -1,3 +1,3 @@
 # Missmatched port names:  
 
-(A A)MATCH  <- MISS(B b);
+(F A)MATCH  <- MISS(G b);

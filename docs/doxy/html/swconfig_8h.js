@@ -11,6 +11,7 @@ var swconfig_8h =
     [ "defaultSinkComp", "swconfig_8h.html#aa735838f164c4ed5a447b576147c3fe5", null ],
     [ "defaultSourceComp", "swconfig_8h.html#a8c4d49d9f7f09095916801363caa43d2", null ],
     [ "htmldir", "swconfig_8h.html#a034f19323bd373ff239543473e8f91a0", null ],
+    [ "includePath", "swconfig_8h.html#ae99aa9654fafaab7aee1131e3550c217", null ],
     [ "maxbfsz", "swconfig_8h.html#a8f88064702bba3248081f95a685da059", null ],
     [ "maxdepth", "swconfig_8h.html#ad6790978daa3758066af073d3c1f9711", null ],
     [ "SetS", "swconfig_8h.html#acd10923970ced671dfab7782489d31a3", null ],

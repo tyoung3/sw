@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.13.3 - STREAMWORK
+SW-0.13.4 - STREAMWORK
 ======================
 
 StreamWork
@@ -57,17 +57,28 @@ an entire working project source tree from a network definition, including confi
 
 A bash script, swgo, will build and run a network definition.
 
-Another bash script, swgraph, will display a graphic image(.svg) of a network definition.
+Another bash script, swgraph, will display a graphic image(.svg) of a network definition 
+![for instance:](/images/collate.svg)
+Processes are colored such that all components in a package have the same color.
+Not shown here are the tooltips and html references.  Arrows are colored according
+to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
+are not guaranteed to remain unchanged in future sw versions. 
+
 The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
 data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
 
 Network Definition
 ------------------
 
-The network definition consists of a list of 
-streams(or dataflows) and optional subnet definitions.  
+The network definition file consists of a list of 
+streams(or dataflows); and may also contain subnet definitions, INCLUDE and PREFIX statements, and
+comments.  
 
-Each stream definition looks like:
+INCLUDEd files are also network definitions which may in turn contain
+INCLUDE statements.  Exceeding 100 levels of includes will 
+cause program termination.
+
+A stream definition looks like:
 ```
 (a C) -> (b D);
     or 
@@ -123,7 +134,7 @@ some components (Print, for instance) can process strings and integers;
 some just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
-version(currently v0).  (v0.12.2 is somewhat major, however.)  
+version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)  
 
 Sw builds a network model in memory, then optionally generates
 either 
@@ -150,7 +161,7 @@ QuickStart (on Linux)
 	* Download the 'sw' executable from github to any 
 	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```sw -v``` to check that the version is at least v0.12.2
+	* Run ```sw -v``` to check the version.
 	 
 ```	
 echo "(Foo) <- (Bar);" | sw > /tmp/fb.go 
@@ -355,13 +366,18 @@ Ex.  ```A<-B;``` expands to
 ------
 	* Minor changes. Code cleaning.  Added license badge. 	
 	
+0.13.4
+------
+	* Include file implemented
+	* Process string prefix implemented	
+	
 SW Language Notes
 --------------------
 
 The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it 
 directly interpretable, without preprocessing.  
 
-As it happens, SW has no reserved words making it natural language
+As it happens, SW has just two reserved words(INCLUDE and PREFIX) making it relatively natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
 will be made to ensure that all currently valid SW statements will remain valid.  Should 
 this prove impossible,  the major version will be changed, i.e. to v1.0.0. 
@@ -374,9 +390,6 @@ Imagine trying to read a book without any periods (or initial capitals).
 
 Additionally, without semi-colons, line breaks become part of the language 
 definition leading to awkward, confusing syntax rules.  
-
-In the future, there may be a few exceptions to the 
-semi-colon rule for special pre-interpreter commands, like INCLUDE.
 
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:

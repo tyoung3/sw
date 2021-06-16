@@ -13,6 +13,8 @@
 #include "swconfig.h"
 #include "string.h"
 
+#define BUFFSIZE 1000
+
 #ifndef String 
 typedef char* String;
 #endif
@@ -25,22 +27,25 @@ char *mystrncat(char *d, char *s, size_t n);
 extern char *version;  /* In swmain.c from Makefile $VERSION */
 
 /** Terminate with message */
-#define FAIL1(S) { 					\
+#define FAIL1(S) { 						\
 	fprintf(stderr,"\033[31mFAIL: SW/%s\033[39m\n",(#S));	\
-	exit(1);					\
+	exit(EXIT_FAILURE);					\
 	}
 
 		/**  Abort message */
-#define FAIL(F,S) { 						\
-	fprintf(stderr,							\
-		"\033[31mSW/%s/FAIL: %s\033[39m\n",	\
-		(#F),								\
-		(S)   );							\
-		exit(1);							\
+#define FAIL(F,S) { 					\
+	fprintf(stderr,					\
+		"\033[31mFAIL: SW/%s: %s\033[39m\n",	\
+		(#F),					\
+		(S)   );				\
+		exit(EXIT_FAILURE);			\
 	}	
+
+
+
 	
 /* sw.c  */
-//void 	expandSubnets(Model model);   		/**<Expand Subnets */
+
 void 	visitDouble(Double d);			/**<Get Double ?*/	
 void 	visitChar(Char c);			/**<Get a char */
 void	visitStm(Stm p);			/**<Get next Statement*/
@@ -51,7 +56,8 @@ Port    visitPrt(Prt p);			/**<Get Port*/
 Component visitComp(Comp p);			/**<Get Component*/
 Argument visitArgument(Argument p);		/**<Get argument*/
 ListArgument visitListArgument(ListArgument p);	/**<Get argument list*/
-Model 	visitValidSW(ValidSW p);		/**<Build model from parse tree*/
+Model 	visitValidSW(Model, ValidSW p);		/**<Build model from parse tree*/
+Model MakeModel(Stream f);
 Ident visitIdent(Ident i);		      	/**<Get port number */
 Integer visitInteger(Integer i); 		/**<Get integer*/
 String visitString(String s);			/**<Get string*/
@@ -74,6 +80,7 @@ void genC(Model model);
 extern String configfile;
 extern struct cfg_ cfg;
 extern char fbfr[]; 	
+ValidSW IncludeFile( char *fname);
 
 	/* swsym.c */
 int getPathColor(String path);

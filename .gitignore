@@ -8,7 +8,7 @@ _*
 swedit/
 
 docs/doxy/
-*.png
+doxy/html/*.png
 example/
 fbpx/IGNORE_swedit
 project/ex1/

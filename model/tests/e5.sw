@@ -1,4 +1,4 @@
-# (B) port error
+# (K) port error
 
-(B)   <-  OUT(A);
-(A)IN <-  (B);
+(K)   <-  OUT(J);
+(J)IN <-  (K);

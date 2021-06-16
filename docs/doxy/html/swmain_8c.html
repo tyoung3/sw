@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.13.3</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -127,7 +127,7 @@ Include dependency graph for swmain.c:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a7eabd788dcab19ca586663bf73deddf5"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#a7eabd788dcab19ca586663bf73deddf5">MODE</a> { <br />
+<tr class="memitem:a7eabd788dcab19ca586663bf73deddf5"><td class="memItemLeft" align="right" valign="top"><a id="a7eabd788dcab19ca586663bf73deddf5"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>MODE</b> { <br />
 &#160;&#160;<b>GOMODE</b> = 0, 
 <b>ASTMODE</b>, 
 <b>GENTREE</b>, 
@@ -157,18 +157,22 @@ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmai
 char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#ad43fe301cfd271c53b12fb20282fcb5b">baseOf</a> (char *s)</td></tr>
 <tr class="memdesc:ad43fe301cfd271c53b12fb20282fcb5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Point to character past the last '/'. <br /></td></tr>
 <tr class="separator:ad43fe301cfd271c53b12fb20282fcb5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4534b5e8db0f777bea5c0de09675ce0"><td class="memItemLeft" align="right" valign="top"><a id="aa4534b5e8db0f777bea5c0de09675ce0"></a>
+ValidSW&#160;</td><td class="memItemRight" valign="bottom"><b>IncludeFile</b> (char *fname)</td></tr>
+<tr class="separator:aa4534b5e8db0f777bea5c0de09675ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a> (int argc, char **argv)</td></tr>
 <tr class="separator:a3c04138a5bfe5d72780bb7e82a18e627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:acb5ce50f1c4823e4d0a8861e1b5614c4"><td class="memItemLeft" align="right" valign="top"><a id="acb5ce50f1c4823e4d0a8861e1b5614c4"></a>
-char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#acb5ce50f1c4823e4d0a8861e1b5614c4">fbfr</a> [200]</td></tr>
-<tr class="memdesc:acb5ce50f1c4823e4d0a8861e1b5614c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">File name buffer. <br /></td></tr>
-<tr class="separator:acb5ce50f1c4823e4d0a8861e1b5614c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56abfaab87c46691c1ef3ad0df23e864"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#a56abfaab87c46691c1ef3ad0df23e864">version</a> = { VERSION }</td></tr>
+<tr class="memitem:a55f4393b13c32a5600fa50ab0f9af357"><td class="memItemLeft" align="right" valign="top"><a id="a55f4393b13c32a5600fa50ab0f9af357"></a>
+char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#a55f4393b13c32a5600fa50ab0f9af357">fbfr</a> [BUFFSIZE+1]</td></tr>
+<tr class="memdesc:a55f4393b13c32a5600fa50ab0f9af357"><td class="mdescLeft">&#160;</td><td class="mdescRight">File name buffer. <br /></td></tr>
+<tr class="separator:a55f4393b13c32a5600fa50ab0f9af357"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56abfaab87c46691c1ef3ad0df23e864"><td class="memItemLeft" align="right" valign="top"><a id="a56abfaab87c46691c1ef3ad0df23e864"></a>
+char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#a56abfaab87c46691c1ef3ad0df23e864">version</a> = { VERSION }</td></tr>
 <tr class="memdesc:a56abfaab87c46691c1ef3ad0df23e864"><td class="mdescLeft">&#160;</td><td class="mdescRight">sw version <br  />
-  <a href="swmain_8c.html#a56abfaab87c46691c1ef3ad0df23e864">More...</a><br /></td></tr>
+ <br /></td></tr>
 <tr class="separator:a56abfaab87c46691c1ef3ad0df23e864"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b641c81adb45d9bc216ffb0fe84c25a"><td class="memItemLeft" align="right" valign="top"><a id="a7b641c81adb45d9bc216ffb0fe84c25a"></a>
 String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swmain_8c.html#a7b641c81adb45d9bc216ffb0fe84c25a">configfile</a> ={&quot;./sw.cfg&quot;}</td></tr>
@@ -179,25 +183,6 @@ FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw
 <tr class="memdesc:abfae665d56d61e1c21831bec369abd34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Input SW file name. <br /></td></tr>
 <tr class="separator:abfae665d56d61e1c21831bec369abd34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a7eabd788dcab19ca586663bf73deddf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7eabd788dcab19ca586663bf73deddf5">&#9670;&nbsp;</a></span>MODE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="swmain_8c.html#a7eabd788dcab19ca586663bf73deddf5">MODE</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>Implement Process name expansion.</dd></dl>
-<p>Ex. "_MONITOR;" launches system monitor </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Create Man page w/Doxygen </dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="swmain_8c_source.html#l00020">20</a> of file <a class="el" href="swmain_8c_source.html">swmain.c</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a3c04138a5bfe5d72780bb7e82a18e627"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3c04138a5bfe5d72780bb7e82a18e627">&#9670;&nbsp;</a></span>main()</h2>
@@ -228,28 +213,7 @@ FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw
 <p>set symbol table</p>
 <p>Build model</p>
 
-<p class="definition">Definition at line <a class="el" href="swmain_8c_source.html#l00317">317</a> of file <a class="el" href="swmain_8c_source.html">swmain.c</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Variable Documentation</h2>
-<a id="a56abfaab87c46691c1ef3ad0df23e864"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56abfaab87c46691c1ef3ad0df23e864">&#9670;&nbsp;</a></span>version</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">char* version = { VERSION }</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>sw version <br  />
- </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>may need to increase file name buffer size.</dd></dl>
-
-<p class="definition">Definition at line <a class="el" href="swmain_8c_source.html#l00024">24</a> of file <a class="el" href="swmain_8c_source.html">swmain.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="swmain_8c_source.html#l00329">329</a> of file <a class="el" href="swmain_8c_source.html">swmain.c</a>.</p>
 
 </div>
 </div>

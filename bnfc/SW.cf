@@ -1,4 +1,14 @@
 --  SW.cf  
+
+{- Copyright (C) 2019,2020,2021 Thomas W. Young, streamwork@twyoung.com
+The StreamWork network definition language, SW, this file(SW.cf) and its derivitives are
+the intellectual property of Thomas W. Young and may not be reproduced or copies
+in any form for any purpose without permission.   Permission is granted for the 
+sole use of rebuilding the Streamwork program, sw,  for personal, non-commercial purposes.
+
+-}
+
+
 --              StreamWork prototype network definition language
 
 entrypoints		Valide, ValidSW, ValidConfig    ; 
@@ -8,6 +18,8 @@ SWvalid.	 	Valide 		::= ValidSW  ;
 
 Valid.			ValidSW 	::= [Stm]    ;
 
+StmPrefix.		Stm		::= Prefix  String;
+Stminc.			Stm		::= Include String;
 Stmx.			Stm		::= DataFlow  ; 
 Stmn.			Stm		::= Numassgn ; 
 Stms.			Stm		::= Strassgn ;
@@ -92,8 +104,13 @@ StringVale.		Stringval  	::= Envar		;
 
 Symvalv.		Symval	   	::= Symvar		;
 Symvali.		Symval	   	::= Id			;  
-SymVale.		Symval	   	::= Envar	;
+SymVale.		Symval	   	::= Envar		;
 
+Inc1.		  	Include   	::= "include" 		;
+Inc2.			Include		::= "INCLUDE"		;
+
+Prefu.			Prefix		::= "PREFIX"		;
+Prefl.			Prefix		::= "prefix"		;
 
 token   Numvar	  '%' letter  ( letter | digit  )*	;		
 token	Stringvar '$' letter  ( letter | digit  )*	;	

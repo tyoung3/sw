@@ -14,8 +14,6 @@
 #include "sw.h"
 #include "swconfig.h"
 
-#define BUFFSIZE 200
-
 /** Variable key/value structure. */
 struct bucket {
     union {
@@ -114,7 +112,7 @@ static bucketp lookup(char *key)
     if (found == 0) {
 	nsyms++;
 	if (nsyms > TABLESIZE) {
-	    sprintf(fbfr,
+	    snprintf(fbfr, BUFFSIZE, 
 		    "%i variables exceeds symtable size.\n", TABLESIZE);
 	    FAIL(lookup, fbfr);
 	}

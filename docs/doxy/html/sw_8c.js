@@ -3,7 +3,12 @@ var sw_8c =
     [ "DEBUGGING", "sw_8c.html#a7180786c98af534f76855fef6f1b97ab", null ],
     [ "MATCH", "sw_8c.html#a308b56a330326f9a9f9047de29c4f645", null ],
     [ "MAX", "sw_8c.html#ad935f1ff1a50822e317bdb321ce991ad", null ],
+    [ "MAX_INCLUDE_LEVEL", "sw_8c.html#aafe4bba8deb3c1d5d016032a4c1abc14", null ],
     [ "visitId", "sw_8c.html#aaaca8cb6d45b98587486e33736b9a32e", null ],
+    [ "PREFIX_MODE", "sw_8c.html#adb42db0a0b780591d4ae64f1f887400d", [
+      [ "SET", "sw_8c.html#adb42db0a0b780591d4ae64f1f887400dab44c8101cc294c074709ec1b14211792", null ],
+      [ "GET", "sw_8c.html#adb42db0a0b780591d4ae64f1f887400da12a8dcf59c16b5aadfda3a08ba67d529", null ]
+    ] ],
     [ "getEnvVar", "sw_8c.html#ae255306f57929068384469e380faddf6", null ],
     [ "MakeComponent", "sw_8c.html#afb5a3c4c5dced441bb45fce7d4e60284", null ],
     [ "MakeExtport", "sw_8c.html#afeb15967d7ce4b5d0e3ba8165b7cb6a6", null ],
@@ -46,7 +51,7 @@ var sw_8c =
     [ "visitTab", "sw_8c.html#abf64db29650ac5fff261a893b120ffab", null ],
     [ "visitTypeDef", "sw_8c.html#a6e79b254c68574dd108ee8a5756b6983", null ],
     [ "visitValidImport", "sw_8c.html#aeccd6d06a606f66430340a1947598188", null ],
-    [ "visitValidSW", "sw_8c.html#a932ff8dba08523944b2314958bc50985", null ],
+    [ "visitValidSW", "sw_8c.html#ada7d08993ac595ce911702921710161a", null ],
     [ "bs", "sw_8c.html#a543ad6760e15710733431e44b651e4e2", null ],
     [ "LatestSrcPort", "sw_8c.html#ab2c9344b4af71d2387fe2b9a1b01b228", null ],
     [ "net_model", "sw_8c.html#a2c951b4129873bd861a063029f60e3da", null ],

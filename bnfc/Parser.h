@@ -39,6 +39,8 @@ typedef union
   Numval numval_;
   Stringval stringval_;
   Symval symval_;
+  Include include_;
+  Prefix prefix_;
   ValidConfig validconfig_;
   Entry entry_;
   ListEntry listentry_;
@@ -77,8 +79,12 @@ typedef struct YYLTYPE
 #define _SYMB_20 279
 #define _SYMB_21 280
 #define _SYMB_22 281
-#define _STRING_ 282
-#define _INTEGER_ 283
+#define _SYMB_23 282
+#define _SYMB_24 283
+#define _SYMB_25 284
+#define _SYMB_26 285
+#define _STRING_ 286
+#define _INTEGER_ 287
 
 extern YYLTYPE yylloc;
 extern YYSTYPE yylval;

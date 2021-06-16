@@ -5,22 +5,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+
 #include "sw.h"
 #include "swgo.h"
 #include "swsym.h"
 #include "swgraph.h"
 #include "swconfig.h"
 
-/** @todo Implement Process name expansion. 
-	Ex. "_MONITOR;" launches system monitor
-*/
-/**	@todo Create Man page w/Doxygen
-*/
-
 typedef enum
     { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, PROJECT, CMODE = 7 } MODE;
 
-char fbfr[200];   /**<File name buffer.*/ /** @todo  may need to increase file name buffer size. */
+char fbfr[BUFFSIZE+1];   /**<File name buffer.*/  
 char *version = { VERSION };  /**<sw version  */
 
 String configfile={"./sw.cfg"};   		/**<SW configuration file */
@@ -47,7 +42,7 @@ static int badProc(Process p)
 	return 0;
 
     if (!p->comp) {
-	sprintf(fbfr, "missing component for process: (%s)", p->name);
+	snprintf(fbfr, BUFFSIZE, "missing component for process: (%s)", p->name);
 	FAIL(badProc, fbfr);
 	return 1;
     }
@@ -61,13 +56,13 @@ static int badProc(Process p)
 	}
 	for (; i < (p->nportsIn + p->nportsOut); i++) {
 	    if (!port->stream) {
-		sprintf(fbfr,
+		snprintf(fbfr, BUFFSIZE, 
 			"(%s) port[%i] is disconnected(has no ->stream).\n",
 			p->name, i);
 		FAIL(badProc, fbfr);
 	    }
 	    if (port->id > i) {
-		sprintf(fbfr,
+		snprintf(fbfr,BUFFSIZE, 
 			"(%s) port[%i] is %i, should be = %i.\n",
 			p->name, i, port->id, i);
 		FAIL(badProc, fbfr);
@@ -109,7 +104,7 @@ int eqs(char *s1, char *s2)
 static int nameFail(char *psnkname, char *nsnk, char *nsrc, char *psrcname)
 {
 
-    sprintf(fbfr, "(%s)%s <- %s(%s)", psnkname, nsnk, nsrc, psrcname);
+    snprintf(fbfr, BUFFSIZE, "(%s)%s <- %s(%s)", psnkname, nsnk, nsrc, psrcname);
     FAIL(nameFail, fbfr);
 }
 
@@ -207,13 +202,13 @@ static int verifyOK(Model model)
 	 case IS_NET:
 		FixComps(f);
 		if(f->sink->name==NULL) {
-			sprintf(fbfr, 
+			snprintf(fbfr, BUFFSIZE, 
 				"Sink process has no name. Source is %s.", 
 				f->source->name);
 			FAIL(verifyOK, fbfr);
 		}
 		if(f->source->name==NULL) {
-			sprintf(fbfr, 
+			snprintf(fbfr, BUFFSIZE, 
 				"Source process has no name. Sink is %s.", 
 				f->sink->name);
 			FAIL(verifyOK, fbfr);
@@ -300,7 +295,7 @@ static int BadArg(int argc, char **argv)
 		   	 	fname = argv[i];
 		   	 	input = openFile(fname);
 		   	 	if(input==NULL) {
-					sprintf(fbfr, 
+					snprintf(fbfr, BUFFSIZE, 
 					   "Error opening input file: %s.", fname);
 					FAIL(openFile, fbfr);
 				}
@@ -312,6 +307,23 @@ static int BadArg(int argc, char **argv)
 	i++;
     }
     return 0;
+}
+
+ValidSW IncludeFile( char *fname) {
+	 ValidSW parse_tree = NULL;
+	  
+	 fclose(input); 
+	 input = openFile(fname);
+	 if(input==NULL) {
+	 	perror(fname);
+ 		//      #include <errno.h>
+	 	FAIL(Cannot open, fname);
+	 }
+	 parse_tree = pValidSW(input);
+	 if(parse_tree == NULL) {
+	 	FAIL(Cannot parse, fname);
+	 }
+	 return parse_tree;
 }
 
 int main(int argc, char **argv)
@@ -331,10 +343,11 @@ int main(int argc, char **argv)
     }
 
     parse_tree = pValidSW(input);	/** Parse network definition */
-
-    if (parse_tree) {
+   
+    if (parse_tree) {      
 	tabinit();	/** set symbol table */
-	model = visitValidSW(parse_tree);	/** Build model */
+	model = MakeModel(NULL);
+	visitValidSW(model, parse_tree);	/** Build model */
 	model->name = baseOf(fname);
 	if (verifyOK(model)) {
 	    if (!model->proc) {

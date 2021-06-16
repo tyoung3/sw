@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.13.3</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -166,19 +166,20 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Print string. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd><p class="startdd">Make generated test_.go's deadloack safe. </p>
-<p class="interdd">negative nimports and noutports in swgen.sh to prioritize ports and reduce n goroutines. </p>
-<p class="interdd">Generate man doc(s) from Doxygen </p>
-<p class="interdd">Fix generated graph HTMLs </p>
+<pre class="fragment">@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
+</pre> <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd><p class="startdd">Process command/config arguments. </p>
+<p class="interdd">negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines. </p>
 <p class="interdd">Fix swgen arguments w/default generation. Generate in config file </p>
 <p class="interdd">Send multiple(N option) IPs in go tests. </p>
-<p class="interdd">Make config an option @tdo Build standard component library(s). </p>
-<p class="enddd">Generate project examples</p>
+<p class="interdd">Make config an option </p>
+<p class="interdd">Generate project examples </p>
+<p class="interdd">Graph .ISW files (prevent 'no processes' message. </p>
+<p class="interdd">Implement Process name expansion. Ex. "_MONITOR;" launches system monitor </p>
+<p class="enddd">Create Man pages w/Doxygen</p>
 </dd></dl>
-<p>Test w/collate.sw</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>Process command arguments. </dd></dl>
-<p>DONE: </p><dl class="section user"><dt>Done: Improve module location. Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase </dt><dd></dd></dl>
+<p>DONE: </p><dl class="section user"><dt>Done: Add PREFIX statement to prefix process names with a string. </dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Make generated test_.go's deadlock safe. Test w/collate.sw</dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Improve module location. Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase </dt><dd></dd></dl>
 <dl class="section user"><dt>Done: Restore poc test</dt><dd></dd></dl>
 <dl class="section user"><dt>Done: Type names inside arrows(stream direction indicators). </dt><dd></dd></dl>
 <dl class="section user"><dt>Done: Document more functions </dt><dd></dd></dl>
@@ -196,7 +197,7 @@ Functions</h2></td></tr>
  </dd></dl>
 <dl class="section user"><dt>Shelved: output Buffer &gt; 0 filtercode generation for deadlock prevention</dt><dd></dd></dl>
 <p>Method: Build a script from the .SW file model. Run the script to generate the code at $GOPATH/src/MODULE; where MODULE.sw was the .SW file used to build the model. <br  />
- </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>Build a web site from github </dd></dl>
+ </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Build a web site from github </dd></dl>
 <p>OBJECTIVE: Build working web site in Docker</p>
 <p>. Prototype web site . Generate test.twyoung.com.sw</p>
 <p>. Enhance modular access . Upper/lower case component name for remote/local search. . Generate standard web . Move defaults(Gen1,etc.) <br  />

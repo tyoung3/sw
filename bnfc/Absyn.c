@@ -42,7 +42,35 @@ ValidSW make_Valid(ListStm p1)
     tmp->kind = is_Valid;
     tmp->u.valid_.liststm_ = p1;
     return tmp;
-}/********************   Stmx    ********************/
+}/********************   StmPrefix    ********************/
+Stm make_StmPrefix(Prefix p1, String p2)
+{
+    Stm tmp = (Stm) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating StmPrefix!\n");
+        exit(1);
+    }
+    tmp->kind = is_StmPrefix;
+    tmp->u.stmprefix_.prefix_ = p1;
+    tmp->u.stmprefix_.string_ = p2;
+    return tmp;
+}
+/********************   Stminc    ********************/
+Stm make_Stminc(Include p1, String p2)
+{
+    Stm tmp = (Stm) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Stminc!\n");
+        exit(1);
+    }
+    tmp->kind = is_Stminc;
+    tmp->u.stminc_.include_ = p1;
+    tmp->u.stminc_.string_ = p2;
+    return tmp;
+}
+/********************   Stmx    ********************/
 Stm make_Stmx(DataFlow p1)
 {
     Stm tmp = (Stm) malloc(sizeof(*tmp));
@@ -847,6 +875,52 @@ Symval make_SymVale(Envar p1)
     }
     tmp->kind = is_SymVale;
     tmp->u.symvale_.envar_ = p1;
+    return tmp;
+}/********************   Inc1    ********************/
+Include make_Inc1()
+{
+    Include tmp = (Include) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Inc1!\n");
+        exit(1);
+    }
+    tmp->kind = is_Inc1;
+    return tmp;
+}
+/********************   Inc2    ********************/
+Include make_Inc2()
+{
+    Include tmp = (Include) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Inc2!\n");
+        exit(1);
+    }
+    tmp->kind = is_Inc2;
+    return tmp;
+}/********************   Prefu    ********************/
+Prefix make_Prefu()
+{
+    Prefix tmp = (Prefix) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Prefu!\n");
+        exit(1);
+    }
+    tmp->kind = is_Prefu;
+    return tmp;
+}
+/********************   Prefl    ********************/
+Prefix make_Prefl()
+{
+    Prefix tmp = (Prefix) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Prefl!\n");
+        exit(1);
+    }
+    tmp->kind = is_Prefl;
     return tmp;
 }/********************   Validcfg    ********************/
 ValidConfig make_Validcfg(ListEntry p1)
