@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -87,7 +87,8 @@ $(document).ready(function(){initNavTree('swgraph_8c.html',''); initResizable();
   <div class="summary">
 <a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">swgraph.c File Reference</div>  </div>
 </div><!--header-->
@@ -103,18 +104,18 @@ Include dependency graph for swgraph.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="swgraph_8c__incl.png" border="0" usemap="#model_2swgraph_8c" alt=""/></div>
 <map name="model_2swgraph_8c" id="model_2swgraph_8c">
-<area shape="rect" title=" " alt="" coords="196,5,329,32"/>
+<area shape="rect" title=" " alt="" coords="180,5,313,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,72,107"/>
 <area shape="rect" title=" " alt="" coords="97,80,167,107"/>
-<area shape="rect" title=" " alt="" coords="191,80,262,107"/>
-<area shape="rect" href="model_8h.html" title=" " alt="" coords="313,229,388,256"/>
-<area shape="rect" href="sw_8h.html" title=" " alt="" coords="372,80,423,107"/>
-<area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="498,155,590,181"/>
-<area shape="rect" title=" " alt="" coords="63,311,182,338"/>
-<area shape="rect" title=" " alt="" coords="206,311,325,338"/>
-<area shape="rect" title=" " alt="" coords="349,304,523,345"/>
-<area shape="rect" title=" " alt="" coords="547,311,669,338"/>
-<area shape="rect" href="swmain_8h.html" title=" " alt="" coords="388,155,473,181"/>
+<area shape="rect" title=" " alt="" coords="254,229,325,256"/>
+<area shape="rect" href="model_8h.html" title=" " alt="" coords="467,229,541,256"/>
+<area shape="rect" href="sw_8h.html" title=" " alt="" coords="329,80,380,107"/>
+<area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="243,155,335,181"/>
+<area shape="rect" title=" " alt="" coords="215,319,334,345"/>
+<area shape="rect" title=" " alt="" coords="358,319,477,345"/>
+<area shape="rect" title=" " alt="" coords="501,304,680,360"/>
+<area shape="rect" title=" " alt="" coords="705,319,826,345"/>
+<area shape="rect" href="swmain_8h.html" title=" " alt="" coords="461,155,547,181"/>
 </map>
 </div>
 </div>
@@ -134,10 +135,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swgraph_8c.html#a1bc9e245eb0feb1e3156859b8262db60">C</a>(s)&#160;&#160;&#160;printf(&quot;%s,\n&quot;,(#s));</td></tr>
 <tr class="memdesc:a1bc9e245eb0feb1e3156859b8262db60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print String. <br /></td></tr>
 <tr class="separator:a1bc9e245eb0feb1e3156859b8262db60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a768b19041341bd852e40a9082cbd8361"><td class="memItemLeft" align="right" valign="top"><a id="a768b19041341bd852e40a9082cbd8361"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swgraph_8c.html#a768b19041341bd852e40a9082cbd8361">NO_PORTS</a></td></tr>
-<tr class="memdesc:a768b19041341bd852e40a9082cbd8361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define to remove process ports from graph. <br /></td></tr>
-<tr class="separator:a768b19041341bd852e40a9082cbd8361"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a171160a766f85c8816b898ed24d28408"><td class="memItemLeft" align="right" valign="top"><a id="a171160a766f85c8816b898ed24d28408"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swgraph_8c.html#a171160a766f85c8816b898ed24d28408">RB</a>&#160;&#160;&#160;&quot;}&quot;</td></tr>
 <tr class="memdesc:a171160a766f85c8816b898ed24d28408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Right Brace. <br /></td></tr>
@@ -146,6 +143,9 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swgraph_8c.html#acc55daa58d88a3612f2ef74a6abbe97f">LB</a>&#160;&#160;&#160;&quot;{&quot;</td></tr>
 <tr class="memdesc:acc55daa58d88a3612f2ef74a6abbe97f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Left Brace. <br /></td></tr>
 <tr class="separator:acc55daa58d88a3612f2ef74a6abbe97f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add6b8fae17cb9c8e297895913c103a43"><td class="memItemLeft" align="right" valign="top"><a id="add6b8fae17cb9c8e297895913c103a43"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>genPort</b>(X)</td></tr>
+<tr class="separator:add6b8fae17cb9c8e297895913c103a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -162,12 +162,16 @@ Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swgraph_8c.html#aac1f93d24767485c4b9ee1fee9a4f932">genGraph</a> (<a class="el" href="model_8h.html#ae8833ff2695744120df409ec7e543e80">Model</a> model)</td></tr>
 <tr class="memdesc:aac1f93d24767485c4b9ee1fee9a4f932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate .dot file from network model. <br /></td></tr>
 <tr class="separator:aac1f93d24767485c4b9ee1fee9a4f932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a88467dcbf2af48d3bbd3da3f32352242"><td class="memItemLeft" align="right" valign="top"><a id="a88467dcbf2af48d3bbd3da3f32352242"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><b>fcolors</b> [] ={&quot;lightblue&quot;, &quot;gold&quot;, &quot;red&quot;, &quot;orange&quot;, &quot;yellow&quot;, &quot;lightgreen&quot;, &quot;violet&quot;, &quot;brown&quot;, &quot;gray&quot;, &quot;white&quot;}</td></tr>
+<tr class="separator:a88467dcbf2af48d3bbd3da3f32352242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Generate Graphviz input(.dot file) <br  />
-</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>remove braces from path here or previously. <br  />
- </dd></dl>
+ </p>
 
 <p class="definition">Definition in file <a class="el" href="swgraph_8c_source.html">swgraph.c</a>.</p>
 </div></div><!-- contents -->

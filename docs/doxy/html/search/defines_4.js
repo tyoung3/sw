@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['match_357',['MATCH',['../sw_8c.html#a308b56a330326f9a9f9047de29c4f645',1,'sw.c']]],
-  ['max_358',['MAX',['../sw_8c.html#ad935f1ff1a50822e317bdb321ce991ad',1,'sw.c']]]
+  ['new_354',['NEW',['../swsym_8c.html#ad47bcaeb6a32d146af1ad46876b1e083',1,'swsym.c']]],
+  ['new2_355',['NEW2',['../swsym_8c.html#a20ef9f05f81df4c942c0276808046124',1,'swsym.c']]]
 ];

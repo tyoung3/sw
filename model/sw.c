@@ -10,16 +10,19 @@
 #include "swconfig.h"
 #include "swsym.h"
 #include "model.h"
+#include <assert.h>       
+#include <sys/stat.h>
 
-#include <assert.h>
-/** Addional checking if DEBUGGING is defined.*/
+
 #define DEBUGGING
 
+static  char *savedPrefix="";
 static char *iptype_save="";  		/* latest visited IP type */  
 static  Process fl = NULL;		/** List of processes to free	*/
 
 /** Place to store latest visited source port. */
 Port LatestSrcPort = NULL;  
+
 /** Current network type. */
 TYPE type = IS_NET;
 
@@ -61,7 +64,7 @@ static int VerifyStream(Stream s)
 
 static Subnetm linkSubnet(Model m, char *name)
 {
-    Subnetm sn2 = m->subnetm;
+    Subnetm sn2;
 
     sn2 = m->subnetm;
     if (!sn2) {
@@ -173,16 +176,34 @@ static char **MakeArg(ListArgument la, char *name)
     return arg;
 }
 
+enum PREFIX_MODE {SET,GET};
+static char *savePrefix(int m, char *s) {
+	switch (m) {
+	case SET:
+		savedPrefix=s;
+		break;
+	case GET:
+		return savedPrefix;
+	}
+	
+	return "";
+}
+
 static char *fixName(char *name)
 {
-    char bfr[101];
+    char bfr[BUFFSIZE+1];
     static int nanon = 1;	/* Number of anonymous processes */
 
     if (name[0] == '_') {	// Anonymous process Q
-	sprintf(bfr, "_%i", nanon++);
+	snprintf(bfr, BUFFSIZE, "_%i", nanon++);
 	return strndup(bfr, 100);
     }
-    return name;
+    
+    if(savePrefix(GET,name)==NULL) 
+    	return name;
+    	
+    snprintf(bfr,BUFFSIZE, "%s%s", savePrefix(GET,name), name);	
+    return strndup(bfr,100);
 }
 
 static Process
@@ -191,7 +212,7 @@ MakeProcess(Model model, Ident name, Component comp, char **arg)
     Process p;
 
 
-    if (name[0] == '_' && name[1] == 0)
+    // if (name[0] == '_' && name[1] == 0)
 	name = fixName(name);
     p = getProc(name);
 
@@ -570,7 +591,7 @@ static void SetSink(Process p)
 static Process lastProc=NULL;
  
 /** Get stream structure */
-Stream visitS_tream(S_tream _p_)
+Stream visitdataflow(DataFlow _p_)
 {
     Process snk, src;
     Port pt, src_pt, snk_pt;
@@ -622,7 +643,7 @@ Stream visitS_tream(S_tream _p_)
 	return s;
 
     case is_Streamy:
-	s = visitS_tream(_p_->u.streamy_.s_tream_);
+	visitdataflow(_p_->u.streamy_.dataflow_);
 	snk = lastProc;
 	pt = visitPrt(_p_->u.streamy_.prt_1);
 	bs = visitLarrow(_p_->u.streamy_.larrow_);
@@ -646,7 +667,7 @@ Stream visitS_tream(S_tream _p_)
 	VerifyStream(s2);
 	return s2;
     case is_Streamry:
-	s 	 = visitS_tream(_p_->u.streamry_.s_tream_);
+	 visitdataflow(_p_->u.streamry_.dataflow_);
 	src 	 = lastProc;
 	lastProc = snk = visitProc(_p_->u.streamry_.proc_);
 	bs 	 = visitRarrow(_p_->u.streamry_.rarrow_);
@@ -671,7 +692,7 @@ Stream visitS_tream(S_tream _p_)
 	return s2;
 
     default:
-	badkind(S_tream);
+	badkind(dataflow);
     }
 }
 
@@ -794,24 +815,11 @@ Process visitHermt(Hermt _p_)
 				(_p_->u.hermtx_.listargument_), name));
 	return p;
     case is_Hermty:
-	p = MakeProcess(net_model,
+	return (MakeProcess(net_model,
 			visitSymvalu(_p_->u.hermty_.symvalu_), NULL,
 			MakeArg(visitListArgument
-				(_p_->u.hermty_.listargument_), NULL));
-
-	return p;
-#if 0	
-    case is_Hermtax:
-	p = MakeProcess(net_model, "_", visitComp(_p_->u.hermtax_.comp_),
-			MakeArg(visitListArgument
-				(_p_->u.hermtax_.listargument_), NULL));
-	return p;
-    case is_Hermtay:
-	p = MakeProcess(net_model, "_", NULL,
-			MakeArg(visitListArgument
-				(_p_->u.hermtay_.listargument_), NULL));
-	return p;
-#endif	
+				(_p_->u.hermty_.listargument_), NULL))
+		);
     default:
 	badkind(Hermt);
     }
@@ -839,7 +847,7 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 	    p->comp = MakeComponent(p->name, defaultPath);
 	return MakeSubnetm(id, NULL, eport, eport);
     case is_Snets:
-	s = visitS_tream(_p_->u.snets_.s_tream_);
+	s = visitdataflow(_p_->u.snets_.dataflow_);
 	return MakeSubnetm(id, s, eport, eport);
     case is_Snetin:
 	return MakeSubnetm(id, s,
@@ -872,16 +880,60 @@ void visitSubdef(Subdef _p_)
 	//		    visitSymval(_p_->u.snet_.symval_));
 }
 
+static char *Exists(char *s) {
+	struct stat sb;
+	char bfr[BUFFSIZE+1];
+	
+	if(lstat(s, &sb) == 0)
+		return s; 
+	
+	if(includePath==NULL) 
+		return NULL;
+		
+	strncpy(bfr,includePath,BUFFSIZE);
+	if( lstat( strncat(bfr,s,BUFFSIZE), &sb ) == 0 ) 
+		return strdup(bfr);
+			
+	return NULL;		
+}
 
-/** Get network statement. */
+static char *findFile(char *s) {
+	char *s2;
+	
+	s2=Exists(s);
+	
+	if(s2 != NULL )
+		return s2;
+		
+        FAIL(Cannot locate, s);
+}
+
+#define MAX_INCLUDE_LEVEL 100
+
 void visitStm(Stm _p_)
 {
-    Process p;
-
+    Process p;     
+    ValidSW pt;
+    static int includeLevel=0;
+    
     type = IS_NET;
-    switch (_p_->kind) {
+    
+    switch (_p_->kind) {  
+    	char *s;
+    case is_StmPrefix:
+    	s=visitString(_p_->u.stmprefix_.string_);
+    	savePrefix(SET,s);
+    	return;
+    case is_Stminc:
+         pt = IncludeFile(visitString(findFile(_p_->u.stminc_.string_)));  
+         includeLevel++;
+         if(includeLevel>MAX_INCLUDE_LEVEL) 
+         	FAIL(INCLUDE statement recursion, "MAX_INCLUDE_LEVEL exceeded");
+         visitListStm(pt->u.valid_.liststm_);
+         includeLevel--;
+         return;
     case is_Stmx:
-	visitS_tream(_p_->u.stmx_.s_tream_);
+	visitdataflow(_p_->u.stmx_.dataflow_);
 	return;
     case is_Stmn:
 	visitNumassgn(_p_->u.stmn_.numassgn_);
@@ -910,32 +962,15 @@ void visitStm(Stm _p_)
 void visitListStm(ListStm liststm)
 {
 
-    while (liststm != 0) {
+    while (liststm != NULL) {
 	visitStm(liststm->stm_);
 	liststm = liststm->liststm_;
     }
 }
 
-#if 0
-/** Create anonymous component. */
-static char *MakeAnon(Component c)
-{
-    static char bfr[100];
-
-    if (c == NULL)
-	return bfr;
-
-    sprintf(bfr, "_%s", c->name);	// @BUG too many dupes  ???
-    return strndup(bfr, 99);
-
-};
-#endif
 
 /** Get process */
-Process visitProc(Proc _p_)
-{
-    // Component c;
-    // char *name;
+Process visitProc(Proc _p_) {
 
     switch (_p_->kind) {
 
@@ -954,27 +989,6 @@ Process visitProc(Proc _p_)
 			   MakeArg(visitListArgument
 				   (_p_->u.processy_.listargument_),
 				   NULL));
-#if 0
-    case is_Processax:		/* Anonymous process */
-	c = visitComp(_p_->u.processax_.comp_);
-	name = MakeAnon(c);
-	return MakeProcess(net_model,
-			   name,
-			   c,
-			   MakeArg(visitListArgument
-				   (_p_->u.processax_.listargument_),
-				   name));
-	break;
-
-    case is_Processay:		/* Anonymous process */
-	name = MakeAnon(NULL);
-	return MakeProcess(net_model,
-			   name,
-			   NULL,
-			   MakeArg(visitListArgument
-				   (_p_->u.processay_.listargument_),
-				   name));
-#endif				   
     default:
 	badkind(Proc);
     }
@@ -1041,18 +1055,6 @@ String visitModPath(ModPath p)
 
 String  visitValidImport(ValidImport s0) { 
 	return s0;
-#if 0
-	char *s=s0;
-
-	while(*s!=0) {
-		if(*s='}') {
-			*s-- = 0;
-		}
-		s++;
-	}	
-
-	return s0+1; 		/* s0+1 drops leading brace,'{';  ex. returns  xyz} from {xyz} */	
-#endif
 }   
 
 Component visitRemPath(RemPath p)
@@ -1137,7 +1139,7 @@ static char *makeName(char *pn, char *nn)
 static int CheckDepth(int d)
 {
     if (d > maxdepth) {
-	sprintf(fbfr,
+	snprintf(fbfr,BUFFSIZE,
 		"Exceeded maximum subnet expansion depth, %d. Loop maybe.\n",
 		maxdepth);
 	FAIL(CheckDepth, fbfr);
@@ -1159,7 +1161,7 @@ static int typeOK( char *s1, char *s2) {
 static void checkIPtype(char *msg, char *srcType, char *snkType, char *srcName, char *snkName) {
     
     if(! typeOK(srcType, snkType)) {
-	sprintf(fbfr,
+	snprintf(fbfr, BUFFSIZE, 
 		"%s: Type Mismatch for (%s) -%s>  and (%s) -%s>\n",
 		msg,
 		srcName, 
@@ -1388,7 +1390,7 @@ static void expandSub(Model m, Process p)
 	sn = sn->next;
     }
 
-    sprintf(fbfr,
+    snprintf(fbfr, BUFFSIZE, 
 	    "Cannot find subnet %s for process %s\n", p->comp->name,
 	    p->name);
     FAIL(expandSub, fbfr);
@@ -1437,7 +1439,6 @@ static void expandSubnets(Model m)
 		    else {
 			m->proc = p->next;
 		    }
-		    p = pp;
 		    expandSub(m, ps);
 		    FreeLater(&fl, ps);	/* Pointers to ps still exist. */
 		    break;
@@ -1783,7 +1784,7 @@ static void SortPorts(Process p)
 		    pt2->next = pt1;
 		    pt1->prev = pt2;
 		    ptw = pt1;
-		    pt1 = pt2;
+		   //pt1 = pt2;
 		    pt2 = ptw;
 		}
 	    }
@@ -1965,7 +1966,7 @@ static void removeDeadStreams(Model m) {
 	s=m->stream;
 	while(s != NULL) {
 	     if(s->source->comp != NULL) {
-		if(  (s->source->comp->path[0] == '_') ) {  /* if subnet, remove stream */
+		if(  s->source->comp->path[0] == '_' ) {  /* if subnet, remove stream */
 			if(s==m->stream) {
 				m->stream=s->next;
 			} else {
@@ -1980,8 +1981,10 @@ static void removeDeadStreams(Model m) {
 }
 
 /** Convert the parse tree into a SW network model. */
-Model visitValidSW(ValidSW _p_)  { 
-    net_model = MakeModel(NULL);
+Model visitValidSW(Model model, ValidSW _p_)  {
+    
+    savePrefix(SET,"");
+    net_model = model;
     visitListStm(_p_->u.valid_.liststm_);	/* Visit the root of the parse tree to begin.    */
     fixFanInOut(net_model);			/* Insert Join and Split processes as necessary. */
     expandSubnets(net_model);   

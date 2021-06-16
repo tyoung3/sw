@@ -74,25 +74,32 @@ GenSVG() {
 
 ShowCheck() {
 	cat << EOF
-
-		* git add -u 
+	Release Checklist
+	
+	Make all changes in a subsidiary(not master) branch 
+	Run 'go test ./...'  before release	
+	(g?) commands are sw shell aliases
+	
 On Branch:	
-					Release Checklist 
+					 
+		* git add -u (ga) 
     	 	* git pull origin master	
 		* make check OK?
-		* git status
+		* git status(gs) 
 		* git push  	
 
-On Master 				
-		* git checkout master
+On Master 		
+		* git checkout master	
     	 	* git pull origin master	
     	 	* make check OK?	
-		* git merge --no-ff BRANCH_NAME(Ex. Fix_Comp_names)
+		* gb NEW_BRANCH 	
+		* git merge --no-ff BRANCH_NAME(Ex. Fix_Comp_names) (gm BRANCH) 
 
 New version?:		
+		* Change version in README.md, Makefile, and Doxygen and rebuild.
 		* git tag	
 		* [git tag -a  New_VERSION ] 
-		* git commit -m "v0.0.?"
+		* git commit -m "v0.0.?"  (gc "COMMIT MESSAGE")
 		* git push origin VERSION (Ex. git push origin v0.10.0 )
 					OR
 		  git push origin --tags  (Pushes all tags to remote)
@@ -138,12 +145,12 @@ case $1 in
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
-	doc)shift; doxygen docs/Doxyfile&&Browse .docs/doxy/html/todo.html	\
-		&&Browse .docs/doxy/html/bug.html ;;
+	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/todo.html	\
+		&&Browse ./docs/doxy/html/bug.html ;;
         ex)shift; cd example; make;;   
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
-	p)  shift;p.sh g  $*;;
+	p)  shift;project.sh g  $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;

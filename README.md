@@ -4,7 +4,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
 You may obtain a copy of the License at
 
-     http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,14 +12,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.12.2 - STREAMWORK
+SW-0.13.4 - STREAMWORK
 ======================
 
-Name
-----
-
-         StreamWork - a flow based program(FBP) Go language framework and code generator.
+StreamWork
+==========
          
+   Flow based program(FBP) Go language framework and code generator.
+         
+[![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Description
 -----------
@@ -27,7 +30,7 @@ Description
 StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
 
 By default, StreamWork reads, parses and analyzes,  a StreamWork network 
-definition(ND) file (suffix: .sw),  then generates () a main Go program. 
+definition(ND) file (suffix: .sw),  then generates a main Go program. 
 
 Employing StreamWork, a network definition becomes, in effect, an executable
 script.  It can be considered as high level program source.  While StreamWork is concerned with 
@@ -35,26 +38,54 @@ Go language FBP programs,  the ND described here is language agnostic.  It shoul
 to generate corresponding code in other languages.         
 
 By default, sw generates 
-and builds a single main program which imports the StreamWork base package, sw/swbase, to launch a goroutine for each process,  connects these processes via Golang interface channels,
-and waits for all processes to finish.  A bash script, swgo, will build and run a network definition.
+and builds a single main Go program which:  
 
-On option, StreamWork will create a GraphViz .dot file, an abstract syntax tree, or a linearized tree from a network definition file.
+  * imports sw compatible component package(s),  
+  * launches a goroutine for each component instance (process),  
+  * connects these processes via Golang interface channels, and 
+  * waits for all processes to finish.  
+
+On option, StreamWork will read, parse and interpret a network definition file then  create either a:
+ 
+ * a Go main program,
+ * GraphViz .dot file, 
+ * an abstract syntax tree, or  
+ * a linearized tree. 
+
 Starting with version v0.12.0, Streamwork can also generate and run
 an entire working project source tree from a network definition, including config logic, and Golang test code.
+
+A bash script, swgo, will build and run a network definition.
+
+Another bash script, swgraph, will display a graphic image(.svg) of a network definition 
+![for instance:](/images/collate.svg)
+Processes are colored such that all components in a package have the same color.
+Not shown here are the tooltips and html references.  Arrows are colored according
+to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
+are not guaranteed to remain unchanged in future sw versions. 
+
+The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
+data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
 
 Network Definition
 ------------------
 
-The network definition consists of a list of 
-streams(or dataflows) and optional subnet definitions.  
+The network definition file consists of a list of 
+streams(or dataflows); and may also contain subnet definitions, INCLUDE and PREFIX statements, and
+comments.  
 
-Each stream definition looks like:
+INCLUDEd files are also network definitions which may in turn contain
+INCLUDE statements.  Exceeding 100 levels of includes will 
+cause program termination.
+
+A stream definition looks like:
 ```
 (a C) -> (b D);
     or 
 (E) <- (F); 
 ```
 and consists of:
+
   * processname, component identifier, and optional arguments in parens 
   * portnumber (defaults to 0), 
   * a stream director:  right arrow("->") or left arrow("<-), 
@@ -84,13 +115,11 @@ The component identifier and arguments will default if omitted.
 
 A component identifier consists of its import module/package identifier, 
 a slash, '/', and the component name.   All Go component names should be capitalized.
-If  the path is omitted, 
-'def' or a configuration default path is assumed.  
-If the component name is also ommited, Print
+If  the path is omitted,  a configuration default path is assumed.  
+If the component name is also omitted, Print
 is assumed for sink processes and Gen is assumed 
-for source processes.   These defaults may be overridden by 
-configuration file defaults or arguments to sw. 
-Streamwork configuration determines component default names.   
+for source processes.   These defaults can be overridden by 
+configuration file defaults or arguments to sw.  
  
 Channel arrows consist of ```<```, an optional type identifier,
 an optional buffersize integer, and ```-```. Example: ```<100-```
@@ -105,31 +134,34 @@ some components (Print, for instance) can process strings and integers;
 some just a single type; on each receiving port.   
  
 Sw versions are backward compatible within the same major 
-version(currently v0).  (v0.12.2 is somewhat major, however.)  
+version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)  
 
 Sw builds a network model in memory, then optionally generates
-either an abstract syntax tree, 
-a linearized tree(a network definition recronstruction), 
-a GraphViz .dot file, 
-a complete working project tree, 
-or Go source code from the network model.
+either 
+  
+  * an abstract syntax tree, 
+  * a linearized tree(a network definition recronstruction), 
+  * a GraphViz .dot file, 
+  * a complete working project tree, 
+  * or Go source code from the network model.
 
 C and other languages could also be generated, but this has not been implemented.
 JavaFBP is also possible.   
 
 Comments and critiques are welcome.    Contributors are encouraged.  
 
-Please do not submit code before contacting the project; by 
-e-mailing streamwork@twyoung.com or  posting a request on Github.     
+Please do not submit code before contacting the project.  Contact by 
+e-mailing streamwork@twyoung.com  is preferred to posting a request on Github .     
 
 QuickStart (on Linux) 
 ----------
+
 	* The .../tyoung3/StreamWork backend is no longer required.  
 	* Sw is written in C.  The bin directory contains bash scripts invoking sw.   
 	* Download the 'sw' executable from github to any 
 	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
 	* Run 'chmod a+x sw' if necessary. 
-	* Run ```sw -v``` to check that the version is at least v0.12.2
+	* Run ```sw -v``` to check the version.
 	 
 ```	
 echo "(Foo) <- (Bar);" | sw > /tmp/fb.go 
@@ -302,7 +334,7 @@ Ex.  ```A<-B;``` expands to
 	* Added ability to generate a complete project and run the Go code from a network definition file. 
 	
 	* Changed dot(.) in component identifier to a slash(/) to permit  module paths 
-	  such as githum.com/....   So (P def.Gen)  is now (P def/Gen).
+	  such as github.com/....   So (P def.Gen)  is now (P def/Gen).
 	  
 0.12.2
 ------
@@ -318,27 +350,50 @@ Ex.  ```A<-B;``` expands to
 	       
 	* Created swutility package containing Merge and Collate components. 
 	
+0.13.0
+------
+	* Added Pass component to ...sw/swbase package
+	
+	* Fixes to dataflow type processing  	
+	
+	* Fix build process and installed build badge	 
+	
+0.13.1
+------
+	* Installed linux/Wrap function to encapsulate *Nix executables.	
+	
+0.13.2
+------
+	* Minor changes. Code cleaning.  Added license badge. 	
+	
+0.13.4
+------
+	* Include file implemented
+	* Process string prefix implemented	
+	
 SW Language Notes
 --------------------
-Statements in the StreamWork network definition language, are 
-terminated with a semi-colon.  Semi-colons in code are like 
+
+The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it 
+directly interpretable, without preprocessing.  
+
+As it happens, SW has just two reserved words(INCLUDE and PREFIX) making it relatively natural language
+agnostic.  There is no guarantee this condition will continue, however, every effort 
+will be made to ensure that all currently valid SW statements will remain valid.  Should 
+this prove impossible,  the major version will be changed, i.e. to v1.0.0. 
+
+Statements in SW, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
 they tell the reader (and the interpreter) when
 you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
-Without semi-colons, line breaks become part of the language 
-definition leading to awkward(confusing) syntax rules.  
 
-In the future, there may be a few exceptions to the 
-semi-colon rule for special pre-interpreter commands, like INCLUDE.
+Additionally, without semi-colons, line breaks become part of the language 
+definition leading to awkward, confusing syntax rules.  
 
-The, ```<-```,  token is used to be consistent with its 
+The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
-"(A) -> (B)1 <- (C);"  is valid.   
-
-Comments in the SW.cf language definition file provide 
-clues to possible future language additions.  
-We strive for backward compatibility.
+"(A) -> (B)1 <- (C);"  is valid SW.   
 
 Collate/Merge Example
 ---------------------
@@ -357,8 +412,6 @@ Match0 Int: 9
 Match0 Int: 11
 Match0 Int: 17
 Match0 Int: 23
-
-Running: 
 
 
 Hello World

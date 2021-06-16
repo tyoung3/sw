@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('swgo_8c.html',''); initResizable(); })
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="swsym_8h_source.html">swsym.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="model_8h_source.html">model.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="sw_8h_source.html">sw.h</a>&quot;</code><br />
@@ -103,20 +104,21 @@ Include dependency graph for swgo.c:</div>
 <div class="dyncontent">
 <div class="center"><img src="swgo_8c__incl.png" border="0" usemap="#model_2swgo_8c" alt=""/></div>
 <map name="model_2swgo_8c" id="model_2swgo_8c">
-<area shape="rect" title=" " alt="" coords="237,5,349,32"/>
+<area shape="rect" title=" " alt="" coords="263,5,375,32"/>
 <area shape="rect" title=" " alt="" coords="5,80,72,107"/>
 <area shape="rect" title=" " alt="" coords="97,80,167,107"/>
 <area shape="rect" title=" " alt="" coords="192,80,256,107"/>
+<area shape="rect" title=" " alt="" coords="603,229,674,256"/>
 <area shape="rect" href="swsym_8h.html" title=" " alt="" coords="227,155,307,181"/>
-<area shape="rect" href="model_8h.html" title=" " alt="" coords="332,229,407,256"/>
-<area shape="rect" href="sw_8h.html" title=" " alt="" coords="381,80,432,107"/>
-<area shape="rect" title=" " alt="" coords="456,80,531,107"/>
-<area shape="rect" title=" " alt="" coords="82,311,201,338"/>
-<area shape="rect" title=" " alt="" coords="225,311,343,338"/>
-<area shape="rect" title=" " alt="" coords="368,304,541,345"/>
-<area shape="rect" title=" " alt="" coords="566,311,687,338"/>
-<area shape="rect" href="swmain_8h.html" title=" " alt="" coords="432,155,517,181"/>
-<area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="542,155,634,181"/>
+<area shape="rect" href="model_8h.html" title=" " alt="" coords="347,229,421,256"/>
+<area shape="rect" href="sw_8h.html" title=" " alt="" coords="504,80,555,107"/>
+<area shape="rect" title=" " alt="" coords="760,80,835,107"/>
+<area shape="rect" title=" " alt="" coords="95,319,214,345"/>
+<area shape="rect" title=" " alt="" coords="238,319,357,345"/>
+<area shape="rect" title=" " alt="" coords="381,304,560,360"/>
+<area shape="rect" title=" " alt="" coords="585,319,706,345"/>
+<area shape="rect" href="swmain_8h.html" title=" " alt="" coords="381,155,467,181"/>
+<area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="593,155,685,181"/>
 </map>
 </div>
 </div>
@@ -136,6 +138,9 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swgo_8c.html#a1bc9e245eb0feb1e3156859b8262db60">C</a>(s)&#160;&#160;&#160;printf(&quot;%s&quot;,(#s));</td></tr>
 <tr class="memdesc:a1bc9e245eb0feb1e3156859b8262db60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print defined string. <br /></td></tr>
 <tr class="separator:a1bc9e245eb0feb1e3156859b8262db60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a574ed1f148151abea264693a3e3599e5"><td class="memItemLeft" align="right" valign="top"><a id="a574ed1f148151abea264693a3e3599e5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>StringIt</b>(X)&#160;&#160;&#160;#X</td></tr>
+<tr class="separator:a574ed1f148151abea264693a3e3599e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -195,7 +200,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swgo
 <p>Generate Expanded Network Definition. </p>
 <p>Generate Prefix code</p>
 
-<p class="definition">Definition at line <a class="el" href="swgo_8c_source.html#l00491">491</a> of file <a class="el" href="swgo_8c_source.html">swgo.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="swgo_8c_source.html#l00496">496</a> of file <a class="el" href="swgo_8c_source.html">swgo.c</a>.</p>
 
 </div>
 </div>

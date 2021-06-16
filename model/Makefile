@@ -3,7 +3,7 @@ CC = gcc
 PGM = ../bin/sw
 CCFLAGS = --static -g -pg -W -Wall
 
-VERSION = \"0.12.2\"
+VERSION = \"0.13.4\"
 
 LATEX = latex
 DVIPS = dvips
@@ -28,31 +28,36 @@ poc:	.phony
 
 .phony:  ${PGM} ../bin/sw.sh
 
-SW.ps: SW.dvi
-	${DVIPS} SW.dvi -o SW.ps
+SW.ps:	  SW.dvi
+	${DVIPS} SW.dvi -o SW.ps git push --set-upstream origin wiki
+
 	
 SW.dvi: ../bnfc/SW.tex
 	${LATEX} -output-format=dvi ../bnfc/SW.tex
         
 SW.pdf:  ../bnfc/SW.tex
-	( pdftex ../bnfc/SW.tex; echo OK ) 
+	( pdftex -output-format=pdf ../bnfc/SW.tex; echo OK ) 
             
 ../bnfc/Absyn.o: ../bnfc/Absyn.c 
 	make -C ../bnfc
 
-check:
+check_go: 
+	cd ../; go test ./...
+	
+check:  #check_go
 	${PGM}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  >/dev/null
 	${PGM}  -v 
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e4.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	! ${PGM} tests/e3.sw 2>&1 >/dev/null && echo OK_TO_FAIL
+	! ${PGM} tests/fail_include.sw 2>&1 >/dev/null && echo OK_TO_FAIL
 	${PGM}  tests/aa.sw  >/dev/null
 	${PGM}  tests/ab.sw  >/dev/null
 	${PGM}  tests/ad.sw  >/dev/null
 	${PGM}  tests/ae.sw  >/dev/null
 	${PGM}  tests/aef.sw  >/dev/null
 	${PGM}       ../nds/locusts.sw  >/dev/null
-	${PGM}  -m 1 ../nds/collate.sw  >/dev/null
+	${PGM}  -m 1 ../nds/collate.sw  >/dev/null  
 	${PGM}  -m 2 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 3 ../nds/collate.sw  >/dev/null
 	${PGM}  -m 4 tests/java.sw     >/dev/null	 
@@ -61,7 +66,8 @@ check:
 	${PGM}  tests/asj.sw   >/dev/null
 	${PGM}  tests/aj2.sw   >/dev/null
 	${PGM}  tests/aaR.sw  >/dev/null
-	${PGM}  tests/h1.sw   >/dev/null
+	${PGM}  tests/h1.sw   >/dev/null  
+
 	${PGM}  tests/h2.sw   >/dev/null
 	${PGM}  tests/n1.sw   >/dev/null
 	${PGM}  tests/n2.sw   >/dev/null
@@ -72,11 +78,15 @@ check:
 	${PGM} -m 2 tests/subnet1.sw   >/dev/null
 	${PGM} -m 2 tests/sn2.sw   >/dev/null
 	${PGM}  tests/lr.sw   >/dev/null
-	${PGM}  tests/lrR.sw   >/dev/null
+	${PGM}  tests/lrR.sw   >/dev/null  
+
 	${PGM}  tests/sisub.sw   >/dev/null
 	${PGM}  tests/var.sw   >/dev/null
 	${PGM}  tests/module.sw   >/dev/null
-	#  ../bin/sw.sh poc     
+	${PGM}  tests/inc.sw   >/dev/null
+	${PGM}  tests/combo.sw   >/dev/null
+	${PGM}  tests/prefix.sw   >/dev/null
+	# ?? breaks  github workflow ../bin/sw.sh poc     
 
 
 svg:  .phsvg 

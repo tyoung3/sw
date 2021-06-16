@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('swproject_8c_source.html',''); initRes
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#define P(s) printf(&quot;%s\n&quot;,(#s));</span></div>
 <div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="swproject_8c.html#a1bb183938acb879d5c2795cf007f8ffa">   73</a></span>&#160;<span class="preprocessor">#define PE(s) {};           </span></div>
 <div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="swproject_8c.html#a0c505f929f4a562b4a8ca52a2dfb75b4">   74</a></span>&#160;<span class="preprocessor">#define C(s) printf(&quot;%s&quot;,(#s));     </span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">static char *Prefix(char *s) {</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">static char *getPrefix(char *s) {</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordtype">char</span> *s0;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">char</span> *s1;</div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('swproject_8c_source.html',''); initRes
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    s1=s0;</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordflow">while</span> (*s != 0) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span>( *s == <span class="charliteral">&#39;.&#39;</span>) {    </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span>( *s == <span class="charliteral">&#39;.&#39;</span>) {     </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            *s1=0;</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            <span class="keywordflow">return</span> s0;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        } <span class="keywordflow">else</span> {</div>
@@ -184,7 +184,7 @@ $(document).ready(function(){initNavTree('swproject_8c_source.html',''); initRes
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">char</span> **args;  <span class="comment">// Process arguments</span></div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    </div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    c=m-&gt;<a class="code" href="struct_model__.html#a25c1e24f268f66c1ab9ce9b9cea49f55">comp</a>;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    module=Prefix(m-&gt;<a class="code" href="struct_model__.html#a5ac083a645d964373f022d03df4849c8">name</a>);   <span class="comment">// Strip off suffix: .sw</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    module=getPrefix(m-&gt;<a class="code" href="struct_model__.html#a5ac083a645d964373f022d03df4849c8">name</a>);   <span class="comment">// Strip off suffix: .sw</span></div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    </div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordflow">while</span>(c!=NULL) {</div>
 <div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        getPorts(m, c, &amp;inp,&amp;outp); </div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('swproject_8c_source.html',''); initRes
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">/***************   End of SWPROJECT.C   ********************/</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astruct_model___html_acf61c5ce83175966a9f98e459c1de9a7"><div class="ttname"><a href="struct_model__.html#acf61c5ce83175966a9f98e459c1de9a7">Model_::stream</a></div><div class="ttdeci">Stream stream</div><div class="ttdoc">pointer to first stream</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00127">model.h:127</a></div></div>
+<div class="ttc" id="astruct_model___html_acf61c5ce83175966a9f98e459c1de9a7"><div class="ttname"><a href="struct_model__.html#acf61c5ce83175966a9f98e459c1de9a7">Model_::stream</a></div><div class="ttdeci">Stream stream</div><div class="ttdoc">pointer to first stream</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00128">model.h:128</a></div></div>
 <div class="ttc" id="astruct_component___html_a69fde642817b2ad62fa6f0936c05b2e1"><div class="ttname"><a href="struct_component__.html#a69fde642817b2ad62fa6f0936c05b2e1">Component_::next</a></div><div class="ttdeci">struct Component_ * next</div><div class="ttdoc">Pointer to next component.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00042">model.h:42</a></div></div>
 <div class="ttc" id="amodel_8h_html"><div class="ttname"><a href="model_8h.html">model.h</a></div></div>
 <div class="ttc" id="astruct_process___html_a25c1e24f268f66c1ab9ce9b9cea49f55"><div class="ttname"><a href="struct_process__.html#a25c1e24f268f66c1ab9ce9b9cea49f55">Process_::comp</a></div><div class="ttdeci">Component comp</div><div class="ttdoc">Pointer to component for this process.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00066">model.h:66</a></div></div>
@@ -214,17 +214,17 @@ $(document).ready(function(){initNavTree('swproject_8c_source.html',''); initRes
 <div class="ttc" id="astruct_component___html_adb85e16ac8c9f62df2d33b1262649843"><div class="ttname"><a href="struct_component__.html#adb85e16ac8c9f62df2d33b1262649843">Component_::path</a></div><div class="ttdeci">String path</div><div class="ttdoc">Ex.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00041">model.h:41</a></div></div>
 <div class="ttc" id="astruct_process___html_ae3e729b7ad9d82b98d1b6c2b0d9602b6"><div class="ttname"><a href="struct_process__.html#ae3e729b7ad9d82b98d1b6c2b0d9602b6">Process_::nportsIn</a></div><div class="ttdeci">int nportsIn</div><div class="ttdoc">Number of input ports for this process.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00068">model.h:68</a></div></div>
 <div class="ttc" id="astruct_component___html"><div class="ttname"><a href="struct_component__.html">Component_</a></div><div class="ttdoc">Component structure.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00039">model.h:39</a></div></div>
-<div class="ttc" id="astruct_model___html"><div class="ttname"><a href="struct_model__.html">Model_</a></div><div class="ttdoc">Model structure.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00123">model.h:123</a></div></div>
+<div class="ttc" id="astruct_model___html"><div class="ttname"><a href="struct_model__.html">Model_</a></div><div class="ttdoc">Model structure.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00124">model.h:124</a></div></div>
 <div class="ttc" id="asw_8h_html"><div class="ttname"><a href="sw_8h.html">sw.h</a></div></div>
 <div class="ttc" id="astruct_process___html_a5d932d23f2b1ae061303eb9b01008ba0"><div class="ttname"><a href="struct_process__.html#a5d932d23f2b1ae061303eb9b01008ba0">Process_::arg</a></div><div class="ttdeci">char ** arg</div><div class="ttdoc">Pointer to an array of strings.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00074">model.h:74</a></div></div>
 <div class="ttc" id="astruct_component___html_a9a2326f35466e54c36c070829245c557"><div class="ttname"><a href="struct_component__.html#a9a2326f35466e54c36c070829245c557">Component_::name</a></div><div class="ttdeci">String name</div><div class="ttdoc">First letter Upper Case.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00040">model.h:40</a></div></div>
 <div class="ttc" id="aswsym_8h_html"><div class="ttname"><a href="swsym_8h.html">swsym.h</a></div></div>
-<div class="ttc" id="astruct_model___html_a5ac083a645d964373f022d03df4849c8"><div class="ttname"><a href="struct_model__.html#a5ac083a645d964373f022d03df4849c8">Model_::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">Model Name.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00131">model.h:131</a></div></div>
+<div class="ttc" id="astruct_model___html_a5ac083a645d964373f022d03df4849c8"><div class="ttname"><a href="struct_model__.html#a5ac083a645d964373f022d03df4849c8">Model_::name</a></div><div class="ttdeci">char * name</div><div class="ttdoc">Model Name</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00132">model.h:132</a></div></div>
 <div class="ttc" id="astruct_process___html_a88eec65bcaaf5a2bfa61c6b4e06d1a79"><div class="ttname"><a href="struct_process__.html#a88eec65bcaaf5a2bfa61c6b4e06d1a79">Process_::nportsOut</a></div><div class="ttdeci">int nportsOut</div><div class="ttdoc">Number of output ports for this process.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00069">model.h:69</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a7f439bb9b6ddd5257b4cdebf84df6e5a"><div class="ttname"><a href="swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a">getConfType</a></div><div class="ttdeci">String getConfType(char *path)</div><div class="ttdoc">Get Conf Type.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00244">swsym.c:244</a></div></div>
 <div class="ttc" id="astruct_stream___html"><div class="ttname"><a href="struct_stream__.html">Stream_</a></div><div class="ttdoc">Stream structure.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00082">model.h:82</a></div></div>
 <div class="ttc" id="aswproject_8c_html_a18029eac035942e41480c322753e56bf"><div class="ttname"><a href="swproject_8c.html#a18029eac035942e41480c322753e56bf">genProject</a></div><div class="ttdeci">void genProject(Model m)</div><div class="ttdoc">Generate a project from network model.</div><div class="ttdef"><b>Definition:</b> <a href="swproject_8c_source.html#l00153">swproject.c:153</a></div></div>
-<div class="ttc" id="astruct_model___html_a25c1e24f268f66c1ab9ce9b9cea49f55"><div class="ttname"><a href="struct_model__.html#a25c1e24f268f66c1ab9ce9b9cea49f55">Model_::comp</a></div><div class="ttdeci">Component comp</div><div class="ttdoc">Pointer to first Conponent.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00130">model.h:130</a></div></div>
+<div class="ttc" id="astruct_model___html_a25c1e24f268f66c1ab9ce9b9cea49f55"><div class="ttname"><a href="struct_model__.html#a25c1e24f268f66c1ab9ce9b9cea49f55">Model_::comp</a></div><div class="ttdeci">Component comp</div><div class="ttdoc">Pointer to first Conponent.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00131">model.h:131</a></div></div>
 <div class="ttc" id="astruct_stream___html_a44765c084caec03c4d343856d9a77ad1"><div class="ttname"><a href="struct_stream__.html#a44765c084caec03c4d343856d9a77ad1">Stream_::sink</a></div><div class="ttdeci">Process sink</div><div class="ttdoc">Sink process.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00084">model.h:84</a></div></div>
 <div class="ttc" id="astruct_stream___html_ae39c2b196a15ade0cfb32f8383ad2263"><div class="ttname"><a href="struct_stream__.html#ae39c2b196a15ade0cfb32f8383ad2263">Stream_::source</a></div><div class="ttdeci">Process source</div><div class="ttdoc">Source or orphan process.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00083">model.h:83</a></div></div>
 <div class="ttc" id="astruct_stream___html_a9b4e7c691c92ecc14e068dc4fff80106"><div class="ttname"><a href="struct_stream__.html#a9b4e7c691c92ecc14e068dc4fff80106">Stream_::next</a></div><div class="ttdeci">struct Stream_ * next</div><div class="ttdoc">Pointer to next Stream.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00092">model.h:92</a></div></div>

@@ -3,26 +3,26 @@
 **/
  
 /** 
-	@todo Improve module location.  Standardize on .../sw/MODULE/pkg/.... 
-	@todo Restore poc test
-	@todo Type names inside arrows(stream direction indicators). 
-	@todo Make generated test_.go's  deadloack safe. Test w/collate.sw
- 	
  	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
- 	
-	@todo Process command arguments. 
-	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce n goroutines.
-	@todo Generate man doc(s) from Doxygen
-	@todo Fix generated graph HTMLs
+	@todo Process command/config arguments. 
+	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines.
 	@todo Fix swgen arguments w/default generation. Generate in config file
 	@todo Send multiple(N option) IPs in go tests.
-	@todo Make config an option
-	@tdo  Build standard component library(s). 
+	@todo Make config an option 
  	@todo Generate project examples
+ 	@todo Graph .ISW files (prevent 'no processes' message.
+ 	@todo Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
+	@todo Create Man pages w/Doxygen
+
 	
  DONE: 
-	@todo Document more functions 
-	@todo Allow git.hub, etc. imports.  Simplify .sw file requirements.
+	@done Add PREFIX statement to prefix process names with a string. 
+	@done Make generated test_.go's  deadlock safe. Test w/collate.sw
+	@done Improve module location.  Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase 
+	@done  Restore poc test
+	@done  Type names inside arrows(stream direction indicators). 
+	@done  Document more functions 
+	@done  Allow git.hub, etc. imports.  Simplify .sw file requirements.
 	@done Structure in module/modele package.  Pass struct instead of integers.
 	@done Avoid duplicates in YAML config file.
 	@done If component involved in a cycle, then subtask all sends and receives
@@ -74,7 +74,7 @@
 #define C(s) printf("%s",(#s));		/**<Print String  */
 
 /** Return prefix(aaa) of aaa.bbb  */
-static char *Prefix(char *s) {
+static char *getPrefix(char *s) {
 	char *s0;
 	char *s1;
 
@@ -82,7 +82,7 @@ static char *Prefix(char *s) {
 	s1=s0;
 	
 	while (*s != 0) {
- 		if( *s == '.') {    /** @todo slash instead of do in module path. */
+ 		if( *s == '.') {     
 			*s1=0;
 			return s0;
 		} else {
@@ -159,7 +159,7 @@ void genProject(Model m) {
 	char **args;  // Process arguments
 	
 	c=m->comp;
-	module=Prefix(m->name);   // Strip off suffix: .sw
+	module=getPrefix(m->name);   // Strip off suffix: .sw
 	
 	while(c!=NULL) {
 		getPorts(m, c, &inp,&outp); 

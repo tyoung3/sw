@@ -14,7 +14,6 @@
 #include "sw.h"
 #include "swconfig.h"
 
-
 /** Variable key/value structure. */
 struct bucket {
     union {
@@ -26,6 +25,7 @@ struct bucket {
     } u;  /**<Union of return values */
     char *tag;			/**<??*/	
     int nrefs;			/**<Number of references to symbol */
+    int serno;			/** object serial number */
     struct bucket *link;	/**<??*/
     struct bucket *next;	/**<??*/
 } bucket;  /**<Variable key/value structure.*/
@@ -112,7 +112,7 @@ static bucketp lookup(char *key)
     if (found == 0) {
 	nsyms++;
 	if (nsyms > TABLESIZE) {
-	    sprintf(fbfr,
+	    snprintf(fbfr, BUFFSIZE, 
 		    "%i variables exceeds symtable size.\n", TABLESIZE);
 	    FAIL(lookup, fbfr);
 	}
@@ -194,13 +194,13 @@ String addSymVar(String name, String val) {
 Component addComponent(char *name, char *path, Component c)
 {
     bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '^';
     key[1] = 0;
-    strncat(key, path, 999);
-    strncat(key, ".", 999);
-    strncat(key, name, 999);
+    strncat(key, path, BUFFSIZE);
+    strncat(key, ".", BUFFSIZE);
+    strncat(key, name, BUFFSIZE);
     b = lookup(key);
     b->u.comp = c;
     return b->u.comp;
@@ -210,13 +210,13 @@ Component addComponent(char *name, char *path, Component c)
 Component getComponent(char *name, char *path)
 {
     bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '^';
     key[1] = 0;
-    strncat(key, path, 999);
-    strncat(key, ".", 999);
-    strncat(key, name, 999);
+    strncat(key, path, BUFFSIZE);
+    strncat(key, ".", BUFFSIZE);
+    strncat(key, name, BUFFSIZE);
     b = lookup(key);
     return b->u.comp;
 }
@@ -244,11 +244,11 @@ Process getProc(char *key)
 String getConfType(char *path)
 {
    bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '#';
     key[1] = 0;
-    strncat(key, path, 999);
+    strncat(key, path, BUFFSIZE);
 
 
     b = lookup(key);
@@ -260,15 +260,35 @@ String getConfType(char *path)
     return b->u.type;
 }
 
+int getPathColor(char *p) {
+    bucketp b;
+    char key[BUFFSIZE+1]; key[0] = '<';
+    static int color_i=0; 
+    
+    key[1] = 0;
+    strncat(key, p, BUFFSIZE);
+
+    b = lookup(key);
+    
+    if(b->nrefs==0) {
+    	b->serno=color_i++;
+    	if(color_i >= ncolors) 
+    		color_i=0;
+    } 
+    
+    b->nrefs++;
+    return b->serno;
+}
+
 /** Find path for key */
 int getPath(char *name)
 {
     bucketp b;
-    char key[1000];
+    char key[BUFFSIZE+1];
 
     key[0] = '<';
     key[1] = 0;
-    strncat(key, name, 999);
+    strncat(key, name, BUFFSIZE);
 
     b = lookup(key);
     b->nrefs++;

@@ -1,5 +1,3 @@
-#export SPS1="$PS1"
-#export PS1="\w> "
 alias c='./run c'	
 alias cl='./run cl'
 alias d='./run d'
@@ -9,8 +7,11 @@ alias e='exit '
 alias ga='git add -u'
 alias gb='git branch '
 alias gc='git commit -m '
+alias g.c='git checkout'
+alias gm='git merge --no-ff'
+alias g.p='git push'
 alias gs='git status'
-alias j='./run j'
+alias j='./run j' 
 alias jl='./run jl'
 alias p='./run p'
 alias poc='./run poc'
@@ -27,6 +28,7 @@ parse_git_branch() {
 }
 
 export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
+export PATH="$HOME/go/bin:$PATH"	
 	
 Rest() { 
 	cat << EOF

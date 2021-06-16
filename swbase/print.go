@@ -3,7 +3,7 @@ package swbase
 import "fmt"
 import "sync"
 
-/* 
+/*
 Print prints integers and strings received from port 0, prefixed
 with the process identifier(arg[0]) string,
 */

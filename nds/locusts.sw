@@ -1,4 +1,4 @@
-# LOCUSTS/sw
+# LOCUSTS.SW:  Streamwork Network Definition Example
 
 # Ref: https://www/cicadamania/com/where/html
 

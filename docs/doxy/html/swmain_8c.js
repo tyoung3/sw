@@ -11,10 +11,12 @@ var swmain_8c =
     ] ],
     [ "baseOf", "swmain_8c.html#ad43fe301cfd271c53b12fb20282fcb5b", null ],
     [ "eqs", "swmain_8c.html#afd27aa508055273f164776e5f11ad320", null ],
+    [ "IncludeFile", "swmain_8c.html#aa4534b5e8db0f777bea5c0de09675ce0", null ],
     [ "main", "swmain_8c.html#a3c04138a5bfe5d72780bb7e82a18e627", null ],
+    [ "mystrncat", "swmain_8c.html#a67a622e0ddd334c2e7358db0ff36e62d", null ],
     [ "pValidSW", "swmain_8c.html#a3ea1afb1ff7ad513abaa85f822aae0a6", null ],
     [ "configfile", "swmain_8c.html#a7b641c81adb45d9bc216ffb0fe84c25a", null ],
-    [ "fbfr", "swmain_8c.html#acb5ce50f1c4823e4d0a8861e1b5614c4", null ],
+    [ "fbfr", "swmain_8c.html#a55f4393b13c32a5600fa50ab0f9af357", null ],
     [ "input", "swmain_8c.html#abfae665d56d61e1c21831bec369abd34", null ],
     [ "version", "swmain_8c.html#a56abfaab87c46691c1ef3ad0df23e864", null ]
 ];

@@ -3,23 +3,22 @@
 /home/tyoung3/go/mod/sw/example
 .idea/
 _OLD/
+_IGNORE*
+_*
 swedit/
 
-docs/
-docs
-*.png
-docs/doxy/html
-docs/doxy/FBP.md
+docs/doxy/
+doxy/html/*.png
 example/
-fbpx/
+fbpx/IGNORE_swedit
 project/ex1/
 project/test/
 
 
-Absyn.?
+#Absyn.?
 AbsynLexer.c
 bnfc/SW.pdf	
-.gdbinit
+.gdbinitIGNORE_swedit
 gmon.out
 IGNORE*
 Lexer.c
@@ -29,18 +28,20 @@ model/swconfigx.c
 model/tests/n6.sw
 model/tests/x1.sw
 model/tests/mashup.sw
-Parser.?
-Printer.?
+#Parser.?
+#Printer.?
 Skeleton.?
 tags
 *~
+*.aux
 *.bak
 *.dot
+*.dtd
 *.dvi
-*.l
+#*.l
 *.log
 *.o
 *.OLD
 *.ps
 *.tex
-*.y
+# *.y

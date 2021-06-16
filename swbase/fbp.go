@@ -1,8 +1,3 @@
-/*Package fbp contains code to launch Streamwork generated Go programs
-sw creates a Go program from a Streamwork network definition.  The
-generated Go  program uses package fbp to launch the components specified
-in the  network definition.
-*/
 package swbase
 
 /*

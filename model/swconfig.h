@@ -7,6 +7,9 @@
 #ifndef _SWCONFIG_H
 #define _SWCONFIG_H
 
+#include "sw.h"
+#include <string.h>
+
 #define htmldir		  cfg.HTMLdir
 #define defaultPath 	  cfg.DefaultPath
 #define defaultSourceComp cfg.DefaultSourceComp
@@ -15,7 +18,7 @@
 #define defaultOrphanComp cfg.DefaultOrphanComp
 #define defaultBufferSize cfg.DefaultBufferSize
 #define defaultLibrary	  cfg.DefaultLibrary
-// #define defaultIPtype	  cfg.DefaultIPtype
+#define includePath	  cfg.IncludePath
 #define maxbfsz		  cfg.Maxbfsz
 #define maxdepth	  cfg.MaxDepth
 #define TABLESIZE 	  cfg.Tablesize
@@ -38,6 +41,7 @@ struct cfg_ {
 	char *DefaultFilterComp;	/**<Default filter component*/
 	char *DefaultOrphanComp;	/**<Default orphan component*/
 	char *DefaultLibrary;		/**<Default module library: github.com/... for instance.*/
+	char *IncludePath;		/**<colon separated list of paths to search for INCLUDEd files */		
 	// Not implemented char *DefaultIPtype;		/**< Type of data in the stream */
 	char *HTMLdir;			/**<Directory for html tooltips in network graph*/
 } ;	
@@ -57,7 +61,7 @@ struct cfg_ {
 	/* swconfig.c prototypes */
 String 	visitSymval(Symval _p_);
 int 	ConfigError(String s);  /* Process configuration file */
-void 	visitValidCFG(ValidCFG p);
+void 	visitValidConfig(ValidConfig p);
 Ident 	visitIdent1(Ident i);
 int   	visitInteger1(Integer i);
 String  visitModPath(ModPath p);

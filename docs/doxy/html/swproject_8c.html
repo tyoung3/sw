@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -109,14 +109,15 @@ Include dependency graph for swproject.c:</div>
 <area shape="rect" title=" " alt="" coords="192,80,256,107"/>
 <area shape="rect" href="swsym_8h.html" title=" " alt="" coords="227,155,307,181"/>
 <area shape="rect" href="model_8h.html" title=" " alt="" coords="332,229,407,256"/>
-<area shape="rect" href="sw_8h.html" title=" " alt="" coords="381,80,432,107"/>
-<area shape="rect" title=" " alt="" coords="456,80,531,107"/>
-<area shape="rect" title=" " alt="" coords="82,311,201,338"/>
-<area shape="rect" title=" " alt="" coords="225,311,343,338"/>
-<area shape="rect" title=" " alt="" coords="368,304,541,345"/>
-<area shape="rect" title=" " alt="" coords="566,311,687,338"/>
+<area shape="rect" href="sw_8h.html" title=" " alt="" coords="449,80,500,107"/>
+<area shape="rect" title=" " alt="" coords="524,80,599,107"/>
+<area shape="rect" title=" " alt="" coords="81,319,199,345"/>
+<area shape="rect" title=" " alt="" coords="223,319,342,345"/>
+<area shape="rect" title=" " alt="" coords="367,304,545,360"/>
+<area shape="rect" title=" " alt="" coords="570,319,691,345"/>
 <area shape="rect" href="swmain_8h.html" title=" " alt="" coords="432,155,517,181"/>
 <area shape="rect" href="swconfig_8h.html" title=" " alt="" coords="542,155,634,181"/>
+<area shape="rect" title=" " alt="" coords="594,229,665,256"/>
 </map>
 </div>
 </div>
@@ -165,22 +166,24 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Print string. </p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd><p class="startdd">Improve module location. </p>
-<p class="interdd">Type names inside arrows(stream direction indicators). </p>
-<p class="interdd">Make generated test_.go's deadloack safe. Test w/collate.sw </p>
-<p class="interdd">negative nimports and noutports in swgen.sh to prioritize ports and reduce n goroutines. </p>
-<p class="interdd">Generate man doc(s) from Doxygen </p>
-<p class="interdd">Fix generated graph HTMLs </p>
+<pre class="fragment">@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
+</pre> <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd><p class="startdd">Process command/config arguments. </p>
+<p class="interdd">negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines. </p>
 <p class="interdd">Fix swgen arguments w/default generation. Generate in config file </p>
 <p class="interdd">Send multiple(N option) IPs in go tests. </p>
-<p class="interdd">Make config an option @tdo Build standard component library(s). </p>
+<p class="interdd">Make config an option </p>
 <p class="interdd">Generate project examples </p>
-<p class="enddd">Allow git.hub, etc. imports. Simplify .sw file requirements. </p>
+<p class="interdd">Graph .ISW files (prevent 'no processes' message. </p>
+<p class="interdd">Implement Process name expansion. Ex. "_MONITOR;" launches system monitor </p>
+<p class="enddd">Create Man pages w/Doxygen</p>
 </dd></dl>
-<p>Standardize on .../sw/MODULE/pkg/.... </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000008">Todo:</a></b></dt><dd>Restore poc test </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.</dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>Process command arguments. </dd></dl>
-<p>DONE: </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000011">Todo:</a></b></dt><dd>Document more functions </dd></dl>
+<p>DONE: </p><dl class="section user"><dt>Done: Add PREFIX statement to prefix process names with a string. </dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Make generated test_.go's deadlock safe. Test w/collate.sw</dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Improve module location. Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase </dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Restore poc test</dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Type names inside arrows(stream direction indicators). </dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Document more functions </dt><dd></dd></dl>
+<dl class="section user"><dt>Done: Allow git.hub, etc. imports. Simplify .sw file requirements.</dt><dd></dd></dl>
 <dl class="section user"><dt>Done: Structure in module/modele package. Pass struct instead of integers.</dt><dd></dd></dl>
 <dl class="section user"><dt>Done: Avoid duplicates in YAML config file.</dt><dd></dd></dl>
 <dl class="section user"><dt>Done: If component involved in a cycle, then subtask all sends and receives</dt><dd></dd></dl>
@@ -194,7 +197,7 @@ Functions</h2></td></tr>
  </dd></dl>
 <dl class="section user"><dt>Shelved: output Buffer &gt; 0 filtercode generation for deadlock prevention</dt><dd></dd></dl>
 <p>Method: Build a script from the .SW file model. Run the script to generate the code at $GOPATH/src/MODULE; where MODULE.sw was the .SW file used to build the model. <br  />
- </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000012">Todo:</a></b></dt><dd>Build a web site from github </dd></dl>
+ </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>Build a web site from github </dd></dl>
 <p>OBJECTIVE: Build working web site in Docker</p>
 <p>. Prototype web site . Generate test.twyoung.com.sw</p>
 <p>. Enhance modular access . Upper/lower case component name for remote/local search. . Generate standard web . Move defaults(Gen1,etc.) <br  />

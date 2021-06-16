@@ -1,21 +1,19 @@
 package swutility
 
-
 import "sync"
 import "fmt"
 
-/* 
-MergeInt sends all input from channels cs[1:] to channel cs[0]
+/*MergeInt sends all input from channels cs[1:n] to channel cs[0] in order of arrival.
  */
-func MergeInt(wg1 *sync.WaitGroup, cs ...chan interface{}) {
-	var wg sync.WaitGroup
+func MergeInt(wg *sync.WaitGroup, cs ...chan interface{}) {
+	var wg1 sync.WaitGroup
 
-	defer wg1.Done()
-	wg.Add(len(cs) - 1)
+	defer wg.Done()
+	wg1.Add(len(cs) - 1)
 
 	for _, c := range cs[1:] {
 		go func(c <-chan interface{}) {
-			defer wg.Done()
+			defer wg1.Done()
 			for v := range c {
 				fmt.Println("Merge:", v)
 				cs[0] <- v
@@ -24,7 +22,7 @@ func MergeInt(wg1 *sync.WaitGroup, cs ...chan interface{}) {
 	}
 
 	go func() {
-		wg.Wait()
+		wg1.Wait()
 		close(cs[0])
 	}()
 

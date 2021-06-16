@@ -17,11 +17,10 @@ func TestFBP(t *testing.T) {
 
 	// wg1.Add(1)
 	go func() {
-		defer wg1.Done() 
-		cs[0]	<-   "TestFBP"
+		defer wg1.Done()
+		cs[0] <- "TestFBP"
 	}()
-	
+
 	wg1.Wait()
 
 }
-

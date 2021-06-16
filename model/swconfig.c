@@ -4,11 +4,6 @@
 
 */
  
-/*** BNFC-Generated Visitor Traversal Skeleton. ***/
-/* This traverses the abstract syntax tree.
-   To use, copy Skeleton.h and Skeleton.c to
-   new files. */
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -20,7 +15,7 @@
 #include "swconfig.h"
 
 struct cfg_ cfg = { 0, 10000, 10000, 1000, 
-	"def", "Gen", "Print", "Filter", "defaultLib", "/home/tyoung3/go/src/github.com/tyoung3/sw/swbase/html/",NULL };
+	"def", "Gen", "Print", "Filter", "defaultLib", "/home/tyoung3/go/src/github.com/tyoung3/sw/lib", "/home/tyoung3/go/src/github.com/tyoung3/sw/swbase/html/",NULL };
 
 void visitEntry(Entry _p_);
 
@@ -43,6 +38,7 @@ static void CfgString(String key, String val)  {
 	SetS(DefaultFilterComp);
 	SetS(DefaultOrphanComp);
 	SetS(DefaultLibrary);
+	SetS(IncludePath);
 	SetS(HTMLdir);
 };
 
@@ -140,7 +136,7 @@ void visitListEntry(ListEntry listentry)
     listentry = listentry->listentry_;
   }
 }
-void visitValidCFG(ValidCFG _p_)
+void visitValidConfig(ValidConfig _p_)
 {
     visitListEntry(_p_->u.validcfg_.listentry_);
 }
@@ -169,7 +165,7 @@ int match(const char *string, const char *pattern)
 
 /** Parse config file, validate, and set cfg struct */
 int ConfigError(String s) {
-  ValidCFG parse_tree;
+  ValidConfig parse_tree;
   FILE *file;
 
   file = fopen(s, "rb");
@@ -178,9 +174,9 @@ int ConfigError(String s) {
 	return 0;  /** Missing config file is OK */
   }
   
-  parse_tree = pValidCFG(file);
+  parse_tree = pValidConfig(file);
   if (parse_tree) { 
-	visitValidCFG(parse_tree);
+	visitValidConfig(parse_tree);
   } else {
 	fprintf(stderr,"Config file: \'%s\'  parse error.\n", s);
 	return 1;

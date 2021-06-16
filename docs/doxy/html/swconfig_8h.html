@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -92,12 +92,30 @@ $(document).ready(function(){initNavTree('swconfig_8h.html',''); initResizable()
 <div class="title">swconfig.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="dynheader">
+<div class="textblock"><code>#include &quot;<a class="el" href="sw_8h_source.html">sw.h</a>&quot;</code><br />
+<code>#include &lt;string.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for swconfig.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="swconfig_8h__incl.png" border="0" usemap="#model_2swconfig_8h" alt=""/></div>
+<map name="model_2swconfig_8h" id="model_2swconfig_8h">
+<area shape="rect" title=" " alt="" coords="271,5,408,32"/>
+<area shape="rect" href="sw_8h.html" title=" " alt="" coords="314,80,365,107"/>
+<area shape="rect" title=" " alt="" coords="372,155,443,181"/>
+<area shape="rect" href="swmain_8h.html" title=" " alt="" coords="211,155,297,181"/>
+<area shape="rect" href="model_8h.html" title=" " alt="" coords="257,229,331,256"/>
+<area shape="rect" title=" " alt="" coords="5,319,124,345"/>
+<area shape="rect" title=" " alt="" coords="148,319,267,345"/>
+<area shape="rect" title=" " alt="" coords="291,304,470,360"/>
+<area shape="rect" title=" " alt="" coords="495,319,616,345"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="swconfig_8h__dep__incl.png" border="0" usemap="#model_2swconfig_8hdep" alt=""/></div>
 <map name="model_2swconfig_8hdep" id="model_2swconfig_8hdep">
-<area shape="rect" title=" " alt="" coords="660,5,797,32"/>
+<area shape="rect" title=" " alt="" coords="617,5,755,32"/>
 <area shape="rect" href="sw_8h.html" title=" " alt="" coords="638,80,734,107"/>
 <area shape="rect" href="sw_8c.html" title=" " alt="" coords="5,155,100,181"/>
 <area shape="rect" href="swconfig_8c.html" title=" " alt="" coords="125,155,261,181"/>
@@ -145,6 +163,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a5520ef3489ebf1c54a5f5f9ca6dbcfb4"><td class="memItemLeft" align="right" valign="top"><a id="a5520ef3489ebf1c54a5f5f9ca6dbcfb4"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>defaultLibrary</b>&#160;&#160;&#160;cfg.DefaultLibrary</td></tr>
 <tr class="separator:a5520ef3489ebf1c54a5f5f9ca6dbcfb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae99aa9654fafaab7aee1131e3550c217"><td class="memItemLeft" align="right" valign="top"><a id="ae99aa9654fafaab7aee1131e3550c217"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>includePath</b>&#160;&#160;&#160;cfg.IncludePath</td></tr>
+<tr class="separator:ae99aa9654fafaab7aee1131e3550c217"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f88064702bba3248081f95a685da059"><td class="memItemLeft" align="right" valign="top"><a id="a8f88064702bba3248081f95a685da059"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>maxbfsz</b>&#160;&#160;&#160;cfg.Maxbfsz</td></tr>
 <tr class="separator:a8f88064702bba3248081f95a685da059"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,9 +198,9 @@ String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sw
 <tr class="memitem:afefbd82be232fa96f7af65ca4529627a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="swconfig_8h.html#afefbd82be232fa96f7af65ca4529627a">ConfigError</a> (String s)</td></tr>
 <tr class="memdesc:afefbd82be232fa96f7af65ca4529627a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse config file, validate, and set cfg struct.  <a href="swconfig_8h.html#afefbd82be232fa96f7af65ca4529627a">More...</a><br /></td></tr>
 <tr class="separator:afefbd82be232fa96f7af65ca4529627a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a4fe2549cbce999859cd5f88bd69516"><td class="memItemLeft" align="right" valign="top"><a id="a8a4fe2549cbce999859cd5f88bd69516"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>visitValidCFG</b> (ValidCFG p)</td></tr>
-<tr class="separator:a8a4fe2549cbce999859cd5f88bd69516"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5a8f0d9ede6949713073b18d2fb063e"><td class="memItemLeft" align="right" valign="top"><a id="ac5a8f0d9ede6949713073b18d2fb063e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>visitValidConfig</b> (ValidConfig p)</td></tr>
+<tr class="separator:ac5a8f0d9ede6949713073b18d2fb063e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a694b2d507bb9b5fe6ee6b369710ee032"><td class="memItemLeft" align="right" valign="top"><a id="a694b2d507bb9b5fe6ee6b369710ee032"></a>
 Ident&#160;</td><td class="memItemRight" valign="bottom"><b>visitIdent1</b> (Ident i)</td></tr>
 <tr class="separator:a694b2d507bb9b5fe6ee6b369710ee032"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,7 +241,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>visitString1</b> (S
 <div class="line">   exit(1);                             \</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="swconfig_8h_source.html#l00023">23</a> of file <a class="el" href="swconfig_8h_source.html">swconfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="swconfig_8h_source.html#l00027">27</a> of file <a class="el" href="swconfig_8h_source.html">swconfig.h</a>.</p>
 
 </div>
 </div>
@@ -256,7 +277,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>visitString1</b> (S
 <div class="line">    exit(1);                        \</div>
 <div class="line">  }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="swconfig_8h_source.html#l00048">48</a> of file <a class="el" href="swconfig_8h_source.html">swconfig.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="swconfig_8h_source.html#l00054">54</a> of file <a class="el" href="swconfig_8h_source.html">swconfig.h</a>.</p>
 
 </div>
 </div>
@@ -280,7 +301,7 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>visitString1</b> (S
 <p>Parse config file, validate, and set cfg struct. </p>
 <p>Missing config file is OK</p>
 
-<p class="definition">Definition at line <a class="el" href="swconfig_8c_source.html#l00171">171</a> of file <a class="el" href="swconfig_8c_source.html">swconfig.c</a>.</p>
+<p class="definition">Definition at line <a class="el" href="swconfig_8c_source.html#l00167">167</a> of file <a class="el" href="swconfig_8c_source.html">swconfig.c</a>.</p>
 
 </div>
 </div>

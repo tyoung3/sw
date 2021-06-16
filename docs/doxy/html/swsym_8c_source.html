@@ -27,7 +27,7 @@
   <td id="projectlogo"><img alt="Logo" src="network-offline.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">StreamWork
-   &#160;<span id="projectnumber">0.12.0</span>
+   &#160;<span id="projectnumber">0.13.4</span>
    </div>
    <div id="projectbrief">Generate a Go program from a graph stream network definition</div>
   </td>
@@ -98,17 +98,17 @@ $(document).ready(function(){initNavTree('swsym_8c_source.html',''); initResizab
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="sw_8h.html">sw.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="swconfig_8h.html">swconfig.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="structbucket.html">   19</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structbucket.html">bucket</a> {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keyword">union </span>{</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structbucket.html#acf61c5ce83175966a9f98e459c1de9a7">   21</a></span>&#160;    <a class="code" href="struct_stream__.html">Stream</a> <a class="code" href="structbucket.html#acf61c5ce83175966a9f98e459c1de9a7">stream</a>;      </div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structbucket.html#aaff6edf735603bcb397fd59d5207e2d1">   22</a></span>&#160;    <a class="code" href="struct_process__.html">Process</a> <a class="code" href="structbucket.html#aaff6edf735603bcb397fd59d5207e2d1">proc</a>;       </div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">   23</a></span>&#160;    <a class="code" href="struct_component__.html">Component</a> <a class="code" href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">comp</a>;     </div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structbucket.html#aa806c1231201d3bb50a22e47bf55b966">   24</a></span>&#160;    String  <a class="code" href="structbucket.html#aa806c1231201d3bb50a22e47bf55b966">string</a>;     </div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structbucket.html#a0b86e44425dbe3c9d866aa273f87828a">   25</a></span>&#160;    String  <a class="code" href="structbucket.html#a0b86e44425dbe3c9d866aa273f87828a">type</a>;           </div>
-<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">   26</a></span>&#160;    } <a class="code" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">u</a>;  </div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structbucket.html#a7bb5e40c10df6a41df64bda1f4bb3e26">   27</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="structbucket.html#a7bb5e40c10df6a41df64bda1f4bb3e26">tag</a>;          </div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">   28</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>;          </div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="structbucket.html">   18</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structbucket.html">bucket</a> {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">union </span>{</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="structbucket.html#acf61c5ce83175966a9f98e459c1de9a7">   20</a></span>&#160;    <a class="code" href="struct_stream__.html">Stream</a> <a class="code" href="structbucket.html#acf61c5ce83175966a9f98e459c1de9a7">stream</a>;      </div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="structbucket.html#aaff6edf735603bcb397fd59d5207e2d1">   21</a></span>&#160;    <a class="code" href="struct_process__.html">Process</a> <a class="code" href="structbucket.html#aaff6edf735603bcb397fd59d5207e2d1">proc</a>;       </div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">   22</a></span>&#160;    <a class="code" href="struct_component__.html">Component</a> <a class="code" href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">comp</a>;     </div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="structbucket.html#aa806c1231201d3bb50a22e47bf55b966">   23</a></span>&#160;    String  <a class="code" href="structbucket.html#aa806c1231201d3bb50a22e47bf55b966">string</a>;     </div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="structbucket.html#a0b86e44425dbe3c9d866aa273f87828a">   24</a></span>&#160;    String  <a class="code" href="structbucket.html#a0b86e44425dbe3c9d866aa273f87828a">type</a>;           </div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">   25</a></span>&#160;    } <a class="code" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">u</a>;  </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="structbucket.html#a7bb5e40c10df6a41df64bda1f4bb3e26">   26</a></span>&#160;    <span class="keywordtype">char</span> *<a class="code" href="structbucket.html#a7bb5e40c10df6a41df64bda1f4bb3e26">tag</a>;          </div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">   27</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>;          </div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">int</span> serno;          </div>
 <div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="structbucket.html#af1570825f5c310585d64eb5438d0e831">   29</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structbucket.html">bucket</a> *<a class="code" href="structbucket.html#af1570825f5c310585d64eb5438d0e831">link</a>;    </div>
 <div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="structbucket.html#af04ca37f70cdb3fb038407bc3faf676c">   30</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="structbucket.html">bucket</a> *<a class="code" href="structbucket.html#af04ca37f70cdb3fb038407bc3faf676c">next</a>;    </div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="swsym_8c.html#a71df6392a9db9e75ebe518d6b27230d7">   31</a></span>&#160;} <a class="code" href="swsym_8c.html#a71df6392a9db9e75ebe518d6b27230d7">bucket</a>;  </div>
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('swsym_8c_source.html',''); initResizab
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    <span class="keywordflow">if</span> (found == 0) {</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="swsym_8c.html#a1dc6fe1e5081ce7ab7f86e148a97585a">nsyms</a>++;</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span> (<a class="code" href="swsym_8c.html#a1dc6fe1e5081ce7ab7f86e148a97585a">nsyms</a> &gt; TABLESIZE) {</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        sprintf(<a class="code" href="sw_8h.html#a375c8c44fe63f0d981a0606ea79a4adc">fbfr</a>,</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        snprintf(<a class="code" href="sw_8h.html#a375c8c44fe63f0d981a0606ea79a4adc">fbfr</a>, BUFFSIZE, </div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            <span class="stringliteral">&quot;%i variables exceeds symtable size.\n&quot;</span>, TABLESIZE);</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        <a class="code" href="sw_8h.html#ab788f5d81c5f8dc3a3e69fbe468732c0">FAIL</a>(lookup, <a class="code" href="sw_8h.html#a375c8c44fe63f0d981a0606ea79a4adc">fbfr</a>);</div>
 <div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    }</div>
@@ -264,13 +264,13 @@ $(document).ready(function(){initNavTree('swsym_8c_source.html',''); initResizab
 <div class="line"><a name="l00194"></a><span class="lineno"><a class="line" href="swsym_8h.html#a5c49076ff3d991dbfb0754e2a7d4e2f8">  194</a></span>&#160;<a class="code" href="struct_component__.html">Component</a> <a class="code" href="swsym_8c.html#a5c49076ff3d991dbfb0754e2a7d4e2f8">addComponent</a>(<span class="keywordtype">char</span> *name, <span class="keywordtype">char</span> *path, <a class="code" href="struct_component__.html">Component</a> c)</div>
 <div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;{</div>
 <div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <a class="code" href="structbucket.html">bucketp</a> b;</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">char</span> key[1000];</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">char</span> key[BUFFSIZE+1];</div>
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    key[0] = <span class="charliteral">&#39;^&#39;</span>;</div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    key[1] = 0;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    strncat(key, path, 999);</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    strncat(key, <span class="stringliteral">&quot;.&quot;</span>, 999);</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    strncat(key, name, 999);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    strncat(key, path, BUFFSIZE);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    strncat(key, <span class="stringliteral">&quot;.&quot;</span>, BUFFSIZE);</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    strncat(key, name, BUFFSIZE);</div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    b = lookup(key);</div>
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    b-&gt;<a class="code" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">u</a>.<a class="code" href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">comp</a> = c;</div>
 <div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    <span class="keywordflow">return</span> b-&gt;<a class="code" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">u</a>.<a class="code" href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">comp</a>;</div>
@@ -279,13 +279,13 @@ $(document).ready(function(){initNavTree('swsym_8c_source.html',''); initResizab
 <div class="line"><a name="l00210"></a><span class="lineno"><a class="line" href="swsym_8h.html#aacdac83f8afdc3feaf168ca1dec78a12">  210</a></span>&#160;<a class="code" href="struct_component__.html">Component</a> <a class="code" href="swsym_8c.html#aacdac83f8afdc3feaf168ca1dec78a12">getComponent</a>(<span class="keywordtype">char</span> *name, <span class="keywordtype">char</span> *path)</div>
 <div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;{</div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <a class="code" href="structbucket.html">bucketp</a> b;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">char</span> key[1000];</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">char</span> key[BUFFSIZE+1];</div>
 <div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160; </div>
 <div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    key[0] = <span class="charliteral">&#39;^&#39;</span>;</div>
 <div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    key[1] = 0;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    strncat(key, path, 999);</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    strncat(key, <span class="stringliteral">&quot;.&quot;</span>, 999);</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    strncat(key, name, 999);</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    strncat(key, path, BUFFSIZE);</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    strncat(key, <span class="stringliteral">&quot;.&quot;</span>, BUFFSIZE);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    strncat(key, name, BUFFSIZE);</div>
 <div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;    b = lookup(key);</div>
 <div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keywordflow">return</span> b-&gt;<a class="code" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">u</a>.<a class="code" href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">comp</a>;</div>
 <div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;}</div>
@@ -307,14 +307,14 @@ $(document).ready(function(){initNavTree('swsym_8c_source.html',''); initResizab
 <div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keywordflow">return</span> b-&gt;<a class="code" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">u</a>.<a class="code" href="structbucket.html#aaff6edf735603bcb397fd59d5207e2d1">proc</a>;</div>
 <div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;}</div>
 <div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a">  244</a></span>&#160;String <a class="code" href="swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a">getConfType</a>(<span class="keywordtype">char</span> *path)</div>
+<div class="line"><a name="l00244"></a><span class="lineno"><a class="line" href="swsym_8h.html#af35720c5756a004c9f16fe9ab83887b0">  244</a></span>&#160;String <a class="code" href="swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a">getConfType</a>(<span class="keywordtype">char</span> *path)</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;{</div>
 <div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;   <a class="code" href="structbucket.html">bucketp</a> b;</div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordtype">char</span> key[1000];</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;    <span class="keywordtype">char</span> key[BUFFSIZE+1];</div>
 <div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
 <div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    key[0] = <span class="charliteral">&#39;#&#39;</span>;</div>
 <div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    key[1] = 0;</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    strncat(key, path, 999);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    strncat(key, path, BUFFSIZE);</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
 <div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
 <div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;    b = lookup(key);</div>
@@ -326,58 +326,78 @@ $(document).ready(function(){initNavTree('swsym_8c_source.html',''); initResizab
 <div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <span class="keywordflow">return</span> b-&gt;<a class="code" href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">u</a>.<a class="code" href="structbucket.html#a0b86e44425dbe3c9d866aa273f87828a">type</a>;</div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;}</div>
 <div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
-<div class="line"><a name="l00264"></a><span class="lineno"><a class="line" href="swsym_8h.html#a28bb1cbb39f315ae03737cd36c443886">  264</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="swsym_8c.html#a6938fa2374e6f15d94b295e745e89a30">getPath</a>(<span class="keywordtype">char</span> *name)</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;{</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <a class="code" href="structbucket.html">bucketp</a> b;</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    <span class="keywordtype">char</span> key[1000];</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    key[0] = <span class="charliteral">&#39;&lt;&#39;</span>;</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    key[1] = 0;</div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    strncat(key, name, 999);</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    b = lookup(key);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    b-&gt;<a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>++;</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    <span class="keywordflow">return</span> b-&gt;<a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>;</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;}</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;<span class="preprocessor">#ifdef TEST_MAIN</span></div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="keywordtype">int</span> <a class="code" href="swmain_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>()</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;{</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;    <span class="keyword">struct </span><a class="code" href="structbucket.html">bucket</a> b1, b2;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_process__.html">Process_</a> p1 = { <span class="stringliteral">&quot;C1_x&quot;</span> }, p2 = {</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    <span class="stringliteral">&quot;C2_x&quot;</span>};</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <a class="code" href="swsym_8c.html#a87ce15ed909063997f760f115c5deb3b">tabinit</a>();</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#define ASSOCP(k,w) lookup( #k )-&gt;proc = (w)</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">#define SSHOWP(k) fprintf( stderr, &quot;%s == %s\n&quot;, #k, lookup( #k )-&gt;proc-&gt;name)</span></div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    ASSOCP(P1, &amp;p1);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    ASSOCP(P2, &amp;p2);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;<span class="keywordtype">int</span> getPathColor(<span class="keywordtype">char</span> *p) {</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <a class="code" href="structbucket.html">bucketp</a> b;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    <span class="keywordtype">char</span> key[BUFFSIZE+1]; key[0] = <span class="charliteral">&#39;&lt;&#39;</span>;</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">int</span> color_i=0; </div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    </div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    key[1] = 0;</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    strncat(key, p, BUFFSIZE);</div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160; </div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;    b = lookup(key);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    </div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">if</span>(b-&gt;<a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>==0) {</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;        b-&gt;serno=color_i++;</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        <span class="keywordflow">if</span>(color_i &gt;= ncolors) </div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;            color_i=0;</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    } </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    b-&gt;<a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>++;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordflow">return</span> b-&gt;serno;</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;}</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160; </div>
+<div class="line"><a name="l00284"></a><span class="lineno"><a class="line" href="swsym_8h.html#a28bb1cbb39f315ae03737cd36c443886">  284</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="swsym_8c.html#a6938fa2374e6f15d94b295e745e89a30">getPath</a>(<span class="keywordtype">char</span> *name)</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;{</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    <a class="code" href="structbucket.html">bucketp</a> b;</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    <span class="keywordtype">char</span> key[BUFFSIZE+1];</div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;    key[0] = <span class="charliteral">&#39;&lt;&#39;</span>;</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    key[1] = 0;</div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    strncat(key, name, BUFFSIZE);</div>
 <div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160; </div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    SSHOWP(P1);</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    SSHOWP(P2);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;}</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;    b = lookup(key);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    b-&gt;<a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>++;</div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;    <span class="keywordflow">return</span> b-&gt;<a class="code" href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">nrefs</a>;</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;}</div>
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160; </div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="comment">/* End of SWSYM.C )} */</span></div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;<span class="preprocessor">#ifdef TEST_MAIN</span></div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;<span class="keywordtype">int</span> <a class="code" href="swmain_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>()</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;{</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keyword">struct </span><a class="code" href="structbucket.html">bucket</a> b1, b2;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_process__.html">Process_</a> p1 = { <span class="stringliteral">&quot;C1_x&quot;</span> }, p2 = {</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    <span class="stringliteral">&quot;C2_x&quot;</span>};</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <a class="code" href="swsym_8c.html#a87ce15ed909063997f760f115c5deb3b">tabinit</a>();</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="preprocessor">#define ASSOCP(k,w) lookup( #k )-&gt;proc = (w)</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">#define SSHOWP(k) fprintf( stderr, &quot;%s == %s\n&quot;, #k, lookup( #k )-&gt;proc-&gt;name)</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    ASSOCP(P1, &amp;p1);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    ASSOCP(P2, &amp;p2);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    SSHOWP(P1);</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    SSHOWP(P2);</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;}</div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="comment">/* End of SWSYM.C )} */</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aswmain_8c_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="swmain_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="swmain_8c_source.html#l00315">swmain.c:315</a></div></div>
+<div class="ttc" id="aswmain_8c_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="swmain_8c.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="swmain_8c_source.html#l00329">swmain.c:329</a></div></div>
 <div class="ttc" id="astructbucket_html_af7e63b76e42282aa5c6b6093a9dec3e6"><div class="ttname"><a href="structbucket.html#af7e63b76e42282aa5c6b6093a9dec3e6">bucket::u</a></div><div class="ttdeci">union bucket::@0 u</div><div class="ttdoc">Union of return values.</div></div>
-<div class="ttc" id="astructbucket_html_af1570825f5c310585d64eb5438d0e831"><div class="ttname"><a href="structbucket.html#af1570825f5c310585d64eb5438d0e831">bucket::link</a></div><div class="ttdeci">struct bucket * link</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00029">swsym.c:29</a></div></div>
+<div class="ttc" id="astructbucket_html_af1570825f5c310585d64eb5438d0e831"><div class="ttname"><a href="structbucket.html#af1570825f5c310585d64eb5438d0e831">bucket::link</a></div><div class="ttdeci">struct bucket * link</div><div class="ttdoc">object serial number</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00029">swsym.c:29</a></div></div>
 <div class="ttc" id="aswsym_8c_html_aa5f15a8915c1e1e94e3997afec10dde1"><div class="ttname"><a href="swsym_8c.html#aa5f15a8915c1e1e94e3997afec10dde1">addSymVar</a></div><div class="ttdeci">String addSymVar(String name, String val)</div><div class="ttdoc">Add new value for symbol variable to table.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00185">swsym.c:185</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a8dddf839b18e407d592780e04101b46a"><div class="ttname"><a href="swsym_8c.html#a8dddf839b18e407d592780e04101b46a">free_symtab</a></div><div class="ttdeci">void free_symtab()</div><div class="ttdoc">Delete symbol table when done.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00140">swsym.c:140</a></div></div>
-<div class="ttc" id="asw_8h_html_a375c8c44fe63f0d981a0606ea79a4adc"><div class="ttname"><a href="sw_8h.html#a375c8c44fe63f0d981a0606ea79a4adc">fbfr</a></div><div class="ttdeci">char fbfr[]</div><div class="ttdoc">File name buffer.</div><div class="ttdef"><b>Definition:</b> <a href="swmain_8c_source.html#l00023">swmain.c:23</a></div></div>
-<div class="ttc" id="asw_8h_html_ab788f5d81c5f8dc3a3e69fbe468732c0"><div class="ttname"><a href="sw_8h.html#ab788f5d81c5f8dc3a3e69fbe468732c0">FAIL</a></div><div class="ttdeci">#define FAIL(F, S)</div><div class="ttdoc">Abort message.</div><div class="ttdef"><b>Definition:</b> <a href="sw_8h_source.html#l00025">sw.h:24</a></div></div>
-<div class="ttc" id="astructbucket_html_a25c1e24f268f66c1ab9ce9b9cea49f55"><div class="ttname"><a href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">bucket::comp</a></div><div class="ttdeci">Component comp</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00023">swsym.c:23</a></div></div>
-<div class="ttc" id="astructbucket_html"><div class="ttname"><a href="structbucket.html">bucket</a></div><div class="ttdoc">Variable key/value structure.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00019">swsym.c:19</a></div></div>
+<div class="ttc" id="asw_8h_html_a375c8c44fe63f0d981a0606ea79a4adc"><div class="ttname"><a href="sw_8h.html#a375c8c44fe63f0d981a0606ea79a4adc">fbfr</a></div><div class="ttdeci">char fbfr[]</div><div class="ttdoc">File name buffer.</div><div class="ttdef"><b>Definition:</b> <a href="swmain_8c_source.html#l00018">swmain.c:18</a></div></div>
+<div class="ttc" id="asw_8h_html_ab788f5d81c5f8dc3a3e69fbe468732c0"><div class="ttname"><a href="sw_8h.html#ab788f5d81c5f8dc3a3e69fbe468732c0">FAIL</a></div><div class="ttdeci">#define FAIL(F, S)</div><div class="ttdoc">Abort message.</div><div class="ttdef"><b>Definition:</b> <a href="sw_8h_source.html#l00037">sw.h:36</a></div></div>
+<div class="ttc" id="astructbucket_html_a25c1e24f268f66c1ab9ce9b9cea49f55"><div class="ttname"><a href="structbucket.html#a25c1e24f268f66c1ab9ce9b9cea49f55">bucket::comp</a></div><div class="ttdeci">Component comp</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00022">swsym.c:22</a></div></div>
+<div class="ttc" id="astructbucket_html"><div class="ttname"><a href="structbucket.html">bucket</a></div><div class="ttdoc">Variable key/value structure.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00018">swsym.c:18</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a10e41dff2c39ab4987df7dec2302ca90"><div class="ttname"><a href="swsym_8c.html#a10e41dff2c39ab4987df7dec2302ca90">addStringVar</a></div><div class="ttdeci">String addStringVar(String name, String val)</div><div class="ttdoc">Add new string value to table.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00176">swsym.c:176</a></div></div>
 <div class="ttc" id="astruct_process___html"><div class="ttname"><a href="struct_process__.html">Process_</a></div><div class="ttdoc">Process structure.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00064">model.h:64</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a71df6392a9db9e75ebe518d6b27230d7"><div class="ttname"><a href="swsym_8c.html#a71df6392a9db9e75ebe518d6b27230d7">bucket</a></div><div class="ttdeci">struct bucket bucket</div><div class="ttdoc">Variable key/value structure.</div></div>
 <div class="ttc" id="aswsym_8c_html_a87ce15ed909063997f760f115c5deb3b"><div class="ttname"><a href="swsym_8c.html#a87ce15ed909063997f760f115c5deb3b">tabinit</a></div><div class="ttdeci">void tabinit()</div><div class="ttdoc">Create symbol table.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00053">swsym.c:53</a></div></div>
-<div class="ttc" id="aswsym_8c_html_a6938fa2374e6f15d94b295e745e89a30"><div class="ttname"><a href="swsym_8c.html#a6938fa2374e6f15d94b295e745e89a30">getPath</a></div><div class="ttdeci">int getPath(char *name)</div><div class="ttdoc">Find path for key.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00264">swsym.c:264</a></div></div>
-<div class="ttc" id="astructbucket_html_a0b86e44425dbe3c9d866aa273f87828a"><div class="ttname"><a href="structbucket.html#a0b86e44425dbe3c9d866aa273f87828a">bucket::type</a></div><div class="ttdeci">String type</div><div class="ttdoc">Config type: YAML or NONE.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00025">swsym.c:25</a></div></div>
+<div class="ttc" id="aswsym_8c_html_a6938fa2374e6f15d94b295e745e89a30"><div class="ttname"><a href="swsym_8c.html#a6938fa2374e6f15d94b295e745e89a30">getPath</a></div><div class="ttdeci">int getPath(char *name)</div><div class="ttdoc">Find path for key.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00284">swsym.c:284</a></div></div>
+<div class="ttc" id="astructbucket_html_a0b86e44425dbe3c9d866aa273f87828a"><div class="ttname"><a href="structbucket.html#a0b86e44425dbe3c9d866aa273f87828a">bucket::type</a></div><div class="ttdeci">String type</div><div class="ttdoc">Config type: YAML or NONE.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00024">swsym.c:24</a></div></div>
 <div class="ttc" id="aswsym_8c_html_ac688ca2738ece01f8305019952fc4e76"><div class="ttname"><a href="swsym_8c.html#ac688ca2738ece01f8305019952fc4e76">getStringVar</a></div><div class="ttdeci">String getStringVar(String name)</div><div class="ttdoc">Find string value for key.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00166">swsym.c:166</a></div></div>
 <div class="ttc" id="aswsym_8c_html_ac253980f0f0373452f7008731f308a93"><div class="ttname"><a href="swsym_8c.html#ac253980f0f0373452f7008731f308a93">symtable</a></div><div class="ttdeci">bucketp * symtable</div><div class="ttdoc">Array of bucket pointers.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00034">swsym.c:34</a></div></div>
 <div class="ttc" id="astruct_component___html"><div class="ttname"><a href="struct_component__.html">Component_</a></div><div class="ttdoc">Component structure.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00039">model.h:39</a></div></div>
@@ -386,20 +406,20 @@ $(document).ready(function(){initNavTree('swsym_8c_source.html',''); initResizab
 <div class="ttc" id="aswsym_8c_html_a2e084318dec8f55087198d0a61aa6e78"><div class="ttname"><a href="swsym_8c.html#a2e084318dec8f55087198d0a61aa6e78">getProc</a></div><div class="ttdeci">Process getProc(char *key)</div><div class="ttdoc">Find process in table.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00235">swsym.c:235</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a5b98e12ae507968d12525984bb1b2ac6"><div class="ttname"><a href="swsym_8c.html#a5b98e12ae507968d12525984bb1b2ac6">getSymVar</a></div><div class="ttdeci">String getSymVar(String name)</div><div class="ttdoc">Find string for key.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00156">swsym.c:156</a></div></div>
 <div class="ttc" id="aswsym_8h_html"><div class="ttname"><a href="swsym_8h.html">swsym.h</a></div></div>
-<div class="ttc" id="astructbucket_html_a5d44c529cb5afba28ecf7074e544a9b3"><div class="ttname"><a href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">bucket::nrefs</a></div><div class="ttdeci">int nrefs</div><div class="ttdoc">Number of references to symbol.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00028">swsym.c:28</a></div></div>
+<div class="ttc" id="astructbucket_html_a5d44c529cb5afba28ecf7074e544a9b3"><div class="ttname"><a href="structbucket.html#a5d44c529cb5afba28ecf7074e544a9b3">bucket::nrefs</a></div><div class="ttdeci">int nrefs</div><div class="ttdoc">Number of references to symbol.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00027">swsym.c:27</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a5c49076ff3d991dbfb0754e2a7d4e2f8"><div class="ttname"><a href="swsym_8c.html#a5c49076ff3d991dbfb0754e2a7d4e2f8">addComponent</a></div><div class="ttdeci">Component addComponent(char *name, char *path, Component c)</div><div class="ttdoc">Add new component pointer to table.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00194">swsym.c:194</a></div></div>
-<div class="ttc" id="astructbucket_html_acf61c5ce83175966a9f98e459c1de9a7"><div class="ttname"><a href="structbucket.html#acf61c5ce83175966a9f98e459c1de9a7">bucket::stream</a></div><div class="ttdeci">Stream stream</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00021">swsym.c:21</a></div></div>
+<div class="ttc" id="astructbucket_html_acf61c5ce83175966a9f98e459c1de9a7"><div class="ttname"><a href="structbucket.html#acf61c5ce83175966a9f98e459c1de9a7">bucket::stream</a></div><div class="ttdeci">Stream stream</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00020">swsym.c:20</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a25875003b43b81a4302256caa4a13599"><div class="ttname"><a href="swsym_8c.html#a25875003b43b81a4302256caa4a13599">FREE</a></div><div class="ttdeci">#define FREE(x)</div><div class="ttdoc">Free storage.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00037">swsym.c:36</a></div></div>
 <div class="ttc" id="aswsym_8c_html_aacdac83f8afdc3feaf168ca1dec78a12"><div class="ttname"><a href="swsym_8c.html#aacdac83f8afdc3feaf168ca1dec78a12">getComponent</a></div><div class="ttdeci">Component getComponent(char *name, char *path)</div><div class="ttdoc">Find component in table.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00210">swsym.c:210</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a7f439bb9b6ddd5257b4cdebf84df6e5a"><div class="ttname"><a href="swsym_8c.html#a7f439bb9b6ddd5257b4cdebf84df6e5a">getConfType</a></div><div class="ttdeci">String getConfType(char *path)</div><div class="ttdoc">Get Conf Type.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00244">swsym.c:244</a></div></div>
 <div class="ttc" id="astruct_stream___html"><div class="ttname"><a href="struct_stream__.html">Stream_</a></div><div class="ttdoc">Stream structure.</div><div class="ttdef"><b>Definition:</b> <a href="model_8h_source.html#l00082">model.h:82</a></div></div>
-<div class="ttc" id="astructbucket_html_a7bb5e40c10df6a41df64bda1f4bb3e26"><div class="ttname"><a href="structbucket.html#a7bb5e40c10df6a41df64bda1f4bb3e26">bucket::tag</a></div><div class="ttdeci">char * tag</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00027">swsym.c:27</a></div></div>
+<div class="ttc" id="astructbucket_html_a7bb5e40c10df6a41df64bda1f4bb3e26"><div class="ttname"><a href="structbucket.html#a7bb5e40c10df6a41df64bda1f4bb3e26">bucket::tag</a></div><div class="ttdeci">char * tag</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00026">swsym.c:26</a></div></div>
 <div class="ttc" id="aswconfig_8h_html"><div class="ttname"><a href="swconfig_8h.html">swconfig.h</a></div></div>
 <div class="ttc" id="aswsym_8c_html_a23887726cacb1bd87b6d8a473f6c594b"><div class="ttname"><a href="swsym_8c.html#a23887726cacb1bd87b6d8a473f6c594b">addProc</a></div><div class="ttdeci">Process addProc(char *key, Process p)</div><div class="ttdoc">Add new process to table.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00225">swsym.c:225</a></div></div>
-<div class="ttc" id="astructbucket_html_aa806c1231201d3bb50a22e47bf55b966"><div class="ttname"><a href="structbucket.html#aa806c1231201d3bb50a22e47bf55b966">bucket::string</a></div><div class="ttdeci">String string</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00024">swsym.c:24</a></div></div>
+<div class="ttc" id="astructbucket_html_aa806c1231201d3bb50a22e47bf55b966"><div class="ttname"><a href="structbucket.html#aa806c1231201d3bb50a22e47bf55b966">bucket::string</a></div><div class="ttdeci">String string</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00023">swsym.c:23</a></div></div>
 <div class="ttc" id="aswsym_8c_html_acedbb4b12c85bc727bb8a6521d70c982"><div class="ttname"><a href="swsym_8c.html#acedbb4b12c85bc727bb8a6521d70c982">bucketp</a></div><div class="ttdeci">struct bucket * bucketp</div><div class="ttdoc">Pointer to bucket.</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00032">swsym.c:32</a></div></div>
 <div class="ttc" id="astructbucket_html_af04ca37f70cdb3fb038407bc3faf676c"><div class="ttname"><a href="structbucket.html#af04ca37f70cdb3fb038407bc3faf676c">bucket::next</a></div><div class="ttdeci">struct bucket * next</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00030">swsym.c:30</a></div></div>
-<div class="ttc" id="astructbucket_html_aaff6edf735603bcb397fd59d5207e2d1"><div class="ttname"><a href="structbucket.html#aaff6edf735603bcb397fd59d5207e2d1">bucket::proc</a></div><div class="ttdeci">Process proc</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00022">swsym.c:22</a></div></div>
+<div class="ttc" id="astructbucket_html_aaff6edf735603bcb397fd59d5207e2d1"><div class="ttname"><a href="structbucket.html#aaff6edf735603bcb397fd59d5207e2d1">bucket::proc</a></div><div class="ttdeci">Process proc</div><div class="ttdoc">??</div><div class="ttdef"><b>Definition:</b> <a href="swsym_8c_source.html#l00021">swsym.c:21</a></div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

@@ -1,18 +1,16 @@
 package swbase
 
-
 import "fmt"
 import "sync"
 import "strconv"
 
 // var Version string = "0.0.0"
 
-/** 
-Gens sends arg[1],  arg[2] long strings to channel cs[0] (out1)
-    Strings consist of the process name
-   and seq. no; i.e. G3-1, G3-2, etc.
+/*Gens sends arg[1],  arg[2] long strings to channel cs[0] (out1)
+   Strings consist of the process name
+  and seq. no; i.e. G3-1, G3-2, etc.
 
-   BUG cannot set length, yet.
+  BUG cannot set length, yet.
 */
 func Gens(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var n0 = 7
