@@ -60,7 +60,7 @@ A bash script, swgo, will build and run a network definition.
 Another bash script, swgraph, will display a graphic image of a network definition 
 ![for instance:](/images/mvc.jpg)
 Processes are colored such that all components in a package have the same color.
-Not shown here are the tooltips and html references.  Arrows are colored according
+Not shown here, unfortunately, are the tooltips and html references.  Arrows are colored according
 to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
 are not guaranteed to remain unchanged in future sw versions. 
 
