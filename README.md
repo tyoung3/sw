@@ -57,8 +57,8 @@ an entire working project source tree from a network definition, including confi
 
 A bash script, swgo, will build and run a network definition.
 
-Another bash script, swgraph, will display a graphic image(.svg) of a network definition 
-![for instance:](/images/collate.svg)
+Another bash script, swgraph, will display a graphic image of a network definition 
+![for instance:](/images/mvc.jpg)
 Processes are colored such that all components in a package have the same color.
 Not shown here are the tooltips and html references.  Arrows are colored according
 to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
