@@ -1,0 +1,129 @@
+<?xml version="1.0" standalone="yes"?>
+<!DOCTYPE SW [
+<!ELEMENT Integer EMPTY>
+<!ATTLIST Integer value CDATA #REQUIRED>
+<!ELEMENT Double EMPTY>
+<!ATTLIST Double value CDATA #REQUIRED>
+<!ELEMENT String EMPTY>
+<!ATTLIST String value CDATA #REQUIRED>
+
+<!ELEMENT Numvar EMPTY>
+<!ATTLIST Numvar value CDATA #REQUIRED>
+<!ELEMENT Stringvar EMPTY>
+<!ATTLIST Stringvar value CDATA #REQUIRED>
+<!ELEMENT Envar EMPTY>
+<!ATTLIST Envar value CDATA #REQUIRED>
+<!ELEMENT Symvar EMPTY>
+<!ATTLIST Symvar value CDATA #REQUIRED>
+<!ELEMENT SubId EMPTY>
+<!ATTLIST SubId value CDATA #REQUIRED>
+<!ELEMENT Id EMPTY>
+<!ATTLIST Id value CDATA #REQUIRED>
+<!ELEMENT ValidImport EMPTY>
+<!ATTLIST ValidImport value CDATA #REQUIRED>
+<!ELEMENT Date EMPTY>
+<!ATTLIST Date value CDATA #REQUIRED>
+
+<!ELEMENT CFGvalid ((Validcfg | Validcfgd))>
+<!ELEMENT SWvalid ((Valid))>
+
+<!ELEMENT Valid ((Stmx | Stmn | Stms | Stmb | Stmh | Stmnet)*)>
+
+<!ELEMENT Stmx ((Streamx | Streamrx | Streamy | Streamry))>
+<!ELEMENT Stmn ((NumAssgnv))>
+<!ELEMENT Stms ((StrAssgnv))>
+<!ELEMENT Stmb ((SymAssgni))>
+<!ELEMENT Stmh ((Hermtx | Hermty))>
+<!ELEMENT Stmnet ((Snet))>
+
+<!ELEMENT Snet ((SubId), (Sneth | Snets | Snetin | Snetout)*)>
+
+<!ELEMENT Sneth ((Hermtx | Hermty))>
+<!ELEMENT Snets ((Streamx | Streamrx | Streamy | Streamry))>
+<!ELEMENT Snetin ((Extin | ExtinR))>
+<!ELEMENT Snetout ((Extout | Extoutr))>
+
+<!ELEMENT Extin ((Processx | Processy), (Portx | Portni | Portin | Portn | Porte), (Arrowx), (Tabn | Tabs))>
+<!ELEMENT ExtinR ((Tabn | Tabs), (Arrowr), (Portx | Portni | Portin | Portn | Porte), (Processx | Processy))>
+
+<!ELEMENT Extout ((Tabn | Tabs), (Arrowx), (Portx | Portni | Portin | Portn | Porte), (Processx | Processy))>
+<!ELEMENT Extoutr ((Processx | Processy), (Portx | Portni | Portin | Portn | Porte), (Arrowr), (Tabn | Tabs))>
+
+<!ELEMENT Tabn ((NumVali | NumValv))>
+<!ELEMENT Tabs ((Symvalv | Symvali | SymVale))>
+
+<!ELEMENT Streamx ((Processx | Processy), (Portx | Portni | Portin | Portn | Porte), (Arrowx), (Portx | Portni | Portin | Portn | Porte), (Processx | Processy))>
+<!ELEMENT Streamrx ((Processx | Processy), (Portx | Portni | Portin | Portn | Porte), (Arrowr), (Portx | Portni | Portin | Portn | Porte), (Processx | Processy))>
+<!ELEMENT Streamy ((Streamx | Streamrx | Streamy | Streamry), (Portx | Portni | Portin | Portn | Porte), (Arrowx), (Portx | Portni | Portin | Portn | Porte), (Processx | Processy))>
+<!ELEMENT Streamry ((Streamx | Streamrx | Streamy | Streamry), (Portx | Portni | Portin | Portn | Porte), (Arrowr), (Portx | Portni | Portin | Portn | Porte), (Processx | Processy))>
+
+<!ELEMENT Arrowx ((Typedefa | Typedefnull), (Bufszi | Bufsze))>
+
+<!ELEMENT Arrowr ((Typedefa | Typedefnull), (Bufszi | Bufsze))>
+
+<!ELEMENT Typedefa ((Symvaluv | Symvaluu))>
+<!ELEMENT Typedefnull (EMPTY)>
+
+<!ELEMENT Bufszi ((NumVali | NumValv))>
+<!ELEMENT Bufsze (EMPTY)>
+
+<!ELEMENT Hermtx ((Symvaluv | Symvaluu), (Compx | Compn | Compz | Compa), (Argumentx)*)>
+<!ELEMENT Hermty ((Symvaluv | Symvaluu), (Argumentx)*)>
+
+<!ELEMENT Symvaluv ((Symvalv | Symvali | SymVale))>
+<!ELEMENT Symvaluu (EMPTY)>
+
+<!ELEMENT Processx ((Symvaluv | Symvaluu), (Compx | Compn | Compz | Compa), (Argumentx)*)>
+<!ELEMENT Processy ((Symvaluv | Symvaluu), (Argumentx)*)>
+
+<!ELEMENT Portx ((NumVali | NumValv))>
+<!ELEMENT Portni ((NumVali | NumValv), (Symvalv | Symvali | SymVale))>
+<!ELEMENT Portin ((Symvalv | Symvali | SymVale), (NumVali | NumValv))>
+<!ELEMENT Portn ((Symvalv | Symvali | SymVale))>
+<!ELEMENT Porte (EMPTY)>
+
+<!ELEMENT Compx ((Symvalv | Symvali | SymVale))>
+<!ELEMENT Compn ((SubId))>
+<!ELEMENT Compz ((Modpa | Modpx | Modpy), (Symvalv | Symvali | SymVale))>
+<!ELEMENT Compa ((RemPatha))>
+
+<!ELEMENT Modpa ((Symvalv | Symvali | SymVale))>
+<!ELEMENT Modpx ((Symvalv | Symvali | SymVale))>
+<!ELEMENT Modpy ((Modpa | Modpx | Modpy), (Symvalv | Symvali | SymVale))>
+
+<!ELEMENT RemPatha ((ValidImport), (Symvalv | Symvali | SymVale))>
+
+<!ELEMENT Argumentx ((StringVals | StringValv | StringVale))>
+
+<!ELEMENT NumAssgnv ((Numvar), (NumVali | NumValv))>
+
+<!ELEMENT StrAssgnv ((Stringvar), (Symvalv | Symvali | SymVale))>
+
+<!ELEMENT SymAssgni ((Symvar), (Symvalv | Symvali | SymVale))>
+
+<!ELEMENT NumVali ((Integer))>
+<!ELEMENT NumValv ((Numvar))>
+
+<!ELEMENT StringVals ((String))>
+<!ELEMENT StringValv ((Stringvar))>
+<!ELEMENT StringVale ((Envar))>
+
+<!ELEMENT Symvalv ((Symvar))>
+<!ELEMENT Symvali ((Id))>
+<!ELEMENT SymVale ((Envar))>
+
+<!ELEMENT Validcfg ((CfgEntrya | CfgEntryb)*)>
+<!ELEMENT Validcfgd ((CfgEntrya | CfgEntryb)*)>
+
+<!ELEMENT CfgEntrya ((CfgKeyvalint | CfgKeyvalstr | CfgKeyDate))>
+<!ELEMENT CfgEntryb ((KeynameS | KeynameM))>
+
+<!ELEMENT CfgKeyvalint ((KeynameS | KeynameM), (Integer))>
+<!ELEMENT CfgKeyvalstr ((KeynameS | KeynameM), (String))>
+<!ELEMENT CfgKeyDate ((KeynameS | KeynameM), (Date))>
+
+<!ELEMENT KeynameS ((Symvalv | Symvali | SymVale))>
+<!ELEMENT KeynameM ((Modpa | Modpx | Modpy), (Symvalv | Symvali | SymVale))>
+
+
+]>
