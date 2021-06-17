@@ -43,7 +43,7 @@ ValidSW make_Valid(ListStm p1)
     tmp->u.valid_.liststm_ = p1;
     return tmp;
 }/********************   StmPrefix    ********************/
-Stm make_StmPrefix(Prefix p1, String p2)
+Stm make_StmPrefix(Prefix p1, Stringval p2)
 {
     Stm tmp = (Stm) malloc(sizeof(*tmp));
     if (!tmp)
@@ -53,11 +53,11 @@ Stm make_StmPrefix(Prefix p1, String p2)
     }
     tmp->kind = is_StmPrefix;
     tmp->u.stmprefix_.prefix_ = p1;
-    tmp->u.stmprefix_.string_ = p2;
+    tmp->u.stmprefix_.stringval_ = p2;
     return tmp;
 }
 /********************   Stminc    ********************/
-Stm make_Stminc(Include p1, String p2)
+Stm make_Stminc(Include p1, Stringval p2)
 {
     Stm tmp = (Stm) malloc(sizeof(*tmp));
     if (!tmp)
@@ -67,7 +67,7 @@ Stm make_Stminc(Include p1, String p2)
     }
     tmp->kind = is_Stminc;
     tmp->u.stminc_.include_ = p1;
-    tmp->u.stminc_.string_ = p2;
+    tmp->u.stminc_.stringval_ = p2;
     return tmp;
 }
 /********************   Stmx    ********************/

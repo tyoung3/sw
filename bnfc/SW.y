@@ -286,8 +286,8 @@ Valide : ValidConfig { $$ = make_CFGvalid($1); YY_RESULT_Valide_= $$; }
 ;
 ValidSW : ListStm { $$ = make_Valid(reverseListStm($1)); YY_RESULT_ValidSW_= $$; }
 ;
-Stm : Prefix _STRING_ { $$ = make_StmPrefix($1, $2);  }
-  | Include _STRING_ { $$ = make_Stminc($1, $2);  }
+Stm : Prefix Stringval { $$ = make_StmPrefix($1, $2);  }
+  | Include Stringval { $$ = make_Stminc($1, $2);  }
   | DataFlow { $$ = make_Stmx($1);  }
   | Numassgn { $$ = make_Stmn($1);  }
   | Strassgn { $$ = make_Stms($1);  }

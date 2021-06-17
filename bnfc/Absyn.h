@@ -131,8 +131,8 @@ struct Stm_
   enum { is_StmPrefix, is_Stminc, is_Stmx, is_Stmn, is_Stms, is_Stmb, is_Stmh, is_Stmnet } kind;
   union
   {
-    struct { Prefix prefix_; String string_; } stmprefix_;
-    struct { Include include_; String string_; } stminc_;
+    struct { Prefix prefix_; Stringval stringval_; } stmprefix_;
+    struct { Include include_; Stringval stringval_; } stminc_;
     struct { DataFlow dataflow_; } stmx_;
     struct { Numassgn numassgn_; } stmn_;
     struct { Strassgn strassgn_; } stms_;
@@ -142,8 +142,8 @@ struct Stm_
   } u;
 };
 
-Stm make_StmPrefix(Prefix p0, String p1);
-Stm make_Stminc(Include p0, String p1);
+Stm make_StmPrefix(Prefix p0, Stringval p1);
+Stm make_Stminc(Include p0, Stringval p1);
 Stm make_Stmx(DataFlow p0);
 Stm make_Stmn(Numassgn p0);
 Stm make_Stms(Strassgn p0);

@@ -18,8 +18,8 @@ SWvalid.	 	Valide 		::= ValidSW  ;
 
 Valid.			ValidSW 	::= [Stm]    ;
 
-StmPrefix.		Stm		::= Prefix  String;
-Stminc.			Stm		::= Include String;
+StmPrefix.		Stm		::= Prefix   Stringval;
+Stminc.			Stm		::= Include Stringval;
 Stmx.			Stm		::= DataFlow  ; 
 Stmn.			Stm		::= Numassgn ; 
 Stms.			Stm		::= Strassgn ;

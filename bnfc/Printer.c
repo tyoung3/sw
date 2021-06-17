@@ -180,7 +180,7 @@ void ppStm(Stm p, int _i_)
   case is_StmPrefix:
     if (_i_ > 0) renderC(_L_PAREN);
     ppPrefix(p->u.stmprefix_.prefix_, 0);
-    ppString(p->u.stmprefix_.string_, 0);
+    ppStringval(p->u.stmprefix_.stringval_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -188,7 +188,7 @@ void ppStm(Stm p, int _i_)
   case is_Stminc:
     if (_i_ > 0) renderC(_L_PAREN);
     ppInclude(p->u.stminc_.include_, 0);
-    ppString(p->u.stminc_.string_, 0);
+    ppStringval(p->u.stminc_.stringval_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -1320,7 +1320,7 @@ void shStm(Stm p)
 
     shPrefix(p->u.stmprefix_.prefix_);
   bufAppendC(' ');
-    shString(p->u.stmprefix_.string_);
+    shStringval(p->u.stmprefix_.stringval_);
 
     bufAppendC(')');
 
@@ -1334,7 +1334,7 @@ void shStm(Stm p)
 
     shInclude(p->u.stminc_.include_);
   bufAppendC(' ');
-    shString(p->u.stminc_.string_);
+    shStringval(p->u.stminc_.stringval_);
 
     bufAppendC(')');
 

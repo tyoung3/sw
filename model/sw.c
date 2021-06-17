@@ -921,11 +921,11 @@ void visitStm(Stm _p_)
     switch (_p_->kind) {  
     	char *s;
     case is_StmPrefix:
-    	s=visitString(_p_->u.stmprefix_.string_);
+    	s=visitStringval(_p_->u.stmprefix_.stringval_);
     	savePrefix(SET,s);
     	return;
     case is_Stminc:
-         pt = IncludeFile(visitString(findFile(_p_->u.stminc_.string_)));  
+         pt = IncludeFile(findFile(visitStringval(_p_->u.stminc_.stringval_)));  
          includeLevel++;
          if(includeLevel>MAX_INCLUDE_LEVEL) 
          	FAIL(INCLUDE statement recursion, "MAX_INCLUDE_LEVEL exceeded");
