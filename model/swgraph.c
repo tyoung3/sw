@@ -235,6 +235,10 @@ showPorts (Stream f, Process src, Process snk, int channel)
 static char *addDot(char *n) {
 	static char s[100];
 	
+	
+	if(n==NULL) 
+		return ".";
+		
 	strncpy(s,n,99);
 	if(n[0] != 0) 
 		strncat(s,".",99);
