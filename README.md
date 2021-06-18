@@ -32,8 +32,8 @@ StreamWork is a Go language(Golang), flow-based-programming(FBP) system.
 By default, StreamWork reads, parses and analyzes,  a StreamWork network 
 definition(ND) file (suffix: .sw),  then generates a main Go program. 
 
-Employing StreamWork, a network definition becomes, in effect, an executable
-script.  It can be considered as high level program source.  While StreamWork is concerned with 
+A network definition is, in effect, an executable
+script.  While StreamWork is concerned with 
 Go language FBP programs,  the ND described here is language agnostic.  It should be possible 
 to generate corresponding code in other languages.         
 
