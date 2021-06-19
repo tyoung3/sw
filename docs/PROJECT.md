@@ -12,6 +12,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+
+
 # Generate a Project
 
 ## Description
@@ -23,9 +25,13 @@ Build and run the executable.
 
 ## QuickStart (on Linux) 
 
-Install go, etc. 
-Install sw 
-cd $GOPATH/mod
+Install go 
+
+Install sw at $HOME/go/src/github.com/tyoung3/sw 
+
+Change sw.cfg to fit your environment. 
+Run sw.sh c go build and make sw (if necessary).
+
 
 
 ## Example
