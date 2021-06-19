@@ -105,7 +105,7 @@ Another bash script, swgraph, will display a graphic image of a network definiti
 ```
 produces: 
 
-![Model/View/Control image](/images/mvc.jpg)
+![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
 for instance;
 
 Processes are colored such that all components in a package have the same color.
