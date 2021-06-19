@@ -1,1 +1,10 @@
-../../swbase/html/Merge.html
+<h2>Merge</h2>
+
+Merge sends all data received on channels 1, 2, ..., N to 
+channel 0. 
+
+<p>Merge  creates N-1 goroutines, one for
+each input channel.  Each goroutine sends its data to channel 0 and
+completes when its input channel ends (EOF or error). 
+
+<p>Merge waits for all goroutines to end, then closes channel 0 and ends.
