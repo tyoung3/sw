@@ -498,7 +498,7 @@ BUGS:
 Home Page
 ---------
 
-https://sw.twyoung.com	 
+(https://sw.twyoung.com)
 
 Author
 ------
