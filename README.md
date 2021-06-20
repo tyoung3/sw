@@ -489,11 +489,16 @@ WORLD HELLO-7
 	sw -m 3 <  sw/nds/collate.sw | dot -Tsvg > /tmp/collate.svg
 ```
 produces /tmp/collate.svg, an image of the collate 
-network definition.   
+network definition.   http
   
 BUGS:
------
+-----http
 	 Gen fails unless all three arguments are present.
+	 
+Home Page
+---------
+
+https://sw.twyoung.com	 
 
 Author
 ------
