@@ -1,5 +1,10 @@
-* StreamWork Home Page  (sw.twyoung.com)
+# StreamWork Home Page
 
+[Github project](http:github.com/tyoung3/sw)
+
+<p>Please note that the project 
+[StreamWork Front End](http:github.com/tyoung3/streamwork) has been merged 
+into sw and is now deprecated.
 
 [README](https://github.com/tyoung3/sw#readme)
 
@@ -10,7 +15,8 @@
 ## References:
 
 ### Flow Based Programming
-
+  
+  * [Other FBP Projects SpreadSheet](https://fbp.twyoung.com/)
   * [J Paul Morrison](https://jpaulm.github.io/fbp/)
   * [Flow Based Programming (Wiki)](https://en.wikipedia.org/wiki/Flow-based_programming)
 
