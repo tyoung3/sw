@@ -2,7 +2,7 @@
 
 [Github project](http:github.com/tyoung3/sw)
 
-<p>Please note that the project 
+Please note that the project 
 [StreamWork Front End](http:github.com/tyoung3/streamwork) has been merged 
 into sw and is now deprecated.
 
