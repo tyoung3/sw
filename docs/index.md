@@ -7,14 +7,14 @@
   * [Docker](DOCKER.html) 
   * [Project](/PROJECT.html)
   
-** References:
+## References:
 
-*** Flow Based Programming
+### Flow Based Programming
 
   * [J Paul Morrison](https://jpaulm.github.io/fbp/)
   * [Flow Based Programming (Wiki)](https://en.wikipedia.org/wiki/Flow-based_programming)
 
-*** Miscellaneos
+### Miscellaneos
 
   * [Semantic Versioning](https://semver.org/)  
   * [Github Markdown](https://guides.github.com/features/mastering-markdown/)
