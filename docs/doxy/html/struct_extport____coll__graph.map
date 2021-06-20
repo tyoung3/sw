@@ -1,7 +1,0 @@
-<map id="Extport_" name="Extport_">
-<area shape="rect" id="node1" title="Extport structure." alt="" coords="5,199,81,225"/>
-<area shape="rect" id="node2" href="$struct_process__.html" title="Process structure." alt="" coords="161,95,240,121"/>
-<area shape="rect" id="node5" href="$struct_stream__.html" title="Stream structure." alt="" coords="163,199,239,225"/>
-<area shape="rect" id="node3" href="$struct_component__.html" title="Component structure." alt="" coords="149,5,253,32"/>
-<area shape="rect" id="node4" href="$struct_port__.html" title="Port structure." alt="" coords="223,311,277,338"/>
-</map>

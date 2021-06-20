@@ -1,9 +1,0 @@
-<map id="Model_" name="Model_">
-<area shape="rect" id="node1" title="Model structure." alt="" coords="145,409,215,436"/>
-<area shape="rect" id="node2" href="$struct_subnetm__.html" title="Subnetm structure." alt="" coords="341,311,427,338"/>
-<area shape="rect" id="node3" href="$struct_extport__.html" title="Extport structure." alt="" coords="450,199,526,225"/>
-<area shape="rect" id="node4" href="$struct_process__.html" title="Process structure." alt="" coords="355,95,434,121"/>
-<area shape="rect" id="node7" href="$struct_stream__.html" title="Stream structure." alt="" coords="209,199,285,225"/>
-<area shape="rect" id="node5" href="$struct_component__.html" title="Component structure." alt="" coords="5,5,109,32"/>
-<area shape="rect" id="node6" href="$struct_port__.html" title="Port structure." alt="" coords="197,311,251,338"/>
-</map>

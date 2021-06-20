@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.13.4 - STREAMWORK
+SW-0.14.0 - STREAMWORK
 ======================
 
 StreamWork
@@ -419,6 +419,11 @@ Ex.  ```A<-B;``` expands to
 ------
 	* Include file implemented
 	* Process string prefix implemented	
+	
+0.14.0
+------
+	* Correct versioning error (Previously added functionality)
+	* Update home page links.	
 	
 SW Language Notes
 --------------------

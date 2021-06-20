@@ -1,6 +1,0 @@
-<map id="Port_" name="Port_">
-<area shape="rect" id="node1" title="Port structure." alt="" coords="55,14,110,41"/>
-<area shape="rect" id="node2" href="$struct_stream__.html" title="Stream structure." alt="" coords="59,219,135,245"/>
-<area shape="rect" id="node3" href="$struct_process__.html" title="Process structure." alt="" coords="172,113,251,140"/>
-<area shape="rect" id="node4" href="$struct_component__.html" title="Component structure." alt="" coords="200,14,304,41"/>
-</map>

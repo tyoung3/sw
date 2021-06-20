@@ -37,7 +37,7 @@ static Port findPort (Port pt, int id)
     }
   while (pt != pt0);
 
-  return NULL;	       /** @todo SWGRAPH error message on error   */
+  return NULL;	       /** @todo SWGRAPH.C: error message on error   */
 }
 
 /** Assign channel to ports for stream */

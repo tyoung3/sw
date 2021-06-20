@@ -3,17 +3,19 @@
 **/
  
 /** 
+	@todo Design Project logo and publish
+	@todo Publish API and upgrage home page.
+	@todo Create Package simplifying installation/startup
  	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
 	@todo Process command/config arguments. 
 	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines.
 	@todo Fix swgen arguments w/default generation. Generate in config file
 	@todo Send multiple(N option) IPs in go tests.
-	@todo Make config an option 
- 	@todo Generate project examples
+	@todo Make config an option in project generation.
+ 	@todo Generate project examples.
  	@todo Graph .ISW files (prevent 'no processes' message.
  	@todo Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
 	@todo Create Man pages w/Doxygen
-
 	
  DONE: 
 	@done Add PREFIX statement to prefix process names with a string. 
@@ -33,29 +35,9 @@
 	@shelved Wait on multiple inputs for example and deadlock prevention in ...test_.go files. -> or <- to diffferentiate.
 	@shelved Generate Init function w/commentary
 	@shelved Update .yaml file instead of replacing it.  Do not erase prev config.
-	@shelved Avoid using .sw file name as module:  use it for program name only. 
 	@shelved Blue/Gold code generation for deadlock prevention	
 	@shelved output Buffer > 0  filtercode generation for deadlock prevention
- 	
- Method:  Build a script from the .SW file model.
- 	  Run the script to generate the code at $GOPATH/src/MODULE; 
- 	    where MODULE.sw was the .SW file used to build the model.   
- 	           
  
-*/
-
-/** @todo Build a web site from github 
-	
-	OBJECTIVE: Build working web site in Docker
-		
-	. Prototype web site 
-		. Generate   test.twyoung.com.sw
-
-	. Enhance modular access 
-		. Upper/lower case component name for remote/local search.
-		. Generate   standard web 
-		. Move defaults(Gen1,etc.)   
-
 */
 
 #include <stdio.h>
