@@ -1,4 +1,4 @@
-[FBP tenets](https://jpaulm.github.io/fbp/)
+[FBP tenets https://jpaulm.github.io/fbp](https://jpaulm.github.io/fbp)
 
  * If work is boring, let a robot do it!
  	* Corollary: using a design tool should be fun!
