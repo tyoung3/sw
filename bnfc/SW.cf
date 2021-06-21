@@ -9,7 +9,7 @@ sole use of rebuilding the Streamwork program, sw,  for personal, non-commercial
 -}
 
 
---              StreamWork prototype network definition language
+--               StreamWork prototype network definition language
 
 entrypoints		Valide, ValidSW, ValidConfig    ; 
 
