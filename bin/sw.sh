@@ -154,7 +154,7 @@ case $1 in
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/locusts.sh r ;;
-	rm) pandoc -r gfm README.md > /tmp/SW_README.html; $BROWSER /tmp/SW_README.html;;
+	rm) pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html;;
 	s) shift; Shell $;;
 	x) $EDITOR $0;;
 	*) cat << EOF 
@@ -164,7 +164,7 @@ sw.sh-$version USAGE:
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
 		dbuild [OPTs]	. Build SWdemo docker container. 
-		doc		. Run and browse Doxygen 
+		doc		. Run and browse Doxygen [Deprecated]
 		j		. Generate collate .SVT
 		jl		. Generage locusts .SVG
 		p  [NAME..]	. Generate project(s) named NAME... 
