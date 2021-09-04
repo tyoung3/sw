@@ -9,12 +9,13 @@ Die() {
 
 [ -z $VIEWOR ] && VIEWOR=eog
 
+temp=/tmp
+dir=$temp/sw
+[ -d $dir ] || mkdir -p  $dir || Die Cannot mkdir $dir
+
 RunLocusts () {
-	temp=/tmp
-	dir=$temp/sw
 	[ -d /tmp/x/ ] || mkdir /tmp/x || Die Cannot mkdir /tmp/x/
 	#mv $dir/* /tmp/x/ 2>&1 >/dev/null
-	[ -d $dir ] || mkdir -p  $dir || Die Cannot mkdir $dir
 	bin/sw nds/locusts.sw >  $dir/locusts.go
 	# $pushd $dir
 	# [ -f go.mod ] || go mod init locusts/locusts

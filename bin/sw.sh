@@ -58,7 +58,7 @@ RunPoC() {
 	 | tee /tmp/poc.echo 				\
 	 | bin/sw >  $temp/sw/poc.go 
 	 pushd $HOME
-	# [ -f go.mod ] || go mod init poc/poc
+	 [ -f go.mod ] || go mod init poc/poc
 	go run $temp/sw/poc.go  	
 }
 
