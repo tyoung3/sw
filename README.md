@@ -109,7 +109,7 @@ produces:
 ![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
 for instance;
 
-Processes are colored such that all components in a package have the same color.
+Processes are colored such that all components in the same package have the same color.
 Not shown here, unfortunately, are the tooltips and html references.  Arrows are colored according
 to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
 are not guaranteed to remain unchanged in future sw versions. 
@@ -166,22 +166,26 @@ The component identifier and arguments will default if omitted.
 A component identifier consists of its import module/package identifier, 
 a slash, '/', and the component name.   All Go component names should be capitalized.
 If  the path is omitted,  a configuration default path is assumed.  
-If the component name is also omitted, Print
-is assumed for sink processes and Gen is assumed 
-for source processes.   These defaults can be overridden by 
-configuration file defaults or arguments to sw.  
+If the component name is also omitted, configuration default component names
+are assumed for sink, source, and filter(has both inputs and outputs) processes.
  
 Channel arrows consist of ```<```, an optional type identifier,
 an optional buffersize integer, and ```-```. Example: ```<100-```
 The reverse (Ex: ```- myData_t 100>```) is also valid.
  
 Information packets(IPs, streams, or dataflows) are designed as nil(empty) interfaces whose
-data type is determined by the sending component. A type 
+data type is determined by the sending component. 
+A type 
 mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
 type(including user-defined types and structures); 
 some components (Print, for instance) can process strings and integers; 
 some just a single type; on each receiving port.   
+
+
+It is possible, but due to extra complexity and code is not recommended, 
+to send more than one type of data over a channel.  Multiple data types can better be handled 
+within a struct or over multiple channels.
  
 Sw versions are backward compatible within the same major 
 version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)  
@@ -441,7 +445,7 @@ SW Language Notes
 The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it 
 directly interpretable, without preprocessing.  
 
-As it happens, SW has just two reserved words(INCLUDE and PREFIX) making it relatively natural language
+SW has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
 will be made to ensure that all currently valid SW statements will remain valid.  Should 
 this prove impossible,  the major version will be changed, i.e. to v1.0.0. 
@@ -452,8 +456,8 @@ they tell the reader (and the interpreter) when
 you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
 
-Additionally, without semi-colons, line breaks become part of the language 
-definition leading, to awkward, confusing syntax rules.  
+Additionally, without semi-colons line breaks become part of the language 
+definition, leading to awkward and confusing syntax rules.  
 
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
@@ -499,10 +503,10 @@ WORLD HELLO-7
 	sw -m 3 <  sw/nds/collate.sw | dot -Tsvg > /tmp/collate.svg
 ```
 produces /tmp/collate.svg, an image of the collate 
-network definition.   http
+network definition.  
   
 BUGS:
------http
+-----
 	 Gen fails unless all three arguments are present.
 	 
 Home Page
