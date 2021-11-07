@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.14.1 - STREAMWORK
+SW-0.14.2 - STREAMWORK
 ======================
 
 StreamWork
@@ -48,17 +48,18 @@ and builds a single main Go program which:
 On option, StreamWork will read, parse and interpret a network definition file then  create either a:
  
  * a Go main program,
- * GraphViz .dot file, 
+ * a GraphViz .dot file,
+ * a complete GO language project tree 
+ 
+	After creating a project tree, StreamWork continues to test the generated components and 
+	the final generated application.
  * an abstract syntax tree, or  
  * a linearized tree. 
-
-Starting with version v0.12.0, Streamwork can also generate and run
-an entire working project source tree from a network definition, including config logic, and Golang test code.
 
 swgo script
 -----------
 
-A bash script, swgo, will build and run a network definition.
+A bash script, swgo, will build and run the Generated GO program from a network definition.
 ```
 echo "(Hello)->(World);" |sw
 ```
@@ -241,8 +242,9 @@ Ex. (A a) <- (B b); expands to (A a)0 <- 0(B b);
 Introduces variables into the language, but are ignored for now.
 
 Enabled default components. 
-Ex.  ```A<-B;``` expands to 
-```(a def.Print1 )0  <- 0(b def.Gen1);
+Ex.  ```(A)<-1(B)0<-(C);``` expands to: 
+```(B sw.Pass ) 		<-	0(C sw.Gens);	
+   (A sw.Print ) 		<-	1(B sw.Pass);
 ```
 
 	* Reorganized development tree and fixed scripts 
@@ -429,6 +431,10 @@ Ex.  ```A<-B;``` expands to
 ------
 	* Update home page		
 	
+0.14.2
+------
+	* Fix default filter component  logic	
+	
 SW Language Notes
 --------------------
 
@@ -447,7 +453,7 @@ you have reached the end of a statement; making reading the statements easier.
 Imagine trying to read a book without any periods (or initial capitals). 
 
 Additionally, without semi-colons, line breaks become part of the language 
-definition leading to awkward, confusing syntax rules.  
+definition leading, to awkward, confusing syntax rules.  
 
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
