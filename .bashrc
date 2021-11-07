@@ -36,7 +36,8 @@ Rest() {
 	cl       	. Show release check list. 
 	d  [OPT]	. Build and run this script in docker.
 	dir [PATH]	. ls -Fltr [PATH]  
-	doc		. Run and browse Doxygen 
+	doc		. Run and browse Doxygen.
+	e		. Exit shell.
 	ga		. Run 'git add -u'
 	gb [OPTS}	. Run 'git branch [OPTS]'
 	gs		. Run 'git status'

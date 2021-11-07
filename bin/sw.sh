@@ -2,7 +2,7 @@
 
 # SW.sh
 
-version="0.0.1"
+version="0.0.2"
 
 ShowGitBranch() {
 	cat <<EOF >/dev/null
@@ -163,6 +163,7 @@ sw.sh-$version USAGE:
 		c		. Make check
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
+		e		. Exit SW shell.
 		dbuild [OPTs]	. Build SWdemo docker container. 
 		doc		. Run and browse Doxygen [Deprecated]
 		j		. Generate collate .SVT

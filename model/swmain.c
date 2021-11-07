@@ -171,14 +171,21 @@ static void FixComp(Process p, char *cn, char *path)
 /** Insert default components if necessary. */
 static void FixComps(Stream s)
 {
+    	
     if (!s->source->comp) {
-	FixComp(s->source, defaultSourceComp, defaultPath);
+    	if(s->source->nportsIn>0) 
+    	   FixComp(s->source, defaultFilterComp, defaultPath);
+    	else
+	   FixComp(s->source, defaultSourceComp, defaultPath);
     }
     
     if(s->type==IS_ORPHAN) 
 	return;
     if (!s->sink->comp) {
-	FixComp(s->sink, defaultSinkComp, defaultPath);
+    	if(s->sink->nportsOut>0) 
+    	   FixComp(s->sink, defaultFilterComp, defaultPath);
+    	else
+	  FixComp(s->sink, defaultSinkComp, defaultPath);
     }
 }
 

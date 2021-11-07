@@ -1332,13 +1332,21 @@ static void Expand3(Model m, Process p, Extport ep)
 		    ptc->id = s->sink_id = ep->sink_id;
 		    linkPort(pnew, ptc);
 		    pnew->depth = p->depth + 1;
+		    
+#if 0		    
 		    if (s->sink->comp == NULL) {
-			s->sink->comp = MakeComponent(defaultSinkComp, defaultPath);
+		    	if(s->sink->nportsOut > 0)  
+		    		s->sink->comp = MakeComponent(defaultFilterComp, defaultPath);
+		    	else
+				s->sink->comp = MakeComponent(defaultSinkComp, defaultPath);	
 		    }
 		    if (s->source->comp == NULL) {
-			s->source->comp =
-			    MakeComponent(defaultSourceComp, defaultPath);
+		    	if(s->source->nportsIn > 0)
+		    		s->source->comp = MakeComponent(defaultFilterComp, defaultPath);
+		    	else	
+				s->source->comp = MakeComponent(defaultSourceComp, defaultPath);
 		    }
+#endif		    
 		    s->SinkPort = ptc;
 		    s->SinkPort->match   = s->SourcePort;
 		    s->SourcePort->match = s->SinkPort;
