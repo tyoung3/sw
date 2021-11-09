@@ -95,7 +95,7 @@ MakeDir() {
 IdSkel() {
         cat << EOF
         /*  Generated StreamWork component, $name, 
-            by sw.sh on `date` 
+            by $pgm on `date` 
                 $inp  input  ports 
                 $outp output ports 
         */ 
@@ -372,7 +372,7 @@ GenGo() {
                        "github.com/tyoung3/fbp/$module"
                 )
                 
-
+		// $name is @todo undocumented
             func $name(wg *sync.WaitGroup, arg []string, cs []chan interface{} ){
                 
                 defer wg.Done()
