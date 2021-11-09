@@ -52,7 +52,7 @@ static void genPath(Component  c)
     char *s=c->path;
     char *importLib  = { defaultLibrary };
     
-    if( strcmp(s,stdPackage) == 0) 
+    if( strcmp(s,stdpackage) == 0) 
     	 return;
     if(s[0] == '{') {
     	printf("import \"%s\"\n",  deleteBrace(s+1));
@@ -83,7 +83,7 @@ static void genPaths(Model m)
 
     // P(import "fmt");
     P(import "sync");
-    printf("import %s \"github.com/tyoung3/sw/swbase\"\n", stdPackage);
+    printf("import %s \"github.com/tyoung3/sw/swbase\"\n", stdpackage);
 
     p = m->proc;
     while (p) {
@@ -397,14 +397,14 @@ static void makeChSlice(Process p, int nstreams)
     Port pt;
 
     name = p->name;
-    printf("\n\tvar cs_%s []chan interface{}\n", name);
+    printf("\n\tvar _cs%s []chan interface{}\n", name);
     printf("\tfor i:=0; i<%i; i++ {\n\t\t", nstreams);
-    printf("cs_%s=append(cs_%s, make(chan interface{},2))", name, name);
+    printf("_cs%s=append(_cs%s, make(chan interface{},2))", name, name);
     printf("\n\t}\n");
 
     pt = p->port;
     do {
-	printf("\tcs_%s[%i] = cs[%i]\n", name, pt->id, pt->channel);
+	printf("\t_cs%s[%i] = cs[%i]\n", name, pt->id, pt->channel);
 	pt = pt->next;
     } while (pt != p->port);
 }
@@ -430,7 +430,7 @@ char *stripPath( char *s1 ) {
 static void genLaunch1(Process p)
 {
     int i = 1;
-    printf( stdPackage ".Launch(&wg,");
+    printf( stdpackage ".Launch(&wg,");
     printf("[]string{\"%s\"", p->name);
 
     if (p->arg) {
@@ -458,7 +458,7 @@ static void genLaunches(Process p)
 	    if (needaSlice(p->port)) {
 		makeChSlice(p, nstreams);
 		genLaunch1(p);
-		printf("cs_%s[0:%i])\n", p->name, nstreams);
+		printf("_cs%s[0:%i])\n", p->name, nstreams);
 	    } else {
 		genLaunch1(p);
 		ch0 = p->port->channel;

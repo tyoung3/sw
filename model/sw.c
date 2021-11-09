@@ -195,7 +195,7 @@ static char *fixName(char *name)
     static int nanon = 1;	/* Number of anonymous processes */
 
     if (name[0] == '_') {	// Anonymous process Q
-	snprintf(bfr, BUFFSIZE, "_%i", nanon++);
+	snprintf(bfr, BUFFSIZE, "%i", nanon++);
 	return strndup(bfr, 100);
     }
     
@@ -1129,7 +1129,7 @@ static char *makeName(char *pn, char *nn)
     char bfr[1000];
 
     strncpy(bfr, pn, 500);
-    strncat(bfr, "_", 501);
+   //  strncat(bfr, "_", 501);
     strncat(bfr, nn, 1000);
     return (strdup(bfr));
 }
@@ -1519,7 +1519,7 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
        (j)0  <- y(C);          [ s1 pt1   ] 
     */
        
-    c = MakeComponent("Join", "stdPackage");
+    c = MakeComponent("Join", "stdpackage");
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
 
@@ -1613,7 +1613,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
        (C)y <-  2(j;   [ s1    ] 
        (j)0 <- id(A);  [ s2    ]  */
 
-    c = MakeComponent("Split", stdPackage);
+    c = MakeComponent("Split", stdpackage);
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
 
