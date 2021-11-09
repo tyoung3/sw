@@ -580,7 +580,7 @@ type ipT struct {   /* Information Packet type */
 	}						 
 EOF
 
-    popdswgen.sh gs n1 def YAML 1 0 Prt 
+    ### ??? swgen.sh gs n1 def YAML 1 0 Prt 
 
 
     pushd $src2 || Die Cannot cd  $src2

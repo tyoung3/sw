@@ -146,12 +146,14 @@ Genp() {
 	   	 && [ -f sw.cfg ]  || GenCFG  > sw.cfg			\
 	   	 && Debug internal run sw `pwd`/${p}.sw			\
 	   	 && sw ${p}.sw > ${p}.go				\
-	   	 && GenGo $* 						\
+	   	 && go mod tidy						\
+	   	 ; GenGo $* 						\
 	   	 && swgraph ${p}.sw 					\
 	   	 && wait						\
 	   && popd							\
 	   && echo -e "${green}$self: Create project from $sw: Success!$reset" 		\
 	   || Die "${red}$self: Create project from $sw: FAILED.$reset"	\
+	   && go mod tidy						\
 	   && go run internal/${p}.go					\
 	   && (pushd internal; go build *.go; popd)			 
 	   go fmt  ./...
