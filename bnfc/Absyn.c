@@ -936,7 +936,7 @@ ValidConfig make_Validcfg(ListEntry p1)
     return tmp;
 }
 /********************   Validcfgd    ********************/
-ValidConfig make_Validcfgd(ListEntry p1)
+ValidConfig make_Validcfgd(ListCentry p1)
 {
     ValidConfig tmp = (ValidConfig) malloc(sizeof(*tmp));
     if (!tmp)
@@ -945,7 +945,44 @@ ValidConfig make_Validcfgd(ListEntry p1)
         exit(1);
     }
     tmp->kind = is_Validcfgd;
-    tmp->u.validcfgd_.listentry_ = p1;
+    tmp->u.validcfgd_.listcentry_ = p1;
+    return tmp;
+}/********************   CfgcEntrya    ********************/
+Centry make_CfgcEntrya(KeyVal p1)
+{
+    Centry tmp = (Centry) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating CfgcEntrya!\n");
+        exit(1);
+    }
+    tmp->kind = is_CfgcEntrya;
+    tmp->u.cfgcentrya_.keyval_ = p1;
+    return tmp;
+}
+/********************   CfgcEntryb    ********************/
+Centry make_CfgcEntryb(KeyName p1)
+{
+    Centry tmp = (Centry) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating CfgcEntryb!\n");
+        exit(1);
+    }
+    tmp->kind = is_CfgcEntryb;
+    tmp->u.cfgcentryb_.keyname_ = p1;
+    return tmp;
+}/********************   ListCentry    ********************/
+ListCentry make_ListCentry(Centry p1, ListCentry p2)
+{
+    ListCentry tmp = (ListCentry) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating ListCentry!\n");
+        exit(1);
+    }
+    tmp->centry_ = p1;
+    tmp->listcentry_ = p2;
     return tmp;
 }/********************   CfgEntrya    ********************/
 Entry make_CfgEntrya(KeyVal p1)

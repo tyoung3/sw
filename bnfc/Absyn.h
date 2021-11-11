@@ -27,6 +27,8 @@ struct ListSubnet_;
 typedef struct ListSubnet_ *ListSubnet;
 struct ListArgument_;
 typedef struct ListArgument_ *ListArgument;
+struct ListCentry_;
+typedef struct ListCentry_ *ListCentry;
 struct ListEntry_;
 typedef struct ListEntry_ *ListEntry;
 struct Valide_;
@@ -89,6 +91,8 @@ struct Prefix_;
 typedef struct Prefix_ *Prefix;
 struct ValidConfig_;
 typedef struct ValidConfig_ *ValidConfig;
+struct Centry_;
+typedef struct Centry_ *Centry;
 struct Entry_;
 typedef struct Entry_ *Entry;
 struct KeyVal_;
@@ -543,13 +547,34 @@ struct ValidConfig_
   union
   {
     struct { ListEntry listentry_; } validcfg_;
-    struct { ListEntry listentry_; } validcfgd_;
+    struct { ListCentry listcentry_; } validcfgd_;
   } u;
 };
 
 ValidConfig make_Validcfg(ListEntry p0);
-ValidConfig make_Validcfgd(ListEntry p0);
+ValidConfig make_Validcfgd(ListCentry p0);
 
+struct Centry_
+{
+
+  enum { is_CfgcEntrya, is_CfgcEntryb } kind;
+  union
+  {
+    struct { KeyVal keyval_; } cfgcentrya_;
+    struct { KeyName keyname_; } cfgcentryb_;
+  } u;
+};
+
+Centry make_CfgcEntrya(KeyVal p0);
+Centry make_CfgcEntryb(KeyName p0);
+
+struct ListCentry_
+{
+  Centry centry_;
+  ListCentry listcentry_;
+};
+
+ListCentry make_ListCentry(Centry p1, ListCentry p2);
 struct Entry_
 {
 

@@ -84,7 +84,7 @@ Modpa.			ModPath 	::= "/" Symval	"/"	;
 Modpx.			ModPath		::= Symval "/"		;
 Modpy.			ModPath		::= ModPath Symval "/"	;
 
-RemPatha.		RemPath 	::= ValidImport Symval 	;
+RemPatha.		RemPath 	::= ValidImport "." Symval 	;
 
 Argumentx.		Argument 	::= Stringval		;	
 separator	    	Argument   ""; 	
@@ -123,7 +123,12 @@ token   ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Le
 ----------------------  StreamWork YAML Configuration Interpreter  ----------------------
 
 Validcfg.	 	ValidConfig ::= "StreamWork:" [Entry] ;
-Validcfgd.		ValidConfig ::= "---" [Entry]	   ;
+Validcfgd.		ValidConfig ::= "---" "StreamWork:" "{"  [Centry]	 "}"   ;
+
+CfgcEntrya.		Centry	 ::= KeyVal		;
+CfgcEntryb.		Centry	 ::= KeyName		;
+-- CfgBlock.		Centry	 ::= KeyName "{" [Centry] "}"	;
+terminator	   	Centry   "," ; 
 
 CfgEntrya.		Entry	 ::= KeyVal		;
 CfgEntryb.		Entry	 ::= KeyName		;

@@ -790,6 +790,7 @@ void ppRemPath(RemPath p, int _i_)
   case is_RemPatha:
     if (_i_ > 0) renderC(_L_PAREN);
     ppIdent(p->u.rempatha_.validimport_, 0);
+    renderC('.');
     ppSymval(p->u.rempatha_.symval_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
@@ -1053,7 +1054,10 @@ void ppValidConfig(ValidConfig p, int _i_)
   case is_Validcfgd:
     if (_i_ > 0) renderC(_L_PAREN);
     renderS("---");
-    ppListEntry(p->u.validcfgd_.listentry_, 0);
+    renderS("StreamWork:");
+    renderC('{');
+    ppListCentry(p->u.validcfgd_.listcentry_, 0);
+    renderC('}');
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -1062,6 +1066,50 @@ void ppValidConfig(ValidConfig p, int _i_)
   default:
     fprintf(stderr, "Error: bad kind field when printing ValidConfig!\n");
     exit(1);
+  }
+}
+
+void ppCentry(Centry p, int _i_)
+{
+  switch(p->kind)
+  {
+  case is_CfgcEntrya:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppKeyVal(p->u.cfgcentrya_.keyval_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_CfgcEntryb:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppKeyName(p->u.cfgcentryb_.keyname_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Centry!\n");
+    exit(1);
+  }
+}
+
+void ppListCentry(ListCentry listcentry, int i)
+{
+  while(listcentry != 0)
+  {
+    if (listcentry->listcentry_ == 0)
+    {
+      ppCentry(listcentry->centry_, i);
+      renderC(',');
+      listcentry = 0;
+    }
+    else
+    {
+      ppCentry(listcentry->centry_, i);
+      renderC(',');
+      listcentry = listcentry->listcentry_;
+    }
   }
 }
 
@@ -2517,7 +2565,7 @@ void shValidConfig(ValidConfig p)
 
     bufAppendC(' ');
 
-    shListEntry(p->u.validcfgd_.listentry_);
+    shListCentry(p->u.validcfgd_.listcentry_);
 
     bufAppendC(')');
 
@@ -2527,6 +2575,61 @@ void shValidConfig(ValidConfig p)
     fprintf(stderr, "Error: bad kind field when showing ValidConfig!\n");
     exit(1);
   }
+}
+
+void shCentry(Centry p)
+{
+  switch(p->kind)
+  {
+  case is_CfgcEntrya:
+    bufAppendC('(');
+
+    bufAppendS("CfgcEntrya");
+
+    bufAppendC(' ');
+
+    shKeyVal(p->u.cfgcentrya_.keyval_);
+
+    bufAppendC(')');
+
+    break;
+  case is_CfgcEntryb:
+    bufAppendC('(');
+
+    bufAppendS("CfgcEntryb");
+
+    bufAppendC(' ');
+
+    shKeyName(p->u.cfgcentryb_.keyname_);
+
+    bufAppendC(')');
+
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when showing Centry!\n");
+    exit(1);
+  }
+}
+
+void shListCentry(ListCentry listcentry)
+{
+  bufAppendC('[');
+  while(listcentry != 0)
+  {
+    if (listcentry->listcentry_)
+    {
+      shCentry(listcentry->centry_);
+      bufAppendS(", ");
+      listcentry = listcentry->listcentry_;
+    }
+    else
+    {
+      shCentry(listcentry->centry_);
+      listcentry = 0;
+    }
+  }
+  bufAppendC(']');
 }
 
 void shEntry(Entry p)

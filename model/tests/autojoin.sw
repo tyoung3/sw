@@ -1,4 +1,4 @@
-# JOIN.sw: AutoJoin 
+# AutoJoin.sw: AutoJoin 
 
 ^s {
 	(A)0 <-     (B);    

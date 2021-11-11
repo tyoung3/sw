@@ -1519,7 +1519,7 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
        (j)0  <- y(C);          [ s1 pt1   ] 
     */
        
-    c = MakeComponent("Join", "stdpackage");
+    c = MakeComponent("Join", STDPACKAGE);
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
 
@@ -1613,7 +1613,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
        (C)y <-  2(j;   [ s1    ] 
        (j)0 <- id(A);  [ s2    ]  */
 
-    c = MakeComponent("Split", stdpackage);
+    c = MakeComponent("Split", STDPACKAGE);
     j = MakeProcess(m, "_", c, MakeArg(NULL, NULL));
     j->depth = p->depth + 1;
 

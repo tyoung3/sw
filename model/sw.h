@@ -19,7 +19,7 @@
 typedef char* String;
 #endif
 
-#define stdpackage  "sw"
+#define STDPACKAGE "sw.swbase"
 char *strncat(char *dest, const char *src, size_t n);
 
 char *mystrncat(char *d, char *s, size_t n);

@@ -147,6 +147,19 @@ ListArgument reverseListArgument(ListArgument l)
   }
   return prev;
 }
+ListCentry reverseListCentry(ListCentry l)
+{
+  ListCentry prev = 0;
+  ListCentry tmp = 0;
+  while (l)
+  {
+    tmp = l->listcentry_;
+    l->listcentry_ = prev;
+    prev = l;
+    l = tmp;
+  }
+  return prev;
+}
 ListEntry reverseListEntry(ListEntry l)
 {
   ListEntry prev = 0;
@@ -202,6 +215,8 @@ ListEntry reverseListEntry(ListEntry l)
   Include include_;
   Prefix prefix_;
   ValidConfig validconfig_;
+  Centry centry_;
+  ListCentry listcentry_;
   Entry entry_;
   ListEntry listentry_;
   KeyVal keyval_;
@@ -224,19 +239,20 @@ ListEntry reverseListEntry(ListEntry l)
 %token _SYMB_11    /*   =   */
 %token _SYMB_12    /*   StreamWork:   */
 %token _SYMB_13    /*   ---   */
-%token _SYMB_14    /*   :   */
-%token _SYMB_15    /*   INCLUDE   */
-%token _SYMB_16    /*   PREFIX   */
-%token _SYMB_17    /*   include   */
-%token _SYMB_18    /*   prefix   */
-%token<string_> _SYMB_19    /*   Numvar   */
-%token<string_> _SYMB_20    /*   Stringvar   */
-%token<string_> _SYMB_21    /*   Envar   */
-%token<string_> _SYMB_22    /*   Symvar   */
-%token<string_> _SYMB_23    /*   SubId   */
-%token<string_> _SYMB_24    /*   Id   */
-%token<string_> _SYMB_25    /*   ValidImport   */
-%token<string_> _SYMB_26    /*   Date   */
+%token _SYMB_14    /*   ,   */
+%token _SYMB_15    /*   :   */
+%token _SYMB_16    /*   INCLUDE   */
+%token _SYMB_17    /*   PREFIX   */
+%token _SYMB_18    /*   include   */
+%token _SYMB_19    /*   prefix   */
+%token<string_> _SYMB_20    /*   Numvar   */
+%token<string_> _SYMB_21    /*   Stringvar   */
+%token<string_> _SYMB_22    /*   Envar   */
+%token<string_> _SYMB_23    /*   Symvar   */
+%token<string_> _SYMB_24    /*   SubId   */
+%token<string_> _SYMB_25    /*   Id   */
+%token<string_> _SYMB_26    /*   ValidImport   */
+%token<string_> _SYMB_27    /*   Date   */
 
 %type <valide_> Valide
 %type <validsw_> ValidSW
@@ -271,6 +287,8 @@ ListEntry reverseListEntry(ListEntry l)
 %type <include_> Include
 %type <prefix_> Prefix
 %type <validconfig_> ValidConfig
+%type <centry_> Centry
+%type <listcentry_> ListCentry
 %type <entry_> Entry
 %type <listentry_> ListEntry
 %type <keyval_> KeyVal
@@ -298,7 +316,7 @@ Stm : Prefix Stringval { $$ = make_StmPrefix($1, $2);  }
 ListStm : /* empty */ { $$ = 0;  }
   | ListStm Stm _SYMB_0 { $$ = make_ListStm($2, $1);  }
 ;
-Subdef : _SYMB_23 _SYMB_1 ListSubnet _SYMB_2 { $$ = make_Snet($1, reverseListSubnet($3));  }
+Subdef : _SYMB_24 _SYMB_1 ListSubnet _SYMB_2 { $$ = make_Snet($1, reverseListSubnet($3));  }
 ;
 Subnet : Hermt { $$ = make_Sneth($1);  }
   | DataFlow { $$ = make_Snets($1);  }
@@ -348,7 +366,7 @@ Prt : Numval { $$ = make_Portx($1);  }
   | /* empty */ { $$ = make_Porte();  }
 ;
 Comp : Symval { $$ = make_Compx($1);  }
-  | _SYMB_23 { $$ = make_Compn($1);  }
+  | _SYMB_24 { $$ = make_Compn($1);  }
   | ModPath Symval { $$ = make_Compz($1, $2);  }
   | RemPath { $$ = make_Compa($1);  }
 ;
@@ -356,38 +374,44 @@ ModPath : _SYMB_10 Symval _SYMB_10 { $$ = make_Modpa($2);  }
   | Symval _SYMB_10 { $$ = make_Modpx($1);  }
   | ModPath Symval _SYMB_10 { $$ = make_Modpy($1, $2);  }
 ;
-RemPath : _SYMB_25 Symval { $$ = make_RemPatha($1, $2);  }
+RemPath : _SYMB_26 _SYMB_9 Symval { $$ = make_RemPatha($1, $3);  }
 ;
 Argument : Stringval { $$ = make_Argumentx($1);  }
 ;
 ListArgument : /* empty */ { $$ = 0;  }
   | ListArgument Argument { $$ = make_ListArgument($2, $1);  }
 ;
-Numassgn : _SYMB_19 _SYMB_11 Numval { $$ = make_NumAssgnv($1, $3);  }
+Numassgn : _SYMB_20 _SYMB_11 Numval { $$ = make_NumAssgnv($1, $3);  }
 ;
-Strassgn : _SYMB_20 _SYMB_11 Symval { $$ = make_StrAssgnv($1, $3);  }
+Strassgn : _SYMB_21 _SYMB_11 Symval { $$ = make_StrAssgnv($1, $3);  }
 ;
-SymAssgn : _SYMB_22 _SYMB_11 Symval { $$ = make_SymAssgni($1, $3);  }
+SymAssgn : _SYMB_23 _SYMB_11 Symval { $$ = make_SymAssgni($1, $3);  }
 ;
 Numval : _INTEGER_ { $$ = make_NumVali($1);  }
-  | _SYMB_19 { $$ = make_NumValv($1);  }
+  | _SYMB_20 { $$ = make_NumValv($1);  }
 ;
 Stringval : _STRING_ { $$ = make_StringVals($1);  }
-  | _SYMB_20 { $$ = make_StringValv($1);  }
-  | _SYMB_21 { $$ = make_StringVale($1);  }
+  | _SYMB_21 { $$ = make_StringValv($1);  }
+  | _SYMB_22 { $$ = make_StringVale($1);  }
 ;
-Symval : _SYMB_22 { $$ = make_Symvalv($1);  }
-  | _SYMB_24 { $$ = make_Symvali($1);  }
-  | _SYMB_21 { $$ = make_SymVale($1);  }
+Symval : _SYMB_23 { $$ = make_Symvalv($1);  }
+  | _SYMB_25 { $$ = make_Symvali($1);  }
+  | _SYMB_22 { $$ = make_SymVale($1);  }
 ;
-Include : _SYMB_17 { $$ = make_Inc1();  }
-  | _SYMB_15 { $$ = make_Inc2();  }
+Include : _SYMB_18 { $$ = make_Inc1();  }
+  | _SYMB_16 { $$ = make_Inc2();  }
 ;
-Prefix : _SYMB_16 { $$ = make_Prefu();  }
-  | _SYMB_18 { $$ = make_Prefl();  }
+Prefix : _SYMB_17 { $$ = make_Prefu();  }
+  | _SYMB_19 { $$ = make_Prefl();  }
 ;
 ValidConfig : _SYMB_12 ListEntry { $$ = make_Validcfg(reverseListEntry($2)); YY_RESULT_ValidConfig_= $$; }
-  | _SYMB_13 ListEntry { $$ = make_Validcfgd(reverseListEntry($2)); YY_RESULT_ValidConfig_= $$; }
+  | _SYMB_13 _SYMB_12 _SYMB_1 ListCentry _SYMB_2 { $$ = make_Validcfgd(reverseListCentry($4)); YY_RESULT_ValidConfig_= $$; }
+;
+Centry : KeyVal { $$ = make_CfgcEntrya($1);  }
+  | KeyName { $$ = make_CfgcEntryb($1);  }
+;
+ListCentry : /* empty */ { $$ = 0;  }
+  | ListCentry Centry _SYMB_14 { $$ = make_ListCentry($2, $1);  }
 ;
 Entry : KeyVal { $$ = make_CfgEntrya($1);  }
   | KeyName { $$ = make_CfgEntryb($1);  }
@@ -397,10 +421,10 @@ ListEntry : /* empty */ { $$ = 0;  }
 ;
 KeyVal : KeyName _INTEGER_ { $$ = make_CfgKeyvalint($1, $2);  }
   | KeyName _STRING_ { $$ = make_CfgKeyvalstr($1, $2);  }
-  | KeyName _SYMB_26 { $$ = make_CfgKeyDate($1, $2);  }
+  | KeyName _SYMB_27 { $$ = make_CfgKeyDate($1, $2);  }
 ;
-KeyName : Symval _SYMB_14 { $$ = make_KeynameS($1);  }
-  | ModPath Symval _SYMB_14 { $$ = make_KeynameM($1, $2);  }
+KeyName : Symval _SYMB_15 { $$ = make_KeynameS($1);  }
+  | ModPath Symval _SYMB_15 { $$ = make_KeynameM($1, $2);  }
 ;
 
 %%

@@ -68,8 +68,8 @@ GenCFG() {
 	cat <<- EOF 
 	StreamWork:
   defaults:  
-    DefaultSourceComp: 	"Gen"
-    DefaultSinkComp: 	"Prt"
+    DefaultSourceComp: 	"sw.Gen"
+    DefaultSinkComp: 	"Print"
     DefaultPath: 	"def"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
@@ -131,7 +131,8 @@ Genp() {
 	Debug sw=$sw p=$p $* 
 	[ -f $sw ] || Die Genp: Cannot locate $sw 
 	shift 1 
-	echo; Display Generating  go module $p  from $sw 
+	echo; Display Generating  go module $p  from `pwd`/$cfg
+	
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	replace="replace github.com/tyoung3/sw/swbase => $HOME/go/src/github.com/tyoung3/sw/swbase"

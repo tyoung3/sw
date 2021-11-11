@@ -18,7 +18,7 @@ typedef enum
 char fbfr[BUFFSIZE+1];   /**<File name buffer.*/  
 char *version = { VERSION };  /**<sw version  */
 
-String configfile={"./sw.cfg"};   		/**<SW configuration file */
+String configfile={"sw.cfg"};   		/**<SW configuration file */
 static MODE mode = GOMODE;			/**<Mode ?? */
 static char *fname = { "stdin" };		/**<Input file name or Standard input. */
 

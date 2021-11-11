@@ -42,6 +42,8 @@ typedef union
   Include include_;
   Prefix prefix_;
   ValidConfig validconfig_;
+  Centry centry_;
+  ListCentry listcentry_;
   Entry entry_;
   ListEntry listentry_;
   KeyVal keyval_;
@@ -83,8 +85,9 @@ typedef struct YYLTYPE
 #define _SYMB_24 283
 #define _SYMB_25 284
 #define _SYMB_26 285
-#define _STRING_ 286
-#define _INTEGER_ 287
+#define _SYMB_27 286
+#define _STRING_ 287
+#define _INTEGER_ 288
 
 extern YYLTYPE yylloc;
 extern YYSTYPE yylval;
