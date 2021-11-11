@@ -68,7 +68,7 @@ GenCFG() {
 	cat <<- EOF 
 	StreamWork:
   defaults:  
-    DefaultSourceComp: 	"sw.Gen"
+    DefaultSourceComp: 	"Gen"
     DefaultSinkComp: 	"Print"
     DefaultPath: 	"def"
     DefaultFilterComp: 	"Pass"  
