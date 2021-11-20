@@ -141,13 +141,21 @@ Shell() {
 }
 
 case $1 in	
+    auto) [ -f Makefile.am ] || Die Missing Makefile.am
+        aclocal # Set up an m4 environment
+        autoconf # Generate configure from configure.ac
+        automake --add-missing # Generate Makefile.in from Makefile.am
+        ./configure # Generate Makefile from Makefile.in
+        make distcheck # Use Makefile to build and test a tarball to distribute
+        #xmkmf -a 
+        ;; 
 	c) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
 	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/todo.html	\
 		&&Browse ./docs/doxy/html/bug.html ;;
-        ex)shift; cd example; make;;   
+        ex)shift; cd example; make;; 
 	j) GenSVG;;
 	jl) bin/locusts.sh j & ;;	#Display locusts map;
 	p)  shift;project.sh g  $*;;

@@ -1,7 +1,7 @@
 #ifndef PARSER_HEADER_FILE
 #define PARSER_HEADER_FILE
 
-#include "Absyn.h"
+#include "../bnfc/Absyn.h"
 
 typedef union
 {

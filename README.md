@@ -227,6 +227,14 @@ OUTPUT:
 ```
 Foo Bar
 
+## Building on Linux
+
+    * Install ctags, libyaml-dev, bnfc, bison, and flex 
+    * cd to go workkspace (like $GOPATH/src )
+    * git clone https://github.com/tyoung3/sw.git
+    * ./run sh c 
+    
+
 
 Release Notes
 =============
