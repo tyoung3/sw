@@ -1,6 +1,7 @@
 **doxy/
 **docs/doxy/
 /home/tyoung3/go/mod/sw/example
+Makefile
 .idea/
 autom*
 Makefile.in
