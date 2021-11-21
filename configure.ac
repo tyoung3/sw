@@ -1,8 +1,8 @@
 ## sw/configure.ac
 ##1 https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install
 AC_INIT([sw], [0.15.0], [sw@twyoung.com])
-## AC_CONFIG_TESTDIR (directory, [test-path = ‘./tests’])
-# Still within configure.ac, as appropriate, ensure that some AC_CONFIG_FILES command includes substitution for tests/atlocal.
+AC_CONFIG_TESTDIR (directory, [test-path = ‘./tests’])
+# ??? Still within configure.ac, as appropriate, ensure that some AC_CONFIG_FILES command includes substitution for tests/atlocal.
 
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
@@ -15,6 +15,6 @@ AC_PROG_CC
 #AC_PROG_BNFC
 #AC_PROG_CPP
 
-AC_CONFIG_FILES([Makefile bnfc/Makefile model/Makefile])
+AC_CONFIG_FILES([Makefile bnfc/Makefile model/Makefile tests/Makefile])
 
 AC_OUTPUT

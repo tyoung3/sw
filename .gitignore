@@ -1,6 +1,7 @@
 **doxy/
 **docs/doxy/
 /home/tyoung3/go/mod/sw/example
+test-driver
 Makefile
 .idea/
 autom*

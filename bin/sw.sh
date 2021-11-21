@@ -149,7 +149,8 @@ case $1 in
         make distcheck # Use Makefile to build and test a tarball to distribute
         #xmkmf -a 
         ;; 
-	c) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
+    c) make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
+	cxxx) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
