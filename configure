@@ -1798,9 +1798,6 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 ac_config_commands="$ac_config_commands /atconfig"
  (directory, test-path = ‘./tests’)
-# ??? Still within configure.ac, as appropriate, ensure that some AC_CONFIG_FILES command includes substitution for tests/atlocal.
-
-
 am__api_version='1.16'
 
 ac_aux_dir=
@@ -2409,7 +2406,6 @@ ac_config_headers="$ac_config_headers config.h"
 
 
 # Checks for programs.
-#AC_PROG_CXX
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -3449,11 +3445,8 @@ else
 fi
 
 
-#AC_PROG_BNFC
-#AC_PROG_CPP
 
 ac_config_files="$ac_config_files Makefile bnfc/Makefile model/Makefile tests/Makefile"
-
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure

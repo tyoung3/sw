@@ -16,7 +16,7 @@ typedef enum
     { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, PROJECT, CMODE = 7 } MODE;
 
 char fbfr[BUFFSIZE+1];   /**<File name buffer.*/  
-char *version = { "VERSION" };  /**<sw version  */
+char *version={"0.15.0"} ;  /**<sw version >   @todo Fix this!*/
 
 String configfile={"sw.cfg"};   		/**<SW configuration file */
 static MODE mode = GOMODE;			/**<Mode ?? */

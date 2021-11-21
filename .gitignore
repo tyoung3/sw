@@ -5,6 +5,8 @@ test-driver
 Makefile
 .idea/
 autom*
+*.trs
+*.log
 Makefile.in
 config.h.in
 compile
@@ -43,9 +45,6 @@ model/swconfigx.c
 model/tests/n6.sw
 model/tests/x1.sw
 model/tests/mashup.sw
-#Parser.?
-#Printer.?
-Skeleton.?
 tags
 *~
 *.aux
