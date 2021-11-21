@@ -1,10 +1,8 @@
-# sw/configure.ac
-# https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install
+## sw/configure.ac
+##1 https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install
 AC_INIT([sw], [0.15.0], [sw@twyoung.com])
-#AM_INIT_AUTOMAKE
-#AC_PROG_CC
-#AC_CONFIG_FILES([Makefile])
-
+## AC_CONFIG_TESTDIR (directory, [test-path = ‘./tests’])
+# Still within configure.ac, as appropriate, ensure that some AC_CONFIG_FILES command includes substitution for tests/atlocal.
 
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])

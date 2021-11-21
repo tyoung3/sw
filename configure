@@ -1796,10 +1796,8 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-#AM_INIT_AUTOMAKE
-#AC_PROG_CC
-#AC_CONFIG_FILES([Makefile])
-
+## AC_CONFIG_TESTDIR (directory, [test-path = ‘./tests’])
+# Still within configure.ac, as appropriate, ensure that some AC_CONFIG_FILES command includes substitution for tests/atlocal.
 
 
 am__api_version='1.16'
