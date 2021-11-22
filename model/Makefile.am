@@ -1,6 +1,10 @@
 # sw/model/MAKEFILE.AM
 
 AUTOMAKE_OPTIONS = foreign
+TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
+                  $(top_srcdir)/build-aux/tap-driver.sh
+TESTS = sw.test
+EXTRA_DIST = $(TESTS)
 
 bin_PROGRAMS = sw
 sw_SOURCES =  sw.c swconfig.c swgraph.c swmain.c swsym.c swc.c  swgo.c  swjavafbp.c  swproject.c
@@ -14,7 +18,7 @@ CFLAGS =  -DMAJOR=${SW_MAJOR} -DMINOR=${SW_MINOR} -DLEVEL=${SW_LEVEL} $(AM_CFLAG
 sw_LDADD =  ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 
 PGM = ./${bin_PROGRAMS} 
-check-local: 
+check-local-xxx: 
 ###in_PROGRAMS}  tests/java.sw tests/ac.sw tests/aa.sw  tests/ab.sw  >/dev/null
 	${PGM}  -v 
 	! ${PGM} tests/ac.sw 2>&1 >/dev/null && echo OK_TO_FAIL
