@@ -16,6 +16,7 @@ typedef enum
     { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, PROJECT, CMODE = 7 } MODE;
 
 char fbfr[BUFFSIZE+1];   /**<File name buffer.*/  
+
 char *version={"0.15.0"} ;  /**<sw version >   @todo Fix this!*/
 
 String configfile={"sw.cfg"};   		/**<SW configuration file */
@@ -24,6 +25,12 @@ static char *fname = { "stdin" };		/**<Input file name or Standard input. */
 
 ValidSW pValidSW(FILE * inp);  /**<True if valid input */
 
+char *FixVersion() {
+	char bfr[100];
+	
+	sprintf(bfr, "%d.%d.%d", MAJOR, MINOR, LEVEL);
+	version=strdup(bfr); 
+}
 
 char *mystrncat(char *d, char *s, size_t n) {
 	if( sizeof(d) + sizeof(s) >= (n-1) ) {
@@ -335,6 +342,7 @@ ValidSW IncludeFile( char *fname) {
 
 int main(int argc, char **argv)
 {
+	version=FixVersion();
     ValidSW parse_tree = NULL;
     Model model = NULL;		/* Network Model */
 
