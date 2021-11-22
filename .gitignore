@@ -39,7 +39,7 @@ bnfc/SW.pdf
 gmon.out
 IGNORE*
 Lexer.c
-model/tests/.gdbinit
+.gdbinit
 model/gen.sh
 model/swconfigx.c
 model/tests/n6.sw
