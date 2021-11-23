@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.14.9999 - STREAMWORK
+SW-0.15.0 - STREAMWORK
 ======================
 
 StreamWork

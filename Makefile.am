@@ -3,7 +3,7 @@
 ###EXTRA_DIST = BUGS ChangeLog.O README-alpha
 SUBDIRS = bnfc model
 
-EXTRA_DIST = nds/ 
+EXTRA_DIST = nds/ bin/
 
 
 
