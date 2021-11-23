@@ -32,8 +32,10 @@ RunLocusts () {
 
 		# Create  .jpg 		
 GenJPG() {  
-	pushd model
-	make /tmp/sw/locusts.png  && $VIEWOR /tmp/sw/locusts.png &
+	cd model   \
+	&& sw -m 3 ../nds/locusts.sw  > /tmp/sw/locusts.dot		\
+	&& dot -Tpng /tmp/sw/locusts.dot > /tmp/sw/locusts.png	\
+	&& $VIEWOR /tmp/sw/locusts.png &
 }	
 
 
