@@ -41,10 +41,6 @@ IGNORE*
 Lexer.c
 .gdbinit
 model/gen.sh
-model/swconfigx.c
-model/tests/n6.sw
-model/tests/x1.sw
-model/tests/mashup.sw
 tags
 *~
 *.aux

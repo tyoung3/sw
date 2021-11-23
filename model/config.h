@@ -1,5 +1,5 @@
-/* config.h.  Generated from config.h.in by configure.  */
-/* config.h.in.  Generated from configure.ac by autoheader.  */
+/* model/config.h.  Generated from config.h.in by configure.  */
+/* model/config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Name of package */
 #define PACKAGE "sw"
@@ -11,7 +11,7 @@
 #define PACKAGE_NAME "sw"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "sw 0.14"
+#define PACKAGE_STRING "sw 0.14.9999"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "sw"
@@ -20,7 +20,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.14"
+#define PACKAGE_VERSION "0.14.9999"
 
 /* Version number of package */
-#define VERSION "0.14"
+#define VERSION "0.14.9999"
