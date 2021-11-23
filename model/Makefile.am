@@ -4,8 +4,8 @@ AUTOMAKE_OPTIONS = foreign
 TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
                   $(top_srcdir)/build-aux/tap-driver.sh
                   
-TESTS = sw.test
-EXTRA_DIST = $(TESTS)
+TESTS = sw.test   
+EXTRA_DIST = $(TESTS)  tests
 
 bin_PROGRAMS = sw
 PGM = ./${bin_PROGRAMS} 

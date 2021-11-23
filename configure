@@ -691,7 +691,7 @@ CFLAGS
 LDFLAGS
 LIBS
 CPPFLAGS'
-ac_subdirs_all='docs build-aux model/tests'
+ac_subdirs_all='docs build-aux'
 
 # Initialize some variables set by options.
 ac_init_help=
@@ -1838,7 +1838,7 @@ ac_configure="$SHELL $ac_aux_dir/configure"  # Please don't use this var.
 
 
 
-subdirs="$subdirs docs build-aux model/tests"
+subdirs="$subdirs docs build-aux"
 
 
 ## AC_CONFIG_TESTDIR (directory, [test-path = ‘./tests’])
