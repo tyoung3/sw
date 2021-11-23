@@ -158,11 +158,11 @@ case $1 in
 		&&Browse ./docs/doxy/html/bug.html ;;
         ex)shift; cd example; make;; 
 	j) GenSVG;;
-	jl) bin/locusts.sh j & ;;	#Display locusts map;
+	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
 	p)  shift;project.sh g  $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
-	rl) bin/locusts.sh r ;;
+	rl) bin/swlocusts.sh r ;;
 	rm) pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html;;
 	s) shift; Shell $;;
 	x) $EDITOR $0;;
@@ -173,7 +173,7 @@ sw.sh-$version USAGE:
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
 		e		. Exit SW shell.
-		dbuild [OPTs]	. Build SWdemo docker container. 
+		d build [OPTs]	. Build SWdemo docker container. 
 		doc		. Run and browse Doxygen [Deprecated]
 		j		. Generate collate .SVT
 		jl		. Generage locusts .SVG

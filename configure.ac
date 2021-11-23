@@ -19,6 +19,5 @@ AC_CONFIG_HEADERS([model/config.h])
 # Checks for programs.
 AC_PROG_CC
 
-## dist_bin_SCRIPTS = bin/swgraph
 AC_CONFIG_FILES([Makefile bnfc/Makefile  model/Makefile README.md])
 AC_OUTPUT

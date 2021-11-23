@@ -3462,7 +3462,6 @@ fi
 
 
 
-## dist_bin_SCRIPTS = bin/swgraph
 ac_config_files="$ac_config_files Makefile bnfc/Makefile model/Makefile README.md"
 
 cat >confcache <<\_ACEOF
