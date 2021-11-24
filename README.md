@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.15.0 - STREAMWORK
+SW-0.15.1 - STREAMWORK
 ======================
 
 StreamWork
@@ -226,10 +226,10 @@ QuickStart (on Linux)
   * The .../tyoung3/StreamWork backend is no longer required.  
   * Sw is written in C.  The bin directory contains bash scripts invoking sw.   
   * cd to any convenient workspace, like $GOPATH/src or /usr/src.
-  * Download the latest sw-0.15.0.tar.gz file 
+  * Download the latest sw-0.15.1.tar.gz file 
 	  from https://github.com/tyoung3/sw
   * Run 'tar -xzf .../sw-...tar.gz' to extract source files
-  * cd  sw-0.15.0
+  * cd  sw-0.15.1
   * Run ./configure && make check
   * Run sudo make install.
   
