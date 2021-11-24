@@ -59,11 +59,22 @@ On option, StreamWork will read, parse and interpret a network definition file t
 swgo script
 -----------
 
-A bash script, swgo, will build and run the Generated GO program from a network definition.
+A bash script, swgo, will build and run the Generated GO program from a network definition:
 ```
-echo "(Hello)->(World);" |sw
+  .../nds/hw.sw
+(Hello) <string- (World);
 ```
+swgo .../nds/hw
 produces:
+
+Hello World-1
+Hello World-2
+Hello World-3
+Hello World-4
+Hello World-5
+Hello World-6
+Hello World-7
+
 ```
 package main
 
@@ -97,13 +108,16 @@ wg.Wait()
 swgraph script
 --------------
 
-Another bash script, swgraph, will display a graphic image of a network definition 
+Another bash script, swgraph, will display a graphic image of a network definition:
+   
 ```
+#   .../nds/mvc.sw
 (m Model)1      -change>         (v View);
 (c)2            -update>        1(v);
 (v)2            -event>          (c Control); 
 (c)1            -request>       (m);
 ```
+swgraph .../nds/mvc
 produces: 
 
 ![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
@@ -114,15 +128,14 @@ Not shown here, unfortunately, are the tooltips and html references.  Arrows are
 to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
 are not guaranteed to remain unchanged in future sw versions. 
 
-The resulting image amounts to a Data Flow Diagram without datastores.  sw does not generate 
-data storage access code.  Currently, data storage code must be contained within a StreamWork component.   
+The resulting image is an annotated Data Flow Diagram.
 
 Network Definition
 ------------------
 
 The network definition file consists of a list of 
-streams(or dataflows); and may also contain subnet definitions, INCLUDE and PREFIX statements, and
-comments.  
+streams(aka dataflows); and may also contain subnet definitions, 
+INCLUDE and PREFIX statements, and comments.  
 
 INCLUDEd files are also network definitions which may in turn contain
 INCLUDE statements.  Exceeding 100 levels of includes will 
@@ -173,22 +186,22 @@ Channel arrows consist of ```<```, an optional type identifier,
 an optional buffersize integer, and ```-```. Example: ```<100-```
 The reverse (Ex: ```- myData_t 100>```) is also valid.
  
-Information packets(IPs, streams, or dataflows) are designed as nil(empty) interfaces whose
+Information packets(IPs) are designed as nil(empty) interfaces.  The
 data type is determined by the sending component. 
-A type 
-mis-match will be reported by incompatible receiving 
+A type mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
-type(including user-defined types and structures); 
-some components (Print, for instance) can process strings and integers; 
+type(including user-defined types and structures). 
+Some components (Print, for instance) can process strings and integers; 
 some just a single type; on each receiving port.   
 
 
-It is possible, but due to extra complexity and code is not recommended, 
-to send more than one type of data over a channel.  Multiple data types can better be handled 
+It is possible
+to send more than one type of data over a channel.  
+Multiple data types can also be handled 
 within a struct or over multiple channels.
  
 Sw versions are backward compatible within the same major 
-version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)  
+version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)   
 
 Sw builds a network model in memory, then optionally generates
 either 
@@ -209,243 +222,53 @@ e-mailing streamwork@twyoung.com  is preferred to posting a request on Github .
 
 QuickStart (on Linux) 
 ----------
-
-	* The .../tyoung3/StreamWork backend is no longer required.  
-	* Sw is written in C.  The bin directory contains bash scripts invoking sw.   
-	* Download the 'sw' executable from github to any 
-	  convenient bin path location, like /usr/local/bin or $GOPATH/bin.
-	* Run 'chmod a+x sw' if necessary. 
-	* Run ```sw -v``` to check the version.
+  
+  * The .../tyoung3/StreamWork backend is no longer required.  
+  * Sw is written in C.  The bin directory contains bash scripts invoking sw.   
+  * cd to any convenient workspace, like $GOPATH/src or /usr/src.
+  * Download the latest sw-0.15.0.tar.gz file 
+	  from https://github.com/tyoung3/sw
+  * Run 'tar -xzf .../sw-...tar.gz' to extract source files
+  * cd  sw-0.15.0
+  * Run ./configure && make check
+  * Run sudo make install.
+  
+	  Sw and associated scripts will be installed in /usr/local/bin
+	  
+Foo Bar test
+------------  
 	 
-```	
-echo "(Foo) <- (Bar);" | sw > /tmp/fb.go 
-```
-	* Run 'go run /tmp/fb.go'
+  * echo "(Foo) <- (Bar);" | sw > /tmp/fb.go 
 
+  * Run: go run /tmp/fb.go
+
+```
 OUTPUT: 
 
+Foo Bar-1
+Foo Bar-2
+Foo Bar-3
+Foo Bar-4
+Foo Bar-5
+Foo Bar-6
+Foo Bar-7
 ```
-Foo Bar
 
 ## Building on Linux
 
-    * Install ctags, libyaml-dev, bnfc, bison, and flex 
-    * cd to go workkspace (like $GOPATH/src )
-    * git clone https://github.com/tyoung3/sw.git
-    * ./run sh c 
-    
+  * Install ctags, libyaml-dev, bnfc, bison, and flex 
+  * cd to go workspace (like $GOPATH/src )
+  * git clone https://github.com/tyoung3/sw.git
+  * ./sw.sh auto;  # Runs autotools.  Ignore build check errors.
+  * make check && make install
 
 
 Release Notes
 =============
 
-0.4
---- 
-
-Enabled buffer size specification. 
-Ex. (A a)0 <NNN- 0(B b); will allocate NNN buffers to this stream.
-
-0.5
---- 
-
-Port numbers default to zero.  
-Ex. (A a) <- (B b); expands to (A a)0 <- 0(B b);
-
-Introduces variables into the language, but are ignored for now.
-
-Enabled default components. 
-Ex.  ```(A)<-1(B)0<-(C);``` expands to: 
-```(B sw.Pass ) 		<-	0(C sw.Gens);	
-   (A sw.Print ) 		<-	1(B sw.Pass);
-```
-
-	* Reorganized development tree and fixed scripts 
-
-	* Cleaned up graphic.  
-		* Moved component info to tooltips.  
-		* Fixed up title.  
-		* Cleaned up URLs. Works with .SVG 
-		
-0.6
----
-
-	* Introduced stream chaining. 
-	  (A) <- (B) <- (C);  expands to: 
-	  (A) <- (B);
-	  (B) <- (C);		
-		
-	* Fixed dataflow chaining problems
-	
-0.7.0
+0.15.0
 ------
-	* Added subneting to NDs; BUGGY
------------
-
-0.7.1
-------
-	* Fixed collate example
-	
-0.7.3
-------
-	* Default path from first component.	
-	
-0.7.4	
------
-    * 
-
-0.7.5
------
-	* Fixed some subnet port id problems. 
-	* Worked on options to display comp name and arguments in graphs  
-	
-0.7.7
------
-	* Fixed subnet extra stream problem	
-	* Introduced anonymous processes. 
-	  Ex.  ```...(_  path.comp)...```
-	  
-	  
-0.8.0
------
-	* Introduced subnet tabs.  In subnet definitions,
-	  tags may be used to refer to external ports.  
-	  Ex. ```'sn { (A) <- IN; }; (B 'sn)IN <- (C);```  
-	  IN is an external reference tag.  The expanded 
-	  network will be: ```(B-A def.Print1 )0 <- 0(C def.Gen1);  ``` 	
-	 
-	
-0.8.2
------
-	* Updated for StreamWork-0.4.0 
-	* Updated collate.sw	 
-	
-0.9.0
------
-	* Introduced the AutoJoin feature.  If two processes 
-	  are sending 
-	  to the same sink port, sw will create an anonymous 
-	  poc.Join process to combine the two streams first.	
-	  
-0.9.1
------
-	* Introduced the AutoSplit feature.  If a process is 
-	  sending to two sinks from the same port, sw will 
-	  create an anonymous poc.Split process to send the 
-	  data to both sink processes. 	  
-	  
-0.9.3
------
-	* Standardized FAIL messages. 
-	* Show number processes, etc. statistics in 
-	  network definition. 
-	  Number of partitions equals number of disconnected 
-	  process groups. 	 
-
-0.10.0
-------
-	* Implemented right arrow in network definition language
-
-0.10.1
-------
-	* Refactored and fixed expansion logic
-
-0.10.2
-------
-	* Fixed some hermit logic
-
-0.10.3
-------
-	* Fixed hermit logic.  Initial autoconnect logic. 
-
-0.10.4
-------
-	* Implemented more hermit logic.   
-
-0.11.0
-------
-	* Implemented port name matching.
-
-0.11.1
-------
-	* Fixed External port errors
-	* Commented heading of linearized tree output
-
-0.11.3
-------
-	* Implemented configuration file, /home/tyoung3/.sw/sw.cfg
-
-0.11.4
-------
-	* Added TODOs. 
-	* Implemented string variables.
-
-0.11.5
-------
-	* Fixed string variables
-
-0.11.6
-------
-	* Fixed port autolinking
-	* Changed subnet tag from quote(') to underscore(_).
-
-0.11.7
-------
-	* Added missing name error messages.	
-	
-0.12.0
--------
-	* Added ability to generate a complete project and run the Go code from a network definition file. 
-	
-	* Changed dot(.) in component identifier to a slash(/) to permit  module paths 
-	  such as github.com/....   So (P def.Gen)  is now (P def/Gen).
-	  
-0.12.2
-------
-	* Consolidated the .../streamwork repo into the .../sw repo
-	
-	* Added type identifiers to stream definitions and .dot edge labels. 
-	
-	* Colored arrows in graph(.dot) output according to stream buffer sizes. 
-	  0-black  1-green  >1-orange  	
-	  
-	* Created swbase package containing basic components Launch, Join, Split, 
-	  Print, Gen, and Gens. 
-	       
-	* Created swutility package containing Merge and Collate components. 
-	
-0.13.0
-------
-	* Added Pass component to ...sw/swbase package
-	
-	* Fixes to dataflow type processing  	
-	
-	* Fix build process and installed build badge	 
-	
-0.13.1
-------
-	* Installed linux/Wrap function to encapsulate *Nix executables.	
-	
-0.13.2
-------
-	* Minor changes. Code cleaning.  Added license badge. 	
-	
-0.13.4
-------
-	* Include file implemented
-	* Process string prefix implemented	
-	
-0.14.0
-------
-	* Correct versioning error (Previously added functionality)
-	* Update home page links.
-	
-0.14.1
-------
-	* Update home page		
-	
-0.14.2
-------
-	* Fix default filter component  logic	
+  * Implemented autotools
 	
 SW Language Notes
 --------------------
@@ -479,9 +302,9 @@ Run the following (in Linux):
 	mkdir /tmp/collate
 	sw <  sw/nds/collate.sw   > /tmp/collate.go
 	go run /tmp/collate.go |grep Match0  
-```	
-to produce:
-``` 
+	
+to produce: 
+
 Match0 Int: 5
 Match0 Int: 7
 Match0 Int: 9
@@ -489,6 +312,7 @@ Match0 Int: 11
 Match0 Int: 17
 Match0 Int: 23
 
+``` 
 
 Hello World
 -----------
