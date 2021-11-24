@@ -126,6 +126,7 @@ BuildDocker() {    # To install see:  https://docs.docker.com/engine/install/ubu
 }
 
 Browse () {
+	## echo /opt/google/chrome/chrome $* 
 	[ -f $1 ] && $BROWSER $1
 }
 
@@ -154,9 +155,8 @@ case $1 in
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
-	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/todo.html	\
-		&&Browse ./docs/doxy/html/bug.html ;;
-        ex)shift; cd example; make;; 
+	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
+    ex)shift; cd example; make;; 
 	j) GenSVG;;
 	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
 	p)  shift;swproject.sh g  $*;;

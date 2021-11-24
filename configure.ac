@@ -32,5 +32,5 @@ AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T  
 AC_TYPE_UINT8_T
 AC_TYPE_INT32_T
-AC_CONFIG_FILES([Makefile bnfc/Makefile  model/Makefile README.md])
+AC_CONFIG_FILES([Makefile bnfc/Makefile  model/Makefile README.md docs/Makefile docs/Doxyfile])
 AC_OUTPUT
