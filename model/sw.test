@@ -1,0 +1,24 @@
+#!/bin/sh
+
+tt() {
+	nn=$(($nn+1));cmt=$1; shift 1
+	sw $* && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+}
+
+ttf() {
+	nn=$(($nn+1));cmt=$1; shift 1
+	sw $* && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt" 
+}
+
+echo   1..52 # Number of tests to be executed.
+nn=0
+tt "Version test" -v; 
+tt "GenGo from aa.sw"  tests/aa.sw  
+for sw_nd in tests/*.sw; do
+	tt "$sw_nd" $sw_nd
+done
+for sw_nd in tests/ok2fail/*.sw; do
+	ttf "$sw_nd" $sw_nd
+done
+
+## ?? breaks  github workflow ../bin/sw.sh poc     

@@ -13,13 +13,14 @@ Debug() {
 	&&echo SWGRAPH/DEBUG: $* 
 }
 
-SW=~/go/src/github.com/tyoung3/sw/bin/sw
+swdir=./model
+[ -e $swdir/sw ] || swdir=/usr/local/bin
+SW=$swdir/sw
 [ -e $SW     ] || Die $SW is missing 
 $SW -v 
 
 searchFile() { 
 	Debug SearchFIle $*
-	echo looking for $swfile
 	base=`basename $file`
 	swfile=${base}
 	

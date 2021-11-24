@@ -9,6 +9,11 @@ Die() {
 
 [ -z $VIEWOR ] && VIEWOR=eog
 
+swdir=./model
+[ -e $swdir/sw ] || swdir=/usr/local/bin
+SW=$swdir/sw
+[ -e $SW     ] || Die $SW is missing 
+
 temp=/tmp
 dir=$temp/sw
 [ -d $dir ] || mkdir -p  $dir || Die Cannot mkdir $dir
@@ -16,7 +21,7 @@ dir=$temp/sw
 RunLocusts () {
 	[ -d /tmp/x/ ] || mkdir /tmp/x || Die Cannot mkdir /tmp/x/
 	#mv $dir/* /tmp/x/ 2>&1 >/dev/null
-	bin/sw nds/locusts.sw >  $dir/locusts.go
+	$SW nds/locusts.sw >  $dir/locusts.go
 	# $pushd $dir
 	# [ -f go.mod ] || go mod init locusts/locusts
 	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 
@@ -32,8 +37,10 @@ RunLocusts () {
 
 		# Create  .jpg 		
 GenJPG() {  
-	pushd model
-	make /tmp/sw/locusts.png  && $VIEWOR /tmp/sw/locusts.png &
+	cd model   \
+	&& sw -m 3 ../nds/locusts.sw  > /tmp/sw/locusts.dot		\
+	&& dot -Tpng /tmp/sw/locusts.dot > /tmp/sw/locusts.png	\
+	&& $VIEWOR /tmp/sw/locusts.png &
 }	
 
 
@@ -53,6 +60,4 @@ EOF
 	;;	
 					
 esac	 
-	
-	
 

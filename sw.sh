@@ -126,6 +126,7 @@ BuildDocker() {    # To install see:  https://docs.docker.com/engine/install/ubu
 }
 
 Browse () {
+	## echo /opt/google/chrome/chrome $* 
 	[ -f $1 ] && $BROWSER $1
 }
 
@@ -144,7 +145,7 @@ case $1 in
     auto) [ -f Makefile.am ] || Die Missing Makefile.am
         aclocal # Set up an m4 environment
         autoconf # Generate configure from configure.ac
-        automake --add-missing # Generate Makefile.in from Makefile.am
+        automake  --add-missing # Generate Makefile.in from Makefile.am
         ./configure # Generate Makefile from Makefile.in
         make distcheck # Use Makefile to build and test a tarball to distribute
         #xmkmf -a 
@@ -154,15 +155,14 @@ case $1 in
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
-	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/todo.html	\
-		&&Browse ./docs/doxy/html/bug.html ;;
-        ex)shift; cd example; make;; 
+	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
+    ex)shift; cd example; make;; 
 	j) GenSVG;;
-	jl) bin/locusts.sh j & ;;	#Display locusts map;
-	p)  shift;project.sh g  $*;;
+	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
+	p)  shift;swproject.sh g  $*;;
 	poc) RunPoC;;
 	rc) RunCollate;;
-	rl) bin/locusts.sh r ;;
+	rl) bin/swlocusts.sh r ;;
 	rm) pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html;;
 	s) shift; Shell $;;
 	x) $EDITOR $0;;
@@ -173,7 +173,7 @@ sw.sh-$version USAGE:
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
 		e		. Exit SW shell.
-		dbuild [OPTs]	. Build SWdemo docker container. 
+		d build [OPTs]	. Build SWdemo docker container. 
 		doc		. Run and browse Doxygen [Deprecated]
 		j		. Generate collate .SVT
 		jl		. Generage locusts .SVG
