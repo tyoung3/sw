@@ -16,7 +16,6 @@ sw-0.15.0
 missing
 stamp*
 depcomp
-install-sh
 config.status
 *ORIG
 _OLD/
