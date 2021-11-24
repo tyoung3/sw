@@ -18,6 +18,19 @@ AC_CONFIG_HEADERS([model/config.h])
 
 # Checks for programs.
 AC_PROG_CC
+AC_CHECK_FUNCS([strdup strndup memset regcomp])
+AC_CHECK_HEADERS([inttypes.h libintl.h limits.h malloc.h memory.h stddef.h])
+AC_CHECK_TYPES([ptrdiff_t])
 
+AC_FUNC_ALLOCA
+AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_TYPE_INT16_T  
+AC_TYPE_INT8_T  
+AC_TYPE_UINT16_T  
+AC_TYPE_UINT32_T  
+AC_TYPE_UINT8_T
+AC_TYPE_INT32_T
 AC_CONFIG_FILES([Makefile bnfc/Makefile  model/Makefile README.md])
 AC_OUTPUT

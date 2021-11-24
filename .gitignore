@@ -41,6 +41,7 @@ IGNORE*
 Lexer.c
 .gdbinit
 model/gen.sh
+configure.scan
 tags
 *~
 *.aux

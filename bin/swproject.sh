@@ -27,12 +27,17 @@
 #    git branch to PS1
 #    all packages import project code.
 
-pgm=project.sh
+pgm=swproject.sh
 
 Die() {
 	echo -e "${red}$self/DIE: $*$reset"
 	exit 1
 }
+
+swdir=./model
+[ -e $swdir/sw ] || swdir=/usr/local/bin
+SW=$swdir/sw
+[ -e $SW     ] || Die $SW is missing 
 
 Debug() {
         [ "$DEBUG" == "y" ] && echo -e "$yellow$pgm/DEBUG: $* $reset " 
@@ -86,7 +91,7 @@ EOF
 GenGo() {
 	 module=$p
 	 Debug GenGo:  $*  module=$module
-	 sw -m 5 ${p}.sw > ./gen_$pgm
+	 $SW -m 5 ${p}.sw > ./gen_$pgm
 	 chmod a+x ./gen_$pgm				 
 	 ./gen_$pgm
 	 		 

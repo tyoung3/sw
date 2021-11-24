@@ -7,10 +7,10 @@ Die () {
 	exit 1
 }
 
-SW=/home/tyoung3/bin/sw
-echo SW=$SW
+swdir=./model
+[ -e $swdir/sw ] || swdir=/usr/local/bin
+SW=$swdir/sw
 [ -e $SW     ] || Die SW $SW is missing 
-# [ -f go.mod  ] || [ -f ../go.mod ]  || [ -f ../../go.mod ] || ../go.mod  || Die go.mod is missing
 
 GenRun() {
 	base=`basename $file`
