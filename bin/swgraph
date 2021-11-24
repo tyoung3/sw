@@ -21,7 +21,6 @@ $SW -v
 
 searchFile() { 
 	Debug SearchFIle $*
-	echo looking for $swfile
 	base=`basename $file`
 	swfile=${base}
 	
