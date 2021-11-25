@@ -1,8 +1,11 @@
-# sw/model/MAKEFILE.AM
+# sw/model/MAKEFILE.AM   
+## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = foreign
 TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
                   $(top_srcdir)/build-aux/tap-driver.sh
+  
+dist_bin_SCRIPTS = sw.cfg tests/sw.cfg
                   
 TESTS = sw.test   
 EXTRA_DIST = $(TESTS)  tests

@@ -10,7 +10,7 @@ autom*
 Makefile.in
 config.h.in
 compile
-sw-0.15.0
+sw-0.15.?
 *.m4
 .deps
 missing
