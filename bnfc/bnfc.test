@@ -14,7 +14,8 @@ ttf() {
 }
 
 echo TAP version 13
-echo 1..1  
-echo "" | TestSW && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+cmt="empty input"
+echo "" | $pgm && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 
 ##tt "a>b<c" "(A)->(B)<-(C);"
+echo 1..$nn  

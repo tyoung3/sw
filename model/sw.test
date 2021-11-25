@@ -10,7 +10,6 @@ ttf() {
 	sw $* && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt" 
 }
 
-echo   1..52 # Number of tests to be executed.
 nn=1; sw -v && echo "ok 1 - Version test" || echo "not ok 1 - Version test"
 
 ## tt "Version test" -v; 
@@ -22,4 +21,5 @@ for sw_nd in tests/ok2fail/*.sw; do
 	ttf "$sw_nd" $sw_nd
 done
 
+echo   1..$nn # Number of tests to be executed.
 ## ?? breaks  github workflow ../bin/sw.sh poc     
