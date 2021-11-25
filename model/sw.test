@@ -11,8 +11,9 @@ ttf() {
 }
 
 echo   1..52 # Number of tests to be executed.
-nn=0
-tt "Version test" -v; 
+nn=1; sw -v && echo "ok 1 - Version test" || echo "not ok 1 - Version test"
+
+## tt "Version test" -v; 
 tt "GenGo from aa.sw"  tests/aa.sw  
 for sw_nd in tests/*.sw; do
 	tt "$sw_nd" $sw_nd
