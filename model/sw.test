@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 tt() {
 	nn=$(($nn+1));cmt=$1; shift 1

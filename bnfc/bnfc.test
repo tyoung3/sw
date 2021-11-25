@@ -1,0 +1,20 @@
+#!/bin/bash
+
+pgm="./TestSW -s"
+nn=1
+
+tt() {
+	nn=$(($nn+1));cmt=$1; shift 1
+	$pgm $* && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+}
+
+ttf() {
+	nn=$(($nn+1));cmt=$1; shift 1
+	$pgm $* && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt" 
+}
+
+echo TAP version 13
+echo 1..1  
+echo "" | TestSW && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+
+##tt "a>b<c" "(A)->(B)<-(C);"
