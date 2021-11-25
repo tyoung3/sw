@@ -16,13 +16,13 @@ ttf() {
 nn=1; $pgm -v && echo "ok 1 - Version test" || echo "not ok 1 - Version test"
 
 ## tt "Version test" -v; 
-tt "tests/aa.sw"  tests/aa.sw  
-for sw_nd in tests/*.sw; do
-	tt "$sw_nd" $sw_nd
-done
-for sw_nd in tests/ok2fail/*.sw; do
-	ttf "$sw_nd" $sw_nd
-done
+#tt "tests/aa.sw"  tests/aa.sw  
+#for sw_nd in tests/*.sw; do
+#	tt "$sw_nd" $sw_nd
+#done
+##for sw_nd in tests/ok2fail/*.sw; do
+#	ttf "$sw_nd" $sw_nd
+#done
 
 echo   1..$nn # Number of tests to be executed.
 ## ?? breaks  github workflow ../bin/sw.sh poc     
