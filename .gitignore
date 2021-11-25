@@ -7,7 +7,6 @@ Makefile
 autom*
 *.trs
 *.log
-Makefile.in
 config.h.in
 compile
 sw-0.15.?
