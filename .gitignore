@@ -27,12 +27,10 @@ project/test/
 
 
 #Absyn.?
-AbsynLexer.c
 bnfc/SW.pdf	
 .gdbinitIGNORE_swedit
 gmon.out
 IGNORE*
-Lexer.c
 .gdbinit
 model/gen.sh
 configure.scan
