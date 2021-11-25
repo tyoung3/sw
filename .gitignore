@@ -7,13 +7,10 @@ Makefile
 autom*
 *.trs
 *.log
-compile
 sw-0.15.?
 *.m4
 .deps
-missing
 stamp*
-depcomp
 config.status
 *ORIG
 _OLD/
