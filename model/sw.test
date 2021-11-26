@@ -1,29 +1,25 @@
 #!/bin/bash
 
-
 pgm=./sw
-cmt=aaR.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+
+cat << EOF.aaR.sw | ./sw >/dev/null && echo ok 1 - aaR.sw || echo not ok 1 - # aaR.sw
 #  DEFAULT_IMPORT_PATH  
 
 (B poc/Comp2)0 -> 0(A Comp1);
 (Hello) -> (World); 
 
-EOF
-cmt=aa.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.aaR.sw
+
+cat << EOF.aa.sw | ./sw >/dev/null && echo ok 2 - aa.sw || echo not ok 2 - # aa.sw
 #  DEFAULT_IMPORT_PATH  
 
 (A2  Comp1)0<-0(B2 poc/Comp2);
 
 (Hello) -> (World); 
 
-EOF
-cmt=ab.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.aa.sw
+
+cat << EOF.ab.sw | ./sw >/dev/null && echo ok 3 - ab.sw || echo not ok 3 - # ab.sw
 {#
     AB.sw
 
@@ -37,18 +33,16 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (X2 a)0.SLOT    <- TAB.0(Y2 b);
 
 	 # This fails: (X3 a)TAB    <- TAB(Y3 b); 
-EOF
-cmt=ad.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.ab.sw
+
+cat << EOF.ad.sw | ./sw >/dev/null && echo ok 4 - ad.sw || echo not ok 4 - # ad.sw
 %bs = 7;
 (A3 a)0 <- 0(C3 b); 
 (A3 a)1 <%bs- 1(C3 b);
 (A3 a)2 <- 2(C3 b);
-EOF
-cmt=ae2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.ad.sw
+
+cat << EOF.ae2.sw | ./sw >/dev/null && echo ok 5 - ae2.sw || echo not ok 5 - # ae2.sw
 (A a)<- 0(B a)1 <-  (C a);
 (D a)<- 0(E a)1 <- 1(C a);
 (F a)<- 2(G a)1 <- 2(C a);
@@ -56,16 +50,14 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (C a)3<-  (G a)3 <- 1(F a);
 (H a) <- 2(E a)3 <- 1(A a);
 
-EOF
-cmt=aef.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.ae2.sw
+
+cat << EOF.aef.sw | ./sw >/dev/null && echo ok 6 - aef.sw || echo not ok 6 - # aef.sw
 (A a)0 <- 1(B b)0 <ip_t- 1(C c)0 <- 0(D d);
  
-EOF
-cmt=ae.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.aef.sw
+
+cat << EOF.ae.sw | ./sw >/dev/null && echo ok 7 - ae.sw || echo not ok 7 - # ae.sw
 
 
 (ae_D a)<- 3(ae_E a)0 <- 1(ae_C a);
@@ -78,10 +70,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (&A a)<- 1(ae_B a)0 <- 3(ae_C a);
 (ae_H a) <- 2(ae_E a)1 <- 1(&A a);
 
-EOF
-cmt=aj2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.ae.sw
+
+cat << EOF.aj2.sw | ./sw >/dev/null && echo ok 8 - aj2.sw || echo not ok 8 - # aj2.sw
 # AJ2.sw: AutoJoin 
 
 (M)  <- (A);
@@ -94,10 +85,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (N)  <- (G);
 (N)  <- (H);
 
-EOF
-cmt=aj.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.aj2.sw
+
+cat << EOF.aj.sw | ./sw >/dev/null && echo ok 9 - aj.sw || echo not ok 9 - # aj.sw
 # AJ.sw: AutoJoin 
 
 (N)  <- (A);
@@ -109,17 +99,15 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (Q)  <- (E);
 (Q)  <- (F);
 
-EOF
-cmt=anon.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.aj.sw
+
+cat << EOF.anon.sw | ./sw >/dev/null && echo ok 10 - anon.sw || echo not ok 10 - # anon.sw
 (_ A)  <-  (_ B);
 #(_ A)1 <- 1(_ B);
   
-EOF
-cmt=asj.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.anon.sw
+
+cat << EOF.asj.sw | ./sw >/dev/null && echo ok 11 - asj.sw || echo not ok 11 - # asj.sw
 # ASJ.sw: Demo autoSplit and edge colors 
 
 (C) 	<sw_t 1- 	0(A);
@@ -127,10 +115,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (D)	<     2-	0(A);
 (E)	<     0- 	0(A);
 (F)	<   100- 	0(A);
-EOF
-cmt=as.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.asj.sw
+
+cat << EOF.as.sw | ./sw >/dev/null && echo ok 12 - as.sw || echo not ok 12 - # as.sw
 # AS.sw: AutoSplit 
 
 (A)	 <- (Z);
@@ -140,10 +127,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (E)  <- (Z);
 (F)  <- (Z);
 
-EOF
-cmt=autojoin.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.as.sw
+
+cat << EOF.autojoin.sw | ./sw >/dev/null && echo ok 13 - autojoin.sw || echo not ok 13 - # autojoin.sw
 # AutoJoin.sw: AutoJoin 
 
 ^s {
@@ -154,39 +140,34 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 };
 
 (x ^s) <bar 2- (y);
-EOF
-cmt=d1.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.autojoin.sw
+
+cat << EOF.d1.sw | ./sw >/dev/null && echo ok 14 - d1.sw || echo not ok 14 - # d1.sw
 (A) <- (B);
-EOF
-cmt=e1.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.d1.sw
+
+cat << EOF.e1.sw | ./sw >/dev/null && echo ok 15 - e1.sw || echo not ok 15 - # e1.sw
 # Merge Error:  chance to autogen merge flow
 
 (A a)0 <- (B b);
 (A)0  <- (C c);
-EOF
-cmt=e2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.e1.sw
+
+cat << EOF.e2.sw | ./sw >/dev/null && echo ok 16 - e2.sw || echo not ok 16 - # e2.sw
 # Missing Component:  
 
 (D)0 <- (E b);
 
-EOF
-cmt=ex1.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.e2.sw
+
+cat << EOF.ex1.sw | ./sw >/dev/null && echo ok 17 - ex1.sw || echo not ok 17 - # ex1.sw
 ^a {  0<-(A); (A)1<-1; };  
 ^b { (C)0<-0; };
 (X ^b) <-  (Y ^a);
 (Y)1  <- (Z);
-EOF
-cmt=h1.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.ex1.sw
+
+cat << EOF.h1.sw | ./sw >/dev/null && echo ok 18 - h1.sw || echo not ok 18 - # h1.sw
 
 
 
@@ -207,20 +188,18 @@ Z ^a;
 (E)->(F);
 
 T "arg";
-EOF
-cmt=h2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.h1.sw
+
+cat << EOF.h2.sw | ./sw >/dev/null && echo ok 19 - h2.sw || echo not ok 19 - # h2.sw
 
 ^a {
 (A)-ip_t>(B);	
 };
 
 X ^a;
-EOF
-cmt=java.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.h2.sw
+
+cat << EOF.java.sw | ./sw >/dev/null && echo ok 20 - java.sw || echo not ok 20 - # java.sw
 #JAVA/SW
 
 #	  JavaFBP Ex/
@@ -286,17 +265,15 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 #       component("Write New Masters"),
 #       port("DESTINATION"));
 
-EOF
-cmt=jn.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.java.sw
+
+cat << EOF.jn.sw | ./sw >/dev/null && echo ok 21 - jn.sw || echo not ok 21 - # jn.sw
 (a A) -> (b B);
 (c C) -> (b);
 
-EOF
-cmt=lrR.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.jn.sw
+
+cat << EOF.lrR.sw | ./sw >/dev/null && echo ok 22 - lrR.sw || echo not ok 22 - # lrR.sw
 ^w {
 (F F)1  -13> 0;
 (G G)1 -14> (F F);
@@ -329,10 +306,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 
 (a ^a "Aa")0 	-1> (b ^b);
 (b ^b)1 	-2>  1(a ^a);
-EOF
-cmt=lr.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.lrR.sw
+
+cat << EOF.lr.sw | ./sw >/dev/null && echo ok 23 - lr.sw || echo not ok 23 - # lr.sw
 ^w {
 0  	<12- (F f);
 (F f)1  <13-   (G g);
@@ -366,10 +342,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 
 (b ^b)	<1-  0(a ^a "Aa");
 (a ^a)1 <2-  1(b ^b);
-EOF
-cmt=manycolor.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.lr.sw
+
+cat << EOF.manycolor.sw | ./sw >/dev/null && echo ok 24 - manycolor.sw || echo not ok 24 - # manycolor.sw
 
 (C)2 -> 2(g);
 (_  a/a) -> (B1 b/a)ba.1 -1> (C c/a)1 -2> (B2 b/a)1->(p a/P);
@@ -377,10 +352,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (k c/K) -> (_ j/a)1-int>(m M)1->(n N)1->(q q/Q);
 
 (E e/a) -> (F f/a)1 -> (g c/g);
-EOF
-cmt=module.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.manycolor.sw
+
+cat << EOF.module.sw | ./sw >/dev/null && echo ok 25 - module.sw || echo not ok 25 - # module.sw
 # Test module format for v0.12....
 
 (a)1		    			   -Filter_t 2>  (d    {github.twyoung3/sw/lrR/def}.Prt);
@@ -389,10 +363,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 
 
 
-EOF
-cmt=n1.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.module.sw
+
+cat << EOF.n1.sw | ./sw >/dev/null && echo ok 26 - n1.sw || echo not ok 26 - # n1.sw
 ^a {
 0	<1- 1(a A);
 (a) 	<2- (AA2);
@@ -407,10 +380,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 T;
 
 (E)-6>(F);
-EOF
-cmt=n2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.n1.sw
+
+cat << EOF.n2.sw | ./sw >/dev/null && echo ok 27 - n2.sw || echo not ok 27 - # n2.sw
 ^a {  
    (A)	<2- 0 ;
     7 	<1- 1(A CO1);
@@ -423,10 +395,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 
 Y ^b;
 X ^a; 
-EOF
-cmt=n3.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.n2.sw
+
+cat << EOF.n3.sw | ./sw >/dev/null && echo ok 28 - n3.sw || echo not ok 28 - # n3.sw
 ^a {  
    (A)	<- IN ;
 };  
@@ -440,10 +411,9 @@ X ^a; Y ^b;
 };
 
 T ^ab;
-EOF
-cmt=n4.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.n3.sw
+
+cat << EOF.n4.sw | ./sw >/dev/null && echo ok 29 - n4.sw || echo not ok 29 - # n4.sw
 ^a {  
    (A)	<- IN ;
 };  
@@ -457,10 +427,9 @@ X ^a; Y ^b;
 };
 
 T ^ab;
-EOF
-cmt=n5.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.n4.sw
+
+cat << EOF.n5.sw | ./sw >/dev/null && echo ok 30 - n5.sw || echo not ok 30 - # n5.sw
 ^u {
 (U3 U3)  <1- BP2;
 (U  U1)	 <3- BP3;
@@ -477,24 +446,21 @@ x ^v;
 z ^u;
 
 (A A)	<7- 1(A);
-EOF
-cmt=part2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.n5.sw
+
+cat << EOF.part2.sw | ./sw >/dev/null && echo ok 31 - part2.sw || echo not ok 31 - # part2.sw
 # PART2.sw: 
 #			A network with two partitions
 
 (A1 std/C1  )0 <- 0(B1  std/G1);
 (A2 std/C1  )0 <- 0(B2  std/G1);
-EOF
-cmt=pass.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.part2.sw
+
+cat << EOF.pass.sw | ./sw >/dev/null && echo ok 32 - pass.sw || echo not ok 32 - # pass.sw
 (A)->(B swbase/Pass)1->(C);
-EOF
-cmt=path.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.pass.sw
+
+cat << EOF.path.sw | ./sw >/dev/null && echo ok 33 - path.sw || echo not ok 33 - # path.sw
 #PAthAlogiCAl flows:
 (A A/B)1 <- 3(B C/D);
 (A A/B)0 <- 5(B C/D);
@@ -505,17 +471,15 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (D A/B)0 <- 2(B C/D);
 (D A/B)1 <- 7(B C/D);
 #}
-EOF
-cmt=prefix.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.path.sw
+
+cat << EOF.prefix.sw | ./sw >/dev/null && echo ok 34 - prefix.sw || echo not ok 34 - # prefix.sw
 PREFIX "pfx_"; 
 
 (A) -> (B);
-EOF
-cmt=sisub.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.prefix.sw
+
+cat << EOF.sisub.sw | ./sw >/dev/null && echo ok 35 - sisub.sw || echo not ok 35 - # sisub.sw
 ^w {
 0      <15-  1(F F);
 (F F)  <13-  1(G G);
@@ -568,10 +532,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (_a_Y def/Print1 )0 		<7- 0(_a_V def/V);	
 #}
 
-EOF
-cmt=sn2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.sisub.sw
+
+cat << EOF.sn2.sw | ./sw >/dev/null && echo ok 36 - sn2.sw || echo not ok 36 - # sn2.sw
 {#Subnets M and N
 
 #}
@@ -592,16 +555,14 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (X ^N)1 <- 1(Y ^M);
 (X ^N)2 <- 2(Y ^M);
 
-EOF
-cmt=split.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.sn2.sw
+
+cat << EOF.split.sw | ./sw >/dev/null && echo ok 37 - split.sw || echo not ok 37 - # split.sw
 (a) -foo>  (b)1 -bar> (d)1 <- (a); 
 (a) ->     (c);
-EOF
-cmt=subnet1.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.split.sw
+
+cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 38 - subnet1.sw || echo not ok 38 - # subnet1.sw
 {#Subnets M and N
 
 #}
@@ -625,10 +586,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 (X ^N)2 <3- 2(Y ^M);
 
 (T) 	<4- (U);
-EOF
-cmt=subnet4.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.subnet1.sw
+
+cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 39 - subnet4.sw || echo not ok 39 - # subnet4.sw
 # Recursive subnet -- experimental.  Causes segfault.
 
 
@@ -641,10 +601,9 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 };
 
 (A Gen) -> a.0(B ^s);
-EOF
-cmt=tag.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.subnet4.sw
+
+cat << EOF.tag.sw | ./sw >/dev/null && echo ok 40 - tag.sw || echo not ok 40 - # tag.sw
 ^a {
 (Hello Print1)0 <- 0;
 };
@@ -654,18 +613,16 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 };
 
 (_ ^a)0 <- 0(World ^b);
-EOF
-cmt=var.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+EOF.tag.sw
+
+cat << EOF.var.sw | ./sw >/dev/null && echo ok 41 - var.sw || echo not ok 41 - # var.sw
 #$AA="AA)(\n"; 
 &BBB = BBB;
 
 (&BBB) <- (y Y $AA);
-EOF
-cmt=ac.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+EOF.var.sw
+
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 42 - ac.sw || echo ok 42 - # ac.sw
 {#
       AE1.sw
       
@@ -685,40 +642,35 @@ cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
 (A strings/Print1)0 <- a(B strings/Gen1); 
 (E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
 (C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
-EOF
-cmt=e3.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+FAIL.ac.sw
+
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 43 - e3.sw || echo ok 43 - # e3.sw
 # Missmatched port names:  
 
 (F A)MATCH  <- MISS(G b);
-EOF
-cmt=e4.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+FAIL.e3.sw
+
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 44 - e4.sw || echo ok 44 - # e4.sw
 # Missmatched port 
 
 (H A)0  <- 0(I b);
 (H)1  <- 1(I);
 (H)2.BAR  <- 2.FOO(I);
 (H)3  <- 3(I);
-EOF
-cmt=e5.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+FAIL.e4.sw
+
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 45 - e5.sw || echo ok 45 - # e5.sw
 # (K) port error
 
 (K)   <-  OUT(J);
 (J)IN <-  (K);
-EOF
-cmt=fail_include.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+FAIL.e5.sw
+
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 46 - fail_include.sw || echo ok 46 - # fail_include.sw
 INCLUDE "fail_include.sw";
-EOF
-cmt=inc.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+FAIL.fail_include.sw
+
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 47 - inc.sw || echo ok 47 - # inc.sw
 #include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
 
 INCLUDE "inc.isw"; 
@@ -729,10 +681,9 @@ INCLUDE "inc.isw";
 
 #include "../model/tests/inc3.isw"; 
 
-EOF
-cmt=subnet2.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+FAIL.inc.sw
+
+cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 48 - subnet2.sw || echo ok 48 - # subnet2.sw
 {#Subnets M and N
 
 #}
@@ -758,10 +709,9 @@ cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
 (X ^N)2 <type_M 3- 2(Y ^M);
 
 (T) 	<4- (U);
-EOF
-cmt=subnet3.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+FAIL.subnet2.sw
+
+cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 49 - subnet3.sw || echo ok 49 - # subnet3.sw
 
 ######################################################### 
 ^M5 {
@@ -822,5 +772,5 @@ A	<type_C 13 -	0(A);
 
 #########################################################
 #}
-EOF
-echo   1..$nn # Number of tests to be executed.
+FAIL.subnet3.sw
+echo  1..49 # Number of tests to be executed.

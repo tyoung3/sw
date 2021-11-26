@@ -262,9 +262,8 @@ Foo Bar-7
   * Install ctags, libyaml-dev, bnfc, bison, and flex 
   * cd to go workspace (like $GOPATH/src )
   * git clone https://github.com/tyoung3/sw.git
-  * ./sw.sh auto;  # Runs autotools.  Ignore build check errors.
-  * make check && make install
-
+  * ./sw.sh auto;  # Runs autotools including ./configure. 
+  * make check
 
 Release Notes
 =============
@@ -275,7 +274,8 @@ Release Notes
   
 0.15.1
 ------
-  * Installed Autotools  
+  * Fixed  Autotools(make distcheck) 
+  * Created mktest.sh to build sw.test script  
   
 	
 SW Language Notes
