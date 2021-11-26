@@ -8,7 +8,7 @@ TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
 TESTS = sw.test   
 EXTRA_DIST = $(TESTS)   
 bin_PROGRAMS = sw
-bin_scripts = sw.test.sh
+bin_scripts = sw.test mktest.sh
 ##scripts_DATA = tests/ab.sw tests/aa.sw
 ##scriptsdir = prefix=@prefix@
 ##exec_prefix=@exec_prefix@

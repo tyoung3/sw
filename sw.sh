@@ -143,6 +143,9 @@ Shell() {
 
 case $1 in	
     auto) [ -f Makefile.am ] || Die Missing Makefile.am
+    	pushd model
+    		./mktest.sh || Die Failed making sw.test script
+    	popd
         aclocal # Set up an m4 environment && \
         autoconf # Generate configure from configure.ac && \
         automake  --add-missing # Generate Makefile.in from Makefile.am && \

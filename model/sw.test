@@ -155,14 +155,6 @@ cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
 
 (x ^s) <bar 2- (y);
 EOF
-cmt=combo.sw
-nn=$((nn=$nn+1))
-cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
-include "aa.sw";
-include "ab.sw";
-include "ad.sw";
-include "ae.sw";
-EOF
 cmt=d1.sw
 nn=$((nn=$nn+1))
 cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
