@@ -165,7 +165,10 @@ case $1 in
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/swlocusts.sh r ;;
-	rm) pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html;;
+	rm) 
+	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
+	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
+	   ;;
 	s) shift; Shell $;;
 	x) $EDITOR $0;;
 	*) cat << EOF 
