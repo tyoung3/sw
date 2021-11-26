@@ -4,6 +4,12 @@
 test-driver
 Makefile
 .idea/
+
+model/aa.sw
+model/tests/Makefile.am
+model/tests/Makefile.in
+swtests/
+
 autom*
 *.trs
 *.log

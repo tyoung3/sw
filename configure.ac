@@ -1,8 +1,8 @@
-## sw/configure.ac
-##		https://www.gnu.org/software/autoconf/manual/autoconf-2.60/html_node/index.html#Top
-##     https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install
-##     https://www.gnu.org/software/automake/manual/automake.html#Declaring-Custom-Test-Drivers
-
+dnl sw/configure.ac
+dnl 	https://www.gnu.org/software/autoconf/manual/autoconf-2.60/html_node/index.html#Top
+dnl     https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install
+dnl     https://www.gnu.org/software/automake/manual/automake.html#Declaring-Custom-Test-Drivers
+dnl Process this file with autoconf
 AC_INIT([sw], [0.15.1], [sw@twyoung.com])  #VERSION for releasing, not in sw
 AC_SUBST(SW_MAJOR, ["0"])
 AC_SUBST(SW_MINOR, ["15"])
@@ -13,7 +13,7 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([model/sw.c])
 AC_CONFIG_HEADERS([model/config.h])
 
-# Checks for programs.
+dnl Checks for programs.
 AC_PROG_CC
 AC_CHECK_FUNCS([strdup strndup memset regcomp])
 AC_CHECK_HEADERS([inttypes.h libintl.h limits.h malloc.h memory.h stddef.h])
@@ -29,5 +29,5 @@ AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T  
 AC_TYPE_UINT8_T
 AC_TYPE_INT32_T
-AC_CONFIG_FILES([Makefile bnfc/Makefile  model/Makefile README.md docs/Makefile docs/Doxyfile])
+AC_CONFIG_FILES([Makefile bnfc/Makefile  model/Makefile README.md docs/Makefile docs/Doxyfile ])
 AC_OUTPUT

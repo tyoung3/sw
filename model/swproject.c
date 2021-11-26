@@ -10,13 +10,6 @@
 	@todo Plugins:
 		https://pkg.go.dev/plugin
 	@todo Design Project logo and publish. 
-	@todo Publish API and upgrade home page.
-	@todo Create Package simplifying installation/startup
-	@todo Discuss differences from 'classic' FBP.
-		FBP inspired: 	http://www.jpaulmorrison.com/fbp/noflo.html
-		Lifetime: 	https://suif.stanford.edu/collective/taint.html
-			Q. Does Go clear buffers at close?
-		Ownership: 	https://www.egnyte.com/resource-center/governance-guides/data-ownership
  	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
 	@todo Process command/config arguments. 
 	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines.
@@ -29,6 +22,12 @@
 	@todo Create Man pages w/Doxygen
 	
  DONE: 
+	@done Discuss differences from 'classic' FBP.
+		FBP inspired: 	http://www.jpaulmorrison.com/fbp/noflo.html
+		Lifetime: 	https://suif.stanford.edu/collective/taint.html
+			Q. Does Go clear buffers at close?
+		Ownership: 	https://www.egnyte.com/resource-center/governance-guides/data-ownership
+    @done Installation w/Autotools
 	@done Add PREFIX statement to prefix process names with a string. 
 	@done Make generated test_.go's  deadlock safe. Test w/collate.sw
 	@done Improve module location.  Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase 

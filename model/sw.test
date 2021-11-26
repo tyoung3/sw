@@ -2,27 +2,825 @@
 
 
 pgm=./sw
+cmt=aaR.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+#  DEFAULT_IMPORT_PATH  
 
-tt() {
-	nn=$(($nn+1));cmt=$1; shift 1
-	$pgm $* && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
-}
+(B poc/Comp2)0 -> 0(A Comp1);
+(Hello) -> (World); 
 
-ttf() {
-	nn=$(($nn+1));cmt=$1; shift 1
-	$pgm $* && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt" 
-}
+EOF
+cmt=aa.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+#  DEFAULT_IMPORT_PATH  
 
-nn=1; $pgm -v && echo "ok 1 - Version test" || echo "not ok 1 - Version test"
+(A2  Comp1)0<-0(B2 poc/Comp2);
 
-## tt "Version test" -v; 
-#tt "tests/aa.sw"  tests/aa.sw  
-#for sw_nd in tests/*.sw; do
-#	tt "$sw_nd" $sw_nd
-#done
-##for sw_nd in tests/ok2fail/*.sw; do
-#	ttf "$sw_nd" $sw_nd
-#done
+(Hello) -> (World); 
 
+EOF
+cmt=ab.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+{#
+    AB.sw
+
+#}
+
+(A strings/Print1)SLOT 	<- 0.TAB(B strings/Gen1 "1" "2" "3"  $_BROWSER ); 
+(C strings/Print1)IN 	<- OUT.0(D strings/Gen1 "2"); 
+(E strings/Print1 "S1" "S2" "S3")0.IN <- OUT.0(F strings/Gen1 "3" "7"); 
+
+(X1 a)0.SOCKET  <- PLUG.0(Y1 b); 
+(X2 a)0.SLOT    <- TAB.0(Y2 b);
+
+	 # This fails: (X3 a)TAB    <- TAB(Y3 b); 
+EOF
+cmt=ad.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+%bs = 7;
+(A3 a)0 <- 0(C3 b); 
+(A3 a)1 <%bs- 1(C3 b);
+(A3 a)2 <- 2(C3 b);
+EOF
+cmt=ae2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+(A a)<- 0(B a)1 <-  (C a);
+(D a)<- 0(E a)1 <- 1(C a);
+(F a)<- 2(G a)1 <- 2(C a);
+
+(C a)3<-  (G a)3 <- 1(F a);
+(H a) <- 2(E a)3 <- 1(A a);
+
+EOF
+cmt=aef.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+(A a)0 <- 1(B b)0 <ip_t- 1(C c)0 <- 0(D d);
+ 
+EOF
+cmt=ae.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+
+
+(ae_D a)<- 3(ae_E a)0 <- 1(ae_C a);
+(ae_F a)<- 3(ae_G a) <-  2(ae_C a);
+
+(ae_C a) <- 2(ae_G a)1 <- 1(ae_F a);
+
+
+&A=ae_XA;
+(&A a)<- 1(ae_B a)0 <- 3(ae_C a);
+(ae_H a) <- 2(ae_E a)1 <- 1(&A a);
+
+EOF
+cmt=aj2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# AJ2.sw: AutoJoin 
+
+(M)  <- (A);
+(M)  <- (B);
+(M)  <- (C);
+(M)  <- (D);
+
+(N)  <- (E);
+(N)  <- (F);
+(N)  <- (G);
+(N)  <- (H);
+
+EOF
+cmt=aj.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# AJ.sw: AutoJoin 
+
+(N)  <- (A);
+(N)  <- (B);
+
+(P)  <- (C);
+(P)  <- (D);
+
+(Q)  <- (E);
+(Q)  <- (F);
+
+EOF
+cmt=anon.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+(_ A)  <-  (_ B);
+#(_ A)1 <- 1(_ B);
+  
+EOF
+cmt=asj.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# ASJ.sw: Demo autoSplit and edge colors 
+
+(C) 	<sw_t 1- 	0(A);
+(B) 	<     3-     	0(A);
+(D)	<     2-	0(A);
+(E)	<     0- 	0(A);
+(F)	<   100- 	0(A);
+EOF
+cmt=as.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# AS.sw: AutoSplit 
+
+(A)	 <- (Z);
+(B)  <- (Z);
+(C)  <- (Z);
+(D)  <- (Z);
+(E)  <- (Z);
+(F)  <- (Z);
+
+EOF
+cmt=autojoin.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# AutoJoin.sw: AutoJoin 
+
+^s {
+	(A)0 <-     (B);    
+	(A)0 <-     (C);     
+	(A)0 <foo- 1(D); 
+	(D)0 <bar- 0;    
+};
+
+(x ^s) <bar 2- (y);
+EOF
+cmt=d1.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+(A) <- (B);
+EOF
+cmt=e1.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# Merge Error:  chance to autogen merge flow
+
+(A a)0 <- (B b);
+(A)0  <- (C c);
+EOF
+cmt=e2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# Missing Component:  
+
+(D)0 <- (E b);
+
+EOF
+cmt=ex1.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^a {  0<-(A); (A)1<-1; };  
+^b { (C)0<-0; };
+(X ^b) <-  (Y ^a);
+(Y)1  <- (Z);
+EOF
+cmt=h1.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+
+
+
+^a {
+(AA)	<1- (A a);
+(A)1 	<2- (AA2);
+};
+
+^b {
+(BB2)	<3- (B b);
+(B)1 	<4-  (BB);
+};
+
+X ^a;
+Y ^b;
+Z ^a;
+
+(E)->(F);
+
+T "arg";
+EOF
+cmt=h2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+
+^a {
+(A)-ip_t>(B);	
+};
+
+X ^a;
+EOF
+cmt=java.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+#JAVA/SW
+
+#	  JavaFBP Ex/
+
+# JavaFBP Poc: 
+
+# SUFFIX class;
+# INITIAL Read_Masters 		    "c:\\mastfile" SOURCE;
+# INITIAL Read_Details  		"c:\\detlfile" SOURCE;   
+# INITIAL Write_New_Masters  	"c:\\newmast"  DESTINATION; 
+# (Read_Masters Read)OUT 		 =>> IN,0(Collate Collate); 		// array port
+# (Read_Details Read)OUT 		 =>> IN,1(Collate); 
+# (Collate Proc)OUT 			 =>> IN(Process_Merged_Stream Proc);
+# (Process_Merged_Stream)OUTSE =>> IN(Summary_&_Errors Report);
+# (Process_Merged_Stream)OUTM  =>> IN(Write_New_Masters);
+
+#        Or equally:
+# (P)OUTSE       =>> IN(SE Report);
+# (P)OUTM        =>> IN(M  Write);
+# (R1 Read)OUT   =>> IN0(C Collate);
+# (C)OUT         =>> IN(P  Proc);
+# (R2 Read)OUT   =>> IN1(C);
+# "c:\\newmast"  =>>    (M);
+# "c:\\mastfile" =>>    (R1);
+# "c:\\detlfile" =>>    (R2);
+
+#      In Go: 
+(C Collate)0   <-  0(R1 Read);
+#(P)2    	  <-  1(C);
+(SE Report)0   <-  0(P Proc);
+#(M  Write)0    <-  1(P);
+#(C)2    	   <-  0(R2 Read);
+
+#(M)1  		   <-     "c:\\newmast";
+#(R1)1 		   <-     "c:\\mastfile";
+#(R2)1 		   <-     "c:\\detlfile";
+
+# connect(component("Read Masters",Read/class),  port("OUT"), 
+#	      component("Collate",    Collate/class),port("IN",0));  
+
+#    connect(component("Read Details",Read/class),port("OUT"),
+#      component("Collate"),port("IN",1));// array port  
+      
+#    connect(component("Collate"),port("OUT"),
+#      component("Process Merged Stream",Proc/class),port("IN"));  
+      
+#    connect(component("Process Merged Stream"),port("OUTM"),
+#      component("Write New Masters",Write/class),port("IN"));  
+      
+#    connect(component("Process Merged Stream"),port("OUTSE"),
+#      component("Summary & Errors",Report/class),port("IN"));
+      
+
+#    initialize(new FileReader("c:\\mastfile"),
+#      component("Read Masters"),
+#      port("SOURCE"));
+      
+#     initialize(new FileReader("c:\\detlfile"),
+#       component("Read Details"),
+#       port("SOURCE"));
+
+#     initialize(new FileWriter("c:\\newmast"),
+#       component("Write New Masters"),
+#       port("DESTINATION"));
+
+EOF
+cmt=jn.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+(a A) -> (b B);
+(c C) -> (b);
+
+EOF
+cmt=lrR.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^w {
+(F F)1  -13> 0;
+(G G)1 -14> (F F);
+(H H)  -15> 0(G G);
+};
+
+
+^v {
+(E ^w)  -12>  0;
+};
+
+
+^u {
+(D ^v) -11> 0;
+};
+
+^a {
+1	-7> (Y);
+(V V)1   -8> 0;
+(W W)1  -9> (V);
+(X)	-10>  (W);
+};
+
+^b {
+(S S)1 	-3> 1;
+(T)2 	-4>  (S);
+(U ^u) 	-5> 1(T);
+0 	-6> 0(T T);
+};
+
+(a ^a "Aa")0 	-1> (b ^b);
+(b ^b)1 	-2>  1(a ^a);
+EOF
+cmt=lr.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^w {
+0  	<12- (F f);
+(F f)1  <13-   (G g);
+(G g)1  <14-   (H  h);
+};
+
+
+^v {
+0       <11- (E ^w);
+};
+
+
+^u {
+0       <10-   (D ^v);
+};
+
+^a {
+(Y)     <7- 1;
+0 		<2-  (V v);
+(V)1    <8- 1(W w);
+(W)     <9-  (X);
+};
+
+^b {
+1 	<3-  (S s);
+(S)1	<4-  2(T);
+(T)1 	<5-  (U ^u);
+(T t)0  <6-  0;
+};
+
+
+(b ^b)	<1-  0(a ^a "Aa");
+(a ^a)1 <2-  1(b ^b);
+EOF
+cmt=manycolor.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+
+(C)2 -> 2(g);
+(_  a/a) -> (B1 b/a)ba.1 -1> (C c/a)1 -2> (B2 b/a)1->(p a/P);
+(g)1 -> (_ h/a);
+(k c/K) -> (_ j/a)1-int>(m M)1->(n N)1->(q q/Q);
+
+(E e/a) -> (F f/a)1 -> (g c/g);
+EOF
+cmt=module.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# Test module format for v0.12....
+
+(a)1		    			   -Filter_t 2>  (d    {github.twyoung3/sw/lrR/def}.Prt);
+(c  {github.com/tyoung3/sw/mod2/a/d/e/f}.C)      <Sink_t- 1(d);
+(a  {github.com/tyoung3/sw/lrR/def}.F) 	            -7>  (b    {github.com/tyoung3/streamwork/poc}.Print1 );
+
+
+
+EOF
+cmt=n1.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^a {
+0	<1- 1(a A);
+(a) 	<2- (AA2);
+};
+
+^b {
+(BB2)	<3- 1(b B);
+(b) 	<4-  0;
+};
+(Y ^b)<-(X ^a);
+
+T;
+
+(E)-6>(F);
+EOF
+cmt=n2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^a {  
+   (A)	<2- 0 ;
+    7 	<1- 1(A CO1);
+};  
+
+^b {  
+    0	<5- 1(B CO2);
+   (B)	<6- 7 ;
+};  
+
+Y ^b;
+X ^a; 
+EOF
+cmt=n3.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^a {  
+   (A)	<- IN ;
+};  
+
+^b {  
+    OUT	<- (B);
+};  
+
+^ab {
+X ^a; Y ^b; 
+};
+
+T ^ab;
+EOF
+cmt=n4.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^a {  
+   (A)	<- IN ;
+};  
+
+^b {  
+    OUT	<- (B);
+};  
+
+^ab {
+X ^a; Y ^b; 
+};
+
+T ^ab;
+EOF
+cmt=n5.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^u {
+(U3 U3)  <1- BP2;
+(U  U1)	 <3- BP3;
+(U  U1)1 <5- BP4;
+};
+
+^v {
+BP2   	<4- 0(V V1);
+BP3	<2-  (V2 V2);
+BP4	<6- 0(V3 V3);
+};
+
+x ^v;
+z ^u;
+
+(A A)	<7- 1(A);
+EOF
+cmt=part2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# PART2.sw: 
+#			A network with two partitions
+
+(A1 std/C1  )0 <- 0(B1  std/G1);
+(A2 std/C1  )0 <- 0(B2  std/G1);
+EOF
+cmt=pass.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+(A)->(B swbase/Pass)1->(C);
+EOF
+cmt=path.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+#PAthAlogiCAl flows:
+(A A/B)1 <- 3(B C/D);
+(A A/B)0 <- 5(B C/D);
+(B C/D)0 <- 2(A A/B);
+(B C/D)1 <- 2(D A/B);
+(C A/B)0 <- 4(B C/D);
+(C A/B)1 <- 6(B C/D);
+(D A/B)0 <- 2(B C/D);
+(D A/B)1 <- 7(B C/D);
+#}
+EOF
+cmt=prefix.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+PREFIX "pfx_"; 
+
+(A) -> (B);
+EOF
+cmt=sisub.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^w {
+0      <15-  1(F F);
+(F F)  <13-  1(G G);
+(G G)  <14-   (H  H);
+};
+
+
+^v {
+0       <11-   (E ^w);
+};
+
+
+^u {
+0       <12-   (D ^v);
+};
+
+^a {
+(Y) 	<1- 0;
+1 	<2-  1(V V);
+(V)     <10- 1(W W);
+(W)     <3-  (X);
+};
+
+^b {
+1	<4-  1(S S);
+(S)0	<9-  2(T);
+(T)1 	<5-  (U ^u);
+(T T)0  <6-  0;
+};
+
+(b ^b)	<1- 1(a ^a);
+(a ^a)  <2-  1(b ^b);
+
+
+
+##########################   The rest is commentary   #############################
+#(_b_T def/T )0 		<7- 0(_a_V def/V);  #S/B/
+#(_a_Y def/Print1 )0 		<7- 0(_a_V     );	
+#(_b_T       )2 		<15- 0(_b_U_D_E_F def/F);
+#(_b_T       )2 		<15- 0(_b_U_D_E_F );  #S/B/	
+
+{#
+(_a_V def/V )1 		<10- 1(_a_W def/W);	
+(_a_W def/W )0 		<3- 0(_a_X def/Gen1);	
+(_b_U_D_E_F def/F )1 		<13- 0(_b_U_D_E_G def/G);	
+(_b_U_D_E_G def/G )1 		<14- 0(_b_U_D_E_H def/H);	
+(_b_S def/S )0 		<9- 1(_b_T def/T);	
+(_b_T def/T )2 		<15- 0(_b_U_D_E_F def/F);	
+((null) '/a )1 		<8- 1(_b_S def/S);	
+(_a_Y def/Print1 )0 		<7- 0(_a_V def/V);	
+#}
+
+EOF
+cmt=sn2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+{#Subnets M and N
+
+#}
+
+^M { 
+0     	<- 0(B);
+1	<- 0(C);
+2	<- 1(C);
+};
+
+^N {     
+(A) 	<- 0;
+(A)1 	<- 1; 
+(A)2 	<- 2; 
+};
+
+(X ^N)0 <- 0(Y ^M);
+(X ^N)1 <- 1(Y ^M);
+(X ^N)2 <- 2(Y ^M);
+
+EOF
+cmt=split.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+(a) -foo>  (b)1 -bar> (d)1 <- (a); 
+(a) ->     (c);
+EOF
+cmt=subnet1.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+{#Subnets M and N
+
+#}
+
+^M { 
+0      	 <5-	1(B);
+1	 <6-    0(S3);
+2 	 <7- 	0(S2);
+(B)0	 <8- 	0(S1);
+};
+ 
+
+^N {    
+(A1)0	 <9- 0;  
+(A1)1 	<10- 1;
+(e E)0 	<11- 2; 
+};
+
+(X ^N)0 <1- 0(Y ^M);
+(X ^N)1 <2- 1(Y ^M);
+(X ^N)2 <3- 2(Y ^M);
+
+(T) 	<4- (U);
+EOF
+cmt=subnet4.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+# Recursive subnet -- experimental.  Causes segfault.
+
+
+^s2 {
+  0 -> (D);
+};
+
+^s {
+  0 -> a.0(C ^s2);      # Changing ^s to ^s2 works. 
+};
+
+(A Gen) -> a.0(B ^s);
+EOF
+cmt=tag.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+^a {
+(Hello Print1)0 <- 0;
+};
+
+^b {
+0     <- (_);
+};
+
+(_ ^a)0 <- 0(World ^b);
+EOF
+cmt=var.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "ok $nn - $cmt" || echo "not ok $nn - $cmt"
+#$AA="AA)(\n"; 
+&BBB = BBB;
+
+(&BBB) <- (y Y $AA);
+EOF
+cmt=ac.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+{#
+      AE1.sw
+      
+      This file contains only syntax errors.
+      I.e. every statement will fail to parse successfully.
+#}
+
+(X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b/c "abc" FailOKHere); 
+(X b/c)2 <- "ab"; 
+"File" <- 0(X b/c); 
+(X in/b/c)2 <- 3(D); 
+(E Comp_bc@2)2 <- 8(D);
+(3)2 <- 8(D);
+(F 8)2 <- 8(D);
+(A strings.Print1)0 <- a(B strings/Gen1); 
+(F)2 <- 7(D) <- 8(E);
+(A strings/Print1)0 <- a(B strings/Gen1); 
+(E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
+(C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
+EOF
+cmt=e3.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+# Missmatched port names:  
+
+(F A)MATCH  <- MISS(G b);
+EOF
+cmt=e4.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+# Missmatched port 
+
+(H A)0  <- 0(I b);
+(H)1  <- 1(I);
+(H)2.BAR  <- 2.FOO(I);
+(H)3  <- 3(I);
+EOF
+cmt=e5.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+# (K) port error
+
+(K)   <-  OUT(J);
+(J)IN <-  (K);
+EOF
+cmt=fail_include.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+INCLUDE "fail_include.sw";
+EOF
+cmt=inc.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+#include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
+
+INCLUDE "inc.isw"; 
+
+(X ^N)0 <- 0(Y ^M);
+(X ^N)1 <- 1(Y ^M);
+(X ^N)2 <- 2(Y ^M);
+
+#include "../model/tests/inc3.isw"; 
+
+EOF
+cmt=subnet2.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+{#Subnets M and N
+
+#}
+
+^M { 
+(B)0	 <type_J 8- 		0(S1);
+0      	 <5-		1(B);
+1	 <6-    	0(S3);
+2 	 <type_K2 7- 	0(S2);
+#(t)     <13-   	3;
+};
+ 
+
+^N {   
+(A1)0	<9- 		0;  
+(A1)1 	<10- 		1;
+(e E)0	<type_K3 11- 	2; 
+#3      <12-  		(u); 
+};
+
+(X ^N)0 <type_L 1- 0(Y ^M);
+(X ^N)1 <string 2- 1(Y ^M);
+(X ^N)2 <type_M 3- 2(Y ^M);
+
+(T) 	<4- (U);
+EOF
+cmt=subnet3.sw
+nn=$((nn=$nn+1))
+cat << EOF | $pgm >/dev/null && echo "not ok $nn - $cmt" || echo "ok $nn - $cmt"
+
+######################################################### 
+^M5 {
+Eb	<type_A 14-	0(B);
+Ea	<type_B 15-	0(A); 
+};
+#####################   N_   ############################ 
+^N1 {    
+(C)0	<type_N1 2- 	Ea;  
+(D)0 	<type_N2 3- 	Eb;
+};
+
+#################################iptype_save=iptype_save=########################
+(X5 ^N1)0	<type_D- 0(Y5 ^M5);
+(X5)1 		<type_C- 1(Y5);
+
+#################   The End   ###########################
+
+{#
+
+###################   M Subnets iptype_save= #######################
+^M0 { 
+B	<4-		0(B);
+A	<5- 		0(A);
+#########################################################
+};
+#########################################################
+^M1 { 
+B	<type_C 6-	0(B);
+A	<7- 		0(A);
+};
+#########################################################
+^M2 { 
+#########################################################
+B	<type_B 8-	0(B); 
+A	<type_C 9-	0(A);iptype_save=
+};
+#########################################################
+^M3 { 
+B	<type_A 10-	0(B);
+A	<type_B 11-	0(A);
+};
+#########################################################
+#########################################################
+^M4 {  
+B	<type_A 12-	0(B);
+A	<type_C 13 -	0(A);
+};
+
+#}
+{#
+##################   X and Y   ##########################
+(X1 ^N1)0	<type_N1- 0(Y1 ^M0);
+(X1)1 		<type_N2- 1(Y1);
+#########################################################
+(X2 ^N1)0	<-	 0(Y2 ^M1);
+(X2)1 		<type_C- 1(Y2);
+
+#########################################################
+#}
+EOF
 echo   1..$nn # Number of tests to be executed.
-## ?? breaks  github workflow ../bin/sw.sh poc     
