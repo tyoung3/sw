@@ -9,10 +9,6 @@ TESTS = sw.test
 EXTRA_DIST = $(TESTS)   
 bin_PROGRAMS = sw
 bin_scripts = sw.test mktest.sh
-##scripts_DATA = tests/ab.sw tests/aa.sw
-##scriptsdir = prefix=@prefix@
-##exec_prefix=@exec_prefix@
-##bindir=@bindir@
 scriptsdir = "$(DESTDIR)/bin"
 
 PGM = ./${bin_PROGRAMS} 
