@@ -2954,7 +2954,6 @@ fi
 ac_config_headers="$ac_config_headers model/config.h"
 
 
-# Checks for programs.
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -4894,7 +4893,7 @@ _ACEOF
 ;;
 esac
 
-ac_config_files="$ac_config_files Makefile bnfc/Makefile model/Makefile README.md docs/Makefile docs/Doxyfile"
+ac_config_files="$ac_config_files Makefile bnfc/Makefile model/sw.test.sh model/Makefile model/tests/Makefile README.md docs/Makefile docs/Doxyfile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5625,7 +5624,9 @@ do
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "bnfc/Makefile") CONFIG_FILES="$CONFIG_FILES bnfc/Makefile" ;;
+    "model/sw.test.sh") CONFIG_FILES="$CONFIG_FILES model/sw.test.sh" ;;
     "model/Makefile") CONFIG_FILES="$CONFIG_FILES model/Makefile" ;;
+    "model/tests/Makefile") CONFIG_FILES="$CONFIG_FILES model/tests/Makefile" ;;
     "README.md") CONFIG_FILES="$CONFIG_FILES README.md" ;;
     "docs/Makefile") CONFIG_FILES="$CONFIG_FILES docs/Makefile" ;;
     "docs/Doxyfile") CONFIG_FILES="$CONFIG_FILES docs/Doxyfile" ;;
