@@ -79,23 +79,15 @@ On option, StreamWork will read, parse and interpret a network definition file t
 swgo script
 -----------
 
-A bash script, swgo, will build and run the Generated GO program from a network definition:
+The bash script, swgo, will build and run the Generated GO program from a network definition:
 ```
   .../nds/hw.sw
 (Hello) <string- (World);
 ```
 swgo .../nds/hw
 produces:
-
-Hello World-1
-Hello World-2
-Hello World-3
-Hello World-4
-Hello World-5
-Hello World-6
-Hello World-7
-
 ```
+
 package main
 
 /*StreamWork Go code. 
@@ -123,6 +115,16 @@ sw.Launch(&wg,[]string{"Hello"},	       sw.Gens, cs[0:1])
 
 wg.Wait()
 }
+
+Which in turn produces:
+
+Hello World-1
+Hello World-2
+Hello World-3
+Hello World-4
+Hello World-5
+Hello World-6
+Hello World-7
 ```
 
 swgraph script
