@@ -209,6 +209,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+EXTRA_DIST = SW.pdf
 all: all-am
 
 .SUFFIXES:
@@ -398,9 +399,6 @@ uninstall-am:
 
 .PRECIOUS: Makefile
 
-
-SW.pdf:  ../model/SW.pdf
-	cp ../model/SW.pdf ./ 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
