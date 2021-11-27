@@ -282,7 +282,9 @@ SW Language Notes
 --------------------
 
 The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it 
-directly interpretable, without preprocessing.  
+directly interpretable, without preprocessing. 
+
+You can find the StreamWork language description at .../docs/SW.pdf. 
 
 SW has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
