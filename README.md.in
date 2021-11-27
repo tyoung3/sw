@@ -277,7 +277,11 @@ Release Notes
   * Fixed  Autotools(make distcheck) 
   * Created mktest.sh to build sw.test script  
   
-	
+0.15.2
+------
+  * Removed 'MODE 2' from sw --help.  Mode 2 was not generating project trees.
+  * Updated some TODOs.
+  
 SW Language Notes
 --------------------
 

@@ -255,7 +255,7 @@ static void Usage()
     fprintf(stderr, "\nUsage:\tsw [-m MODE [ SW_FILE ]\n");
     fprintf(stderr, "\tsw -v\n");
     fprintf(stderr,
-	    "\t\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE,}\n");
+	    "\t\tMODE={0-GOMODE|1-ASTMODE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE,}\n");
     fprintf(stderr, "\t\t[with no arguments, sw will read from stdin. \n");
 }
 

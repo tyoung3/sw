@@ -3,6 +3,10 @@
 **/
  
 /** 
+    @todo Remove obsolete github branches
+    @todo Update fbp.twyoung.com web pages
+	@todo Synopsis to README
+	@todo Create Man pages w/Doxygen
 	@todo Security check:
 		Protection from buffer overflow (and other malicious input).
 		Limited data lifetime (clearing buffers and heap data)
@@ -19,7 +23,6 @@
  	@todo Generate project examples.
  	@todo Graph .ISW files (prevent 'no processes' message.
  	@todo Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
-	@todo Create Man pages w/Doxygen
 	
  DONE: 
 	@done Discuss differences from 'classic' FBP.
