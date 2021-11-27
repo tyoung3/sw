@@ -252,11 +252,12 @@ static int verifyOK(Model model)
 /** sw progam help.*/
 static void Usage()
 {
-    fprintf(stderr, "\nUsage:\tsw [-m MODE [ SW_FILE ]\n");
+    fprintf(stderr, "\nUsage:\tsw [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]\n");
     fprintf(stderr, "\tsw -v\n");
+    fprintf(stderr, "\tsw --help\n");
     fprintf(stderr,
-	    "\t\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE,}\n");
-    fprintf(stderr, "\t\t[with no arguments, sw will read from stdin. \n");
+	    "\n\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE,}\n");
+    fprintf(stderr, "\tIf SW_FILE Is omitted sw will read from stdin. \n\n");
 }
 
 
@@ -305,6 +306,7 @@ static int BadArg(int argc, char **argv)
 		    } else {
 			if (strncmp(argv[i], "--help", 7) == 0){
 				Usage();
+				exit(0);
 			} else {
 		   	 	fname = argv[i];
 		   	 	input = openFile(fname);

@@ -60,12 +60,13 @@ On option, StreamWork will read, parse and interpret a network definition file t
 
 ## Synopsis
 ```
-	sw [-m MODE [ SW_FILE ]
+	sw [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]
 	sw -v
+	sw --help 
 	
         If SW_FILE is omitted, sw will read from stdin. 
 		MODE= 
-			0-GOMODE		. Generate a main GO program.
+			0-GOMODE		. Generate a main GO program[DEFAULT].
 			1-ASTMODE		. Display the Abstract Syntax Tree 
 			2-GENTREE		. Display the Linearized tree
 			3-GRAPHMODE		. Generate Graphviz .dot file code
@@ -296,7 +297,8 @@ Release Notes
   
 0.15.2
 ------
-  * Updated some docs.
+  * Added exit on '--help' option.
+  * Updated  docs.
   
 SW Language Notes
 --------------------
