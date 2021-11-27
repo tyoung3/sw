@@ -51,12 +51,29 @@ On option, StreamWork will read, parse and interpret a network definition file t
  
  * a Go main program,
  * a GraphViz .dot file,
- * a complete GO language project tree 
+ * a bash script file to help generate a complete GO language project tree. 
  
 	After creating a project tree, StreamWork continues to test the generated components and 
 	the final generated application.
  * an abstract syntax tree, or  
- * a linearized tree. 
+ * a linearized tree.   
+
+## Synopsis
+```
+	sw [-m MODE [ SW_FILE ]
+	sw -v
+	
+        If SW_FILE is omitted, sw will read from stdin. 
+		MODE= 
+			0-GOMODE		. Generate a main GO program.
+			1-ASTMODE		. Display the Abstract Syntax Tree 
+			2-GENTREE		. Display the Linearized tree
+			3-GRAPHMODE		. Generate Graphviz .dot file code
+			4-JAVAFBP		. Incomplete and untested. Looking for help.
+			5-PROJECT		. Generate bash script code for a project tree.
+			7-CMODE			. Incomplete and untested. Looking for help.
+```
+
 
 swgo script
 -----------
@@ -279,8 +296,7 @@ Release Notes
   
 0.15.2
 ------
-  * Removed 'MODE 2' from sw --help.  Mode 2 was not generating project trees.
-  * Updated some TODOs.
+  * Updated some docs.
   
 SW Language Notes
 --------------------

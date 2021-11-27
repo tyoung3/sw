@@ -7,6 +7,8 @@
     @todo Update fbp.twyoung.com web pages
 	@todo Synopsis to README
 	@todo Create Man pages w/Doxygen
+	@todo Add tests for all useful sw modes.
+	@todo Verify output from make check & make distcheck
 	@todo Security check:
 		Protection from buffer overflow (and other malicious input).
 		Limited data lifetime (clearing buffers and heap data)

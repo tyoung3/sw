@@ -142,7 +142,7 @@ Shell() {
 }
 
 case $1 in	
-    auto) [ -f Makefile.am ] || Die Missing Makefile.am
+    auto|b|build) [ -f Makefile.am ] || Die Missing Makefile.am
     	pushd model
     		./mktest.sh || Die Failed making sw.test script
     	popd
@@ -174,6 +174,7 @@ case $1 in
 	*) cat << EOF 
 	
 sw.sh-$version USAGE: 
+		b|build . Build project with Autotools and check.
 		c		. Make check
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
