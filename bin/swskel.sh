@@ -2,7 +2,7 @@
 
 # SW.sh
 pgm=sw.sh
-version="0.1.4"  ; 
+version="0.1.5"  ; 
 HTML=fbpgo.html
 
 # NOTE: Go ignores files and directories beginning with '_', as in _OLD/

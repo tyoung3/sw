@@ -9,7 +9,7 @@
 pgm=swgen.sh
 version="0.3.2"
 HTML=fbpgo.html
-export modpath="github.com/tyoung3/fbp"
+export modpath="$GOPATH/src"
 
              black="\u001b[30m"
                red="\u001b[31m"
@@ -69,7 +69,7 @@ EOF
 
 }
 
-src=$GOPATH/src/github.com/tyoung3/fbp 
+src=$GOPATH/src
 
 MakeDir2() {
         dir2=$1
@@ -369,7 +369,7 @@ GenGo() {
                 import (
                         "fmt"
                        "sync"
-                       "github.com/tyoung3/fbp/$module"
+                       "github.com/$USER/$module"
                 )
                 
 		// $name is @todo undocumented

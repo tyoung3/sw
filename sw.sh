@@ -65,9 +65,10 @@ RunPoC() {
 
 		# Create collate.jpg 		
 GenSVG() { 
-	pushd model 
+	pushd nds || pushd $GOPATH/src/sw/nds
 #	make svg && $BROWSER --nosandbox /tmp/collate.svg &
-	make svg && $BROWSER  /tmp/collate.svg &
+	swgraph collate.sw &
+	
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.Jnetwork_languagePG
 	#gimp /tmp/collate_SW.JPG
@@ -180,8 +181,8 @@ sw.sh-$version USAGE:
 		e		. Exit SW shell.
 		d build [OPTs]	. Build SWdemo docker container. 
 		doc		. Run and browse Doxygen 
-		j		. Generate collate .SVT
-		jl		. Generage locusts .SVG
+		j		. Graph collate.sw with swgraph
+		jl		. Generate and view locusts.png 
 		p  [NAME..]	. Generate project(s) named NAME... 
 		poc		. Build and run Proof of Concept 
 		rm		. View README in $BROWSER 

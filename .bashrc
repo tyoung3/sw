@@ -10,6 +10,8 @@ alias gc='git commit -m '
 alias gch='git checkout'
 alias gm='git merge --no-ff'
 alias gp='git push'
+alias gpl='git pull'
+alias gpm='git pull origin master'
 alias gs='git status'
 alias j='./run j' 
 alias jl='./run jl'
@@ -38,12 +40,14 @@ Rest() {
 	dir [PATH]	. ls -Fltr [PATH]  
 	doc		. Run and browse Doxygen.
 	e		. Exit shell.
-	ga		. Run 'git add -u'
-	gb [OPTS}	. Run 'git branch [OPTS]'
-	gc MSG		. Run 'git commit -m MSG
-	gch BRANCH	. Run 'git checkout BRANCH'
-	gp		. Run 'git push'
-	gs		. Run 'git status'
+	ga		. git add -u
+	gb [OPTS}	. git branch [OPTS]
+	gc MSG		. git commit -m MSG
+	gch BRANCH	. git checkout BRANCH
+	gp		. git push
+	gpl BRANCH 	. git pull BRANCH
+	gpm		. git Pull master
+	gs		. git status
 	j		. Generate collate .SVT
 	jl		. Generage locusts .SVG
 	p  [NAME..]	. Generate project(s) named NAME... 
