@@ -142,8 +142,9 @@ Genp() {
 	
 	Debug sw=$sw p=$p $* 
 	[ -f $sw ] || Die Genp: Cannot locate $sw 
-	shift 1 
-	echo; Display Generating  go module $p  from `pwd`/$cfg
+	shift 1
+	[ -f $dir/$p/.git ] && Die Found .git in source directory -- FAILED 
+	echo; Display Generating  go module $p  from `pwd`/$cfg 
 	
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p

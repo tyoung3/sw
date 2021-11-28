@@ -3,6 +3,8 @@
 **/
  
 /** 
+	@todo Make JPM's FBPgo (fbpGO?) 
+	@todo If .github, do not generate project
     @todo Remove obsolete github branches
     @todo Update fbp.twyoung.com web pages
 	@todo Synopsis to README
