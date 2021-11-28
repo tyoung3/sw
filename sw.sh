@@ -1,8 +1,8 @@
 #!/bin/bash 
 
-# SW.sh
+# SW.SH 
 
-version="0.0.2"
+version="1.0.0"
 
 ShowGitBranch() {
 	cat <<EOF >/dev/null
@@ -133,9 +133,6 @@ Browse () {
 
 ## @Shell   Enters a bash subshell 
 Shell() {
-	#export sps1="$PS1"
-	#export PS1="\u@\h \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
-	# export PS1="\u@\h \[\033[32m\]\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 	export PATH=`pwd`/bin:$PATH
 	echo Entering StreamWork shell  PS1=$PS1
 	exec bash --rcfile .bashrc  
@@ -170,11 +167,12 @@ case $1 in
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;
 	s) shift; Shell $;;
+	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0;;
 	*) cat << EOF 
 	
 sw.sh-$version USAGE: 
-		b|build . Build project with Autotools and check.
+		b|build		. Build project with Autotools.
 		c		. Make check
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
@@ -189,6 +187,7 @@ sw.sh-$version USAGE:
 		rc		. Build and run Collate program 
 		rl		. Run locusts program
 		s		. Enter SW shell.  'e' or 'exit' to return
+		v		. Display this script version
 		x		. Edit this script
 		--help	. Display this help
 		

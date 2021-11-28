@@ -56,7 +56,7 @@ On option, StreamWork will read, parse and interpret a network definition file t
 	After creating a project tree, StreamWork continues to test the generated components and 
 	the final generated application.
  * an abstract syntax tree, or  
- * a linearized tree.   
+ * a linearized tree (a network definition reconstruction).   
 
 ## Synopsis
 ```
@@ -79,7 +79,7 @@ On option, StreamWork will read, parse and interpret a network definition file t
 swgo script
 -----------
 
-The bash script, swgo, will build and run the Generated GO program from a network definition:
+The bash script, swgo, will generate and run a GO program from a network definition:
 ```
   .../nds/hw.sw
 (Hello) <string- (World);
@@ -229,9 +229,9 @@ Sw builds a network model in memory, then optionally generates
 either 
   
   * an abstract syntax tree, 
-  * a linearized tree(a network definition recronstruction), 
+  * a linearized tree(a network definition reconstruction), 
   * a GraphViz .dot file, 
-  * a complete working project tree, 
+  * input to swproject.sh to build a complete working project tree, 
   * or Go source code from the network model.
 
 C and other languages could also be generated, but this has not been implemented.
@@ -245,17 +245,21 @@ e-mailing streamwork@twyoung.com  is preferred to posting a request on Github .
 QuickStart (on Linux) 
 ----------
   
+### Comments  
+  
   * Graphviz should be installed, but installation may proceed
     without it.
-  * The .../tyoung3/StreamWork backend is no longer required.  
-  * Sw is written in C. 
+  * The ...github/tyoung3/StreamWork backend is no longer required.  
+  * StreamWork is written in C. 
+  
+### Installation   
   * cd to any convenient workspace (/usr/src for example).
   * Download the latest sw-0.15.2.tar.gz file 
 	  from https://github.com/tyoung3/sw
   * Run 'tar -xzf .../sw-...tar.gz' to extract source files
   * cd  sw-0.15.2
   * Run ./configure && make check
-  * Run sudo make install
+  * Run sudo make install.  
 	  Sw and associated scripts will be installed in /usr/local/bin
 	  
 Foo Bar test
@@ -282,7 +286,7 @@ Foo Bar-7
   * Install ctags, libyaml-dev, bnfc, bison, and flex 
   * cd to go workspace (like $GOPATH/src )
   * git clone https://github.com/tyoung3/sw.git
-  * ./sw.sh auto;  # Runs autotools including ./configure. 
+  * ./sw.sh build;  # Runs autotools including ./configure. 
   * make check
 
 Release Notes
@@ -299,7 +303,7 @@ Release Notes
   
 0.15.2
 ------
-  * Added exit on '--help' option.
+  * Added exit(0) on '--help' option.
   * Updated  docs.
   
 SW Language Notes

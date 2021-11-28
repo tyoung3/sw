@@ -7,9 +7,9 @@ alias e='exit '
 alias ga='git add -u'
 alias gb='git branch '
 alias gc='git commit -m '
-alias g.c='git checkout'
+alias gch='git checkout'
 alias gm='git merge --no-ff'
-alias g.p='git push'
+alias gp='git push'
 alias gs='git status'
 alias j='./run j' 
 alias jl='./run jl'
@@ -40,8 +40,10 @@ Rest() {
 	e		. Exit shell.
 	ga		. Run 'git add -u'
 	gb [OPTS}	. Run 'git branch [OPTS]'
-	gs		. Run 'git status'
 	gc MSG		. Run 'git commit -m MSG
+	gch BRANCH	. Run 'git checkout BRANCH'
+	gp		. Run 'git push'
+	gs		. Run 'git status'
 	j		. Generate collate .SVT
 	jl		. Generage locusts .SVG
 	p  [NAME..]	. Generate project(s) named NAME... 
