@@ -3,6 +3,12 @@
 **/
  
 /** 
+	@todo Fix swproject.sh/postage type error.
+	@todo Use PACKAGE_NAME { key: value} format for generated .yaml files.
+	@todo Convert JPM's javaFBP NDs to SW NDs. 
+	@todo Document environment variable usage.  DEBUG/USER/HOME
+	@todo Make JPM's FBPgo (fbpGO?) Check feasability. 
+	@todo If .github, do not generate project
     @todo Remove obsolete github branches
     @todo Update fbp.twyoung.com web pages
 	@todo Synopsis to README

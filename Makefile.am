@@ -4,5 +4,5 @@
 SUBDIRS = bnfc model  docs 
 EXTRA_DIST = nds 
 
-dist_bin_SCRIPTS = sw.sh bin/swgraph bin/swgo bin/swlocusts.sh bin/swgen.sh     bin/swproject.sh  bin/swskel.sh
+dist_bin_SCRIPTS = sw.sh bin/swgraph bin/swgo bin/swgen.sh bin/swproject.sh  bin/swskel.sh
 

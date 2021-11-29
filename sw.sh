@@ -2,7 +2,8 @@
 
 # SW.SH 
 
-version="1.0.0"
+version="1.0.1"
+sw=/usr/local/bin/sw
 
 ShowGitBranch() {
 	cat <<EOF >/dev/null
@@ -41,32 +42,35 @@ Die() {
 RunCollate () {
 	temp=/tmp
 	[ -d bin ] || pushd ../
-	[ -x bin/sw ]|| Die Cannot find bin/sw -- run make ? 
+	[ -x $sw ]|| Die Cannot find $sw -- run make ? 
 	[ -d $temp/sw/ ] || mkdir -p $temp/sw/ 
-	bin/sw nds/collate.sw  >  $temp/sw/collate.go
-	pushd $HOME
+	$sw nds/collate.sw  >  $temp/sw/collate.go
+	pushd $temp/sw
+	go mod init
+	go mod tidy
 	# [ -f go.mod ] || go mod init collate/collate
 	go run $temp/sw/collate.go 	 
 }
 
 RunPoC() {
 	temp=/tmp
-	[ -x bin/sw  ] || pushd ../ 
-	[ -x bin/sw  ] || Die  bin/sw is missing.  Run make 
+	## [ -x $sw  ] || pushd ../ 
+	[ -x $sw ] || Die  $sw is missing.  Run make install
 	[ -d $temp/sw/poc ] || mkdir -p $temp/sw/poc
 	echo "(Hello Print)0 <- 0(World Gens \"3\"); " 	\
 	 | tee /tmp/poc.echo 				\
-	 | bin/sw >  $temp/sw/poc.go 
-	 pushd $HOME
-	 [ -f go.mod ] || go mod init poc/poc
-	go run $temp/sw/poc.go  	
+	 | $sw >  $temp/sw/poc.go 
+	 pushd $temp/sw
+	 [ -f go.mod ] || (go mod init poc/poc && go mod tidy)
+	 go run $temp/sw/poc.go  	
 }
 
 		# Create collate.jpg 		
 GenSVG() { 
-	pushd model 
+	pushd nds || pushd $GOPATH/src/sw/nds
 #	make svg && $BROWSER --nosandbox /tmp/collate.svg &
-	make svg && $BROWSER  /tmp/collate.svg &
+	swgraph collate.sw &
+	
 	#./sw */coll* 1 > /tmp/collate_SW.dot 
 	#dot -Tjpg  /tmp/collate_SW.dot > /tmp/collate_SW.Jnetwork_languagePG
 	#gimp /tmp/collate_SW.JPG
@@ -178,15 +182,15 @@ sw.sh-$version USAGE:
 		d  [OPTs]	. Switch to docker container. 
 		e		. Exit SW shell.
 		d build [OPTs]	. Build SWdemo docker container. 
-		doc		. Run and browse Doxygen [Deprecated]
-		j		. Generate collate .SVT
-		jl		. Generage locusts .SVG
+		doc		. Run and browse Doxygen 
+		j		. Graph collate.sw with swgraph
+		jl		. Generate and view locusts.png 
 		p  [NAME..]	. Generate project(s) named NAME... 
 		poc		. Build and run Proof of Concept 
 		rm		. View README in $BROWSER 
 		rc		. Build and run Collate program 
 		rl		. Run locusts program
-		s		. Enter SW shell.  'e' or 'exit' to return
+		s		. Enter SW shell.  'e' to exit the shell. 
 		v		. Display this script version
 		x		. Edit this script
 		--help	. Display this help

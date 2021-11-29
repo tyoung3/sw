@@ -1,5 +1,6 @@
 #!/bin/bash
 
+targetdir=$GOPATH/src
 # prpject.sh:
 #	Purpose:  Generate a Streamwork skeleton project 
 #
@@ -34,7 +35,7 @@ Die() {
 	exit 1
 }
 
-swdir=./model
+swdir=/usr/local/bin
 [ -e $swdir/sw ] || swdir=/usr/local/bin
 SW=$swdir/sw
 [ -e $SW     ] || Die $SW is missing 
@@ -52,8 +53,10 @@ pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7
 self=$pgm
 version="0.0.2"  
 [ -z $GOPATH ] && Die GOPATH is not set
-modpath="github.com/tyoung3/fbp"
-dir=$GOPATH/src/$modpath
+modpath="github.com/tyoung3/sw"
+#modpath=/tmp/MODPATH
+#modpath=$targetdir
+dir=$targetdir
 
 Debug Running ${pgm}-$version w/DEBUG args: $*
 
@@ -124,10 +127,14 @@ EOF
 }	
 
 Genp() {
-	Display $GENPy: $*
+	Display Genp/$GENPy: $*
 	sw=$1
 	[ -f $sw ] || sw="${sw}.sw"
-	p=`basename -s .sw $sw	`  || Die $sw not MODULE.sw  
+	p=`basename -s .sw $sw`|| Die $sw not MODULE.sw  
+	
+	[ $sw == "sw" ]       &&Die Package sw is already in github/tyoung3 
+	[ $sw == "swbase" ]   &&Die Package swbase is already in github/tyoung3 
+	[ $sw == "swutility" ]&&Die Package swutility is already in github/tyoung3 
 	
 	if [ -f `pwd`/$sw ]; then 
 		sw=`pwd`/$sw
@@ -135,12 +142,13 @@ Genp() {
 	
 	Debug sw=$sw p=$p $* 
 	[ -f $sw ] || Die Genp: Cannot locate $sw 
-	shift 1 
-	echo; Display Generating  go module $p  from `pwd`/$cfg
+	shift 1
+	[ -f $dir/$p/.git ] && Die Found .git in source directory -- FAILED 
+	echo; Display Generating  go module $p  from `pwd`/$cfg 
 	
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	replace="replace github.com/tyoung3/sw/swbase => $HOME/go/src/github.com/tyoung3/sw/swbase"
+	replace="replace github.com/tyoung3/$p => $GOPATH/src/$p"
 	pushd $dir/$p							\
 	   && ( [ -d internal ] || mkdir $* internal )			\
 	   && ( [ -f go.mod ]  						\
