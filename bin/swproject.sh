@@ -51,7 +51,7 @@ Debug() {
 pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
 
 self=$pgm
-version="0.0.2"  
+version="0.0.3"  
 [ -z $GOPATH ] && Die GOPATH is not set
 modpath="github.com/tyoung3/sw"
 #modpath=/tmp/MODPATH
@@ -177,9 +177,11 @@ Genp() {
 }
 
 GenProjectP() {
-	[ -z $1 ] && Die Missing Module.sw
-	Display GenProject for $*		 
-	Genp $* 
+	nd=$1
+	exam=nds/postage.sw
+	[ -z $1 ] && Die Missing PROJECT_NAME.  Try \'genproject g nds/postage.sw\' 
+	Display GenProject for $nd	 
+	Genp $nd 
 }
 
 GenProject() {
@@ -196,17 +198,15 @@ KillEm() {
 }
 
 case $1 in
-	p)shift; Die option p OBSOLETE;;  # GenProject $*
+	XXX)shift; Die option OBSOLETE;;   
 	g)shift; GenProjectP $*;;
-	k)shift; Init; KillEm $*;;
-	l)shift; Init; tree --noreport  -L 2 $*;;
+	XXX)shift; Init; KillEm $*;;
+	XXX)shift; Init; tree --noreport  -L 2 $*;;
 	x)shift; $EDITOR $self;;
 	*)cat <<- EOF 
 
-	Usage: $self 
+	Usage: ${self}  v$version 
 	 	g [PROJECT ...]	. Generate project(s) from PROJECT.sw 
-	 	k [JOB...]	. Kill [JOB](s)
-	 	l [PROJECT ...] . List PROJECT(s)	
 	 	x Edit this script
 	 	* Display this help
 
