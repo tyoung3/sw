@@ -2,7 +2,7 @@
 
 # SW.SH 
 
-version="1.0.3"
+version="1.0.4"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -162,10 +162,10 @@ case $1 in
     ex)shift; cd example; make;; 
 	j) GenSVG;;
 	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
-	p)  shift;
+	p)  echo $*; shift
 		nd=$1 
-		[ -z $1 ] && nd="nds/postage.sw" 
-		shift 
+		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
+		shift
 		swproject.sh g  $nd $*  ;;
 	poc) RunPoC;;
 	rc) RunCollate;;
