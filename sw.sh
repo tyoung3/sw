@@ -45,7 +45,9 @@ RunCollate () {
 	[ -x $sw ]|| Die Cannot find $sw -- run make ? 
 	[ -d $temp/sw/ ] || mkdir -p $temp/sw/ 
 	$sw nds/collate.sw  >  $temp/sw/collate.go
-	pushd $HOME
+	pushd $temp/sw
+	go mod init
+	go mod tidy
 	# [ -f go.mod ] || go mod init collate/collate
 	go run $temp/sw/collate.go 	 
 }

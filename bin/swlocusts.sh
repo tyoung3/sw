@@ -22,8 +22,9 @@ RunLocusts () {
 	[ -d /tmp/x/ ] || mkdir /tmp/x || Die Cannot mkdir /tmp/x/
 	#mv $dir/* /tmp/x/ 2>&1 >/dev/null
 	$SW nds/locusts.sw >  $dir/locusts.go
-	# $pushd $dir
-	# [ -f go.mod ] || go mod init locusts/locusts
+	pushd $dir
+	go mod init locusts/locusts
+	go mod tidy
 	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 
 	go run $dir/locusts.go 		\
 	|tee $dir/locusts.txt \
