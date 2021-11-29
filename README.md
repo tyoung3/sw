@@ -333,6 +333,7 @@ Release Notes
 ------
   * Added exit(0) on '--help' option.
   * Updated  docs.
+  * Fixed some script bugs
   
 SW Language Notes
 --------------------
