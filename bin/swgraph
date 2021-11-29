@@ -7,6 +7,7 @@ Die () {
 	exit 1
 }
 
+version=v0.0.1
 
 Debug() {
 	[ "$DEBUG" == "y" ]  	\
@@ -42,7 +43,7 @@ GenRun() {
 		$SW -m 3 $swfile > /tmp/${base}.dot || Die Cannot build /tmp/${base}.dot file 
 		dot -Tsvg /tmp/${base}.dot > /tmp/${base}.svg || Die Cannot convert /tmp/${base}.dot file to .svg
 		Debug Built /tmp/${base}.dot and /tmp/${base}.svg
-		$BROWSER  /tmp/${base}.svg	&
+		$BROWSER  /tmp/${base}.svg 2>&1  >/dev/null	&
 	else 
 		Die $swfile missing
 	fi
@@ -54,7 +55,20 @@ Run() {
 	done 
 }
 
-case $1 in 
+
+Usage(){
+	cat <<- EOF
 	
+	swgraph-$version Usage:
+ 	swgraph [SW_file...]   . Generate .svg file(s) and browse them with $BROWSER.
+ 	swgraph				   . Show this usage
+		
+EOF
+}
+
+
+case $# in 
+	0)Usage;;
 	*)Run $*;;
+	
 esac	

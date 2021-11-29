@@ -262,8 +262,9 @@ QuickStart (on Linux)
   * Run sudo make install.  
 	  Sw and associated scripts will be installed in /usr/local/bin
 	  
-Foo Bar test
-------------  
+### Post Install 
+   
+#### Foo Bar test
 	 
   * echo "(Foo) <- (Bar);" | sw > /tmp/fb.go 
 
@@ -280,6 +281,33 @@ Foo Bar-5
 Foo Bar-6
 Foo Bar-7
 ```
+
+#### Generate a project
+Try: swproject.sh g nds/postage
+
+#### sw.sh Synopsis
+```
+sw.sh-1.0.1 USAGE: 
+		b|build		. Build project with Autotools.
+		c		. Make check
+		cl       	. Show release check list. 
+		d  [OPTs]	. Switch to docker container. 
+		e		. Exit SW shell.
+		d build [OPTs]	. Build SWdemo docker container. 
+		doc		. Run and browse Doxygen 
+		j		. Graph collate.sw with swgraph
+		jl		. Generate and view locusts.png 
+		p  [NAME..]	. Generate project(s) named NAME... 
+		poc		. Build and run Proof of Concept 
+		rm		. View README in /opt/google/chrome/chrome 
+		rc		. Build and run Collate program 
+		rl		. Run locusts program
+		s		. Enter SW shell.  'e' to exit the shell. 
+		v		. Display this script version
+		x		. Edit this script
+		--help	. Display this help
+```		
+
 
 ## Building on Linux
 
@@ -305,6 +333,7 @@ Release Notes
 ------
   * Added exit(0) on '--help' option.
   * Updated  docs.
+  * Fixed some script bugs
   
 SW Language Notes
 --------------------
