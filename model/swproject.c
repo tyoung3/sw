@@ -152,6 +152,16 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 	*outp=0;
 }
 
+/** Return true if pkg is an existing SW package: 
+	swbase, swutility, or sw_... */
+int isaSwPkg(char *pkg) {
+
+	if(strncmp(pkg,"swbase",6) == 0) return 1;	
+	if(strncmp(pkg,"swutility",9) == 0) return 1;
+	if(strncmp(pkg,"sw_",3) == 0) return 1;
+	return 0;   
+}
+
 /** Generate a project from network model. */
 void genProject(Model m) {
 	Component c;
@@ -168,13 +178,15 @@ void genProject(Model m) {
 		getPorts(m, c, &inp,&outp); 
 		args=getArgs(m, c);  
 		if((c->path[0] != '{') & (c->path[0] != '/')) {
-			printf("swgen.sh gs %s %s %s %d %d %s",
-				module ,c->path, getConfType(c->path), inp, outp, c->name);
-				int i=0;
-			while( args[i] !=NULL  ) 	
-				 printf(" %s", args[i++]);		  
-			printf("%c\n", amp );
-			amp='&'; 
+			if(!isaSwPkg(c->path))  {			 
+				printf("swgen.sh gs %s %s %s %d %d %s",
+					module ,c->path, getConfType(c->path), inp, outp, c->name);
+					int i=0;
+				while( args[i] !=NULL  ) 	
+				 	printf(" %s", args[i++]);		  
+				printf("%c\n", amp );
+				amp='&'; 
+		  	}	
 		}	
 		c=c->next;
 	}

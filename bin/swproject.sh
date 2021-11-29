@@ -1,7 +1,6 @@
 #!/bin/bash
 
-targetdir=$GOPATH/src
-# prpject.sh:
+# project.sh:
 #	Purpose:  Generate a Streamwork skeleton project 
 #
 #   Create GO FBP project(s) from .SW file(s).   
@@ -28,6 +27,8 @@ targetdir=$GOPATH/src
 #    git branch to PS1
 #    all packages import project code.
 
+version="0.0.6"  
+targetdir=$GOPATH/src
 pgm=swproject.sh
 
 Die() {
@@ -51,7 +52,6 @@ Debug() {
 pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
 
 self=$pgm
-version="0.0.3"  
 [ -z $GOPATH ] && Die GOPATH is not set
 modpath="github.com/tyoung3/sw"
 #modpath=/tmp/MODPATH
@@ -132,9 +132,7 @@ Genp() {
 	[ -f $sw ] || sw="${sw}.sw"
 	p=`basename -s .sw $sw`|| Die $sw not MODULE.sw  
 	
-	[ $sw == "sw" ]       &&Die Package sw is already in github/tyoung3 
-	[ $sw == "swbase" ]   &&Die Package swbase is already in github/tyoung3 
-	[ $sw == "swutility" ]&&Die Package swutility is already in github/tyoung3 
+	[ $sw == "sw" ]       &&Die Module sw is already in github/tyoung3  
 	
 	if [ -f `pwd`/$sw ]; then 
 		sw=`pwd`/$sw
@@ -145,10 +143,9 @@ Genp() {
 	shift 1
 	[ -f $dir/$p/.git ] && Die Found .git in source directory -- FAILED 
 	echo; Display Generating  go module $p  from `pwd`/$cfg 
-	
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	replace="replace github.com/tyoung3/$p => $GOPATH/src/$p"
+	replace="replace github.com/$user/$p => $GOPATH/src/$p"
 	pushd $dir/$p							\
 	   && ( [ -d internal ] || mkdir $* internal )			\
 	   && ( [ -f go.mod ]  						\
@@ -168,10 +165,12 @@ Genp() {
 	   && echo -e "${green}$self: Create project from $sw: Success!$reset" 		\
 	   || Die "${red}$self: Create project from $sw: FAILED.$reset"	\
 	   && go mod tidy						\
-	   && go run internal/${p}.go					\
-	   && (pushd internal; go build *.go; popd)			 
-	   go fmt  ./...
-	   go test ./...
+	   && go fmt  ./...						\
+	   && go test ./...						\
+	   && go run internal/${p}.go			\
+	   && echo -e "${green}$self: ${p}.go Succeeded. $reset" 		\
+	   || Die "${red}$self:  ${p}.go FAILED.$reset"			 
+	   # && (pushd internal; go build *.go; popd)		
 	echo
 				 
 }
@@ -179,7 +178,7 @@ Genp() {
 GenProjectP() {
 	nd=$1
 	exam=nds/postage.sw
-	[ -z $1 ] && Die Missing PROJECT_NAME.  Try \'genproject g nds/postage.sw\' 
+	[ -z $1 ] && Die Missing PROJECT_NAME.  Try \'genproject g $exam\' 
 	Display GenProject for $nd	 
 	Genp $nd 
 }
