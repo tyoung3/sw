@@ -2,7 +2,7 @@
 
 # SW.SH 
 
-version="1.0.1"
+version="1.0.3"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -162,7 +162,11 @@ case $1 in
     ex)shift; cd example; make;; 
 	j) GenSVG;;
 	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
-	p)  shift;swproject.sh g  $*;;
+	p)  shift;
+		nd=$1 
+		[ -z $1 ] && nd="nds/postage.sw" 
+		shift 
+		swproject.sh g  $nd $*  ;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) bin/swlocusts.sh r ;;
@@ -185,7 +189,7 @@ sw.sh-$version USAGE:
 		doc		. Run and browse Doxygen 
 		j		. Graph collate.sw with swgraph
 		jl		. Generate and view locusts.png 
-		p  [NAME..]	. Generate project(s) named NAME... 
+		p  [NAME..]	. Generate project(s) named NAME[default nds/postage.sw]
 		poc		. Build and run Proof of Concept 
 		rm		. View README in $BROWSER 
 		rc		. Build and run Collate program 
