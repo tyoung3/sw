@@ -145,7 +145,7 @@ Genp() {
 	echo; Display Generating  go module $p  from `pwd`/$cfg 
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	replace="replace github.com/$user/$p => $GOPATH/src/$p"
+	replace="replace github.com/$USER/$p => $GOPATH/src/$p"
 	pushd $dir/$p							\
 	   && ( [ -d internal ] || mkdir $* internal )			\
 	   && ( [ -f go.mod ]  						\
