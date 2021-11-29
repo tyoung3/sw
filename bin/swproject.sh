@@ -132,9 +132,9 @@ Genp() {
 	[ -f $sw ] || sw="${sw}.sw"
 	p=`basename -s .sw $sw`|| Die $sw not MODULE.sw  
 	
-	[ $sw == "sw"]       &&Die Package sw is already in github/tyoung3 
-	[ $sw == "swbase"]   &&Die Package swbase is already in github/tyoung3 
-	[ $sw == "swutility"]&&Die Package swutility is already in github/tyoung3 
+	[ $sw == "sw" ]       &&Die Package sw is already in github/tyoung3 
+	[ $sw == "swbase" ]   &&Die Package swbase is already in github/tyoung3 
+	[ $sw == "swutility" ]&&Die Package swutility is already in github/tyoung3 
 	
 	if [ -f `pwd`/$sw ]; then 
 		sw=`pwd`/$sw
