@@ -5,6 +5,7 @@ test-driver
 Makefile
 .idea/
 
+nds/tmpost.sw
 model/aa.sw
 model/tests/Makefile.am
 model/tests/Makefile.in
