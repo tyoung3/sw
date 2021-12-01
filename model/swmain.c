@@ -8,22 +8,23 @@
 
 #include "sw.h"
 #include "swgo.h"
+#include "swgofbp.h"
 #include "swsym.h"
 #include "swgraph.h"
 #include "swconfig.h"
 
 typedef enum
-    { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, PROJECT, CMODE = 7 } MODE;
+    { GOMODE = 0, ASTMODE, GENTREE, GRAPHMODE, JAVAFBP, PROJECT, CMODE = 7, GENGOFBP } MODE;
 
 char fbfr[BUFFSIZE+1];   /**<File name buffer.*/  
 
 char *version={"0.15.0"} ;  /**<sw version >   @todo Fix this!*/
 
-String configfile={"sw.cfg"};   		/**<SW configuration file */
-static MODE mode = GOMODE;			/**<Mode ?? */
-static char *fname = { "stdin" };		/**<Input file name or Standard input. */
+String configfile={"sw.cfg"};   		/**<SW configuration file> */
+static MODE mode = GOMODE;			    /** Outut mode*/
+static char *fname = { "stdin" };		/**<Input file name or Standard input.> */
 
-ValidSW pValidSW(FILE * inp);  /**<True if valid input */
+ValidSW pValidSW(FILE * inp);  /**<True if valid input> */
 
 char *FixVersion() {
 	char bfr[100];
@@ -256,7 +257,7 @@ static void Usage()
     fprintf(stderr, "\tsw -v\n");
     fprintf(stderr, "\tsw --help\n");
     fprintf(stderr,
-	    "\n\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE,}\n");
+	    "\n\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE|8-GENGOFBP,}\n");
     fprintf(stderr, "\tIf SW_FILE Is omitted sw will read from stdin. \n\n");
 }
 
@@ -383,11 +384,14 @@ int main(int argc, char **argv)
 		genGraph(model);	// Generate .DOT file
 		break;
 	    case JAVAFBP:
-		genJavaFBP(model);	// Generate JavaFBP [TBI]
-		break;
+		  genJavaFBP(model);	// Generate JavaFBP [TBI]
+		  break;
 	    case GOMODE:
-		genGo(model);		// Generate Go MAIN.GO
-		break;
+		  genGo(model);		// Generate Go MAIN.GO
+		   break;
+		case GENGOFBP:
+		   genGoFBP(model);	// Generate gofbp MAIN.GO
+		   break;
 	    case CMODE:
 		genC(model);		// Generate C source  [TBI]
 		break;
