@@ -76,7 +76,7 @@ On option, StreamWork will read, parse and interpret a network definition file t
 			4-JAVAFBP		. Incomplete and untested. Looking for help.
 			5-PROJECT		. Generate bash script code for a project tree.
 			7-CMODE			. Incomplete and untested. Looking for help.
-			8-GENGOFPB      . Generate main go code for JPM's gofbp. 
+			8-GENGOFBP      . Generate main go code for JPM's gofbp. 
 ```
 ## TestSW program 
 TestSW syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
