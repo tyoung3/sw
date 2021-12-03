@@ -18,9 +18,9 @@ SWvalid.	 	Valide 		::= ValidSW  ;
 
 Valid.			ValidSW 	::= [Stm]    ;
 
-StmPrefix.		Stm		::= Prefix   Stringval;
+StmPrefix.		Stm		::= Prefix  Stringval;
 Stminc.			Stm		::= Include Stringval;
-Stmx.			Stm		::= DataFlow  ; 
+Stmx.			Stm		::= DataFlow ; 
 Stmn.			Stm		::= Numassgn ; 
 Stms.			Stm		::= Strassgn ;
 Stmb.			Stm		::= SymAssgn ; 
@@ -34,7 +34,7 @@ Sneth.			Subnet 		::= Hermt    	;
 Snets.			Subnet 		::= DataFlow	;
 Snetin.			Subnet 		::= ExtPortIn  	;
 Snetout.		Subnet 		::= ExtPortOut  ;
-terminator	    	Subnet  ";" ;
+terminator	    Subnet  ";" ;
 
 Extin.			ExtPortIn  	::=	Proc Prt Larrow Tab	;
 ExtinR.			ExtPortIn  	::=	Tab      Rarrow Prt Proc;
@@ -42,8 +42,8 @@ ExtinR.			ExtPortIn  	::=	Tab      Rarrow Prt Proc;
 Extout.			ExtPortOut 	::=	Tab      Larrow Prt Proc;  
 Extoutr.		ExtPortOut 	::=	Proc Prt Rarrow Tab	;
 
-Tabn.			Tab		::= Numval  ;
-Tabs.			Tab	 	::= Symval;
+Tabn.			Tab			::= Numval  ;
+Tabs.			Tab	 		::= Symval;
 
 Streamx.		DataFlow	::= Proc Prt 	 Larrow Prt Proc;
 Streamrx.		DataFlow  	::= Proc Prt     Rarrow Prt Proc;
@@ -55,7 +55,7 @@ Arrowx.			Larrow	 	::=  "<" TypeDef Buffsize "-" 		;
 Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		; 
 
 Typedefa.		TypeDef		::=  Symvalu 	 			;
-Typedefnull.		TypeDef		::=  ""					;
+Typedefnull.	TypeDef		::=  ""					;
 
 Bufszi.			Buffsize 	::= Numval ;
 Bufsze.			Buffsize 	::=; 
@@ -69,29 +69,30 @@ Symvaluu.		Symvalu		::= "_"				;
 Processx.		Proc		::= "(" Symvalu  Comp [Argument] ")" 	;
 Processy.		Proc		::= "(" Symvalu  [Argument] ")" 	;
 
-Portx.			Prt		::= Numval		;
-Portni.         	Prt     	::= Numval "." Symval	; 
-Portin.         	Prt     	::= Symval "." Numval	; 
-Portn.          	Prt     	::= Symval		; 
-Porte.			Prt		::= ;		
+Portx.			Prt			::= Numval		;
+Portni.         Prt     	::= Numval "." Symval	; 
+Portin.         Prt     	::= Symval "." Numval	; 
+Portn.          Prt     	::= Symval		; 
+Porte.			Prt			::= ;		
 
 Compx.			Comp		::= Symval		;	
-Compn.		    	Comp		::= SubId		;
+Compn.		    Comp		::= SubId		;
 Compz.			Comp		::= ModPath Symval	;
 Compa.			Comp		::= RemPath 		;
 
 Modpa.			ModPath 	::= "/" Symval	"/"	;
 Modpx.			ModPath		::= Symval "/"		;
 Modpy.			ModPath		::= ModPath Symval "/"	;
+Modps.			ModPath 	::= Stringvar "/" ;
 
 RemPatha.		RemPath 	::= ValidImport "." Symval 	;
 
 Argumentx.		Argument 	::= Stringval		;	
-separator	    	Argument   ""; 	
+separator	    Argument   ""; 	
 
 NumAssgnv.		Numassgn   	::= Numvar "=" Numval	;
 
-StrAssgnv.		Strassgn   	::= Stringvar "=" Symval;
+StrAssgnv.		Strassgn   	::= Stringvar "=" Stringval;
 
 SymAssgni.		SymAssgn   	::= Symvar "=" Symval	;  
 
@@ -99,7 +100,7 @@ NumVali.		Numval     	::= Integer		;
 NumValv.		Numval	   	::= Numvar		;
 				
 StringVals.		Stringval  	::= String		;
-StringValv.		Stringval  	::= Stringvar		;
+StringValv.		Stringval  	::= Stringvar	;
 StringVale.		Stringval  	::= Envar		;
 
 Symvalv.		Symval	   	::= Symvar		;
@@ -112,6 +113,8 @@ Inc2.			Include		::= "INCLUDE"		;
 Prefu.			Prefix		::= "PREFIX"		;
 Prefl.			Prefix		::= "prefix"		;
 
+-- token   Pathvar   '@' letter  ( letter | digit  )*  ; 
+-- FAILS:token   Path 	   letter (letter |digit | '.' | '/' )* '/'; 
 token   Numvar	  '%' letter  ( letter | digit  )*	;		
 token	Stringvar '$' letter  ( letter | digit  )*	;	
 token	Envar 	  '$' '_' letter  ( letter | digit  )*	;   	-- Environment variable
@@ -127,16 +130,17 @@ Validcfgd.		ValidConfig ::= "---" "StreamWork:" "{"  [Centry]	 "}"   ;
 
 CfgcEntrya.		Centry	 ::= KeyVal		;
 CfgcEntryb.		Centry	 ::= KeyName		;
--- CfgBlock.		Centry	 ::= KeyName "{" [Centry] "}"	;
+-- CfgBlock.	Centry	 ::= KeyName "{" [Centry] "}"	;
 terminator	   	Centry   "," ; 
 
 CfgEntrya.		Entry	 ::= KeyVal		;
 CfgEntryb.		Entry	 ::= KeyName		;
 terminator	   	Entry   "" ; 
 
-CfgKeyvalint.		KeyVal	 ::= KeyName  Integer 	;
-CfgKeyvalstr.		KeyVal	 ::= KeyName  String 	;
+CfgKeyvalint.	KeyVal	 ::= KeyName  Integer 	;
+CfgKeyvalstr.	KeyVal	 ::= KeyName  String 	;
 CfgKeyDate.		KeyVal   ::= KeyName  Date    	; 
+-- CfgKeyPath.		KeyVal	 ::= KeyName  Path		;
 
 KeynameS.		KeyName  ::= Symval ":"		; 
 KeynameM.		KeyName  ::= ModPath Symval ":" ;

@@ -373,6 +373,7 @@ Comp : Symval { $$ = make_Compx($1);  }
 ModPath : _SYMB_10 Symval _SYMB_10 { $$ = make_Modpa($2);  }
   | Symval _SYMB_10 { $$ = make_Modpx($1);  }
   | ModPath Symval _SYMB_10 { $$ = make_Modpy($1, $2);  }
+  | _SYMB_21 _SYMB_10 { $$ = make_Modps($1);  }
 ;
 RemPath : _SYMB_26 _SYMB_9 Symval { $$ = make_RemPatha($1, $3);  }
 ;
@@ -383,7 +384,7 @@ ListArgument : /* empty */ { $$ = 0;  }
 ;
 Numassgn : _SYMB_20 _SYMB_11 Numval { $$ = make_NumAssgnv($1, $3);  }
 ;
-Strassgn : _SYMB_21 _SYMB_11 Symval { $$ = make_StrAssgnv($1, $3);  }
+Strassgn : _SYMB_21 _SYMB_11 Stringval { $$ = make_StrAssgnv($1, $3);  }
 ;
 SymAssgn : _SYMB_23 _SYMB_11 Symval { $$ = make_SymAssgni($1, $3);  }
 ;

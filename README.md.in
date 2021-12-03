@@ -39,7 +39,7 @@ script.  While StreamWork is concerned with
 Go language FBP programs,  the ND described here is language agnostic.  It should be possible 
 to generate corresponding code in other languages.         
 
-By default, sw generates 
+By default, **_sw_** generates 
 and builds a single main Go program which:  
 
   * imports sw compatible component package(s),  
@@ -58,13 +58,16 @@ On option, StreamWork will read, parse and interpret a network definition file t
  * an abstract syntax tree, or  
  * a linearized tree (a network definition reconstruction).   
 
-## Synopsis
-```
-	sw [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]
-	sw -v
-	sw --help 
-	
-        If SW_FILE is omitted, sw will read from stdin. 
+### Synopsis
+
+**_sw_** [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]
+
+**_sw_** -v
+
+**_sw_** --help 
+
+```	
+        If SW_FILE is omitted, **_sw_** will read from stdin. 
 		MODE= 
 			0-GOMODE		. Generate a main GO program[DEFAULT].
 			1-ASTMODE		. Display the Abstract Syntax Tree 
@@ -73,8 +76,17 @@ On option, StreamWork will read, parse and interpret a network definition file t
 			4-JAVAFBP		. Incomplete and untested. Looking for help.
 			5-PROJECT		. Generate bash script code for a project tree.
 			7-CMODE			. Incomplete and untested. Looking for help.
+			8-GENGOFPB      . Generate main go code for JPM's gofbp. 
 ```
-
+## TestSW program 
+TestSW syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
+### synopsis
+```usage: Call with one of the following argument combinations:
+	--help		Display this help message.
+	(no arguments)	Parse stdin verbosely.
+	(files)		Parse content of files verbosely.
+	-s (files)	Silent mode. Parse content of files silently.
+```
 
 swgo script
 -----------
@@ -222,10 +234,10 @@ to send more than one type of data over a channel.
 Multiple data types can also be handled 
 within a struct or over multiple channels.
  
-Sw versions are backward compatible within the same major 
+**_sw_** versions are backward compatible within the same major 
 version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)   
 
-Sw builds a network model in memory, then optionally generates
+**_sw_** builds a network model in memory, then optionally generates
 either 
   
   * an abstract syntax tree, 
@@ -233,6 +245,7 @@ either
   * a GraphViz .dot file, 
   * input to swproject.sh to build a complete working project tree, 
   * or Go source code from the network model.
+  * or Go main source code for JFM's gofbp. 
 
 C and other languages could also be generated, but this has not been implemented.
 JavaFBP is also possible.   
@@ -260,15 +273,15 @@ QuickStart (on Linux)
   * cd  sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@
   * Run ./configure && make check
   * Run sudo make install.  
-	  Sw and associated scripts will be installed in /usr/local/bin
+	  **_sw_** and associated scripts will be installed in /usr/local/bin
 	  
 ### Post Install 
    
 #### Foo Bar test
 	 
-  * echo "(Foo) <- (Bar);" | sw > /tmp/fb.go 
+  * **_echo_** "(Foo) <- (Bar);" | **_sw_** > /tmp/fb.go 
 
-  * Run: go run /tmp/fb.go
+  * Run: **_go_** run /tmp/fb.go
 
 ```
 OUTPUT: 
@@ -334,6 +347,12 @@ Release Notes
   * Added exit(0) on '--help' option.
   * Updated  docs.
   * Fixed some script bugs
+  
+0.16.0
+------
+  * Generate gofbp code on option -m 8  
+  * Fixed string variable parsing.  
+  * Allowing string variables in module paths. 
   
 SW Language Notes
 --------------------

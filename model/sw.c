@@ -471,7 +471,7 @@ void visitStrassgn(Strassgn _p_)
 {
 	addStringVar( 
     		visitStringvar(_p_->u.strassgnv_.stringvar_),
-    		visitSymval(_p_->u.strassgnv_.symval_)
+    		visitStringval(_p_->u.strassgnv_.stringval_) 
 	);
 }
 
@@ -1048,6 +1048,13 @@ String visitModPath(ModPath p)
     return( makeModPath(	
     	visitModPath(p->u.modpy_.modpath_),
     	visitSymval(p->u.modpy_.symval_)));
+  case is_Modps:
+    /* Code for Modps Goes Here */
+    return getStringVar( 
+    	visitStringvar(p->u.modps_.stringvar_)
+    	);
+    break;
+    
   default:
   	badkind(ModPath);
   }

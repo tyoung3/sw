@@ -469,6 +469,10 @@ void visitModPath(ModPath p)
     visitModPath(p->u.modpy_.modpath_);
     visitSymval(p->u.modpy_.symval_);
     break;
+  case is_Modps:
+    /* Code for Modps Goes Here */
+    visitStringvar(p->u.modps_.stringvar_);
+    break;
 
   default:
     fprintf(stderr, "Error: bad kind field when printing ModPath!\n");
@@ -540,7 +544,7 @@ void visitStrassgn(Strassgn p)
   case is_StrAssgnv:
     /* Code for StrAssgnv Goes Here */
     visitStringvar(p->u.strassgnv_.stringvar_);
-    visitSymval(p->u.strassgnv_.symval_);
+    visitStringval(p->u.strassgnv_.stringval_);
     break;
 
   default:

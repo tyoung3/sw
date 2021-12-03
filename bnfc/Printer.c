@@ -776,6 +776,14 @@ void ppModPath(ModPath p, int _i_)
     if (_i_ > 0) renderC(_R_PAREN);
     break;
 
+  case is_Modps:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppIdent(p->u.modps_.stringvar_, 0);
+    renderC('/');
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
 
   default:
     fprintf(stderr, "Error: bad kind field when printing ModPath!\n");
@@ -868,7 +876,7 @@ void ppStrassgn(Strassgn p, int _i_)
     if (_i_ > 0) renderC(_L_PAREN);
     ppIdent(p->u.strassgnv_.stringvar_, 0);
     renderC('=');
-    ppSymval(p->u.strassgnv_.symval_, 0);
+    ppStringval(p->u.strassgnv_.stringval_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -2209,6 +2217,18 @@ void shModPath(ModPath p)
     bufAppendC(')');
 
     break;
+  case is_Modps:
+    bufAppendC('(');
+
+    bufAppendS("Modps");
+
+    bufAppendC(' ');
+
+    shIdent(p->u.modps_.stringvar_);
+
+    bufAppendC(')');
+
+    break;
 
   default:
     fprintf(stderr, "Error: bad kind field when showing ModPath!\n");
@@ -2322,7 +2342,7 @@ void shStrassgn(Strassgn p)
 
     shIdent(p->u.strassgnv_.stringvar_);
   bufAppendC(' ');
-    shSymval(p->u.strassgnv_.symval_);
+    shStringval(p->u.strassgnv_.stringval_);
 
     bufAppendC(')');
 

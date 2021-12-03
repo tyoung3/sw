@@ -390,18 +390,20 @@ Comp make_Compa(RemPath p0);
 struct ModPath_
 {
 
-  enum { is_Modpa, is_Modpx, is_Modpy } kind;
+  enum { is_Modpa, is_Modpx, is_Modpy, is_Modps } kind;
   union
   {
     struct { Symval symval_; } modpa_;
     struct { Symval symval_; } modpx_;
     struct { ModPath modpath_; Symval symval_; } modpy_;
+    struct { Stringvar stringvar_; } modps_;
   } u;
 };
 
 ModPath make_Modpa(Symval p0);
 ModPath make_Modpx(Symval p0);
 ModPath make_Modpy(ModPath p0, Symval p1);
+ModPath make_Modps(Stringvar p0);
 
 struct RemPath_
 {
@@ -452,11 +454,11 @@ struct Strassgn_
   enum { is_StrAssgnv } kind;
   union
   {
-    struct { Stringvar stringvar_; Symval symval_; } strassgnv_;
+    struct { Stringval stringval_; Stringvar stringvar_; } strassgnv_;
   } u;
 };
 
-Strassgn make_StrAssgnv(Stringvar p0, Symval p1);
+Strassgn make_StrAssgnv(Stringvar p0, Stringval p1);
 
 struct SymAssgn_
 {

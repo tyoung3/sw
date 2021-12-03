@@ -699,6 +699,19 @@ ModPath make_Modpy(ModPath p1, Symval p2)
     tmp->u.modpy_.modpath_ = p1;
     tmp->u.modpy_.symval_ = p2;
     return tmp;
+}
+/********************   Modps    ********************/
+ModPath make_Modps(Stringvar p1)
+{
+    ModPath tmp = (ModPath) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Modps!\n");
+        exit(1);
+    }
+    tmp->kind = is_Modps;
+    tmp->u.modps_.stringvar_ = p1;
+    return tmp;
 }/********************   RemPatha    ********************/
 RemPath make_RemPatha(ValidImport p1, Symval p2)
 {
@@ -750,7 +763,7 @@ Numassgn make_NumAssgnv(Numvar p1, Numval p2)
     tmp->u.numassgnv_.numval_ = p2;
     return tmp;
 }/********************   StrAssgnv    ********************/
-Strassgn make_StrAssgnv(Stringvar p1, Symval p2)
+Strassgn make_StrAssgnv(Stringvar p1, Stringval p2)
 {
     Strassgn tmp = (Strassgn) malloc(sizeof(*tmp));
     if (!tmp)
@@ -760,7 +773,7 @@ Strassgn make_StrAssgnv(Stringvar p1, Symval p2)
     }
     tmp->kind = is_StrAssgnv;
     tmp->u.strassgnv_.stringvar_ = p1;
-    tmp->u.strassgnv_.symval_ = p2;
+    tmp->u.strassgnv_.stringval_ = p2;
     return tmp;
 }/********************   SymAssgni    ********************/
 SymAssgn make_SymAssgni(Symvar p1, Symval p2)
