@@ -147,7 +147,7 @@ case $1 in
         #aclocal # Set up an m4 environment && \
         #autoconf # Generate configure from configure.ac && \
         #automake  --add-missing # Generate Makefile.in from Makefile.am && \
-        ../configure --host=x86_64-w64-mingw32 \
+        ../configure --host=x86_64-w64-mingw32 --program-prefix win64-\
         
         make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build for Windows Error
     
