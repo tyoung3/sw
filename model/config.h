@@ -92,7 +92,7 @@
 #define PACKAGE_NAME "sw"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "sw 0.16.0"
+#define PACKAGE_STRING "sw 0.17.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "sw"
@@ -101,7 +101,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.16.0"
+#define PACKAGE_VERSION "0.17.0"
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
@@ -115,7 +115,7 @@
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.16.0"
+#define VERSION "0.17.0"
 
 /* Define for Solaris 2.5.1 so the uint32_t typedef from <sys/synch.h>,
    <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the
