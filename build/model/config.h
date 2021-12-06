@@ -48,6 +48,9 @@
 /* Define to 1 if you have the `regcomp' function. */
 /* #undef HAVE_REGCOMP */
 
+/* Define to 1 if you have the <regex.h> header file. */
+/* #undef HAVE_REGEX_H */
+
 /* Define to 1 if you have the <stddef.h> header file. */
 #define HAVE_STDDEF_H 1
 
@@ -116,6 +119,10 @@
 
 /* Version number of package */
 #define VERSION "0.17.0"
+
+/* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
+   `char[]'. */
+/* #undef YYTEXT_POINTER */
 
 /* Define for Solaris 2.5.1 so the uint32_t typedef from <sys/synch.h>,
    <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the

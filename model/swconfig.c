@@ -7,8 +7,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <regex.h>
 #include <sys/types.h>
+
+#define USE_RE
+#ifdef USE_RE
+#include "re.h"
+#else
+#include <regex.h>
+#endif
 
 #include "../bnfc/Parser.h"
 #include "sw.h"
@@ -141,8 +147,27 @@ void visitValidConfig(ValidConfig _p_)
     visitListEntry(_p_->u.validcfg_.listentry_);
 }
 
-int match(const char *string, const char *pattern) 
-{ 
+int match(const char *string, const char *pattern)   { 
+		/*  @todo  Change to use if windows later*/
+#ifdef USE_RE
+/* https://github.com/kokke/tiny-regex-c*/
+	int match_length; /* Standard int to hold length of match */
+		/* Standard null-terminated C-string to search: */
+	// const char* string_to_search = "ahem.. 'hello world !' ..";
+#define string_to_search string
+	/* Compile a simple regular expression using character classes, meta-char 		and greedy + non-greedy quantifiers: */
+	//re_t pattern = re_compile("[Hh]ello [Ww]orld\\s*[!]?");
+	re_t tpattern = re_compile(pattern);
+	
+		/* Check if the regex matches the text: */
+		int match_idx = re_matchp(tpattern, string_to_search, &match_length);
+	if (match_idx == -1) {
+  		// printf("match at idx %i, %i chars long.\n", match_idx, 	match_length);
+  		return 1;
+  	}
+  	return 0;	
+}
+#else
     int status;
     regex_t re; 
 
@@ -161,6 +186,7 @@ int match(const char *string, const char *pattern)
 
     return 1; 
 } 
+#endif    // ifdef USE_RE    
 
 
 /** Parse config file, validate, and set cfg struct */
@@ -186,7 +212,7 @@ int ConfigError(String s) {
 
   if(!match(htmldir,"(/[a-zA-Z0-9_.-]+)/$")) {
 	fprintf(stderr,
-		"\033[31mConfigError%s is not a valid directory path.\033[39m\n", 
+		"\033[31mConfigError %s is not a valid directory path.\033[39m\n", 
 		htmldir);
 	exit(1);
   }

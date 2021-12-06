@@ -103,7 +103,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_sw_OBJECTS = sw.$(OBJEXT) swconfig.$(OBJEXT) swgraph.$(OBJEXT) \
 	swmain.$(OBJEXT) swsym.$(OBJEXT) swc.$(OBJEXT) swgo.$(OBJEXT) \
-	swjavafbp.$(OBJEXT) swproject.$(OBJEXT) swgofbp.$(OBJEXT)
+	swjavafbp.$(OBJEXT) swproject.$(OBJEXT) swgofbp.$(OBJEXT) \
+	re.$(OBJEXT)
 sw_OBJECTS = $(am_sw_OBJECTS)
 sw_DEPENDENCIES = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o \
 	../bnfc/Printer.o
@@ -122,8 +123,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/sw.Po ./$(DEPDIR)/swc.Po \
-	./$(DEPDIR)/swconfig.Po ./$(DEPDIR)/swgo.Po \
+am__depfiles_remade = ./$(DEPDIR)/re.Po ./$(DEPDIR)/sw.Po \
+	./$(DEPDIR)/swc.Po ./$(DEPDIR)/swconfig.Po ./$(DEPDIR)/swgo.Po \
 	./$(DEPDIR)/swgofbp.Po ./$(DEPDIR)/swgraph.Po \
 	./$(DEPDIR)/swjavafbp.Po ./$(DEPDIR)/swmain.Po \
 	./$(DEPDIR)/swproject.Po ./$(DEPDIR)/swsym.Po
@@ -385,6 +386,9 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = -g  $(AM_CFLAGS) -DMAJOR=${SW_MAJOR} -DMINOR=${SW_MINOR}               -DLEVEL=${SW_LEVEL}
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
+CXX = @CXX@
+CXXDEPMODE = @CXXDEPMODE@
+CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -400,6 +404,9 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
 LDFLAGS = @LDFLAGS@
+LEX = @LEX@
+LEXLIB = @LEXLIB@
+LEX_OUTPUT_ROOT = @LEX_OUTPUT_ROOT@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBOBJS = @LTLIBOBJS@
@@ -426,6 +433,7 @@ abs_srcdir = @abs_srcdir@
 abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_CC = @ac_ct_CC@
+ac_ct_CXX = @ac_ct_CXX@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
 am__quote = @am__quote@
@@ -474,7 +482,7 @@ bin_scripts = sw.test mktest.sh
 scriptsdir = "$(DESTDIR)/bin"
 PGM = ./${bin_PROGRAMS} 
 swdir = ./
-sw_SOURCES = sw.c swconfig.c swgraph.c swmain.c swsym.c swc.c  swgo.c  swjavafbp.c  swproject.c model.h  swconfig.h  swgo.h  swgraph.h	sw.h  swmain.h	swsym.h swgofbp.c swgofbp.h
+sw_SOURCES = sw.c swconfig.c swgraph.c swmain.c swsym.c swc.c  swgo.c  swjavafbp.c  swproject.c model.h  swconfig.h  swgo.h  swgraph.h	sw.h  swmain.h	swsym.h swgofbp.c swgofbp.h re.c re.h
 sw_LDADD = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -578,6 +586,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/re.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sw.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/swc.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/swconfig.Po@am__quote@ # am--include-marker
@@ -898,7 +907,8 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/sw.Po
+		-rm -f ./$(DEPDIR)/re.Po
+	-rm -f ./$(DEPDIR)/sw.Po
 	-rm -f ./$(DEPDIR)/swc.Po
 	-rm -f ./$(DEPDIR)/swconfig.Po
 	-rm -f ./$(DEPDIR)/swgo.Po
@@ -953,7 +963,8 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/sw.Po
+		-rm -f ./$(DEPDIR)/re.Po
+	-rm -f ./$(DEPDIR)/sw.Po
 	-rm -f ./$(DEPDIR)/swc.Po
 	-rm -f ./$(DEPDIR)/swconfig.Po
 	-rm -f ./$(DEPDIR)/swgo.Po

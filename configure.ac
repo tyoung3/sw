@@ -16,8 +16,10 @@ AC_CONFIG_HEADERS([model/config.h])
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_LEX
+AC_PROG_CXX
 AC_CHECK_FUNCS([strdup strndup memset regcomp])
-AC_CHECK_HEADERS([inttypes.h libintl.h limits.h malloc.h memory.h stddef.h])
+AC_CHECK_HEADERS([inttypes.h libintl.h regex.h limits.h malloc.h memory.h stddef.h])
 AC_CHECK_TYPES([ptrdiff_t])
 
 AC_FUNC_ALLOCA
