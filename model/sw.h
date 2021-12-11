@@ -13,6 +13,10 @@
 #include "swconfig.h"
 #include "string.h"
 
+#ifndef strndup
+char *strndup (const char *s, size_t n);
+#endif
+
 #define BUFFSIZE 1000
 
 #ifndef String 
