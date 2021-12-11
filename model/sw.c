@@ -13,7 +13,6 @@
 #include <assert.h>       
 #include <sys/stat.h>
 
-
 #define DEBUGGING
 
 static  char *savedPrefix="";
@@ -880,6 +879,7 @@ void visitSubdef(Subdef _p_)
 	//		    visitSymval(_p_->u.snet_.symval_));
 }
 
+#if 0
 static char *Exists(char *s) {
 	struct stat sb;
 	char bfr[BUFFSIZE+1];
@@ -907,6 +907,7 @@ static char *findFile(char *s) {
 		
         FAIL(Cannot locate, s);
 }
+#endif
 
 #define MAX_INCLUDE_LEVEL 100
 
@@ -925,7 +926,8 @@ void visitStm(Stm _p_)
     	savePrefix(SET,s);
     	return;
     case is_Stminc:
-         pt = IncludeFile(findFile(visitStringval(_p_->u.stminc_.stringval_)));  
+         // pt = IncludeFile(findFile(visitStringval(_p_->u.stminc_.stringval_)));  
+         pt = IncludeFile(visitStringval(_p_->u.stminc_.stringval_)); 
          includeLevel++;
          if(includeLevel>MAX_INCLUDE_LEVEL) 
          	FAIL(INCLUDE statement recursion, "MAX_INCLUDE_LEVEL exceeded");
