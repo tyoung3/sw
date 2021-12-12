@@ -48,9 +48,6 @@ Debug() {
 }
 
 
-#pat  is github Personal Access Token: "SW Project Generation"
-pat=c7587f442e2bb2a7784dfa776dc949693aa43ed7 
-
 self=$pgm
 [ -z $GOPATH ] && Die GOPATH is not set
 modpath="github.com/tyoung3/sw"
