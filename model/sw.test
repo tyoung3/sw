@@ -638,7 +638,7 @@ cat << EOF.var.sw | ./sw >/dev/null && echo ok 42 - var.sw || echo not ok 42 -  
 (&BBB) <- (y Y $AA);
 EOF.var.sw
 
-cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 43 - ac.sw || echo ok 43 - ac.sw
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 43 - FAILOK/ac.sw || echo ok 43 - FAILOK/ac.sw
 {#
       AE1.sw
       
@@ -660,13 +660,13 @@ cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 43 - ac.sw || echo ok 43 - ac
 (C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
 FAIL.ac.sw
 
-cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 44 - e3.sw || echo ok 44 - e3.sw
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 44 - FAILOK/e3.sw || echo ok 44 - FAILOK/e3.sw
 # Missmatched port names:  
 
 (F A)MATCH  <- MISS(G b);
 FAIL.e3.sw
 
-cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 45 - e4.sw || echo ok 45 - e4.sw
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 45 - FAILOK/e4.sw || echo ok 45 - FAILOK/e4.sw
 # Missmatched port 
 
 (H A)0  <- 0(I b);
@@ -675,18 +675,18 @@ cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 45 - e4.sw || echo ok 45 - e4
 (H)3  <- 3(I);
 FAIL.e4.sw
 
-cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 46 - e5.sw || echo ok 46 - e5.sw
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 46 - FAILOK/e5.sw || echo ok 46 - FAILOK/e5.sw
 # (K) port error
 
 (K)   <-  OUT(J);
 (J)IN <-  (K);
 FAIL.e5.sw
 
-cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 47 - fail_include.sw || echo ok 47 - fail_include.sw
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 47 - FAILOK/fail_include.sw || echo ok 47 - FAILOK/fail_include.sw
 INCLUDE "fail_include.sw";
 FAIL.fail_include.sw
 
-cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 48 - inc.sw || echo ok 48 - inc.sw
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 48 - FAILOK/inc.sw || echo ok 48 - FAILOK/inc.sw
 #include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
 
 INCLUDE "inc.isw"; 
@@ -699,7 +699,7 @@ INCLUDE "inc.isw";
 
 FAIL.inc.sw
 
-cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 49 - subnet2.sw || echo ok 49 - subnet2.sw
+cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/subnet2.sw || echo ok 49 - FAILOK/subnet2.sw
 {#Subnets M and N
 
 #}
@@ -727,7 +727,7 @@ cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 49 - subnet2.sw || echo 
 (T) 	<4- (U);
 FAIL.subnet2.sw
 
-cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 50 - subnet3.sw || echo ok 50 - subnet3.sw
+cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 50 - FAILOK/subnet3.sw || echo ok 50 - FAILOK/subnet3.sw
 
 ######################################################### 
 ^M5 {
@@ -789,4 +789,6 @@ A	<type_C 13 -	0(A);
 #########################################################
 #}
 FAIL.subnet3.sw
-echo  1..50 # Number of tests to be executed.
+
+./sw -m 8 tests/gofbp/loadbal.sw >/dev/null && echo ok 51 - GOFBP/loadbal.sw || echo not ok 51 - GOFBP/loadbal.sw
+echo  1..51 # Number of tests to be executed.
