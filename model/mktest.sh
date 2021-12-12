@@ -25,8 +25,12 @@ mkftest() {
 }
 
 mkfbptest() {
-	echo "./sw -m 8 $swt >/dev/null && echo ok $nn - $cmt || echo not ok $nn - $cmt" 
+	for mode in 0 1 2 3 4 5 7 8 ; do
+		nn=$((nn=$nn+1))
+		echo "./sw -m $mode $swt >/dev/null && echo ok $nn - $cmt mode $mode || echo not ok $nn - $cmt" 
+	done
 }
+
 
 mktests() { 
 	pushd tests
@@ -50,7 +54,6 @@ mktests() {
 	  
 	  pushd gofbp
 		for swt in *.sw; do
-	    	nn=$((nn=$nn+1))
 	    	echo >> ../../$swtest
 	    	cmt=GOFBP/$swt
 	    	swt="tests/gofbp/$swt"
