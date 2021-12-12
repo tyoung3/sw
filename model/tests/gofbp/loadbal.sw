@@ -1,7 +1,5 @@
-#!/usr/local/bin/sw -8 $*   
-
-$core = "github.com/jpaulm/core";
-$trtn = "github.com/jpaulm/Components/testrtn";
+$core = "github.com/jpaulm/gofbp/core";
+$trtn = "github.com/jpaulm/gofbp/Components/testrtn";
 
 
 (Sender $trtn/Sender "COUNT=40")OUT	-load> IN.0(LoadBalance $trtn/LoadBalance );
