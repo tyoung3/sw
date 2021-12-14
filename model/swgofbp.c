@@ -14,11 +14,9 @@
 
 #include <assert.h> 
 
-
-
 /** Print string.*/
 #define P(s) printf("%s\n",(#s));	
-#define PE(s) {};  			/**<Print empty string */
+#define PE(s) {};  					/**<Print empty string */
 #define C(s) printf("%s",(#s));		/**<Print defined string*/
 
 /**Get timestamp*/
@@ -63,7 +61,7 @@ static void genPath(Component  c)
     if(s[0] == '/') {
     	printf("import \"%s\"\n",   s);
     } else {
-    	printf("import \"%s/%s\"\n", importLib,   s);
+    	printf("import \"%s\"\n",    s);
     }}	
 }
 
@@ -83,9 +81,6 @@ static int newPath(char *p)
 static void genPaths(Model m)
 {
     Process p;
-
-    // P(import "fmt");
-    // P(import "sync");
     printf("import  \"github.com/jpaulm/gofbp/%s\"\n", "core");
 
     p = m->proc;
@@ -436,7 +431,7 @@ static char *stripPath( char *s1 ) {
 static void genLaunch1(Process p)
 {
 	static int nproc=0;
-	printf( "\t%s := net.NewProc(\"%s\", &%s.%s{})\n",
+	printf( "\t%s := net.NewProc(\"%s\", %s.%s{})\n",
 		 p->name, p->name, stripPath(p->comp->path), p->comp->name);
 
 #if 0

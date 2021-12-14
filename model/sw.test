@@ -789,13 +789,4 @@ A	<type_C 13 -	0(A);
 #########################################################
 #}
 FAIL.subnet3.sw
-
-./sw -m 0 tests/gofbp/loadbal.sw >/dev/null && echo ok 51 - GOFBP/loadbal.sw mode 0 || echo not ok 51 - GOFBP/loadbal.sw
-./sw -m 1 tests/gofbp/loadbal.sw >/dev/null && echo ok 52 - GOFBP/loadbal.sw mode 1 || echo not ok 52 - GOFBP/loadbal.sw
-./sw -m 2 tests/gofbp/loadbal.sw >/dev/null && echo ok 53 - GOFBP/loadbal.sw mode 2 || echo not ok 53 - GOFBP/loadbal.sw
-./sw -m 3 tests/gofbp/loadbal.sw >/dev/null && echo ok 54 - GOFBP/loadbal.sw mode 3 || echo not ok 54 - GOFBP/loadbal.sw
-./sw -m 4 tests/gofbp/loadbal.sw >/dev/null && echo ok 55 - GOFBP/loadbal.sw mode 4 || echo not ok 55 - GOFBP/loadbal.sw
-./sw -m 5 tests/gofbp/loadbal.sw >/dev/null && echo ok 56 - GOFBP/loadbal.sw mode 5 || echo not ok 56 - GOFBP/loadbal.sw
-./sw -m 7 tests/gofbp/loadbal.sw >/dev/null && echo ok 57 - GOFBP/loadbal.sw mode 7 || echo not ok 57 - GOFBP/loadbal.sw
-./sw -m 8 tests/gofbp/loadbal.sw >/dev/null && echo ok 58 - GOFBP/loadbal.sw mode 8 || echo not ok 58 - GOFBP/loadbal.sw
-echo  1..58 # Number of tests to be executed.
+echo  1..50 # Number of tests to be executed.

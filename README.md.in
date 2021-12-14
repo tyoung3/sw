@@ -354,6 +354,11 @@ Release Notes
   * Fixed string variable parsing.  
   * Allowing string variables in module paths. 
   
+0.17.2
+------
+  * Fixed some gofbp code generation errors. 
+  
+  
 SW Language Notes
 --------------------
 

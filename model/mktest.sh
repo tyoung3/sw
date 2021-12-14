@@ -51,7 +51,13 @@ mktests() {
 			mkftest >> ../../$swtest
 		done
 	  popd
-	  
+
+	popd
+}
+
+	# Fails when building -- tests not copied to build 
+xxx() { 
+	cat << EOF	  
 	  pushd gofbp
 		for swt in *.sw; do
 	    	echo >> ../../$swtest
@@ -60,7 +66,7 @@ mktests() {
 			mkfbptest >> ../../$swtest
 		done
 	  popd 
-	popd
+EOF
 }
 
 mkend() {
