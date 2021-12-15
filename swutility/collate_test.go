@@ -2,7 +2,7 @@ package swutility
 
 import (
 	"fmt"
-	sw "github.com/tyoung3/sw/swbase"
+	sw "github.com/tyoung3/sw"
 	"sync"
 	"testing"
 )
