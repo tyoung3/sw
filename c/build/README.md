@@ -358,6 +358,14 @@ Release Notes
 ------
   * Fixed some gofbp code generation errors. 
   
+0.18.0
+------
+  * Reorganized repo tree structure 
+  * Renamed package swbase to sw and moved code to repo root
+  * Changed package swutility to import package sw
+  
+    
+  
   
 SW Language Notes
 --------------------

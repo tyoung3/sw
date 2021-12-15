@@ -334,8 +334,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = bnfc model  docs 
-EXTRA_DIST = nds 
+SUBDIRS = bnfc model   
 dist_bin_SCRIPTS = sw.sh bin/swgraph bin/swgo bin/swgen.sh bin/swproject.sh  bin/swskel.sh
 all: all-recursive
 
