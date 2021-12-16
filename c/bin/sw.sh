@@ -163,23 +163,23 @@ case $1 in
         ./configure # Generate Makefile from Makefile.in && \
         make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build Error
         ;; 
-    c) pushd c/ && make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
+    c) make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
 	cxxx) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
 	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
     ex)shift; cd example; make;; 
-	j) pushd c && GenSVG;;
-	jl) pushd c && bin/swlocusts.sh j & ;;	#Display locusts map;
-	p)  pushd c&& echo $*; shift
+	j) GenSVG;;
+	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
+	p)  echo $*; shift
 		nd=$1 
 		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
 		shift
 		swproject.sh g  $nd $*  ;;
-	poc) pushd c && RunPoC;;
-	rc) pushd c && RunCollate;;
-	rl) pushd c && bin/swlocusts.sh r ;;
+	poc) RunPoC;;
+	rc) RunCollate;;
+	rl) bin/swlocusts.sh r ;;
 	rm) 
 	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
@@ -191,7 +191,7 @@ case $1 in
 	
 sw.sh-$version USAGE: 
 		b|build		. Build project with Autotools.
-		c			. Make check
+		c		. Make check
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
 		e		. Exit SW shell.
