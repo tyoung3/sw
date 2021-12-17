@@ -57,13 +57,14 @@ RunPoC() {
 	temp=/tmp
 	## [ -x $sw  ] || pushd ../ 
 	[ -x $sw ] || Die  $sw is missing.  Run make install
-	[ -d $temp/sw/poc ] || mkdir -p $temp/sw/poc
+	tdir=$temp/sw/poc
+	[ -d $tdir ] || mkdir -p $tdir
 	echo "(Hello Print)0 <- 0(World Gens \"3\"); " 	\
-	 | tee /tmp/poc.echo 				\
-	 | $sw >  $temp/sw/poc.go 
-	 pushd $temp/sw
-	 [ -f go.mod ] || (go mod init poc/poc && go mod tidy)
-	 go run $temp/sw/poc.go  	
+	 | tee $tdir/poc.echo 				\
+	 | $sw >  $tdir/poc.go 
+	 pushd $tdir
+	 	[ -f go.mod ] || (go mod init main && go mod tidy)
+	 	go run poc.go  	
 }
 
 		# Create collate.jpg 		

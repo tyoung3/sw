@@ -457,7 +457,7 @@ cat << EOF.part2.sw | ./sw >/dev/null && echo ok 31 - part2.sw || echo not ok 31
 EOF.part2.sw
 
 cat << EOF.pass.sw | ./sw >/dev/null && echo ok 32 - pass.sw || echo not ok 32 -  pass.sw
-(A)->(B swbase/Pass)1->(C);
+(A)->(B sw/Pass)1->(C);
 EOF.pass.sw
 
 cat << EOF.path.sw | ./sw >/dev/null && echo ok 33 - path.sw || echo not ok 33 -  path.sw
