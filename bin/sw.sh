@@ -140,7 +140,7 @@ Browse () {
 Shell() {
 	export PATH=`pwd`/bin:$PATH
 	echo Entering StreamWork shell  PS1=$PS1
-	exec bash --rcfile .bashrc  
+	exec bash --rcfile ../.bashrc  
 }
 
 case $1 in	
@@ -184,7 +184,7 @@ case $1 in
 	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm ../README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;
-	s) shift; Shell $;;
+	s) shift; Shell $*;;
 	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0 &;;
 	*) cat << EOF 
