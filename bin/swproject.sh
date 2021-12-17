@@ -81,7 +81,7 @@ GenCFG() {
     DefaultPath: 	"def"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
-    HTMLdir:	"${HOME}/go/src/github.com/tyoung3/sw/swbase/html/"    
+    HTMLdir:	"https://github.com/tyoung3/sw/html/"    
     DefaultLibrary: "$modpath/$p"
   limits:
     Maxbfsz:   	1000    #Maximum GO buffer size

@@ -2,7 +2,15 @@
 
 pgm=./sw
 
-cat << EOF.aa.sw | ./sw >/dev/null && echo ok 1 - aa.sw || echo not ok 1 -  aa.sw
+cat << EOF.aaR.sw | ./sw >/dev/null && echo ok 1 - aaR.sw || echo not ok 1 -  aaR.sw
+#  DEFAULT_IMPORT_PATH  
+
+(B poc/Comp2)0 -> 0(A Comp1);
+(Hello) -> (World); 
+
+EOF.aaR.sw
+
+cat << EOF.aa.sw | ./sw >/dev/null && echo ok 2 - aa.sw || echo not ok 2 -  aa.sw
 #  DEFAULT_IMPORT_PATH  
 
 (A2  Comp1)0<-0(B2 poc/Comp2);
@@ -10,14 +18,6 @@ cat << EOF.aa.sw | ./sw >/dev/null && echo ok 1 - aa.sw || echo not ok 1 -  aa.s
 (Hello) -> (World); 
 
 EOF.aa.sw
-
-cat << EOF.aaR.sw | ./sw >/dev/null && echo ok 2 - aaR.sw || echo not ok 2 -  aaR.sw
-#  DEFAULT_IMPORT_PATH  
-
-(B poc/Comp2)0 -> 0(A Comp1);
-(Hello) -> (World); 
-
-EOF.aaR.sw
 
 cat << EOF.ab.sw | ./sw >/dev/null && echo ok 3 - ab.sw || echo not ok 3 -  ab.sw
 {#
@@ -42,7 +42,22 @@ cat << EOF.ad.sw | ./sw >/dev/null && echo ok 4 - ad.sw || echo not ok 4 -  ad.s
 (A3 a)2 <- 2(C3 b);
 EOF.ad.sw
 
-cat << EOF.ae.sw | ./sw >/dev/null && echo ok 5 - ae.sw || echo not ok 5 -  ae.sw
+cat << EOF.ae2.sw | ./sw >/dev/null && echo ok 5 - ae2.sw || echo not ok 5 -  ae2.sw
+(A a)<- 0(B a)1 <-  (C a);
+(D a)<- 0(E a)1 <- 1(C a);
+(F a)<- 2(G a)1 <- 2(C a);
+
+(C a)3<-  (G a)3 <- 1(F a);
+(H a) <- 2(E a)3 <- 1(A a);
+
+EOF.ae2.sw
+
+cat << EOF.aef.sw | ./sw >/dev/null && echo ok 6 - aef.sw || echo not ok 6 -  aef.sw
+(A a)0 <- 1(B b)0 <ip_t- 1(C c)0 <- 0(D d);
+ 
+EOF.aef.sw
+
+cat << EOF.ae.sw | ./sw >/dev/null && echo ok 7 - ae.sw || echo not ok 7 -  ae.sw
 
 
 (ae_D a)<- 3(ae_E a)0 <- 1(ae_C a);
@@ -57,36 +72,7 @@ cat << EOF.ae.sw | ./sw >/dev/null && echo ok 5 - ae.sw || echo not ok 5 -  ae.s
 
 EOF.ae.sw
 
-cat << EOF.ae2.sw | ./sw >/dev/null && echo ok 6 - ae2.sw || echo not ok 6 -  ae2.sw
-(A a)<- 0(B a)1 <-  (C a);
-(D a)<- 0(E a)1 <- 1(C a);
-(F a)<- 2(G a)1 <- 2(C a);
-
-(C a)3<-  (G a)3 <- 1(F a);
-(H a) <- 2(E a)3 <- 1(A a);
-
-EOF.ae2.sw
-
-cat << EOF.aef.sw | ./sw >/dev/null && echo ok 7 - aef.sw || echo not ok 7 -  aef.sw
-(A a)0 <- 1(B b)0 <ip_t- 1(C c)0 <- 0(D d);
- 
-EOF.aef.sw
-
-cat << EOF.aj.sw | ./sw >/dev/null && echo ok 8 - aj.sw || echo not ok 8 -  aj.sw
-# AJ.sw: AutoJoin 
-
-(N)  <- (A);
-(N)  <- (B);
-
-(P)  <- (C);
-(P)  <- (D);
-
-(Q)  <- (E);
-(Q)  <- (F);
-
-EOF.aj.sw
-
-cat << EOF.aj2.sw | ./sw >/dev/null && echo ok 9 - aj2.sw || echo not ok 9 -  aj2.sw
+cat << EOF.aj2.sw | ./sw >/dev/null && echo ok 8 - aj2.sw || echo not ok 8 -  aj2.sw
 # AJ2.sw: AutoJoin 
 
 (M)  <- (A);
@@ -101,13 +87,37 @@ cat << EOF.aj2.sw | ./sw >/dev/null && echo ok 9 - aj2.sw || echo not ok 9 -  aj
 
 EOF.aj2.sw
 
+cat << EOF.aj.sw | ./sw >/dev/null && echo ok 9 - aj.sw || echo not ok 9 -  aj.sw
+# AJ.sw: AutoJoin 
+
+(N)  <- (A);
+(N)  <- (B);
+
+(P)  <- (C);
+(P)  <- (D);
+
+(Q)  <- (E);
+(Q)  <- (F);
+
+EOF.aj.sw
+
 cat << EOF.anon.sw | ./sw >/dev/null && echo ok 10 - anon.sw || echo not ok 10 -  anon.sw
 (_ A)  <-  (_ B);
 #(_ A)1 <- 1(_ B);
   
 EOF.anon.sw
 
-cat << EOF.as.sw | ./sw >/dev/null && echo ok 11 - as.sw || echo not ok 11 -  as.sw
+cat << EOF.asj.sw | ./sw >/dev/null && echo ok 11 - asj.sw || echo not ok 11 -  asj.sw
+# ASJ.sw: Demo autoSplit and edge colors 
+
+(C) 	<sw_t 1- 	0(A);
+(B) 	<     3-     	0(A);
+(D)	<     2-	0(A);
+(E)	<     0- 	0(A);
+(F)	<   100- 	0(A);
+EOF.asj.sw
+
+cat << EOF.as.sw | ./sw >/dev/null && echo ok 12 - as.sw || echo not ok 12 -  as.sw
 # AS.sw: AutoSplit 
 
 (A)	 <- (Z);
@@ -118,16 +128,6 @@ cat << EOF.as.sw | ./sw >/dev/null && echo ok 11 - as.sw || echo not ok 11 -  as
 (F)  <- (Z);
 
 EOF.as.sw
-
-cat << EOF.asj.sw | ./sw >/dev/null && echo ok 12 - asj.sw || echo not ok 12 -  asj.sw
-# ASJ.sw: Demo autoSplit and edge colors 
-
-(C) 	<sw_t 1- 	0(A);
-(B) 	<     3-     	0(A);
-(D)	<     2-	0(A);
-(E)	<     0- 	0(A);
-(F)	<   100- 	0(A);
-EOF.asj.sw
 
 cat << EOF.autojoin.sw | ./sw >/dev/null && echo ok 13 - autojoin.sw || echo not ok 13 -  autojoin.sw
 # AutoJoin.sw: AutoJoin 
@@ -273,7 +273,42 @@ cat << EOF.jn.sw | ./sw >/dev/null && echo ok 21 - jn.sw || echo not ok 21 -  jn
 
 EOF.jn.sw
 
-cat << EOF.lr.sw | ./sw >/dev/null && echo ok 22 - lr.sw || echo not ok 22 -  lr.sw
+cat << EOF.lrR.sw | ./sw >/dev/null && echo ok 22 - lrR.sw || echo not ok 22 -  lrR.sw
+^w {
+(F F)1  -13> 0;
+(G G)1 -14> (F F);
+(H H)  -15> 0(G G);
+};
+
+
+^v {
+(E ^w)  -12>  0;
+};
+
+
+^u {
+(D ^v) -11> 0;
+};
+
+^a {
+1	-7> (Y);
+(V V)1   -8> 0;
+(W W)1  -9> (V);
+(X)	-10>  (W);
+};
+
+^b {
+(S S)1 	-3> 1;
+(T)2 	-4>  (S);
+(U ^u) 	-5> 1(T);
+0 	-6> 0(T T);
+};
+
+(a ^a "Aa")0 	-1> (b ^b);
+(b ^b)1 	-2>  1(a ^a);
+EOF.lrR.sw
+
+cat << EOF.lr.sw | ./sw >/dev/null && echo ok 23 - lr.sw || echo not ok 23 -  lr.sw
 ^w {
 0  	<12- (F f);
 (F f)1  <13-   (G g);
@@ -308,41 +343,6 @@ cat << EOF.lr.sw | ./sw >/dev/null && echo ok 22 - lr.sw || echo not ok 22 -  lr
 (b ^b)	<1-  0(a ^a "Aa");
 (a ^a)1 <2-  1(b ^b);
 EOF.lr.sw
-
-cat << EOF.lrR.sw | ./sw >/dev/null && echo ok 23 - lrR.sw || echo not ok 23 -  lrR.sw
-^w {
-(F F)1  -13> 0;
-(G G)1 -14> (F F);
-(H H)  -15> 0(G G);
-};
-
-
-^v {
-(E ^w)  -12>  0;
-};
-
-
-^u {
-(D ^v) -11> 0;
-};
-
-^a {
-1	-7> (Y);
-(V V)1   -8> 0;
-(W W)1  -9> (V);
-(X)	-10>  (W);
-};
-
-^b {
-(S S)1 	-3> 1;
-(T)2 	-4>  (S);
-(U ^u) 	-5> 1(T);
-0 	-6> 0(T T);
-};
-
-(a ^a "Aa")0 	-1> (b ^b);
-(b ^b)1 	-2>  1(a ^a);
-EOF.lrR.sw
 
 cat << EOF.manycolor.sw | ./sw >/dev/null && echo ok 24 - manycolor.sw || echo not ok 24 -  manycolor.sw
 
