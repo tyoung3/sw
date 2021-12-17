@@ -85,7 +85,7 @@ static void genPaths(Model m)
 
     // P(import "fmt");
     P(import "sync");
-    printf("import %s \"github.com/tyoung3/sw/swbase\"\n", STDPACKAGE);
+    printf("import %s \"github.com/tyoung3/sw\"\n", STDPACKAGE);
 
     p = m->proc;
     while (p) {

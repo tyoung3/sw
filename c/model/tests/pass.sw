@@ -1,1 +1,1 @@
-(A)->(B swbase/Pass)1->(C);
+(A)->(B sw/Pass)1->(C);

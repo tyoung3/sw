@@ -41,7 +41,7 @@
     @done Installation w/Autotools
 	@done Add PREFIX statement to prefix process names with a string. 
 	@done Make generated test_.go's  deadlock safe. Test w/collate.sw
-	@done Improve module location.  Standardize on .../sw/MODULE/pkg/.... | Is .../sw/swbase 
+	@done Improve module location.  Standardize on .../sw/MODULE/pkg/.... | Is .../sw
 	@done  Restore poc test
 	@done  Type names inside arrows(stream direction indicators). 
 	@done  Document more functions 
@@ -153,10 +153,10 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 }
 
 /** Return true if pkg is an existing SW package: 
-	swbase, swutility, or sw_... */
+	sw or swutility, or ? */
 int isaSwPkg(char *pkg) {
 
-	if(strncmp(pkg,"swbase",6) == 0) return 1;	
+	if(strncmp(pkg,"sw",6) == 0) return 1;	
 	if(strncmp(pkg,"swutility",9) == 0) return 1;
 	if(strncmp(pkg,"sw_",3) == 0) return 1;
 	return 0;   

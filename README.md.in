@@ -333,21 +333,6 @@ sw.sh-1.0.1 USAGE:
 Release Notes
 =============
 
-0.15.0
-------
-  * Implemented autotools
-  
-0.15.1
-------
-  * Fixed  Autotools(make distcheck) 
-  * Created mktest.sh to build sw.test script  
-  
-0.15.2
-------
-  * Added exit(0) on '--help' option.
-  * Updated  docs.
-  * Fixed some script bugs
-  
 0.16.0
 ------
   * Generate gofbp code on option -m 8  
@@ -364,7 +349,11 @@ Release Notes
   * Renamed package swbase to sw and moved code to repo root
   * Changed package swutility to import package sw
   
-    
+0.18.4
+------
+  * Fixes for restructure problems
+  * Fixes to bash scripts 
+  * Fixes to githup builds   
   
   
 SW Language Notes
