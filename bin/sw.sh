@@ -41,16 +41,16 @@ Die() {
 pushd $HOME/mygo/sw/c || Die Cannot find $HOME/mygo/sw/c
 
 RunCollate () {
-	temp=/tmp
-	[ -d bin ] || pushd ../
-	[ -x $sw ]|| Die Cannot find $sw -- run make ? 
-	[ -d $temp/sw/ ] || mkdir -p $temp/sw/ 
-	$sw nds/collate.sw  >  $temp/sw/collate.go
-	pushd $temp/sw
-	go mod init
+	sw=/usr/local/bin/sw
+	[ -x $sw ]|| sw=../bin/sw || Die Cannot find $sw -- run make ? 
+	tdir=/tmp/sw$$
+	[ -d $tdir ] || mkdir -p $tdir
+	$sw nds/collate.sw  >  $tdir/collate.go
+	pushd $tdir
+	go mod init main
 	go mod tidy
 	# [ -f go.mod ] || go mod init collate/collate
-	go run $temp/sw/collate.go 	 
+	go run collate.go 	 
 }
 
 RunPoC() {
@@ -141,7 +141,7 @@ Browse () {
 Shell() {
 	export PATH=`pwd`/bin:$PATH
 	echo Entering StreamWork shell  PS1=$PS1
-	exec bash --rcfile .bashrc  
+	exec bash --rcfile ../.bashrc  
 }
 
 case $1 in	
@@ -180,12 +180,12 @@ case $1 in
 		swproject.sh g  $nd $*  ;;
 	poc) RunPoC;;
 	rc) RunCollate;;
-	rl) bin/swlocusts.sh r ;;
+	rl) ../bin/swlocusts.sh r ;;
 	rm) 
 	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
-	    pandoc -r gfm ../README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
+	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;
-	s) shift; Shell $;;
+	s) shift; Shell $*;;
 	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0 &;;
 	*) cat << EOF 
