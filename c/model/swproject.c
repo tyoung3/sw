@@ -3,6 +3,7 @@
 **/
  
 /** 
+	@todo Show full path for .sw and cfg files in generated commentary. 
 	@todo Fix swproject.sh/postage type error.
 	@todo Use PACKAGE_NAME { key: value} format for generated .yaml files.
 	@todo Convert JPM's javaFBP NDs to SW NDs. 
