@@ -2,7 +2,7 @@
 
 # SW.SH 
 
-version="1.0.4"
+version="0.18.4"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -185,7 +185,7 @@ case $1 in
 	   ;;
 	s) shift; Shell $;;
 	v|version) echo sw.sh-v$version;;
-	x) $EDITOR $0;;
+	x) $EDITOR $0 &;;
 	*) cat << EOF 
 	
 sw.sh-$version USAGE: 
