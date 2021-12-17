@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# SW.SH 
+# sw/bin/sw.sh
 
 version="0.18.4"
 sw=/usr/local/bin/sw
@@ -36,8 +36,9 @@ Die() {
 	exit 1
 }
 
-# [ -z $EDITOR  ] && Die  Need to set environment variable: EDITOR
-# [ -z $BROWSER ] && Die  Need to set environment variable: BROWSER
+#			Run in swgo/sw (project root)
+
+pushd $HOME/mygo/sw/c || Die Cannot find $HOME/mygo/sw/c
 
 RunCollate () {
 	temp=/tmp
