@@ -5506,7 +5506,7 @@ _ACEOF
 ;;
 esac
 
-ac_config_files="$ac_config_files Makefile bnfc/Makefile model/Makefile ../README.md"
+ac_config_files="$ac_config_files Makefile bnfc/Makefile model/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -6242,7 +6242,6 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "bnfc/Makefile") CONFIG_FILES="$CONFIG_FILES bnfc/Makefile" ;;
     "model/Makefile") CONFIG_FILES="$CONFIG_FILES model/Makefile" ;;
-    "../README.md") CONFIG_FILES="$CONFIG_FILES ../README.md" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
   esac
