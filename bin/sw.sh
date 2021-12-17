@@ -2,7 +2,7 @@
 
 # SW.SH 
 
-version="2.0.0"  
+version="1.0.4"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -36,18 +36,19 @@ Die() {
 	exit 1
 }
 
-( pushd $HOME/*go/sw && [ -f _IGNORE_SW_REPO ] ) || Die Cannot find sw repo: 
-
+# [ -z $EDITOR  ] && Die  Need to set environment variable: EDITOR
+# [ -z $BROWSER ] && Die  Need to set environment variable: BROWSER
 
 RunCollate () {
 	temp=/tmp
-	[ -d ../bin ] || pushd ../
+	[ -d bin ] || pushd ../
 	[ -x $sw ]|| Die Cannot find $sw -- run make ? 
 	[ -d $temp/sw/ ] || mkdir -p $temp/sw/ 
 	$sw nds/collate.sw  >  $temp/sw/collate.go
 	pushd $temp/sw
 	go mod init
 	go mod tidy
+	# [ -f go.mod ] || go mod init collate/collate
 	go run $temp/sw/collate.go 	 
 }
 
@@ -142,8 +143,7 @@ Shell() {
 }
 
 case $1 in	
-    bw|buildw) echo "$red Delayed due to github build problems$reset"; exit 1
-    	 pushd build || Die Cannot pushd build
+    bw|buildw)  pushd build || Die Cannot pushd build
         ../configure --host=x86_64-w64-mingw32 && rtn=OK 
         [ -z $rtn ] || make -j8  distcheck 
         # Use Makefile to build and test a zip file to distribute	&& echo Success!! || echo Build for Windows Error
@@ -152,9 +152,7 @@ case $1 in
         #autoconf # Generate configure from configure.ac && \
         #automake  --add-missing # Generate Makefile.in from Makefile.am && \
          #../configure --host=x86_64-w64-mingw32 --program-prefix win64-
-    auto|b|build)
-    	pushd c/ || Die Cannot pushd c/ 
-    	 [ -f Makefile.am ] || Die Missing Makefile.am
+    auto|b|build) [ -f Makefile.am ] || Die Missing Makefile.am
     	pushd model
     		./mktest.sh || Die Failed making sw.test script
     	popd
@@ -164,25 +162,25 @@ case $1 in
         ./configure # Generate Makefile from Makefile.in && \
         make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build Error
         ;; 
-    c) pushd c/ && make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
+    c) make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
 	cxxx) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
 	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
     ex)shift; cd example; make;; 
-	j) pushd c && GenSVG;;
-	jl) pushd c; ../bin/swlocusts.sh j & ;;	#Display locusts map;
-	p)  pushd c&& echo $*; shift
+	j) GenSVG;;
+	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
+	p)  echo $*; shift
 		nd=$1 
 		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
 		shift
 		swproject.sh g  $nd $*  ;;
-	poc) pushd c && RunPoC;;
-	rc) pushd c && RunCollate;;
-	rl) pushd c && ../bin/swlocusts.sh r ;;
+	poc) RunPoC;;
+	rc) RunCollate;;
+	rl) bin/swlocusts.sh r ;;
 	rm) 
-	    pandoc -r gfm c/SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
+	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;
 	s) shift; Shell $;;
@@ -192,7 +190,7 @@ case $1 in
 	
 sw.sh-$version USAGE: 
 		b|build		. Build project with Autotools.
-		c			. Make check
+		c		. Make check
 		cl       	. Show release check list. 
 		d  [OPTs]	. Switch to docker container. 
 		e		. Exit SW shell.

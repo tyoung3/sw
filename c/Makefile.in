@@ -97,7 +97,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/model/config.h
-CONFIG_CLEAN_FILES = ../README.md
+CONFIG_CLEAN_FILES = README.md
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -181,7 +181,7 @@ am__define_uniq_tagged_files = \
     if test -f "$$i"; then echo $$i; else echo $(srcdir)/$$i; fi; \
   done | $(am__uniquify_input)`
 DIST_SUBDIRS = $(SUBDIRS)
-am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/../README.md.in \
+am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/README.md.in \
 	$(top_srcdir)/build-aux/compile \
 	$(top_srcdir)/build-aux/install-sh \
 	$(top_srcdir)/build-aux/missing \
@@ -334,8 +334,9 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = bnfc model   
-dist_bin_SCRIPTS = ../bin/sw.sh ../bin/swgraph ../bin/swgo ../bin/swgen.sh ../bin/swproject.sh  ../bin/swskel.sh
+SUBDIRS = bnfc model  docs 
+EXTRA_DIST = nds 
+dist_bin_SCRIPTS = sw.sh bin/swgraph bin/swgo bin/swgen.sh bin/swproject.sh  bin/swskel.sh
 all: all-recursive
 
 .SUFFIXES:
@@ -372,7 +373,7 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	$(am__cd) $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 $(am__aclocal_m4_deps):
-../README.md: $(top_builddir)/config.status $(top_srcdir)/../README.md.in
+README.md: $(top_builddir)/config.status $(srcdir)/README.md.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
 	@$(NORMAL_INSTALL)
