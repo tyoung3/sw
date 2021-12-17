@@ -181,7 +181,7 @@ case $1 in
 	rl) bin/swlocusts.sh r ;;
 	rm) 
 	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
-	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
+	    pandoc -r gfm ../README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;
 	s) shift; Shell $;;
 	v|version) echo sw.sh-v$version;;
