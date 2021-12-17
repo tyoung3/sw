@@ -355,6 +355,10 @@ Release Notes
   * Fixes to bash scripts 
   * Fixes to githup builds   
   
+0.18.5
+------
+  * More fixes
+  
   
 SW Language Notes
 --------------------
