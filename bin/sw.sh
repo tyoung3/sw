@@ -48,6 +48,7 @@ RunCollate () {
 	$sw nds/collate.sw  >  $tdir/collate.go
 	pushd $tdir
 	go mod init main
+	echo "require github.com/tyoung3/sw latest" >> go.mod
 	go mod tidy
 	# [ -f go.mod ] || go mod init collate/collate
 	go run collate.go 	 
@@ -172,7 +173,7 @@ case $1 in
 	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
     ex)shift; cd example; make;; 
 	j) GenSVG;;
-	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
+	jl) ../bin/swlocusts.sh j & ;;	#Display locusts map;
 	p)  echo $*; shift
 		nd=$1 
 		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg

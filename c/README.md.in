@@ -113,7 +113,7 @@ package main
 *********************************************/
 
 import "sync"
-import sw "github.com/tyoung3/sw/swbase"
+import sw "github.com/tyoung3/sw"
 
 
 func main() {
