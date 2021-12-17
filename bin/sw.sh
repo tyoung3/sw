@@ -160,7 +160,7 @@ case $1 in
         autoconf # Generate configure from configure.ac && \
         automake  --add-missing # Generate Makefile.in from Makefile.am && \
         ./configure # Generate Makefile from Makefile.in && \
-        make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build Error
+        # make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build Error
         ;; 
     c) make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
 	cxxx) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
