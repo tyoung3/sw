@@ -41,7 +41,7 @@ Die() {
 
 RunCollate () {
 	temp=/tmp
-	[ -d bin ] || pushd ../
+	[ -d ../bin ] || pushd ../
 	[ -x $sw ]|| Die Cannot find $sw -- run make ? 
 	[ -d $temp/sw/ ] || mkdir -p $temp/sw/ 
 	$sw nds/collate.sw  >  $temp/sw/collate.go
@@ -142,7 +142,8 @@ Shell() {
 }
 
 case $1 in	
-    bw|buildw)  pushd build || Die Cannot pushd build
+    bw|buildw) echo "$red Delayed due to github build problems$reset"; exit 1
+    	 pushd build || Die Cannot pushd build
         ../configure --host=x86_64-w64-mingw32 && rtn=OK 
         [ -z $rtn ] || make -j8  distcheck 
         # Use Makefile to build and test a zip file to distribute	&& echo Success!! || echo Build for Windows Error
@@ -171,7 +172,7 @@ case $1 in
 	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
     ex)shift; cd example; make;; 
 	j) pushd c && GenSVG;;
-	jl) pushd c && bin/swlocusts.sh j & ;;	#Display locusts map;
+	jl) pushd c; ../bin/swlocusts.sh j & ;;	#Display locusts map;
 	p)  pushd c&& echo $*; shift
 		nd=$1 
 		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
@@ -179,9 +180,9 @@ case $1 in
 		swproject.sh g  $nd $*  ;;
 	poc) pushd c && RunPoC;;
 	rc) pushd c && RunCollate;;
-	rl) pushd c && bin/swlocusts.sh r ;;
+	rl) pushd c && ../bin/swlocusts.sh r ;;
 	rm) 
-	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
+	    pandoc -r gfm c/SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;
 	s) shift; Shell $;;
