@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.18.0 - STREAMWORK
+SW-0.18.4 - STREAMWORK
 ======================
 
 StreamWork
@@ -267,10 +267,10 @@ QuickStart (on Linux)
   
 ### Installation   
   * cd to any convenient workspace (/usr/src for example).
-  * Download the latest sw-0.18.0.tar.gz file 
+  * Download the latest sw-0.18.4.tar.gz file 
 	  from https://github.com/tyoung3/sw
   * Run 'tar -xzf .../sw-...tar.gz' to extract source files
-  * cd  sw-0.18.0
+  * cd  sw-0.18.4
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin

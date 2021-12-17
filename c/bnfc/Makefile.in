@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# BNFC/MAKEFILE.AM
+# sw/c/BNFC/MAKEFILE.AM
 
 VPATH = @srcdir@
 am__is_gnu_make = { \

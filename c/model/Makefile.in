@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# sw/model/MAKEFILE.AM   
+# sw/c/model/MAKEFILE.AM   
 
 VPATH = @srcdir@
 am__is_gnu_make = { \
