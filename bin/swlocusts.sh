@@ -15,15 +15,15 @@ SW=$swdir/sw
 [ -e $SW     ] || Die $SW is missing 
 
 temp=/tmp
-dir=$temp/sw
+dir=$temp/sw/locusts$$
 [ -d $dir ] || mkdir -p  $dir || Die Cannot mkdir $dir
 
 RunLocusts () {
-	[ -d /tmp/x/ ] || mkdir /tmp/x || Die Cannot mkdir /tmp/x/
-	#mv $dir/* /tmp/x/ 2>&1 >/dev/null
+	### [ -d /tmp/x/ ] || mkdir /tmp/x || Die Cannot mkdir /tmp/x/
 	$SW nds/locusts.sw >  $dir/locusts.go
 	pushd $dir
 	go mod init locusts/locusts
+	echo require github.com/tyoung3/sw latest >> go.mod
 	go mod tidy
 	echo;echo "Dates for Missouri brood XIX(13 year) and brood IV(17 year) locusts" 
 	go run $dir/locusts.go 		\
