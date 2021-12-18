@@ -2,7 +2,7 @@
 
 # sw/bin/sw.sh
 
-version="0.18.4"
+version="0.18.5"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -38,7 +38,7 @@ Die() {
 
 #			Run in swgo/sw (project root)
 
-pushd /usr/src/sw/c || Die Cannot find /usr/src/sw/c
+pushd /usr/src/sw/src || Die Cannot find /usr/src/sw/src
 
 RunCollate () {
 	sw=/usr/local/bin/sw
@@ -141,8 +141,9 @@ Browse () {
 ## @Shell   Enters a bash subshell 
 Shell() {
 	export PATH=`pwd`/bin:$PATH
+	pushd ../
 	echo Entering StreamWork shell  PS1=$PS1
-	exec bash --rcfile ../.bashrc  
+	exec bash --rcfile .bashrc  
 }
 
 case $1 in	
