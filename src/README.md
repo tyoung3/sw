@@ -358,7 +358,7 @@ Release Notes
 0.18.5
 ------
   * More fixes
-  
+  * Moved .../sw/c to .../sw/src
   
 SW Language Notes
 --------------------
