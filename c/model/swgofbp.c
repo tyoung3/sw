@@ -431,7 +431,7 @@ static char *stripPath( char *s1 ) {
 static void genLaunch1(Process p)
 {
 	static int nproc=0;
-	printf( "\t%s := net.NewProc(\"%s\", %s.%s{})\n",
+	printf( "\t%s := net.NewProc(\"%s\", &%s.%s{})\n",
 		 p->name, p->name, stripPath(p->comp->path), p->comp->name);
 
 #if 0
