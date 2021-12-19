@@ -62,7 +62,7 @@ static void genPath(Component  c)
     if(s[0] == '/') {
     	printf("import \"%s\"\n",   s);
     } else {
-    	printf("import \"%s/%s\"\n", importLib,   s);
+    	printf("import \"%s%s\"\n", importLib,   s);
     }}	
 }
 

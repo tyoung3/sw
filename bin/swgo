@@ -1,9 +1,10 @@
 #!/bin/bash 
 
 # SWGO  script.   Create and run a StreamWork .SW program.
+version=0.18.6b
 
 Die () {
-	echo "swgo/DIE: $*"
+	echo "swgo-v$version/DIE: $*"
 	exit 1
 }
 
@@ -19,8 +20,8 @@ GenRun() {
 		mkdir /tmp/sw$$ || Die Cannot make /tmp/sw$$/
 			$SW $swfile > /tmp/sw$$/$base.go
 		cd /tmp/sw$$ || Die cannot make /tmp/sw$$ 
-			go mod init main && \
-			go mod tidy || Die $swfile go mod failed.
+			go mod init main &>/dev/null && \
+			go mod tidy &>/dev/null || Die $swfile go mod failed.
 			go run /tmp/sw$$/$base.go || Die /tmp/sw$$/$base.go failed.
 		 	
 	else 
@@ -35,6 +36,6 @@ Run() {
 }
 
 case $1 in 
-	
+	v)echo swgo-v$version;;
 	*)Run $*;;
 esac	
