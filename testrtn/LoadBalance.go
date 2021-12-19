@@ -8,7 +8,6 @@ package testrtn
 
 import (
 	"fmt"
-	"github.com/tyoung3/sw/testrtn"
 	"sync"
 )
 
@@ -16,7 +15,7 @@ import (
 func LoadBalance(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
-	cfg := swbal.PkgConfig()
+	cfg :=  PkgConfig()
 	bs, _ := cfg.IntOr("swbal/github.com/tyoung3/sw/testrtn.buffersize", 1)
 	seqno, _ := cfg.IntOr("swbal/github.com/tyoung3/sw/testrtn.seqno", 1)
 	title, _ := cfg.StringOr("swbal/github.com/tyoung3/sw/testrtn.title", "n/a")
@@ -41,9 +40,9 @@ func LoadBalance(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(4)
 
-	go swbal.Send(cs[3], &wg2, arg, 3)
-	go swbal.Send(cs[2], &wg2, arg, 2)
-	go swbal.Send(cs[1], &wg2, arg, 1)
-	go swbal.Recv(cs[0], &wg2, arg, 0)
+	go Send(cs[3], &wg2, arg, 3)
+	go Send(cs[2], &wg2, arg, 2)
+	go Send(cs[1], &wg2, arg, 1)
+	go Recv(cs[0], &wg2, arg, 0)
 	wg2.Wait()
 }
