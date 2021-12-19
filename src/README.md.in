@@ -369,6 +369,11 @@ Release Notes
   * More fixes
   * Moved .../sw/c to .../sw/src
   
+0.18.6
+------
+  * Created gofbp script  
+  * Added sw/testrtn package
+  
 SW Language Notes
 --------------------
 
