@@ -1,0 +1,41 @@
+#!/bin/bash 
+
+# SWGO  script.   Create and run a StreamWork .SW program.
+
+Die () {
+	echo "swgo/DIE: $*"
+	exit 1
+}
+
+swdir=$HOME/mygo/sw/bin
+[ -e $swdir/sw ] || swdir=/usr/local/bin
+SW=$swdir/sw
+[ -e $SW     ] || Die SW $SW is missing 
+
+GenRun() {
+	base=`basename $file`
+	swfile=${file}
+	if [ -f $swfile ]; then
+		mkdir /tmp/sw$$ 
+			$SW -m 8 $swfile > /tmp/sw$$/$base.go
+		pushd /tmp/sw$$ || Die cannot make /tmp/sw$$ 
+			go mod init main 2>&1  >/dev/null
+			echo "require github.com/jpaulm/gofbp v1.0.1" >> go.mod
+			go mod tidy 
+			go run /tmp/sw$$/$base.go
+		popd	
+	else 
+		echo $swfile missing
+	fi
+}
+
+Run() {	
+	for file in $*; do 
+		GenRun $file
+	done 
+}
+
+case $1 in 
+	
+	*)Run $*;;
+esac	
