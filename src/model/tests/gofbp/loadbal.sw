@@ -1,4 +1,5 @@
-#!/usr/local/bin/gofbp
+#!/usr/src/sw/bin/gofbp
+
 
 $core = "github.com/jpaulm/gofbp/core";
 $trtn = "github.com/jpaulm/gofbp/components/testrtn";

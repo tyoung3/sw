@@ -13,29 +13,25 @@ SW=$swdir/sw
 [ -e $SW     ] || Die SW $SW is missing 
 
 GenRun() {
+	file=$1
 	base=`basename $file`
 	swfile=${file}
 	if [ -f $swfile ]; then
-		mkdir /tmp/sw$$ 
-			$SW -m 8 $swfile > /tmp/sw$$/$base.go
-		pushd /tmp/sw$$ || Die cannot make /tmp/sw$$ 
-			go mod init main 2>&1  >/dev/null
+		mkdir /tmp/sw$$ >/dev/null
+		$SW -m 8 $swfile  2> /dev/null > /tmp/sw$$/$base.go
+		cd /tmp/sw$$ >/dev/null || Die cannot make /tmp/sw$$ 
+			go mod init main &> /dev/null
 			echo "require github.com/jpaulm/gofbp v1.0.1" >> go.mod
-			go mod tidy 
+			go mod tidy >/dev/null 
 			go run /tmp/sw$$/$base.go
-		popd	
+		 	
 	else 
 		echo $swfile missing
 	fi
 }
 
-Run() {	
-	for file in $*; do 
-		GenRun $file
-	done 
-}
 
 case $1 in 
 	
-	*)Run $*;;
+	*)GenRun $*;;
 esac	
