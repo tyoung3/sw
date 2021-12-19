@@ -7,7 +7,7 @@ Die () {
 	exit 1
 }
 
-swdir=$HOME/mygo/sw/bin
+swdir=/usr/src/sw/bin
 [ -e $swdir/sw ] || swdir=/usr/local/bin
 SW=$swdir/sw
 [ -e $SW     ] || Die SW $SW is missing 
@@ -16,13 +16,13 @@ GenRun() {
 	base=`basename $file`
 	swfile=${file}
 	if [ -f $swfile ]; then
-		mkdir /tmp/sw$$ 
+		mkdir /tmp/sw$$ || Die Cannot make /tmp/sw$$/
 			$SW $swfile > /tmp/sw$$/$base.go
-		pushd /tmp/sw$$ || Die cannot make /tmp/sw$$ 
-			go mod init main 
-			go mod tidy 
-			go run /tmp/sw$$/$base.go
-		popd	
+		cd /tmp/sw$$ || Die cannot make /tmp/sw$$ 
+			go mod init main && \
+			go mod tidy || Die $swfile go mod failed.
+			go run /tmp/sw$$/$base.go || Die /tmp/sw$$/$base.go failed.
+		 	
 	else 
 		echo $swfile missing
 	fi

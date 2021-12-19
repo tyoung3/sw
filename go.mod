@@ -4,8 +4,6 @@ go 1.17
 
 require github.com/zpatrick/go-config v0.0.0-20191118215128-80ba6b3e54f6
 
-replace github.com/tyoung3/sw/testrtn => ../sw/testrtn
-
 require (
 	github.com/BurntSushi/toml v0.4.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
