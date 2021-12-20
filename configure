@@ -5489,7 +5489,7 @@ _ACEOF
 ;;
 esac
 
-ac_config_files="$ac_config_files src/Makefile src/bnfc/Makefile src/model/Makefile README.md"
+ac_config_files="$ac_config_files Makefile src/Makefile src/bnfc/Makefile src/model/Makefile README.md"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -6222,6 +6222,7 @@ do
   case $ac_config_target in
     "src/model/config.h") CONFIG_HEADERS="$CONFIG_HEADERS src/model/config.h" ;;
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
+    "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "src/bnfc/Makefile") CONFIG_FILES="$CONFIG_FILES src/bnfc/Makefile" ;;
     "src/model/Makefile") CONFIG_FILES="$CONFIG_FILES src/model/Makefile" ;;
