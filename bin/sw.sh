@@ -2,7 +2,7 @@
 
 # sw/bin/sw.sh
 
-version="0.18.5"
+version="0.18.7"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -147,7 +147,7 @@ Shell() {
 }
 
 case $1 in	
-    bw|buildw)  pushd build || Die Cannot pushd build
+    bw|buildw)  pushd ../build || Die Cannot pushd ../build
         ../configure --host=x86_64-w64-mingw32 && rtn=OK 
         [ -z $rtn ] || make -j8  distcheck 
         # Use Makefile to build and test a zip file to distribute	&& echo Success!! || echo Build for Windows Error
