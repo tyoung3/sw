@@ -89,7 +89,7 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 bin_PROGRAMS = sw$(EXEEXT)
-subdir = model
+subdir = src/model
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -499,9 +499,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign model/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/model/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign model/Makefile
+	  $(AUTOMAKE) --foreign src/model/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -526,7 +526,7 @@ config.h: stamp-h1
 
 stamp-h1: $(srcdir)/config.h.in $(top_builddir)/config.status
 	@rm -f stamp-h1
-	cd $(top_builddir) && $(SHELL) ./config.status model/config.h
+	cd $(top_builddir) && $(SHELL) ./config.status src/model/config.h
 $(srcdir)/config.h.in:  $(am__configure_deps) 
 	($(am__cd) $(top_srcdir) && $(AUTOHEADER))
 	rm -f stamp-h1

@@ -1,5 +1,5 @@
-/* model/config.h.  Generated from config.h.in by configure.  */
-/* model/config.h.in.  Generated from configure.ac by autoheader.  */
+/* src/model/config.h.  Generated from config.h.in by configure.  */
+/* src/model/config.h.in.  Generated from configure.ac by autoheader.  */
 
 /* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
    systems. This function is required for `alloca.c' support on those systems.
@@ -95,7 +95,7 @@
 #define PACKAGE_NAME "sw"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "sw 0.18.6"
+#define PACKAGE_STRING "sw 0.18.7"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "sw"
@@ -104,7 +104,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.18.6"
+#define PACKAGE_VERSION "0.18.7"
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
@@ -118,7 +118,7 @@
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.18.6"
+#define VERSION "0.18.7"
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
