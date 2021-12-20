@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.18.0 - STREAMWORK
+SW-0.18.6 - STREAMWORK
 ======================
 
 StreamWork
@@ -49,13 +49,13 @@ and builds a single main Go program which:
 
 On option, StreamWork will read, parse and interpret a network definition file then  create either a:
  
- * a Go main program,
+ * a StreamWork Go main program,
+ * a gofbp      Go main program (see github.com/jpaulm/gofbp), 
  * a GraphViz .dot file,
- * a bash script file to help generate a complete GO language project tree. 
- 
-	After creating a project tree, StreamWork continues to test the generated components and 
-	the final generated application.
- * an abstract syntax tree, or  
+ * a bash script file to help generate a complete GO language project tree and 
+ 	 test it.
+ * an abstract syntax tree, 
+    OR
  * a linearized tree (a network definition reconstruction).   
 
 ### Synopsis
@@ -69,7 +69,7 @@ On option, StreamWork will read, parse and interpret a network definition file t
 ```	
         If SW_FILE is omitted, **_sw_** will read from stdin. 
 		MODE= 
-			0-GOMODE		. Generate a main GO program[DEFAULT].
+			0-GOMODE		. Generate a main SW Go program[DEFAULT].
 			1-ASTMODE		. Display the Abstract Syntax Tree 
 			2-GENTREE		. Display the Linearized tree
 			3-GRAPHMODE		. Generate Graphviz .dot file code
@@ -78,8 +78,13 @@ On option, StreamWork will read, parse and interpret a network definition file t
 			7-CMODE			. Incomplete and untested. Looking for help.
 			8-GENGOFBP      . Generate main go code for JPM's gofbp. 
 ```
-## TestSW program 
-TestSW syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
+
+## Return code
+**_sw_** returns SUCCESS unless it encounters an error, in which case **_sw_** returns FAILURE.
+See package documention for component return codes. 
+
+## **_TestSW_** program 
+**_TestSW_** syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
 ### synopsis
 ```usage: Call with one of the following argument combinations:
 	--help		Display this help message.
@@ -88,15 +93,15 @@ TestSW syntax checks stdin or a SteamWork network definition file or a SteamWork
 	-s (files)	Silent mode. Parse content of files silently.
 ```
 
-swgo script
+**_swgo_** script
 -----------
 
-The bash script, swgo, will generate and run a GO program from a network definition:
+The bash script, **_swgo_**, will generate and run a GO program from a network definition:
 ```
   .../nds/hw.sw
 (Hello) <string- (World);
 ```
-swgo .../nds/hw
+**_swgo_** .../nds/hw
 produces:
 ```
 
@@ -113,7 +118,7 @@ package main
 *********************************************/
 
 import "sync"
-import sw "github.com/tyoung3/sw/swbase"
+import sw "github.com/tyoung3/sw"
 
 
 func main() {
@@ -139,10 +144,10 @@ Hello World-6
 Hello World-7
 ```
 
-swgraph script
+**_swgraph_** Script
 --------------
 
-Another bash script, swgraph, will display a graphic image of a network definition:
+Another bash script, **_swgraph_**, will display a graphic image of a network definition:
    
 ```
 #   .../nds/mvc.sw
@@ -151,23 +156,23 @@ Another bash script, swgraph, will display a graphic image of a network definiti
 (v)2            -event>          (c Control); 
 (c)1            -request>       (m);
 ```
-swgraph .../nds/mvc
+**_swgraph_** .../nds/mvc
 produces: 
 
 ![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
 for instance;
 
 Processes are colored such that all components in the same package have the same color.
-Not shown here, unfortunately, are the tooltips and html references.  Arrows are colored according
-to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
+Not shown here, unfortunately, are the tooltips and html references.  Arrows are colored according to stream buffersize: 0 - black; 1-green; 2 0r more - orange.   Coloring rules 
 are not guaranteed to remain unchanged in future sw versions. 
+**WARNING:** buffersize is related to deadlock potential in cyclic networks.
 
 The resulting image is an annotated Data Flow Diagram.
 
-Network Definition
-------------------
+Network Definition Files
+------------------------
 
-The network definition file consists of a list of 
+A network definition file consists of a list of 
 streams(aka dataflows); and may also contain subnet definitions, 
 INCLUDE and PREFIX statements, and comments.  
 
@@ -175,15 +180,15 @@ INCLUDEd files are also network definitions which may in turn contain
 INCLUDE statements.  Exceeding 100 levels of includes will 
 cause program termination.
 
-A stream definition looks like:
+A stream definition looks something like:
 ```
-(a C) -> (b D);
-    or 
-(E) <- (F); 
+(a C "ARG..." ) -ipType> (b D);
+    or [reversing direction and using default component names]
+(E)IN <- OUT.1(F)0 <- (G); 
 ```
 and consists of:
 
-  * processname, component identifier, and optional arguments in parens 
+  * processname, optional component identifier, and optional arguments in parens, 
   * portnumber (defaults to 0), 
   * a stream director:  right arrow("->") or left arrow("<-), 
   * portnumber, 
@@ -191,13 +196,13 @@ and consists of:
   * a statement terminator(';'). 
 
 The stream director(director) points from the source process to the sink process.  A director may 
-include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B>".  If not included, buffer size defaults to zero.
+include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B 2>".  If not included, buffer size defaults to zero.
 Example with anonymous processes:
 ```
   (_) -int 3> (_); [integer stream with buffersize of three] 
 ```
 
-In this example, the default components send their process names to the channel or to stdout.  
+In this example, the default components [as specified in a config file, send their process names to the channel or to stdout: 
 ```
     (Hello) <- (World); 
 ```
@@ -208,34 +213,38 @@ Hello World
 
 A process is defined by its process name, its component identifier,
 and component arguments; all surrounded by parens. 
-The component identifier and arguments will default if omitted.  
+The component identifier and arguments will default if omitted. 
+Process names are not apparent to Go and so need not follow Go naming 
+rules, just the StreamWork conventions. 
 
 A component identifier consists of its import module/package identifier, 
-a slash, '/', and the component name.   All Go component names should be capitalized.
+a slash, '/', and the component name.  Go component names need to be capitalized.
 If  the path is omitted,  a configuration default path is assumed.  
 If the component name is also omitted, configuration default component names
 are assumed for sink, source, and filter(has both inputs and outputs) processes.
+Subnet components are identified by ```'``` prefixing its identifier, as in
+(A ^SubnetName) ...
  
-Channel arrows consist of ```<```, an optional type identifier,
+Stream directors consist of ```<```, an optional type identifier,
 an optional buffersize integer, and ```-```. Example: ```<100-```
-The reverse (Ex: ```- myData_t 100>```) is also valid.
+The reverse (Ex: ```-myData_t 100>```) is also valid.
  
 Information packets(IPs) are designed as nil(empty) interfaces.  The
-data type is determined by the sending component. 
+data type is determined by the sending component.  It is possible for 
+properly coded sink components to handle multiple data types over a single
+channel  interface,  but this is not generally recommended, as there is no
+way now to show this on generated network diagrams.
+Multiple data types can be handled 
+within a struct or over multiple channels.
 A type mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
 type(including user-defined types and structures). 
-Some components (Print, for instance) can process strings and integers; 
+Some components (sw.Print, for instance) can process strings and integers; 
 some just a single type; on each receiving port.   
-
-
-It is possible
-to send more than one type of data over a channel.  
-Multiple data types can also be handled 
-within a struct or over multiple channels.
  
-**_sw_** versions are backward compatible within the same major 
-version(currently v0).  (v0.12.2 is somewhat major, however. v0.13.4 introduced PREFIX and INCLUDE statements.)   
+**_sw_** versions beginning with v1.0.0 are backward compatible within the same major 
+version(currently v0).  There is no such guarantee with v0.N.N versions, but we will
+increase the minor version in such cases.  The master github branch may have many commits without creating a new version.  
 
 **_sw_** builds a network model in memory, then optionally generates
 either 
@@ -253,7 +262,7 @@ JavaFBP is also possible.
 Comments and critiques are welcome.    Contributors are encouraged.  
 
 Please do not submit code before contacting the project.  Contact by 
-e-mailing streamwork@twyoung.com  is preferred to posting a request on Github .     
+e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to posting a request on Github.     
 
 QuickStart (on Linux) 
 ----------
@@ -263,14 +272,14 @@ QuickStart (on Linux)
   * Graphviz should be installed, but installation may proceed
     without it.
   * The ...github/tyoung3/StreamWork backend is no longer required.  
-  * StreamWork is written in C. 
+  * **_sw_** is written in C. 
   
 ### Installation   
   * cd to any convenient workspace (/usr/src for example).
-  * Download the latest sw-0.18.0.tar.gz file 
+  * Download the latest sw-0.18.6.tar.gz file 
 	  from https://github.com/tyoung3/sw
   * Run 'tar -xzf .../sw-...tar.gz' to extract source files
-  * cd  sw-0.18.0
+  * cd  sw-0.18.6
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -325,29 +334,14 @@ sw.sh-1.0.1 USAGE:
 ## Building on Linux
 
   * Install ctags, libyaml-dev, bnfc, bison, and flex 
-  * cd to go workspace (like $GOPATH/src )
+  * cd to your project workspace (like /usr/src )
   * git clone https://github.com/tyoung3/sw.git
-  * ./sw.sh build;  # Runs autotools including ./configure. 
-  * make check
+  * bin/sw.sh build;  # Runs autotools including .../sw/bin/configure. 
+  * bin/sw.sh c;      # Runs make check in .../sw/src
 
 Release Notes
 =============
 
-0.15.0
-------
-  * Implemented autotools
-  
-0.15.1
-------
-  * Fixed  Autotools(make distcheck) 
-  * Created mktest.sh to build sw.test script  
-  
-0.15.2
-------
-  * Added exit(0) on '--help' option.
-  * Updated  docs.
-  * Fixed some script bugs
-  
 0.16.0
 ------
   * Generate gofbp code on option -m 8  
@@ -358,26 +352,46 @@ Release Notes
 ------
   * Fixed some gofbp code generation errors. 
   
+0.18.0
+------
+  * Reorganized repo tree structure 
+  * Renamed package swbase to sw and moved code to repo root
+  * Changed package swutility to import package sw
+  
+0.18.4
+------
+  * Fixes for restructure problems
+  * Fixes to bash scripts 
+  * Fixes to githup builds   
+  
+0.18.5
+------
+  * More fixes
+  * Moved .../sw/c to .../sw/src
+  
+0.18.6
+------
+  * Created gofbp script  
+  * Added sw/testrtn package
   
 SW Language Notes
 --------------------
 
-The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it 
-directly interpretable, without preprocessing. 
+The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
 You can find the StreamWork language description at .../docs/SW.pdf. 
 
 SW has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
 will be made to ensure that all currently valid SW statements will remain valid.  Should 
-this prove impossible,  the major version will be changed, i.e. to v1.0.0. 
+this prove impossible,  the minor version will be incremented, i.e. to v0.16.0 or greater.
+Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for netword definition files, **_sw_**, and sw... packages only.  Linux scripts are subject to change without affecting sw versions.   
 
 Statements in SW, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
-they tell the reader (and the interpreter) when
+they tell the reader (and the SW interpreter) when
 you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
-
 Additionally, without semi-colons line breaks become part of the language 
 definition, leading to awkward and confusing syntax rules.  
 

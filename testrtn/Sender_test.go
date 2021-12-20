@@ -13,8 +13,11 @@ import "sync"
 func TestSkel_Sender(t *testing.T) {
 	var cs []chan interface{}
 	var wg sync.WaitGroup
+	var count int
+	
+	count=3
 
-	arg := []string{"TestSkel_Sender"}
+	arg := []string{"TestSkel_Sender","3", "COUNT=3"}
 
 	fmt.Println(arg[0])
 	for i := 0; i < 1+0; i++ {
@@ -23,15 +26,17 @@ func TestSkel_Sender(t *testing.T) {
 
 	wg.Add(2)
 	go func() {
-
 		j := 0
 		for j >= 0 {
+		    for count > 0 {
 			ip, ok := <-cs[j]
 			if ok != true {
 				break
 			}
-			fmt.Println("chan:", j, "IP:", ip)
-			j--
+			fmt.Println("chan:", j,  "IP:", ip)
+			count--
+		    } 	
+		    j--
 		}
 
 		fmt.Println("TestSkel_Sender Ended")
