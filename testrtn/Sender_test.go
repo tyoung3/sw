@@ -15,9 +15,9 @@ func TestSkel_Sender(t *testing.T) {
 	var wg sync.WaitGroup
 	var count int
 	
-	count=3
+	count=5
 
-	arg := []string{"TestSkel_Sender","3", "COUNT=3"}
+	arg := []string{"TestSkel_Sender","5", "COUNT=5"}
 
 	fmt.Println(arg[0])
 	for i := 0; i < 1+0; i++ {
@@ -33,7 +33,7 @@ func TestSkel_Sender(t *testing.T) {
 			if ok != true {
 				break
 			}
-			fmt.Println("chan:", j,  "IP:", ip)
+			fmt.Println("Msg:", count, "chan:", j,  "IP:", ip)
 			count--
 		    } 	
 		    j--

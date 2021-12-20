@@ -15,18 +15,18 @@ import (
 func Sender(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	defer wg.Done()
+	var count int 
 	cfg := PkgConfig()
-	//count, _ := cfg.IntOr("testrtn/github.com/tyoung3/sw/testrtn.count", 1)
-	count, _ := cfg.IntOr("count", 1)
 	
-	var wg2 sync.WaitGroup
+	count, _ = cfg.IntOr("count", 1)
 	l := len(arg)
-	
 	if l > 1 {
-		count, _ = strconv.Atoi(arg[1])  // Override count with param 1
+		count,_ = strconv.Atoi(arg[1])  // Override count with param 1
+	} else { 
+		count = 1	
 	}
 		
-	count=3  			// @todo Fix config later 
+	var wg2 sync.WaitGroup			// @todo Fix config later 
 	for count > 0  {
 		wg2.Add(1)
 		Send(cs[0], &wg2, arg, 0)
