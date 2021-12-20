@@ -173,7 +173,7 @@ case $1 in
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
-	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
+	doc)cd ../; shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
     ex)shift; cd example; make;; 
 	j) GenSVG;;
 	jl) ../bin/swlocusts.sh j & ;;	#Display locusts map;
