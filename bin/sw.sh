@@ -156,8 +156,10 @@ case $1 in
         #autoconf # Generate configure from configure.ac && \
         #automake  --add-missing # Generate Makefile.in from Makefile.am && \
          #../configure --host=x86_64-w64-mingw32 --program-prefix win64-
-    auto|b|build) [ -f Makefile.am ] || Die Missing Makefile.am
-    	pushd model
+    auto|b|build) 
+    	cd ../
+    	[ -f src/Makefile.am ] || Die Missing src/Makefile.am
+    	pushd src/model
     		./mktest.sh || Die Failed making sw.test script
     	popd
         aclocal # Set up an m4 environment && \
@@ -166,7 +168,7 @@ case $1 in
         ./configure # Generate Makefile from Makefile.in && \
         # make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build Error
         ;; 
-    c) make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
+    c)pushd model; make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
 	cxxx) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
@@ -183,7 +185,7 @@ case $1 in
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) ../bin/swlocusts.sh r ;;
-	rm) 
+	rm) pushd ../
 	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;

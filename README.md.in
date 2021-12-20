@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.18.6 - STREAMWORK
+SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ - STREAMWORK
 ======================
 
 StreamWork
@@ -264,11 +264,11 @@ Comments and critiques are welcome.    Contributors are encouraged.
 Please do not submit code before contacting the project.  Contact by 
 e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to posting a request on Github.     
 
-QuickStart (on Linux) 
-----------
+QuickStart on Linux 
+-------------------
   
-### Comments  
-  
+### Requirements  
+  * Gcc, etc.
   * Graphviz should be installed, but installation may proceed
     without it.
   * The ...github/tyoung3/StreamWork backend is no longer required.  
@@ -276,10 +276,10 @@ QuickStart (on Linux)
   
 ### Installation   
   * cd to any convenient workspace (/usr/src for example).
-  * Download the latest sw-0.18.6.tar.gz file 
-	  from https://github.com/tyoung3/sw
-  * Run 'tar -xzf .../sw-...tar.gz' to extract source files
-  * cd  sw-0.18.6
+  * Download the latest sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@.tar.gz file 
+	  from https://github.com/tyoung3/sw/build
+  * Run 'tar -xzf .../sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@.tar.gz' to extract source files
+  * cd  sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -333,11 +333,12 @@ sw.sh-1.0.1 USAGE:
 
 ## Building on Linux
 
-  * Install ctags, libyaml-dev, bnfc, bison, and flex 
+  * Install autotools, ctags, libyaml-dev, bnfc, bison, and flex 
   * cd to your project workspace (like /usr/src )
   * git clone https://github.com/tyoung3/sw.git
   * bin/sw.sh build;  # Runs autotools including .../sw/bin/configure. 
   * bin/sw.sh c;      # Runs make check in .../sw/src
+  * bin/sw.sh bw;     # Builds Windows/sw.exe.  Requires mingw.  Run make distclean first.
 
 Release Notes
 =============
@@ -373,6 +374,11 @@ Release Notes
 ------
   * Created gofbp script  
   * Added sw/testrtn package
+  
+0.18.7
+------
+  * Moved build process to project tree root
+  
   
 SW Language Notes
 --------------------
