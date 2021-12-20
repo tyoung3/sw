@@ -14,7 +14,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-SW-0.18.7 - STREAMWORK
+SW-0.18.8 - STREAMWORK
 ======================
 
 StreamWork
@@ -26,8 +26,7 @@ StreamWork
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Description
------------
+## Description
 
 StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
 
@@ -93,9 +92,7 @@ See package documention for component return codes.
 	-s (files)	Silent mode. Parse content of files silently.
 ```
 
-**_swgo_** script
------------
-
+## **_swgo_** script
 The bash script, **_swgo_**, will generate and run a GO program from a network definition:
 ```
   .../nds/hw.sw
@@ -144,8 +141,7 @@ Hello World-6
 Hello World-7
 ```
 
-**_swgraph_** Script
---------------
+## **_swgraph_** Script
 
 Another bash script, **_swgraph_**, will display a graphic image of a network definition:
    
@@ -169,8 +165,7 @@ are not guaranteed to remain unchanged in future sw versions.
 
 The resulting image is an annotated Data Flow Diagram.
 
-Network Definition Files
-------------------------
+## Network Definition Files
 
 A network definition file consists of a list of 
 streams(aka dataflows); and may also contain subnet definitions, 
@@ -264,8 +259,7 @@ Comments and critiques are welcome.    Contributors are encouraged.
 Please do not submit code before contacting the project.  Contact by 
 e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to posting a request on Github.     
 
-QuickStart on Linux 
--------------------
+## QuickStart on Linux 
   
 ### Requirements  
   * Gcc, etc.
@@ -276,10 +270,10 @@ QuickStart on Linux
   
 ### Installation   
   * cd to any convenient workspace (/usr/src for example).
-  * Download the latest sw-0.18.7.tar.gz file 
+  * Download the latest sw-0.18.8.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-0.18.7.tar.gz' to extract source files
-  * cd  sw-0.18.7
+  * Run 'tar -xzf .../sw-0.18.8.tar.gz' to extract source files
+  * cd  sw-0.18.8
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -340,48 +334,33 @@ sw.sh-1.0.1 USAGE:
   * bin/sw.sh c;      # Runs make check in .../sw/src
   * bin/sw.sh bw;     # Builds Windows/sw.exe.  Requires mingw.  Run make distclean first.
 
-Release Notes
-=============
+## Release Notes
 
-0.16.0
-------
-  * Generate gofbp code on option -m 8  
-  * Fixed string variable parsing.  
-  * Allowing string variables in module paths. 
-  
-0.17.2
-------
-  * Fixed some gofbp code generation errors. 
-  
-0.18.0
-------
+### 0.18.0
   * Reorganized repo tree structure 
   * Renamed package swbase to sw and moved code to repo root
   * Changed package swutility to import package sw
   
-0.18.4
-------
+### 0.18.4
   * Fixes for restructure problems
   * Fixes to bash scripts 
   * Fixes to githup builds   
   
-0.18.5
-------
+### 0.18.5
   * More fixes
   * Moved .../sw/c to .../sw/src
   
-0.18.6
-------
+### 0.18.6
   * Created gofbp script  
   * Added sw/testrtn package
   
-0.18.7
-------
+### 0.18.7
   * Moved build process to project tree root
   
-  
-SW Language Notes
---------------------
+### 0.18.8
+  * Fixed count in swbal.sw
+    
+## SW Language Notes
 
 The Streamwork network definition language, SW, is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
@@ -456,6 +435,10 @@ Home Page
 ---------
 
 (https://sw.twyoung.com)
+
+## **_gofbp_** Bash script
+**_gofbp_** produces and runs a gofbp (see github.com/jpaulm/gofbp) program from a StreamWork net definition file.
+
 
 Author
 ------
