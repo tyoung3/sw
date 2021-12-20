@@ -359,6 +359,9 @@ sw.sh-1.0.1 USAGE:
   
 ### 0.18.8
   * Fixed count in swbal.sw
+  
+### 0.18.9
+  * Fix testrtn/Sender  
     
 ## SW Language Notes
 

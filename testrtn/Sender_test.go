@@ -15,9 +15,8 @@ func TestSkel_Sender(t *testing.T) {
 	var wg sync.WaitGroup
 	var count int
 	
-	count=5
-
-	arg := []string{"TestSkel_Sender","5", "COUNT=5"}
+	count=7
+	arg := []string{"TestSkel_Sender", "7", "count=4"}
 
 	fmt.Println(arg[0])
 	for i := 0; i < 1+0; i++ {
