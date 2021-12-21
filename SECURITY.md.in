@@ -4,7 +4,7 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.18.9   | :white_check_mark: |
+| @SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@   | :white_check_mark: |
 | < 1.0.0 | :x:                |
 
 ## Reporting a Vulnerability

@@ -97,7 +97,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/model/config.h
-CONFIG_CLEAN_FILES = README.md docs/Doxyfile
+CONFIG_CLEAN_FILES = README.md docs/Doxyfile SECURITY.md
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -185,7 +185,7 @@ CTAGS = ctags
 CSCOPE = cscope
 DIST_SUBDIRS = $(SUBDIRS)
 am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/README.md.in \
-	$(top_srcdir)/build-aux/compile \
+	$(srcdir)/SECURITY.md.in $(top_srcdir)/build-aux/compile \
 	$(top_srcdir)/build-aux/install-sh \
 	$(top_srcdir)/build-aux/missing \
 	$(top_srcdir)/build-aux/tap-driver.sh \
@@ -376,6 +376,8 @@ $(am__aclocal_m4_deps):
 README.md: $(top_builddir)/config.status $(srcdir)/README.md.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 docs/Doxyfile: $(top_builddir)/config.status $(top_srcdir)/docs/Doxyfile.in
+	cd $(top_builddir) && $(SHELL) ./config.status $@
+SECURITY.md: $(top_builddir)/config.status $(srcdir)/SECURITY.md.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 install-dist_binSCRIPTS: $(dist_bin_SCRIPTS)
 	@$(NORMAL_INSTALL)

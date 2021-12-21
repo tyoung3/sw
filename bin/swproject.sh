@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 
 # project.sh:
 #	Purpose:  Generate a Streamwork skeleton project 
@@ -27,8 +27,8 @@
 #    git branch to PS1
 #    all packages import project code.
 
-version="0.0.8"  
-targetdir=$GOPATH/src
+version="0.18.9"  
+targetdir=/usr/src
 pgm=swproject.sh
 
 Die() {
@@ -36,6 +36,7 @@ Die() {
 	exit 1
 }
 
+[ -d $targetdir ] || Die Cannot find directory: $targetdir 
 swdir=/usr/local/bin
 [ -e $swdir/sw ] || swdir=/usr/local/bin
 SW=$swdir/sw
@@ -49,10 +50,7 @@ Debug() {
 
 
 self=$pgm
-[ -z $GOPATH ] && Die GOPATH is not set
-modpath="github.com/tyoung3/sw"
-#modpath=/tmp/MODPATH
-#modpath=$targetdir
+modpath="github.com/tyoung3/"
 dir=$targetdir
 
 Debug Running ${pgm}-$version w/DEBUG args: $*
@@ -78,15 +76,15 @@ GenCFG() {
   defaults:  
     DefaultSourceComp: 	"Gen"
     DefaultSinkComp: 	"Print"
-    DefaultPath: 	"def"
+    DefaultPath: 	"$p"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
-    HTMLdir:	"https://github.com/tyoung3/sw/html/"    
-    DefaultLibrary: "$modpath/$p"
+    HTMLdir:	    "$dir/html/"    
+    DefaultLibrary: "$modpath"
   limits:
     Maxbfsz:   	1000    #Maximum GO buffer size
   SymbolTable:
-    Tablesize:	1000     
+    Tablesize:	10000     
 	
 EOF
 	;;
@@ -152,9 +150,10 @@ Genp() {
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	pushd $dir/$p							\
-	   && ( [ -d internal ] || mkdir $* internal )			\
+	   && ( [ -d internal ] || mkdir internal )			\
 	   && ( [ -f go.mod ]  						\
-	      || (go mod init $modpath/$p; echo $replace >> go.mod  ))	\
+	        || (go mod init $modpath$p; echo "replace $modpath$p => ./ " >> go.mod  ) \
+	      )	\
 	   && pushd internal || Die Cannot pushd internal		
 	         [ -f ${p}.go ] && mv  ${p}.go ${p}.go.bak
 	   	 ([ -f ${p}.sw ] && mv ${p}.sw ${p}.sw.bak) || true  \
@@ -214,5 +213,6 @@ case $1 in
 
 EOF
 	;;
+	-v) echo genproject-v$version;;
 	*) GenProjectP $*;;
 esac
