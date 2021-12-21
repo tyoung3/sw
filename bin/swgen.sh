@@ -7,7 +7,7 @@
 # Generate/explain init function  ?? todo 
 
 pgm=swgen.sh
-version="0.18.9"
+version="0.18.9g"
 HTML=fbpgo.html
 export modpath="$GOPATH/src"
 
@@ -110,14 +110,14 @@ for="for"
 GenOutP1() {
 	Debug GenOutP1
 	cat <<- EOF >> ${name}.go 
-	$routine ${module}.Send(cs[$outp], &wg2, arg, $outp)
+	$routine Send(cs[$outp], &wg2, arg, $outp)
 EOF
 
 }
 
 GenInP1() {
 	cat <<- EOF >> ${name}.go 
-	$routine ${module}.Recv(cs[$inp], &wg2, arg, $inp)
+	$routine Recv(cs[$inp], &wg2, arg, $inp)
 EOF
 
 }
@@ -276,7 +276,7 @@ func PkgConfig()  *config.Config {
 "           
         go_config='config "github.com/zpatrick/go-config"'      
         go_config2="$fconfig"
-        go_config3="cfg := ${module}.PkgConfig()
+        go_config3="cfg := PkgConfig()
     bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
     seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
     title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
@@ -307,7 +307,7 @@ noPkgConfig() {
         Debug noPkgConfig $* $config
         go_config=""     
         go_config2=""
-        go_config3="cfg := ${module}.PkgConfig() 
+        go_config3="cfg := PkgConfig() 
     seqno, _ := cfg.IntOr(\"${pkg}.seqno\", 1)
     bs, _ := cfg.IntOr(\"${pkg}.buffersize\", 1)
         fmt.Println(
@@ -324,7 +324,7 @@ noPkgYAML() {
         Debug noPkgYAML $* $config
         go_config=""     
         go_config2=""
-        go_config3="cfg := ${module}.PkgConfig() 
+        go_config3="cfg := PkgConfig() 
     seqno, _ := cfg.IntOr(\"${pkg}.seqno\", 1)
     bs, _ := cfg.IntOr(\"${pkg}.buffersize\", 1)
         fmt.Println(
@@ -370,7 +370,7 @@ GenGo() {
                 import (
                         "fmt"
                        "sync"
-                       "github.com/$USER/$module"
+                      //  "github.com/$USER/$module"
                 )
                 
 		// $name is @todo undocumented
@@ -520,12 +520,20 @@ Fail() {
 makePkg2() {
 	pkg2=`basename $pkg`
 }
-        
+ 
+ 
+#   in cases like MODULE MODULE2/PKG; where MODULE == MODULE2,  change pkg to PKG        
+FixPkg() {
+	
+	dn="`dirname $pkg`" || return
+	[ "$dn" == "$module" ] && pkg="`basename $pkg`" || return
+}        
         
 #  Generate a skeleton component
 GenSkel() {
 	module=$1;shift;
         pkg=$1; 
+        FixPkg 
         config=$2;  # NONE, TOML, YAML, other later maybe
         inp=$3
         outp=$4

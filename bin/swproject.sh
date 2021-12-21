@@ -50,9 +50,7 @@ Debug() {
 
 
 self=$pgm
-modpath="github.com/tyoung3/sw"
-#modpath=/tmp/MODPATH
-#modpath=$targetdir
+modpath="github.com/tyoung3/"
 dir=$targetdir
 
 Debug Running ${pgm}-$version w/DEBUG args: $*
@@ -78,11 +76,11 @@ GenCFG() {
   defaults:  
     DefaultSourceComp: 	"Gen"
     DefaultSinkComp: 	"Print"
-    DefaultPath: 	"sw"
+    DefaultPath: 	"$p"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
     HTMLdir:	    "$dir/html/"    
-    DefaultLibrary: "$modpath/$p"
+    DefaultLibrary: "$modpath"
   limits:
     Maxbfsz:   	1000    #Maximum GO buffer size
   SymbolTable:
@@ -152,9 +150,10 @@ Genp() {
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
 	pushd $dir/$p							\
-	   && ( [ -d internal ] || mkdir $* internal )			\
+	   && ( [ -d internal ] || mkdir internal )			\
 	   && ( [ -f go.mod ]  						\
-	      || (go mod init $modpath/$p; echo $replace >> go.mod  ))	\
+	        || (go mod init $modpath$p; echo "replace $modpath$p => ./ " >> go.mod  ) \
+	      )	\
 	   && pushd internal || Die Cannot pushd internal		
 	         [ -f ${p}.go ] && mv  ${p}.go ${p}.go.bak
 	   	 ([ -f ${p}.sw ] && mv ${p}.sw ${p}.sw.bak) || true  \
