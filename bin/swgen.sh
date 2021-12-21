@@ -7,7 +7,7 @@
 # Generate/explain init function  ?? todo 
 
 pgm=swgen.sh
-version="0.3.2"
+version="0.18.9"
 HTML=fbpgo.html
 export modpath="$GOPATH/src"
 
@@ -69,7 +69,8 @@ EOF
 
 }
 
-src=$GOPATH/src
+src=/usr/src
+[ -d $src ] || Die Cannot find directory $src
 
 MakeDir2() {
         dir2=$1

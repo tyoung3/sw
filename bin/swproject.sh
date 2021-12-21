@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 
 # project.sh:
 #	Purpose:  Generate a Streamwork skeleton project 
@@ -27,8 +27,8 @@
 #    git branch to PS1
 #    all packages import project code.
 
-version="0.0.8"  
-targetdir=$GOPATH/src
+version="0.18.9"  
+targetdir=/usr/src
 pgm=swproject.sh
 
 Die() {
@@ -36,6 +36,7 @@ Die() {
 	exit 1
 }
 
+[ -d $targetdir ] || Die Cannot find directory: $targetdir 
 swdir=/usr/local/bin
 [ -e $swdir/sw ] || swdir=/usr/local/bin
 SW=$swdir/sw
@@ -49,7 +50,6 @@ Debug() {
 
 
 self=$pgm
-[ -z $GOPATH ] && Die GOPATH is not set
 modpath="github.com/tyoung3/sw"
 #modpath=/tmp/MODPATH
 #modpath=$targetdir
@@ -78,15 +78,15 @@ GenCFG() {
   defaults:  
     DefaultSourceComp: 	"Gen"
     DefaultSinkComp: 	"Print"
-    DefaultPath: 	"def"
+    DefaultPath: 	"sw"
     DefaultFilterComp: 	"Pass"  
     DefaultBufferSize: 	  0    #default GO buffersize
-    HTMLdir:	"https://github.com/tyoung3/sw/html/"    
+    HTMLdir:	    "$dir/html/"    
     DefaultLibrary: "$modpath/$p"
   limits:
     Maxbfsz:   	1000    #Maximum GO buffer size
   SymbolTable:
-    Tablesize:	1000     
+    Tablesize:	10000     
 	
 EOF
 	;;
@@ -214,5 +214,6 @@ case $1 in
 
 EOF
 	;;
+	-v) echo genproject-v$version;;
 	*) GenProjectP $*;;
 esac
