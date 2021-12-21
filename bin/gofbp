@@ -2,6 +2,8 @@
 
 # SWGO  script.   Create and run a StreamWork .SW program.
 
+version="0.19.0"
+
 Die () {
 	echo "swgo/DIE: $*"
 	exit 1
@@ -32,6 +34,10 @@ GenRun() {
 
 
 case $1 in 
-	
-	*)GenRun $*;;
+	-v)echo gofbp-v$version;;
+	-g)shift
+	  swgraph $* &
+	  GenRun $*
+	  ;;
+	 *)GenRun $*;; 
 esac	

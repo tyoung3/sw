@@ -1,4 +1,5 @@
-#!/usr/src/sw/bin/gofbp
+#!/usr/src/sw/bin/gofbp -g
+
 $core = "github.com/jpaulm/gofbp/core";
 $trtn = "github.com/jpaulm/gofbp/components/testrtn";
 (Sender $trtn/Sender "10 COUNT=10")OUT	-load> IN.0(LoadBalance $trtn/LoadBalance );
