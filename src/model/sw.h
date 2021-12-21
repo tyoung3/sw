@@ -79,6 +79,7 @@ void genProject(Model model);
 void genC(Model model); 
 
 	/* swmain.c */
+extern char *fname;
 #undef strncat
 #define strncat(X,Y,Z) mystrncat(X,Y,Z)  
 extern String configfile;

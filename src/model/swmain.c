@@ -26,7 +26,7 @@ char *version = { "0.15.0" };
 String configfile = { "sw.cfg" };		/**<SW configuration file> */
 
 static MODE mode = GOMODE;			    /** Outut mode*/
-static char *fname = { "stdin" };		/**<Input file name or Standard input.> */
+char *fname = { "stdin" };		/**<Input file name or Standard input.> */
 
 ValidSW pValidSW(FILE * inp);  /**<True if valid input> */
 

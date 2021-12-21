@@ -1,7 +1,7 @@
 #!/bin/bash 
 
 # SWGO  script.   Create and run a StreamWork .SW program.
-version=0.18.6b
+version=0.19.0
 
 Die () {
 	echo "swgo-v$version/DIE: $*"
@@ -36,6 +36,9 @@ Run() {
 }
 
 case $1 in 
-	v)echo swgo-v$version;;
+	-v)echo swgo-v$version;;
+	-g)shift; swgraph $* & 
+	   Run $*
+	   ;;
 	*)Run $*;;
 esac	
