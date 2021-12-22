@@ -1,3 +1,5 @@
+#!/usr/local/bin/swgo
+
 # COLLATE.SW: Streamwork Network Definition Example
 
 # WARNING: Merge sends output on channel 0(Zero) contrary to convention(channel 1). 

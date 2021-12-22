@@ -1,3 +1,5 @@
+#!/usr/local/bin/swgraph
+
 # POSTAGE.SW:  Postal rate Streamwork Network Definition Example
 
 (getr      postage/getr/Rates ".17" "oz" )	-rate 1> 	 (cp ComputePostage);

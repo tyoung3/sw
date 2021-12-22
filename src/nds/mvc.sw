@@ -1,3 +1,5 @@
+#!/usr/local/bin/swgraph
+
 # MVC.SW:  Streamwork Network Definition Example
  
 (m  Model)1  	-change>  	 (v mvc/View);

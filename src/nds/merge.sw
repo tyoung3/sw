@@ -1,3 +1,6 @@
+#!/usr/local/bin/swgraph
+
+
 # merge.sw: Streamwork Network Definition Example
  
 (P  Print1) 		<-     2(M   poc/Collate "--merge"); 
