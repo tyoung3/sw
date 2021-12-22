@@ -176,15 +176,15 @@ case $1 in
 	doc)cd ../; shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
     ex)shift; cd example; make;; 
 	j) GenSVG;;
-	jl) ../bin/swlocusts.sh j & ;;	#Display locusts map;
+	jl) ../bin/swlocusts j & ;;	#Display locusts map;
 	p)  echo $*; shift
 		nd=$1 
 		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
 		shift
-		swproject.sh g  $nd $*  ;;
+		swproject g  $nd $*  ;;
 	poc) RunPoC;;
 	rc) RunCollate;;
-	rl) ../bin/swlocusts.sh r ;;
+	rl) ../bin/swlocusts r ;;
 	rm) pushd ../
 	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &

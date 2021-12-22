@@ -1,9 +1,10 @@
 #!/bin/bash 
 
-# locusts.sh
+# locusts`
 
+version="0.19.0"
 Die() {
-	echo "Locusts.sh/DIE: $*"
+	echo "Locusts-v$version/DIE: $*"
 	exit 1
 }
 
@@ -48,7 +49,7 @@ GenJPG() {
 case $1 in	
 	j) GenJPG;;
 	r) RunLocusts;;
-	x) $EDITOR bin/locusts.sh nds/locusts.sw;;
+	x) $EDITOR bin/locusts nds/locusts.sw;;
 	*) cat << EOF 
 	
 USAGE: 
