@@ -88,7 +88,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = TestSW$(EXEEXT)
+bin_PROGRAMS = TestSWIRL$(EXEEXT)
 subdir = src/bnfc
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -101,10 +101,11 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_TestSW_OBJECTS = Absyn.$(OBJEXT) Lexer.$(OBJEXT) Parser.$(OBJEXT) \
-	Printer.$(OBJEXT) Skeleton.$(OBJEXT) Test.$(OBJEXT)
-TestSW_OBJECTS = $(am_TestSW_OBJECTS)
-TestSW_LDADD = $(LDADD)
+am_TestSWIRL_OBJECTS = Absyn.$(OBJEXT) Lexer.$(OBJEXT) \
+	Parser.$(OBJEXT) Printer.$(OBJEXT) Skeleton.$(OBJEXT) \
+	Test.$(OBJEXT)
+TestSWIRL_OBJECTS = $(am_TestSWIRL_OBJECTS)
+TestSWIRL_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -136,8 +137,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(TestSW_SOURCES)
-DIST_SOURCES = $(TestSW_SOURCES)
+SOURCES = $(TestSWIRL_SOURCES)
+DIST_SOURCES = $(TestSWIRL_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -471,9 +472,9 @@ TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
                   $(top_srcdir)/../build-aux/tap-driver.sh
 
 TESTS = bnfc.test  
-EXTRA_DIST = $(TESTS) SW.pdf
-TestSW_SOURCES = Absyn.c  Lexer.c  Parser.c  Printer.c  Skeleton.c  Test.c Absyn.h  Parser.h  Printer.h  Skeleton.h
-TestSWdir = ./
+EXTRA_DIST = $(TESTS) SWIRL.pdf
+TestSWIRL_SOURCES = Absyn.c  Lexer.c  Parser.c  Printer.c  Skeleton.c  Test.c Absyn.h  Parser.h  Printer.h  Skeleton.h
+TestSWIRLdir = ./
 all: all-am
 
 .SUFFIXES:
@@ -550,9 +551,9 @@ uninstall-binPROGRAMS:
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
 
-TestSW$(EXEEXT): $(TestSW_OBJECTS) $(TestSW_DEPENDENCIES) $(EXTRA_TestSW_DEPENDENCIES) 
-	@rm -f TestSW$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(TestSW_OBJECTS) $(TestSW_LDADD) $(LIBS)
+TestSWIRL$(EXEEXT): $(TestSWIRL_OBJECTS) $(TestSWIRL_DEPENDENCIES) $(EXTRA_TestSWIRL_DEPENDENCIES) 
+	@rm -f TestSWIRL$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(TestSWIRL_OBJECTS) $(TestSWIRL_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

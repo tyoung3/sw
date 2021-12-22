@@ -8,5 +8,5 @@ TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
 TESTS = bnfc.test  
 EXTRA_DIST = $(TESTS) SWIRL.pdf
 bin_PROGRAMS = TestSWIRL
-TestSW_SOURCES = Absyn.c  Lexer.c  Parser.c  Printer.c  Skeleton.c  Test.c Absyn.h  Parser.h  Printer.h  Skeleton.h
-TestSWdir = ./
+TestSWIRL_SOURCES = Absyn.c  Lexer.c  Parser.c  Printer.c  Skeleton.c  Test.c Absyn.h  Parser.h  Printer.h  Skeleton.h
+TestSWIRLdir = ./
