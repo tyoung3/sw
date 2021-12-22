@@ -6,7 +6,7 @@ TEST_LOG_DRIVER = env AM_TAP_AWK='$(AWK)' $(SHELL) \
                   $(top_srcdir)/../build-aux/tap-driver.sh
                   
 TESTS = bnfc.test  
-EXTRA_DIST = $(TESTS) SW.pdf
-bin_PROGRAMS = TestSW
+EXTRA_DIST = $(TESTS) SWIRL.pdf
+bin_PROGRAMS = TestSWIRL
 TestSW_SOURCES = Absyn.c  Lexer.c  Parser.c  Printer.c  Skeleton.c  Test.c Absyn.h  Parser.h  Printer.h  Skeleton.h
 TestSWdir = ./

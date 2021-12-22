@@ -268,7 +268,7 @@ Foo Bar-7
 ### 0.19.0 
   * Many fixes to **_swproject_** script     
     
-## SWIRL(StreamWork Information Relationsip Language) Notes
+## StreamWork Information Relation Language(SWIRL) Notes
 
 SWIRL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
