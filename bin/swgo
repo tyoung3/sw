@@ -21,6 +21,7 @@ GenRun() {
 			$SW $swfile > /tmp/sw$$/$base.go
 		cd /tmp/sw$$ || Die cannot make /tmp/sw$$ 
 			go mod init main &>/dev/null && \
+			echo "require github.com/tyoung3/sw latest" >> go.mod && \
 			go mod tidy &>/dev/null || Die $swfile go mod failed.
 			go run /tmp/sw$$/$base.go || Die /tmp/sw$$/$base.go failed.
 		 	
