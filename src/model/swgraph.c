@@ -255,6 +255,7 @@ genLinks (Model m)
   char *snkPortName;         
   int channel = 7;
   char *edgeColor = "purple";
+  char *sourceColor = "pink";
   f = m->stream;
   while (f)
     {
@@ -263,6 +264,7 @@ genLinks (Model m)
 	  edgeColor = "black";
 	  src = f->source;
 	  snk = f->sink;
+	  sourceColor=fcolors[getPathColor(src->comp->path)];
 	  channel = findChannel (src->port, f->source_id);
 	  if(f->bufsz > 1) {
 	  	edgeColor="orange";
@@ -281,13 +283,13 @@ genLinks (Model m)
 	    {
 #ifdef SHOW_PORTS
 	      printf
-		("\"%s\":%i -> \"%s\":%i [color=%s,label=\"%i %s\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
-		src->name, f->source_id, snk->name, f->sink_id,  edgeColor, channel, f->iptype, f->sink_id, f->source_id,
+		("\"%s\":%i -> \"%s\":%i [color=%s,fontcolor=%s, label=\"%i %s\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+		src->name, f->source_id, snk->name, f->sink_id,  edgeColor,sourceColor,  channel, f->iptype, f->sink_id, f->source_id,
 		   f->bufsz);
 #else
 	      printf
-		("\"%s\"  -> \"%s\"  [color=%s,label=\"%i %s\",headlabel=\"%s%i\",taillabel=\"%s%i\",tooltip=\"%i\"];\n",
-		src->name, snk->name, edgeColor, channel, f->iptype, snkPortName, f->sink_id, srcPortName,f->source_id,
+		("\"%s\"  -> \"%s\"  [color=%s, fontcolor=%s, label=\"%i %s\",headlabel=\"%s%i\",taillabel=\"%s%i\",tooltip=\"%i\"];\n",
+		src->name, snk->name, edgeColor, sourceColor, channel, f->iptype, snkPortName, f->sink_id, srcPortName,f->source_id,
 		   f->bufsz);
 #endif
 	    }

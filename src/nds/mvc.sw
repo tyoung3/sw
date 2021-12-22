@@ -2,8 +2,8 @@
 
 # MVC.SW:  Streamwork Network Definition Example
  
-(m  Model)1  	-change>  	 (v mvc/View);
+(m  mdl/Model)1  	-change>  	 (v vw/View);
 (c)2  		-update> 	1(v);
-(v)2		-event>  	 (c mvc/Control); 
-(c)1		-request>       (m);
+(v)2		-event 1>  	 (c ctl/Control); 
+(c)1		-request 2>       (m);
 
