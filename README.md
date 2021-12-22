@@ -95,7 +95,7 @@ See package documention for component return codes.
 
 ## Network Definition Files
 
-A network definition file consists of a list of 
+A network definition file (in the SWIRL language[see below]) consists of a list of 
 streams(aka dataflows); and may also contain subnet definitions, 
 INCLUDE and PREFIX statements, and comments.  
 
@@ -274,7 +274,7 @@ SWIRL is an unambiguous, context free grammar, making it directly interpretable,
 
 You can find the StreamWork language description at .../docs/SWIRL.pdf. 
 
-SW has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
+SWIRL has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
 will be made to ensure that all currently valid SWIRL statements will remain valid.  Should 
 this prove impossible,  the minor version will be incremented, i.e. to v0.16.0 or greater.
@@ -282,9 +282,9 @@ Once v1.0.0 is reached, the major version will be incremented instead. Backward 
 Linux scripts and Go modules, are separately versioned.   
 
 #### Semi-colon comments
-Statements in SW, are terminated with a semi-colon.  Semi-colons in code are like 
+Statements in SWIRL, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
-they tell the reader (and the SW interpreter) when
+they tell the reader (and the SWIRL interpreter) when
 you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
 Additionally, without semi-colons line breaks become part of the language 
@@ -293,7 +293,7 @@ definition, leading to awkward and confusing syntax rules.
 #### Left Arror comments
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
-"(A) -> (B)1 <- (C);"  is valid SW.   
+"(A) -> (B)1 <- (C);"  is valid SWIRL.   
 
 ###Collate/Merge Example
 ---------------------
