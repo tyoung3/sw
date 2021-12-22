@@ -295,7 +295,7 @@ The, ```<-```,  token is employed in order to be consistent with its
 usage in the Go language.  The ```->``` token is also available:
 "(A) -> (B)1 <- (C);"  is valid SWIRL.   
 
-###Collate/Merge Example
+### Collate/Merge Example
 ---------------------
 
 Run the following (in Linux):
@@ -338,7 +338,7 @@ WORLD HELLO-7
 produces /tmp/collate.svg, an image of the collate 
 network definition.  
 
-##Bash Scripts
+## Bash Scripts
 ### **_swgo_** script
 The bash script, **_swgo_**, will generate and run a GO program from a network definition:
 ```
@@ -444,7 +444,8 @@ sw.sh-1.0.1 USAGE:
 
 BUGS:
 -----
-	 **_sw.Gen_** fails unless all three arguments are present.
+
+**_sw.Gen_** fails unless all three arguments are present.
 	 
 Home Page
 ---------
