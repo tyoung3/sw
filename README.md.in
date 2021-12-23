@@ -30,30 +30,36 @@ StreamWork
 
 StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
 
-By default, StreamWork reads, parses and analyzes,  a StreamWork network 
+By default, StreamWork reads, parses and analyzes, an SWL language StreamWork network 
 definition(ND) file (suffix: .sw),  then generates a main Go program. 
 
-A network definition is, in effect, an executable
-script.  While StreamWork is concerned with 
-Go language FBP programs,  the ND described here is language agnostic.  It should be possible 
-to generate corresponding code in other languages.         
+## Network Definition 
+A StreamWork network definition describes a program as a simple, list of data streams, 
+wherein each stream consists of a source process, a director, and a sink process; in essence as
+a data flow diagram.  
+
+StreamWork is concerned primarily with Go language FBP programs; 
+however, the network definition described here is language agnostic.  It is quite possible 
+to generate corresponding code in other languages from a StreamWork ND.         
 
 By default, **_sw_** generates 
 and builds a single main Go program which:  
 
-  * imports sw compatible component package(s),  
-  * launches a goroutine for each component instance (process),  
+  * imports sw compatible component package(s) as specified in the network definition,  
+  * launches a goroutine for each process,  
   * connects these processes via Golang interface channels, and 
   * waits for all processes to finish.  
+  * StreamWork has no other interaction with the processes, which do not call on StreamWork functions
+    in any way. 
 
 On option, StreamWork will read, parse and interpret a network definition file then  create either a:
  
  * a StreamWork Go main program,
  * a gofbp      Go main program (see github.com/jpaulm/gofbp), 
- * a GraphViz .dot file,
- * a bash script, **_swproject_** generates a complete GO language project tree and 
- 	 tests it.
- * an abstract syntax tree, 
+ * a GraphViz   .dot file(script,( **_swgraph_** will create and display a graph(s) directly)
+ * a bash script, (**_swproject_** generates a complete GO language project tree and 
+ 	 tests it)
+ * an abstract syntax tree (a reverse polish notation rendition of the essential language components), 
     OR
  * a linearized tree (a network definition reconstruction).   
 
@@ -95,7 +101,7 @@ See package documention for component return codes.
 
 ## Network Definition Files
 
-A network definition file (in the SWIRL language[see below]) consists of a list of 
+A network definition file (in the SWL language[see below]) consists of a list of 
 streams(aka dataflows); and may also contain subnet definitions, 
 INCLUDE and PREFIX statements, and comments.  
 
@@ -268,23 +274,23 @@ Foo Bar-7
 ### 0.19.0 
   * Many fixes to **_swproject_** script     
     
-## StreamWork Information Relation Language(SWIRL) Notes
+## StreamWork Language(SWL or SWIRL) Notes
 
-SWIRL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
+SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
-You can find the StreamWork language description at .../docs/SWIRL.pdf. 
+You can find the StreamWork language description at .../docs/SWL.pdf. 
 
-SWIRL has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
+SWL has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
-will be made to ensure that all currently valid SWIRL statements will remain valid.  Should 
+will be made to ensure that all currently valid SWL statements will remain valid.  Should 
 this prove impossible,  the minor version will be incremented, i.e. to v0.16.0 or greater.
 Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for netword definition files, **_sw_**, and published Go modules only.  
 Linux scripts and Go modules, are separately versioned.   
 
 #### Semi-colon comments
-Statements in SWIRL, are terminated with a semi-colon.  Semi-colons in code are like 
+Statements in SWL, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
-they tell the reader (and the SWIRL interpreter) when
+they tell the reader (and the SWL interpreter) when
 you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
 Additionally, without semi-colons line breaks become part of the language 
@@ -293,7 +299,7 @@ definition, leading to awkward and confusing syntax rules.
 #### Left Arror comments
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
-"(A) -> (B)1 <- (C);"  is valid SWIRL.   
+"(A) -> (B)1 <- (C);"  is valid SWL.   
 
 ### Collate/Merge Example
 ---------------------
