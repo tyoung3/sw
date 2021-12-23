@@ -1,8 +1,8 @@
 #!/bin/bash 
 
-# SW.SH 
+# sw/bin/sw.sh
 
-version="0.18.4"
+version="0.19.0"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -36,33 +36,36 @@ Die() {
 	exit 1
 }
 
-# [ -z $EDITOR  ] && Die  Need to set environment variable: EDITOR
-# [ -z $BROWSER ] && Die  Need to set environment variable: BROWSER
+#			Run in swgo/sw (project root)
+
+pushd /usr/src/sw/src || Die Cannot find /usr/src/sw/src
 
 RunCollate () {
-	temp=/tmp
-	[ -d bin ] || pushd ../
-	[ -x $sw ]|| Die Cannot find $sw -- run make ? 
-	[ -d $temp/sw/ ] || mkdir -p $temp/sw/ 
-	$sw nds/collate.sw  >  $temp/sw/collate.go
-	pushd $temp/sw
-	go mod init
+	sw=/usr/local/bin/sw
+	[ -x $sw ]|| sw=../bin/sw || Die Cannot find $sw -- run make ? 
+	tdir=/tmp/sw$$
+	[ -d $tdir ] || mkdir -p $tdir
+	$sw nds/collate.sw  >  $tdir/collate.go
+	pushd $tdir
+	go mod init main
+	echo "require github.com/tyoung3/sw latest" >> go.mod
 	go mod tidy
 	# [ -f go.mod ] || go mod init collate/collate
-	go run $temp/sw/collate.go 	 
+	go run collate.go 	 
 }
 
 RunPoC() {
 	temp=/tmp
 	## [ -x $sw  ] || pushd ../ 
 	[ -x $sw ] || Die  $sw is missing.  Run make install
-	[ -d $temp/sw/poc ] || mkdir -p $temp/sw/poc
+	tdir=$temp/sw/poc
+	[ -d $tdir ] || mkdir -p $tdir
 	echo "(Hello Print)0 <- 0(World Gens \"3\"); " 	\
-	 | tee /tmp/poc.echo 				\
-	 | $sw >  $temp/sw/poc.go 
-	 pushd $temp/sw
-	 [ -f go.mod ] || (go mod init poc/poc && go mod tidy)
-	 go run $temp/sw/poc.go  	
+	 | tee $tdir/poc.echo 				\
+	 | $sw >  $tdir/poc.go 
+	 pushd $tdir
+	 	[ -f go.mod ] || (go mod init main && go mod tidy)
+	 	go run poc.go  	
 }
 
 		# Create collate.jpg 		
@@ -138,13 +141,16 @@ Browse () {
 ## @Shell   Enters a bash subshell 
 Shell() {
 	export PATH=`pwd`/bin:$PATH
+	pushd ../
 	echo Entering StreamWork shell  PS1=$PS1
 	exec bash --rcfile .bashrc  
 }
 
 case $1 in	
-    bw|buildw)  pushd build || Die Cannot pushd build
-        ../configure --host=x86_64-w64-mingw32 && rtn=OK 
+    bw|buildw) cd ../;
+    	make distclean 
+        ./configure --host=x86_64-w64-mingw32 || Die configure failed.
+    	pushd ./build-aux || Die Cannot pushd ./build
         [ -z $rtn ] || make -j8  distcheck 
         # Use Makefile to build and test a zip file to distribute	&& echo Success!! || echo Build for Windows Error
    		;;
@@ -152,38 +158,40 @@ case $1 in
         #autoconf # Generate configure from configure.ac && \
         #automake  --add-missing # Generate Makefile.in from Makefile.am && \
          #../configure --host=x86_64-w64-mingw32 --program-prefix win64-
-    auto|b|build) [ -f Makefile.am ] || Die Missing Makefile.am
-    	pushd model
+    auto|b|build) 
+    	cd ../
+    	[ -f src/Makefile.am ] || Die Missing src/Makefile.am
+    	pushd src/model
     		./mktest.sh || Die Failed making sw.test script
     	popd
         aclocal # Set up an m4 environment && \
         autoconf # Generate configure from configure.ac && \
         automake  --add-missing # Generate Makefile.in from Makefile.am && \
         ./configure # Generate Makefile from Makefile.in && \
-        make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build Error
+        # make -j8  distcheck # Use Makefile to build and test a tarball to distribute	&& echo Success!! || echo Build Error
         ;; 
-    c) make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
+    c)pushd model; make -j8 check    && echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;; 
 	cxxx) pushd ./model&& make -j8&&make check&& echo -e ${green}Success!$reset || echo  -e ${red}Check Failed.$reset;;
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
-	doc)shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
+	doc)cd ../; shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
     ex)shift; cd example; make;; 
 	j) GenSVG;;
-	jl) bin/swlocusts.sh j & ;;	#Display locusts map;
+	jl) ../bin/swlocusts j & ;;	#Display locusts map;
 	p)  echo $*; shift
 		nd=$1 
 		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
 		shift
-		swproject.sh g  $nd $*  ;;
+		swproject g  $nd $*  ;;
 	poc) RunPoC;;
 	rc) RunCollate;;
-	rl) bin/swlocusts.sh r ;;
-	rm) 
+	rl) ../bin/swlocusts r ;;
+	rm) pushd ../
 	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
 	   ;;
-	s) shift; Shell $;;
+	s) shift; Shell $*;;
 	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0 &;;
 	*) cat << EOF 

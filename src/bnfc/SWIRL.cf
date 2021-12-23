@@ -1,0 +1,151 @@
+--  SWIRL.cf  
+
+{- Copyright (C) 2019,2020,2021 Thomas W. Young, streamwork@twyoung.com
+The StreamWork network definition language, SW, this file(SW.cf) and its derivitives are
+the intellectual property of Thomas W. Young and may not be reproduced or copies
+in any form for any purpose without permission.   Permission is granted for the 
+sole use of rebuilding the Streamwork program, sw,  for personal, non-commercial purposes.
+
+-}
+
+
+--               StreamWork prototype network definition language
+
+entrypoints		Valide, ValidSW, ValidConfig    ; 
+
+CFGvalid.		Valide 		::= ValidConfig;	
+SWvalid.	 	Valide 		::= ValidSW  ;
+
+Valid.			ValidSW 	::= [Stm]    ;
+
+StmPrefix.		Stm		::= Prefix   Stringval;
+Stminc.			Stm		::= Include Stringval;
+Stmx.			Stm		::= DataFlow  ; 
+Stmn.			Stm		::= Numassgn ; 
+Stms.			Stm		::= Strassgn ;
+Stmb.			Stm		::= SymAssgn ; 
+Stmh.			Stm		::= Hermt    ; 
+Stmnet.			Stm		::= Subdef   ;  
+terminator	   	Stm   ";" ;
+
+Snet.			Subdef	 	::= SubId "{" [Subnet] "}" ;
+
+Sneth.			Subnet 		::= Hermt    	;
+Snets.			Subnet 		::= DataFlow	;
+Snetin.			Subnet 		::= ExtPortIn  	;
+Snetout.		Subnet 		::= ExtPortOut  ;
+terminator	    	Subnet  ";" ;
+
+Extin.			ExtPortIn  	::=	Proc Prt Larrow Tab	;
+ExtinR.			ExtPortIn  	::=	Tab      Rarrow Prt Proc;
+
+Extout.			ExtPortOut 	::=	Tab      Larrow Prt Proc;  
+Extoutr.		ExtPortOut 	::=	Proc Prt Rarrow Tab	;
+
+Tabn.			Tab		::= Numval  ;
+Tabs.			Tab	 	::= Symval;
+
+Streamx.		DataFlow	::= Proc Prt 	 Larrow Prt Proc;
+Streamrx.		DataFlow  	::= Proc Prt     Rarrow Prt Proc;
+Streamy.		DataFlow  	::= DataFlow Prt Larrow Prt Proc ;
+Streamry.		DataFlow  	::= DataFlow Prt Rarrow Prt Proc ; 
+--separator		DataFlow	 ";" ;  
+
+Arrowx.			Larrow	 	::=  "<" TypeDef Buffsize "-" 		;
+Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		; 
+
+Typedefa.		TypeDef		::=  Symvalu 	 			;
+Typedefnull.		TypeDef		::=  ""					;
+
+Bufszi.			Buffsize 	::= Numval ;
+Bufsze.			Buffsize 	::=; 
+
+Hermtx.			Hermt		::=   Symvalu  Comp [Argument]  ;
+Hermty.			Hermt		::=   Symvalu  [Argument]       ;
+
+Symvaluv.		Symvalu 	::= Symval			;
+Symvaluu.		Symvalu		::= "_"				; 
+
+Processx.		Proc		::= "(" Symvalu  Comp [Argument] ")" 	;
+Processy.		Proc		::= "(" Symvalu  [Argument] ")" 	;
+
+Portx.			Prt		::= Numval		;
+Portni.         	Prt     	::= Numval "." Symval	; 
+Portin.         	Prt     	::= Symval "." Numval	; 
+Portn.          	Prt     	::= Symval		; 
+Porte.			Prt		::= ;		
+
+Compx.			Comp		::= Symval		;	
+Compn.		    	Comp		::= SubId		;
+Compz.			Comp		::= ModPath Symval	;
+Compa.			Comp		::= RemPath 		;
+
+Modpa.			ModPath 	::= "/" Symval	"/"	;
+Modpx.			ModPath		::= Symval "/"		;
+Modpy.			ModPath		::= ModPath Symval "/"	;
+Modps.			ModPath		::= Stringvar "/"	;
+
+RemPatha.		RemPath 	::= ValidImport "." Symval 	;
+
+Argumentx.		Argument 	::= Stringval		;	
+separator	    	Argument   ""; 	
+
+NumAssgnv.		Numassgn   	::= Numvar "=" Numval	;
+
+StrAssgnv.		Strassgn   	::= Stringvar "=" Stringval;
+
+SymAssgni.		SymAssgn   	::= Symvar "=" Symval	;  
+
+NumVali.		Numval     	::= Integer		;
+NumValv.		Numval	   	::= Numvar		;
+				
+StringVals.		Stringval  	::= String		;
+StringValv.		Stringval  	::= Stringvar		;
+StringVale.		Stringval  	::= Envar		;
+
+Symvalv.		Symval	   	::= Symvar		;
+Symvali.		Symval	   	::= Id			;  
+SymVale.		Symval	   	::= Envar		;
+
+Inc1.		  	Include   	::= "include" 		;
+Inc2.			Include		::= "INCLUDE"		;
+
+Prefu.			Prefix		::= "PREFIX"		;
+Prefl.			Prefix		::= "prefix"		;
+
+token   Numvar	  '%' letter  ( letter | digit  )*	;		
+token	Stringvar '$' letter  ( letter | digit  )*	;	
+token	Envar 	  '$' '_' letter  ( letter | digit  )*	;   	-- Environment variable
+token	Symvar    '&' letter  ( letter | digit | '_' )* ;  
+token   SubId	  '^' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
+token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
+token   ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Legal remote package import identifier 
+	 
+----------------------  StreamWork YAML Configuration Interpreter  ----------------------
+
+Validcfg.	 	ValidConfig ::= "StreamWork:" [Entry] ;
+Validcfgd.		ValidConfig ::= "---" "StreamWork:" "{"  [Centry]	 "}"   ;
+
+CfgcEntrya.		Centry	 ::= KeyVal		;
+CfgcEntryb.		Centry	 ::= KeyName		;
+-- CfgBlock.		Centry	 ::= KeyName "{" [Centry] "}"	;
+terminator	   	Centry   "," ; 
+
+CfgEntrya.		Entry	 ::= KeyVal		;
+CfgEntryb.		Entry	 ::= KeyName		;
+terminator	   	Entry   "" ; 
+
+CfgKeyvalint.		KeyVal	 ::= KeyName  Integer 	;
+CfgKeyvalstr.		KeyVal	 ::= KeyName  String 	;
+CfgKeyDate.		KeyVal   ::= KeyName  Date    	; 
+
+KeynameS.		KeyName  ::= Symval ":"		; 
+KeynameM.		KeyName  ::= ModPath Symval ":" ;
+
+
+token   Date	    (digit digit digit digit)  ('-' digit digit )* 'T'  ( ':' | digit | '-' )* ;       -- Legal Date
+
+comment "#";
+comment "{#" "#}";	
+----------------------   End of Current Language Definition   ----------------------
+
