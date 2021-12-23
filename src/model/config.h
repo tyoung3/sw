@@ -14,20 +14,20 @@
 
 /* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
    */
-/* #undef HAVE_ALLOCA_H */
+#define HAVE_ALLOCA_H 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
 
 /* Define to 1 if you have the <libintl.h> header file. */
-/* #undef HAVE_LIBINTL_H */
+#define HAVE_LIBINTL_H 1
 
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
 
 /* Define to 1 if your system has a GNU libc compatible `malloc' function, and
    to 0 otherwise. */
-#define HAVE_MALLOC 0
+#define HAVE_MALLOC 1
 
 /* Define to 1 if you have the <malloc.h> header file. */
 #define HAVE_MALLOC_H 1
@@ -43,13 +43,13 @@
 
 /* Define to 1 if your system has a GNU libc compatible `realloc' function,
    and to 0 otherwise. */
-#define HAVE_REALLOC 0
+#define HAVE_REALLOC 1
 
 /* Define to 1 if you have the `regcomp' function. */
-/* #undef HAVE_REGCOMP */
+#define HAVE_REGCOMP 1
 
 /* Define to 1 if you have the <regex.h> header file. */
-/* #undef HAVE_REGEX_H */
+#define HAVE_REGEX_H 1
 
 /* Define to 1 if you have the <stddef.h> header file. */
 #define HAVE_STDDEF_H 1
@@ -70,7 +70,7 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the `strndup' function. */
-/* #undef HAVE_STRNDUP */
+#define HAVE_STRNDUP 1
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #define HAVE_SYS_STAT_H 1
@@ -83,7 +83,7 @@
 
 /* Define to 1 if `lstat' dereferences a symlink specified with a trailing
    slash. */
-/* #undef LSTAT_FOLLOWS_SLASHED_SYMLINK */
+#define LSTAT_FOLLOWS_SLASHED_SYMLINK 1
 
 /* Name of package */
 #define PACKAGE "sw"
@@ -95,7 +95,7 @@
 #define PACKAGE_NAME "sw"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "sw 0.19.1"
+#define PACKAGE_STRING "sw 0.19.2"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "sw"
@@ -104,7 +104,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.19.1"
+#define PACKAGE_VERSION "0.19.2"
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
@@ -118,11 +118,11 @@
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION "0.19.1"
+#define VERSION "0.19.2"
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
-/* #undef YYTEXT_POINTER */
+#define YYTEXT_POINTER 1
 
 /* Define for Solaris 2.5.1 so the uint32_t typedef from <sys/synch.h>,
    <pthread.h>, or <semaphore.h> is not used. If the typedef were allowed, the
@@ -147,10 +147,10 @@
 /* #undef int8_t */
 
 /* Define to rpl_malloc if the replacement function should be used. */
-#define malloc rpl_malloc
+/* #undef malloc */
 
 /* Define to rpl_realloc if the replacement function should be used. */
-#define realloc rpl_realloc
+/* #undef realloc */
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 /* #undef size_t */
