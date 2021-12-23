@@ -1,0 +1,45 @@
+#!/bin/bash 
+
+# SWGO  script.   Create and run a StreamWork .SW program.
+version=0.19.0
+
+Die () {
+	echo "swgo-v$version/DIE: $*"
+	exit 1
+}
+
+swdir=/usr/src/sw/bin
+[ -e $swdir/sw ] || swdir=/usr/local/bin
+SW=$swdir/sw
+[ -e $SW     ] || Die SW $SW is missing 
+
+GenRun() {
+	base=`basename $file`
+	swfile=${file}
+	if [ -f $swfile ]; then
+		mkdir /tmp/sw$$ || Die Cannot make /tmp/sw$$/
+			$SW $swfile > /tmp/sw$$/$base.go
+		cd /tmp/sw$$ || Die cannot make /tmp/sw$$ 
+			go mod init main &>/dev/null && \
+			echo "require github.com/tyoung3/sw latest" >> go.mod && \
+			go mod tidy &>/dev/null || Die $swfile go mod failed.
+			go run /tmp/sw$$/$base.go || Die /tmp/sw$$/$base.go failed.
+		 	
+	else 
+		echo $swfile missing
+	fi
+}
+
+Run() {	
+	for file in $*; do 
+		GenRun $file
+	done 
+}
+
+case $1 in 
+	-v)echo swgo-v$version;;
+	-g)shift; swgraph $* & 
+	   Run $*
+	   ;;
+	*)Run $*;;
+esac	
