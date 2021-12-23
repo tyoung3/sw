@@ -147,8 +147,10 @@ Shell() {
 }
 
 case $1 in	
-    bw|buildw)  pushd ../build || Die Cannot pushd ../build
-        ../configure --host=x86_64-w64-mingw32 && rtn=OK 
+    bw|buildw) cd ../;
+    	make distclean 
+        ./configure --host=x86_64-w64-mingw32 || Die configure failed.
+    	pushd ./build-aux || Die Cannot pushd ./build
         [ -z $rtn ] || make -j8  distcheck 
         # Use Makefile to build and test a zip file to distribute	&& echo Success!! || echo Build for Windows Error
    		;;
