@@ -830,6 +830,13 @@ visitTab (Tab _p_)
     }
 }
 
+static void setIpType(Extport ep) {			
+      ep->iptype = strdup (iptype_save);
+      if(ep->iptype==NULL);
+      ep->iptype=ep->name;
+      iptype_save = "";
+}
+
 /** Get external input port */
 Extport
 visitExtPortIn (ExtPortIn _p_)
@@ -843,8 +850,7 @@ visitExtPortIn (ExtPortIn _p_)
 			visitPrt (_p_->u.extin_.prt_),
 			visitLarrow (_p_->u.extin_.larrow_),
 			visitTab (_p_->u.extin_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     case is_ExtinR:
       ep = MakeExtport (SINK,

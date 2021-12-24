@@ -17,32 +17,31 @@ Scenario_1:
 
 #}
 
-$E="github.com/tyoung3/swedit";
-$base =  "FileIoBase";
+# $E="github.com/tyoung3/sw/swedit";
+# $base="github.com/tyoung3/sw/swedit/FileIoBase";
+$E="/usr/src/swedit";
+$base="/usr/src/swedit/FileIoBase";
 
 ^model {
-(M $E/model)CHANGE.1 -> 1;
-0 -> REQ.0(M);
-(N $base/getfile) -nd> ND.2(M);
-(M)ND.3 -nd> (P $base/putfile);
+(M $E/model)1 -change> CHANGE;
+REQ -req> 0(M);
+(_ $base/getfile) -nd> 2(M);
+(M)3 -nd> (_ $base/putfile);
 };
 
-
 ^view {
-(V $E/view)EVENT.2 -> 2;
-0 -> CHANGE.0(V);
-1->  UPDATE.1(V);
+(V $E/view)2 -event> EVENT;
+CHANGE -change> 0(V);
+UPDATE -update> 1(V);
 };
 
 
 ^control {
-(C $E/control)UPDATE.2 -> 2;
-0 -> EVENT.0(C);
-(C)REQ.1 -> 1;
+(C $E/control)2 -update> UPDATE;
+EVENT -event> 0(C);
+(C)1 -req> REQ;
 };
 
-(m  ^model)CHANGE.1  	-change>  	 (v ^view);
-(c)2  		-update> 	1(v);
-(v)2		-event >  	 (c ^control); 
-(c)1		-request>       (m);
-
+_ ^model;
+_ ^view; 
+_ ^control;
