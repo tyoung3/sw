@@ -23,7 +23,6 @@ config.status
 _OLD/
 _IGNORE*
 _*
-swedit/
 
 docs/doxy/
 doxy/html/*.png
