@@ -6,7 +6,7 @@
 	@todo Show full path for .sw and cfg files in generated commentary. 
 	@todo Fix swproject.sh/postage type error.
 	@todo Use PACKAGE_NAME { key: value} format for generated .yaml files.
-	@todo Convert JPM's javaFBP NDs to SW NDs. 
+	@todo Convert JPM's javaFBP NDs to SW NDs. https://jpaulm.github.io/fbp/jsyntax.htm
 	@todo Document environment variable usage.  DEBUG/USER/HOME
 	@todo Make JPM's FBPgo (fbpGO?) Check feasability. 
 	@todo If .github, do not generate project

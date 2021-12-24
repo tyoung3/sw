@@ -4,5 +4,5 @@
 #SUBDIRS = bnfc model   
 #EXTRA_DIST = nds 
 
-dist_bin_SCRIPTS =  ../bin/swgraph ../bin/swgo ../bin/swgen.sh ../bin/swproject  ../bin/swskel.sh
+dist_bin_SCRIPTS =  ../bin/swgraph ../bin/swgo ../bin/swgen.sh ../bin/swproject  ../bin/swskel.sh ../bin/sw.exe
 

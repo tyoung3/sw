@@ -149,15 +149,10 @@ Shell() {
 case $1 in	
     bw|buildw) cd ../;
     	make distclean 
-        ./configure --host=x86_64-w64-mingw32 || Die configure failed.
-    	pushd ./build-aux || Die Cannot pushd ./build
+        ./configure --host=x86_64-w64-mingw32 && make || Die configure/make failed.
+    	pushd ./build-aux || Die Cannot pushd ./build-aux
         [ -z $rtn ] || make -j8  distcheck 
-        # Use Makefile to build and test a zip file to distribute	&& echo Success!! || echo Build for Windows Error
-   		;;
-        #aclocal # Set up an m4 environment && \
-        #autoconf # Generate configure from configure.ac && \
-        #automake  --add-missing # Generate Makefile.in from Makefile.am && \
-         #../configure --host=x86_64-w64-mingw32 --program-prefix win64-
+   	;;
     auto|b|build) 
     	cd ../
     	[ -f src/Makefile.am ] || Die Missing src/Makefile.am

@@ -131,6 +131,7 @@ typedef struct Model_ {
         Component comp;	        /**< Pointer to first Conponent */
 	char     *name;		/**< Model Name 		*/
 	int	  level;	/**< Subnet depth		*/
+	char	 *filename;	/**< Filename or STDIN		*/
 } Model_;
 typedef struct Model_ *Model;	/**<Pointer to Model */
 

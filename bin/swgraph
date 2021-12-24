@@ -40,7 +40,7 @@ GenRun() {
 	
 	if [ -f $swfile ]; then
 		Debug Got `pwd`/$swfile 
-		$SW -m 3 $swfile > /tmp/${base}.dot || Die Cannot build /tmp/${base}.dot file 
+		$SW -m 3 `pwd`/$swfile > /tmp/${base}.dot || Die Cannot build /tmp/${base}.dot file 
 		dot -Tsvg /tmp/${base}.dot > /tmp/${base}.svg || Die Cannot convert /tmp/${base}.dot file to .svg
 		Debug Built /tmp/${base}.dot and /tmp/${base}.svg
 		$BROWSER  /tmp/${base}.svg 2>&1  >/dev/null	&

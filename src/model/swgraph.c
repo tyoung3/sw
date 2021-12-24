@@ -8,8 +8,14 @@
 #include <string.h>
 #include "model.h"
 #include "sw.h"
-#include "swconfig.h"
+#include "swconfig.h"       
+#include <unistd.h>
 
+
+/** @todo Declutter option
+    @todo Config file color palette option
+    @toeo Config file .dot parameters
+*/
 
 #define P(s) printf("%s\n",(#s));	/**<Print String*/
 #define FIXINDENT(s) {};		/**<Nullify FIXINDENT */
@@ -86,8 +92,7 @@ genPrefix (char *gname, int nstreams)
   printf ("digraph \"%s\" %s", gname, LB);
 
   printf
-    ("URL=\"https://github.com/tyoung3/sw/blob/master/nds/%s\" graph [",
-     gname);
+    ("URL=\"https://github.com/tyoung3/sw\" graph [");
   printf ("\tname=\"Streamwork/swgraph:  v%s\",\n", version);
   C (fontcolor = black);
   printf ("\tlabel=\"https://github.com/tyoung3/sw\",\n");
@@ -188,12 +193,13 @@ endProc ()
 
 /** Generate graph cluster code */
 static void
-genCluster1 (char *name)
+genCluster1 (char *name, char *filename)
 {
+  char bfr[maxbfsz];	
 
   printf ("subgraph \"cluster%s\" %s\n", name, LB);
   printf ("label = \"%s\"; name=\"%s\";\n", name, name);
-  printf ("URL=\"%s.html\";\n\n", name);
+  printf ("URL=\"%s\";\n\n", filename);
 }
 
 
@@ -386,7 +392,7 @@ genGraph (Model model)
   printf ("\n");
   //* Generate Prefix code */
   genPrefix (model->name, model->nstreams);
-  genCluster1 (model->name);
+  genCluster1 (model->name, model->filename);
   p = model->proc;
   /* Get first process */
   genProcs (p);			/*{ */

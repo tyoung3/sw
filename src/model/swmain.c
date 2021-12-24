@@ -415,6 +415,7 @@ int main(int argc, char **argv)
 		model = MakeModel(NULL);
 		visitValidSW(model, parse_tree);/** Build model */
 		model->name = baseOf(fname);
+		model->filename = fname;
 		if (verifyOK(model)) {
 			if (!model->proc) {
 				FAIL(swmain/main, "No processes found.");
