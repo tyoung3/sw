@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "Absyn.h"
-typedef struct SWIRL_buffer_state *YY_BUFFER_STATE;
-YY_BUFFER_STATE SWIRL_scan_string(const char *str);
-void SWIRL_delete_buffer(YY_BUFFER_STATE buf);
+typedef struct SWL_buffer_state *YY_BUFFER_STATE;
+YY_BUFFER_STATE SWL_scan_string(const char *str);
+void SWL_delete_buffer(YY_BUFFER_STATE buf);
 extern int yyparse(void);
 extern int yylex(void);
-extern int SWIRL_init_lexer(FILE * inp);
+extern int SWL_init_lexer(FILE * inp);
 extern void yyerror(const char *str);
 
 Valide YY_RESULT_Valide_ = 0;
@@ -19,7 +19,7 @@ ValidConfig YY_RESULT_ValidConfig_ = 0;
 
 Valide pValide(FILE *inp)
 {
-  SWIRL_init_lexer(inp);
+  SWL_init_lexer(inp);
   int result = yyparse();
   if (result)
   { /* Failure */
@@ -33,10 +33,10 @@ Valide pValide(FILE *inp)
 Valide psValide(const char *str)
 {
   YY_BUFFER_STATE buf;
-  SWIRL_init_lexer(0);
-  buf = SWIRL_scan_string(str);
+  SWL_init_lexer(0);
+  buf = SWL_scan_string(str);
   int result = yyparse();
-  SWIRL_delete_buffer(buf);
+  SWL_delete_buffer(buf);
   if (result)
   { /* Failure */
     return 0;
@@ -49,7 +49,7 @@ Valide psValide(const char *str)
 
 ValidSW pValidSW(FILE *inp)
 {
-  SWIRL_init_lexer(inp);
+  SWL_init_lexer(inp);
   int result = yyparse();
   if (result)
   { /* Failure */
@@ -63,10 +63,10 @@ ValidSW pValidSW(FILE *inp)
 ValidSW psValidSW(const char *str)
 {
   YY_BUFFER_STATE buf;
-  SWIRL_init_lexer(0);
-  buf = SWIRL_scan_string(str);
+  SWL_init_lexer(0);
+  buf = SWL_scan_string(str);
   int result = yyparse();
-  SWIRL_delete_buffer(buf);
+  SWL_delete_buffer(buf);
   if (result)
   { /* Failure */
     return 0;
@@ -79,7 +79,7 @@ ValidSW psValidSW(const char *str)
 
 ValidConfig pValidConfig(FILE *inp)
 {
-  SWIRL_init_lexer(inp);
+  SWL_init_lexer(inp);
   int result = yyparse();
   if (result)
   { /* Failure */
@@ -93,10 +93,10 @@ ValidConfig pValidConfig(FILE *inp)
 ValidConfig psValidConfig(const char *str)
 {
   YY_BUFFER_STATE buf;
-  SWIRL_init_lexer(0);
-  buf = SWIRL_scan_string(str);
+  SWL_init_lexer(0);
+  buf = SWL_scan_string(str);
   int result = yyparse();
-  SWIRL_delete_buffer(buf);
+  SWL_delete_buffer(buf);
   if (result)
   { /* Failure */
     return 0;
@@ -431,8 +431,8 @@ KeyName : Symval _SYMB_15 { $$ = make_KeynameS($1);  }
 %%
 void yyerror(const char *str)
 {
-  extern char *SWIRLtext;
+  extern char *SWLtext;
   fprintf(stderr,"error: %d,%d: %s at %s\n",
-  SWIRLlloc.first_line, SWIRLlloc.first_column, str, SWIRLtext);
+  SWLlloc.first_line, SWLlloc.first_column, str, SWLtext);
 }
 
