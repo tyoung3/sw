@@ -54,3 +54,4 @@ tags
 *.ps
 *.tex
 # *.y
+build-aux
