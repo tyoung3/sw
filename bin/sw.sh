@@ -38,7 +38,7 @@ Die() {
 
 #			Run in swgo/sw (project root)
 
-pushd /usr/src/sw/src || Die Cannot find /usr/src/sw/src
+pushd /usr/local/src/sw/src || Die Cannot find /usr/local/src/sw/src
 
 RunCollate () {
 	sw=/usr/local/bin/sw
