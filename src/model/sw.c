@@ -832,8 +832,9 @@ visitTab (Tab _p_)
 
 static void setIpType(Extport ep) {			
       ep->iptype = strdup (iptype_save);
-      if(ep->iptype==NULL);
-      ep->iptype=ep->name;
+      if(ep->iptype[0]==0) {
+	      ep->iptype=ep->name;
+      }	      
       iptype_save = "";
 }
 
@@ -858,8 +859,7 @@ visitExtPortIn (ExtPortIn _p_)
 			visitPrt (_p_->u.extinr_.prt_),
 			visitRarrow (_p_->u.extinr_.rarrow_),
 			visitTab (_p_->u.extinr_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     default:
       badkind (ExtPortIn);
@@ -880,8 +880,7 @@ visitExtPortOut (ExtPortOut _p_)
 			visitPrt (_p_->u.extout_.prt_),
 			visitLarrow (_p_->u.extout_.larrow_),
 			visitTab (_p_->u.extout_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     case is_Extoutr:
       return MakeExtport (SOURCE,
@@ -889,8 +888,7 @@ visitExtPortOut (ExtPortOut _p_)
 			  visitPrt (_p_->u.extoutr_.prt_),
 			  visitRarrow (_p_->u.extoutr_.rarrow_),
 			  visitTab (_p_->u.extoutr_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     default:
       badkind (ExtPortOut);

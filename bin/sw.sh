@@ -2,7 +2,7 @@
 
 # sw/bin/sw.sh
 
-version="0.19.0"
+version="0.19.1"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -38,7 +38,7 @@ Die() {
 
 #			Run in swgo/sw (project root)
 
-pushd /usr/src/sw/src || Die Cannot find /usr/src/sw/src
+pushd /usr/local/src/sw/src || Die Cannot find /usr/src/sw/src
 
 RunCollate () {
 	sw=/usr/local/bin/sw

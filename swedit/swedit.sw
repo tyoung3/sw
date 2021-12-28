@@ -23,23 +23,23 @@ $E="/usr/src/swedit";
 $base="/usr/src/swedit/FileIoBase";
 
 ^model {
-(M $E/model)1 -change> CHANGE;
-REQ -req> 0(M);
-(_ $base/getfile) -nd> 2(M);
-(M)3 -nd> (_ $base/putfile);
+(M $E/model)1 -> Change;
+Request -> 0(M);
+(_ $base/getfile) -Swl> 2(M);
+(M)3 -Swl> (_ $base/putfile);
 };
 
 ^view {
-(V $E/view)2 -event> EVENT;
-CHANGE -change> 0(V);
-UPDATE -update> 1(V);
+(V $E/view)2 -> Event;
+Change -> 0(V);
+Update -> 1(V);
 };
 
 
 ^control {
-(C $E/control)2 -update> UPDATE;
-EVENT -event> 0(C);
-(C)1 -req> REQ;
+(C $E/control)2 -> Update;
+Event -> 0(C);
+(C)1 -> Request;
 };
 
 _ ^model;
