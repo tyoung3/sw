@@ -8,7 +8,7 @@ Die () {
 	exit 1
 }
 
-swdir=/usr/src/sw/bin
+swdir=/usr/local/src/sw/bin
 [ -e $swdir/sw ] || swdir=/usr/local/bin
 SW=$swdir/sw
 [ -e $SW     ] || Die SW $SW is missing 

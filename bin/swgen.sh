@@ -69,7 +69,7 @@ EOF
 
 }
 
-src=/usr/src
+src=/usr/local/src
 [ -d $src ] || Die Cannot find directory $src
 
 MakeDir2() {
