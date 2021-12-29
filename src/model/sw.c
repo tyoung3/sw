@@ -15,6 +15,15 @@
 
 #define DEBUGGING
 
+/** MATCH(SRC,SNK) is true if port names match. */
+#define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) {	\
+			  if(eqs(snkn,#SNK)) {	\
+				return 1;	\
+			  } else {		\
+				return 0;	\
+			  }			\
+		       }
+
 static char *savedPrefix = "";
 static char *iptype_save = "";	/* latest visited IP type */
 static Process fl = NULL;		/** List of processes to free	*/
@@ -1283,15 +1292,37 @@ CheckDepth (int d)
   return d + 1;
 }
 
+/** Return true if names match.*/
 static int
-typeOK (char *s1, char *s2)
+MatchName (String srcn, String snkn)
+{
+
+  if (srcn == NULL)
+    return 0;
+  MATCH (OUT, IN);
+  MATCH (TAB, SLOT);
+  MATCH (PLUG, SOCKET);
+  MATCH (out, in);
+  MATCH (tab, slot);
+  MATCH (plug, socket);
+
+  if (eqs (srcn, snkn))
+    return 1;
+
+  return 0;
+}
+
+/** Source, Sink */
+static int
+typeOK (char *s1, char *s2)  
 {
   if (s1 == NULL || *s1 == 0)
     return 1;
   if (s2 == NULL || *s2 == 0)
     return 1;
-  if (strcmp (s1, s2) == 0)
-    return 1;
+   
+  if( MatchName(s1,s2) )
+  	return 1;
 
   return 0;
 }
@@ -2048,35 +2079,6 @@ createStream (Model m, Extport ep, Extport ep2)
   SortPorts (s->source);
   SortPorts (s->sink);
   VerifyStream (s);
-}
-
-/** MATCH(SRC,SNK) is true if port names match. ?? */
-#define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) {	\
-			  if(eqs(snkn,#SNK)) {	\
-				return 1;	\
-			  } else {		\
-				return 0;	\
-			  }			\
-		       }
-
-/** Return true if names match.*/
-static int
-MatchName (String srcn, String snkn)
-{
-
-  if (srcn == NULL)
-    return 0;
-  MATCH (OUT, IN);
-  MATCH (TAB, SLOT);
-  MATCH (PLUG, SOCKET);
-  MATCH (out, in);
-  MATCH (tab, slot);
-  MATCH (plug, socket);
-
-  if (eqs (srcn, snkn))
-    return 1;
-
-  return 0;
 }
 
 /** return true if external port is matched.*/

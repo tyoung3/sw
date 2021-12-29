@@ -413,23 +413,7 @@ X ^a; Y ^b;
 T ^ab;
 EOF.n3.sw
 
-cat << EOF.n4.sw | ./sw >/dev/null && echo ok 29 - n4.sw || echo not ok 29 -  n4.sw
-^a {  
-   (A)	<- IN ;
-};  
-
-^b {  
-    OUT	<- (B);
-};  
-
-^ab {
-X ^a; Y ^b; 
-};
-
-T ^ab;
-EOF.n4.sw
-
-cat << EOF.n5.sw | ./sw >/dev/null && echo ok 30 - n5.sw || echo not ok 30 -  n5.sw
+cat << EOF.n5.sw | ./sw >/dev/null && echo ok 29 - n5.sw || echo not ok 29 -  n5.sw
 ^u {
 (U3 U3)  <1- BP2;
 (U  U1)	 <3- BP3;
@@ -448,7 +432,7 @@ z ^u;
 (A A)	<7- 1(A);
 EOF.n5.sw
 
-cat << EOF.part2.sw | ./sw >/dev/null && echo ok 31 - part2.sw || echo not ok 31 -  part2.sw
+cat << EOF.part2.sw | ./sw >/dev/null && echo ok 30 - part2.sw || echo not ok 30 -  part2.sw
 # PART2.sw: 
 #			A network with two partitions
 
@@ -456,11 +440,11 @@ cat << EOF.part2.sw | ./sw >/dev/null && echo ok 31 - part2.sw || echo not ok 31
 (A2 std/C1  )0 <- 0(B2  std/G1);
 EOF.part2.sw
 
-cat << EOF.pass.sw | ./sw >/dev/null && echo ok 32 - pass.sw || echo not ok 32 -  pass.sw
+cat << EOF.pass.sw | ./sw >/dev/null && echo ok 31 - pass.sw || echo not ok 31 -  pass.sw
 (A)->(B sw/Pass)1->(C);
 EOF.pass.sw
 
-cat << EOF.path.sw | ./sw >/dev/null && echo ok 33 - path.sw || echo not ok 33 -  path.sw
+cat << EOF.path.sw | ./sw >/dev/null && echo ok 32 - path.sw || echo not ok 32 -  path.sw
 #PAthAlogiCAl flows:
 (A A/B)1 <- 3(B C/D);
 (A A/B)0 <- 5(B C/D);
@@ -473,13 +457,13 @@ cat << EOF.path.sw | ./sw >/dev/null && echo ok 33 - path.sw || echo not ok 33 -
 #}
 EOF.path.sw
 
-cat << EOF.prefix.sw | ./sw >/dev/null && echo ok 34 - prefix.sw || echo not ok 34 -  prefix.sw
+cat << EOF.prefix.sw | ./sw >/dev/null && echo ok 33 - prefix.sw || echo not ok 33 -  prefix.sw
 PREFIX "pfx_"; 
 
 (A) -> (B);
 EOF.prefix.sw
 
-cat << EOF.sisub.sw | ./sw >/dev/null && echo ok 35 - sisub.sw || echo not ok 35 -  sisub.sw
+cat << EOF.sisub.sw | ./sw >/dev/null && echo ok 34 - sisub.sw || echo not ok 34 -  sisub.sw
 ^w {
 0      <15-  1(F F);
 (F F)  <13-  1(G G);
@@ -534,7 +518,7 @@ cat << EOF.sisub.sw | ./sw >/dev/null && echo ok 35 - sisub.sw || echo not ok 35
 
 EOF.sisub.sw
 
-cat << EOF.sn2.sw | ./sw >/dev/null && echo ok 36 - sn2.sw || echo not ok 36 -  sn2.sw
+cat << EOF.sn2.sw | ./sw >/dev/null && echo ok 35 - sn2.sw || echo not ok 35 -  sn2.sw
 {#Subnets M and N
 
 #}
@@ -557,12 +541,12 @@ cat << EOF.sn2.sw | ./sw >/dev/null && echo ok 36 - sn2.sw || echo not ok 36 -  
 
 EOF.sn2.sw
 
-cat << EOF.split.sw | ./sw >/dev/null && echo ok 37 - split.sw || echo not ok 37 -  split.sw
+cat << EOF.split.sw | ./sw >/dev/null && echo ok 36 - split.sw || echo not ok 36 -  split.sw
 (a) -foo>  (b)1 -bar> (d)1 <- (a); 
 (a) ->     (c);
 EOF.split.sw
 
-cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 38 - subnet1.sw || echo not ok 38 -  subnet1.sw
+cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 37 - subnet1.sw || echo not ok 37 -  subnet1.sw
 {#Subnets M and N
 
 #}
@@ -588,7 +572,7 @@ cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 38 - subnet1.sw || echo not o
 (T) 	<4- (U);
 EOF.subnet1.sw
 
-cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 39 - subnet4.sw || echo not ok 39 -  subnet4.sw
+cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 38 - subnet4.sw || echo not ok 38 -  subnet4.sw
 # Recursive subnet -- experimental.  Causes segfault.
 
 
@@ -603,7 +587,7 @@ cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 39 - subnet4.sw || echo not o
 (A Gen) -> a.0(B ^s);
 EOF.subnet4.sw
 
-cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 40 - subnet5.sw || echo not ok 40 -  subnet5.sw
+cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 39 - subnet5.sw || echo not ok 39 -  subnet5.sw
 # Buggy
 
 ^j {
@@ -619,7 +603,7 @@ AOUT    	<2- OUT.1(J);
 (C2 c)CIN.0  <8-  AOUT.1(A2);
 EOF.subnet5.sw
 
-cat << EOF.tag.sw | ./sw >/dev/null && echo ok 41 - tag.sw || echo not ok 41 -  tag.sw
+cat << EOF.tag.sw | ./sw >/dev/null && echo ok 40 - tag.sw || echo not ok 40 -  tag.sw
 ^a {
 (Hello Print1)0 <- 0;
 };
@@ -631,14 +615,14 @@ cat << EOF.tag.sw | ./sw >/dev/null && echo ok 41 - tag.sw || echo not ok 41 -  
 (_ ^a)0 <- 0(World ^b);
 EOF.tag.sw
 
-cat << EOF.var.sw | ./sw >/dev/null && echo ok 42 - var.sw || echo not ok 42 -  var.sw
+cat << EOF.var.sw | ./sw >/dev/null && echo ok 41 - var.sw || echo not ok 41 -  var.sw
 #$AA="AA)(\n"; 
 &BBB = BBB;
 
 (&BBB) <- (y Y $AA);
 EOF.var.sw
 
-cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 43 - FAILOK/ac.sw || echo ok 43 - FAILOK/ac.sw
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 42 - FAILOK/ac.sw || echo ok 42 - FAILOK/ac.sw
 {#
       AE1.sw
       
@@ -660,13 +644,13 @@ cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 43 - FAILOK/ac.sw || echo ok 
 (C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
 FAIL.ac.sw
 
-cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 44 - FAILOK/e3.sw || echo ok 44 - FAILOK/e3.sw
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 43 - FAILOK/e3.sw || echo ok 43 - FAILOK/e3.sw
 # Missmatched port names:  
 
 (F A)MATCH  <- MISS(G b);
 FAIL.e3.sw
 
-cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 45 - FAILOK/e4.sw || echo ok 45 - FAILOK/e4.sw
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 44 - FAILOK/e4.sw || echo ok 44 - FAILOK/e4.sw
 # Missmatched port 
 
 (H A)0  <- 0(I b);
@@ -675,18 +659,18 @@ cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 45 - FAILOK/e4.sw || echo ok 
 (H)3  <- 3(I);
 FAIL.e4.sw
 
-cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 46 - FAILOK/e5.sw || echo ok 46 - FAILOK/e5.sw
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 45 - FAILOK/e5.sw || echo ok 45 - FAILOK/e5.sw
 # (K) port error
 
 (K)   <-  OUT(J);
 (J)IN <-  (K);
 FAIL.e5.sw
 
-cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 47 - FAILOK/fail_include.sw || echo ok 47 - FAILOK/fail_include.sw
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 46 - FAILOK/fail_include.sw || echo ok 46 - FAILOK/fail_include.sw
 INCLUDE "fail_include.sw";
 FAIL.fail_include.sw
 
-cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 48 - FAILOK/inc.sw || echo ok 48 - FAILOK/inc.sw
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 47 - FAILOK/inc.sw || echo ok 47 - FAILOK/inc.sw
 #include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
 
 INCLUDE "inc.isw"; 
@@ -699,7 +683,7 @@ INCLUDE "inc.isw";
 
 FAIL.inc.sw
 
-cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/subnet2.sw || echo ok 49 - FAILOK/subnet2.sw
+cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 48 - FAILOK/subnet2.sw || echo ok 48 - FAILOK/subnet2.sw
 {#Subnets M and N
 
 #}
@@ -727,7 +711,7 @@ cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/subnet2.sw |
 (T) 	<4- (U);
 FAIL.subnet2.sw
 
-cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 50 - FAILOK/subnet3.sw || echo ok 50 - FAILOK/subnet3.sw
+cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/subnet3.sw || echo ok 49 - FAILOK/subnet3.sw
 
 ######################################################### 
 ^M5 {
@@ -789,4 +773,4 @@ A	<type_C 13 -	0(A);
 #########################################################
 #}
 FAIL.subnet3.sw
-echo  1..50 # Number of tests to be executed.
+echo  1..49 # Number of tests to be executed.
