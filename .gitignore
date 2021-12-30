@@ -54,3 +54,4 @@ tags
 *.tex
 # *.y
 build-aux
+swedit
