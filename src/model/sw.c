@@ -15,6 +15,15 @@
 
 #define DEBUGGING
 
+/** MATCH(SRC,SNK) is true if port names match. */
+#define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) {	\
+			  if(eqs(snkn,#SNK)) {	\
+				return 1;	\
+			  } else {		\
+				return 0;	\
+			  }			\
+		       }
+
 static char *savedPrefix = "";
 static char *iptype_save = "";	/* latest visited IP type */
 static Process fl = NULL;		/** List of processes to free	*/
@@ -575,7 +584,12 @@ visitTypeDef (TypeDef p)
     case is_Typedefa:
       return visitSymvalu (p->u.typedefa_.symvalu_);
     case is_Typedefnull:
-      return "";
+      return ""; 
+    case is_Typdefl:
+        visitTypeDef(p->u.typdefl_.typedef_1);
+        visitTypeDef(p->u.typdefl_.typedef_2);
+    break;
+
     default:
       badkind (TypgDef);
     }
@@ -830,6 +844,14 @@ visitTab (Tab _p_)
     }
 }
 
+static void setIpType(Extport ep) {			
+      ep->iptype = strdup (iptype_save);
+      if(ep->iptype[0]==0) {
+	      ep->iptype=ep->name;
+      }	      
+      iptype_save = "";
+}
+
 /** Get external input port */
 Extport
 visitExtPortIn (ExtPortIn _p_)
@@ -843,8 +865,7 @@ visitExtPortIn (ExtPortIn _p_)
 			visitPrt (_p_->u.extin_.prt_),
 			visitLarrow (_p_->u.extin_.larrow_),
 			visitTab (_p_->u.extin_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     case is_ExtinR:
       ep = MakeExtport (SINK,
@@ -852,8 +873,7 @@ visitExtPortIn (ExtPortIn _p_)
 			visitPrt (_p_->u.extinr_.prt_),
 			visitRarrow (_p_->u.extinr_.rarrow_),
 			visitTab (_p_->u.extinr_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     default:
       badkind (ExtPortIn);
@@ -874,8 +894,7 @@ visitExtPortOut (ExtPortOut _p_)
 			visitPrt (_p_->u.extout_.prt_),
 			visitLarrow (_p_->u.extout_.larrow_),
 			visitTab (_p_->u.extout_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     case is_Extoutr:
       return MakeExtport (SOURCE,
@@ -883,8 +902,7 @@ visitExtPortOut (ExtPortOut _p_)
 			  visitPrt (_p_->u.extoutr_.prt_),
 			  visitRarrow (_p_->u.extoutr_.rarrow_),
 			  visitTab (_p_->u.extoutr_.tab_));
-      ep->iptype = strdup (iptype_save);
-      iptype_save = "";
+      setIpType(ep);
       return ep;
     default:
       badkind (ExtPortOut);
@@ -1279,15 +1297,37 @@ CheckDepth (int d)
   return d + 1;
 }
 
+/** Return true if names match.*/
 static int
-typeOK (char *s1, char *s2)
+MatchName (String srcn, String snkn)
+{
+
+  if (srcn == NULL)
+    return 0;
+  MATCH (OUT, IN);
+  MATCH (TAB, SLOT);
+  MATCH (PLUG, SOCKET);
+  MATCH (out, in);
+  MATCH (tab, slot);
+  MATCH (plug, socket);
+
+  if (eqs (srcn, snkn))
+    return 1;
+
+  return 0;
+}
+
+/** Source, Sink */
+static int
+typeOK (char *s1, char *s2)  
 {
   if (s1 == NULL || *s1 == 0)
     return 1;
   if (s2 == NULL || *s2 == 0)
     return 1;
-  if (strcmp (s1, s2) == 0)
-    return 1;
+   
+  if( MatchName(s1,s2) )
+  	return 1;
 
   return 0;
 }
@@ -2044,35 +2084,6 @@ createStream (Model m, Extport ep, Extport ep2)
   SortPorts (s->source);
   SortPorts (s->sink);
   VerifyStream (s);
-}
-
-/** MATCH(SRC,SNK) is true if port names match. ?? */
-#define MATCH(SRC,SNK) if(eqs(srcn,#SRC)) {	\
-			  if(eqs(snkn,#SNK)) {	\
-				return 1;	\
-			  } else {		\
-				return 0;	\
-			  }			\
-		       }
-
-/** Return true if names match.*/
-static int
-MatchName (String srcn, String snkn)
-{
-
-  if (srcn == NULL)
-    return 0;
-  MATCH (OUT, IN);
-  MATCH (TAB, SLOT);
-  MATCH (PLUG, SOCKET);
-  MATCH (out, in);
-  MATCH (tab, slot);
-  MATCH (plug, socket);
-
-  if (eqs (srcn, snkn))
-    return 1;
-
-  return 0;
 }
 
 /** return true if external port is matched.*/

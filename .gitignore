@@ -2,19 +2,15 @@
 **docs/doxy/
 /home/tyoung3/go/mod/sw/example
 test-driver
-Makefile
 .idea/
 
 nds/tmpost.sw
-model/aa.sw
-model/tests/Makefile.am
-model/tests/Makefile.in
 swtests/
 
 autom*
 *.trs
 *.log
-sw-0.15.?
+sw-0.*.?
 *.m4
 .deps
 stamp*
@@ -23,7 +19,6 @@ config.status
 _OLD/
 _IGNORE*
 _*
-swedit/
 
 docs/doxy/
 doxy/html/*.png
@@ -55,3 +50,4 @@ tags
 *.tex
 # *.y
 build-aux
+swedit

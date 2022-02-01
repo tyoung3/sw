@@ -2,7 +2,7 @@
 
 # sw/bin/sw.sh
 
-version="0.19.0"
+version="0.19.1"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {

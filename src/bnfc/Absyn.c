@@ -439,6 +439,20 @@ TypeDef make_Typedefnull()
     }
     tmp->kind = is_Typedefnull;
     return tmp;
+}
+/********************   Typdefl    ********************/
+TypeDef make_Typdefl(TypeDef p1, TypeDef p2)
+{
+    TypeDef tmp = (TypeDef) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Typdefl!\n");
+        exit(1);
+    }
+    tmp->kind = is_Typdefl;
+    tmp->u.typdefl_.typedef_1 = p1;
+    tmp->u.typdefl_.typedef_2 = p2;
+    return tmp;
 }/********************   Bufszi    ********************/
 Buffsize make_Bufszi(Numval p1)
 {

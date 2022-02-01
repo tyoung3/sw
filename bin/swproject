@@ -28,7 +28,7 @@
 #    all packages import project code.
 
 version="0.19.0"  
-targetdir=/usr/src
+targetdir=/usr/local/src
 pgm=swproject
 
 Die() {
