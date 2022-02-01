@@ -305,6 +305,11 @@ void visitTypeDef(TypeDef p)
   case is_Typedefnull:
     /* Code for Typedefnull Goes Here */
     break;
+  case is_Typdefl:
+    /* Code for Typdefl Goes Here */
+    visitTypeDef(p->u.typdefl_.typedef_1);
+    visitTypeDef(p->u.typdefl_.typedef_2);
+    break;
 
   default:
     fprintf(stderr, "Error: bad kind field when printing TypeDef!\n");

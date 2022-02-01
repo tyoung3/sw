@@ -541,6 +541,15 @@ void ppTypeDef(TypeDef p, int _i_)
     if (_i_ > 0) renderC(_R_PAREN);
     break;
 
+  case is_Typdefl:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppTypeDef(p->u.typdefl_.typedef_1, 0);
+    renderC(',');
+    ppTypeDef(p->u.typdefl_.typedef_2, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
 
   default:
     fprintf(stderr, "Error: bad kind field when printing TypeDef!\n");
@@ -1890,6 +1899,20 @@ void shTypeDef(TypeDef p)
 
 
 
+
+    break;
+  case is_Typdefl:
+    bufAppendC('(');
+
+    bufAppendS("Typdefl");
+
+    bufAppendC(' ');
+
+    shTypeDef(p->u.typdefl_.typedef_1);
+  bufAppendC(' ');
+    shTypeDef(p->u.typdefl_.typedef_2);
+
+    bufAppendC(')');
 
     break;
 

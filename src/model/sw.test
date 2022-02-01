@@ -163,7 +163,7 @@ EOF.e2.sw
 cat << EOF.ex1.sw | ./sw >/dev/null && echo ok 17 - ex1.sw || echo not ok 17 -  ex1.sw
 ^a {  0<-(A); (A)1<-1; };  
 ^b { (C)0<-0; };
-(X ^b) <-  (Y ^a);
+(X ^b) <type1,type2-  (Y ^a);
 (Y)1  <- (Z);
 EOF.ex1.sw
 

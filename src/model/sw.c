@@ -584,7 +584,12 @@ visitTypeDef (TypeDef p)
     case is_Typedefa:
       return visitSymvalu (p->u.typedefa_.symvalu_);
     case is_Typedefnull:
-      return "";
+      return ""; 
+    case is_Typdefl:
+        visitTypeDef(p->u.typdefl_.typedef_1);
+        visitTypeDef(p->u.typdefl_.typedef_2);
+    break;
+
     default:
       badkind (TypgDef);
     }

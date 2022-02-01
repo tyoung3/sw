@@ -55,7 +55,8 @@ Arrowx.			Larrow	 	::=  "<" TypeDef Buffsize "-" 		;
 Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		; 
 
 Typedefa.		TypeDef		::=  Symvalu 	 			;
-Typedefnull.		TypeDef		::=  ""					;
+Typedefnull.	TypeDef		::=  ""					;
+Typdefl.        TypeDef     ::=  TypeDef "," TypeDef;  
 
 Bufszi.			Buffsize 	::= Numval ;
 Bufsze.			Buffsize 	::=; 
