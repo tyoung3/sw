@@ -7,7 +7,12 @@ Die () {
 	exit 1
 }
 
-version=v0.0.1
+version=v0.1.0
+
+dirlist="
+    .
+    $HOME/sw
+"
 
 Debug() {
 	[ "$DEBUG" == "y" ]  	\
@@ -24,12 +29,19 @@ searchFile() {
 	Debug SearchFIle $*
 	base=`basename $file`
 	swfile=${base}
+	for dir in $dirlist; do 
+	    Debug Search for $dir/$swfile
+	    if [ -f $dir/$swfile ]; then
+	        swfile=$dir/$swfile
+	        return
+	    fi
+	done
 	
-	if [ ! -f $swfile ]; then
-		[ -f /home/tyoung3/go/src/github.com/tyoung3/sw/nds/${swfile}.sw ] \
-			&& swfile=/home/tyoung3/go/src/github.com/tyoung3/sw/nds/${swfile}.sw
-		[ -f $swfile ] || swfile=${file}.sw
-	fi	
+#	if [ ! -f $swfile ]; then
+#		[ -f /home/tyoung3/go/src/github.com/tyoung3/sw/nds/${swfile}.sw ] \
+#			&& swfile=/home/tyoung3/go/src/github.com/tyoung3/sw/nds/${swfile}.sw
+#		[ -f $swfile ] || swfile=${file}.sw
+#	fi	
 }
 
 GenRun() {

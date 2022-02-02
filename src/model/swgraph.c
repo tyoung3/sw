@@ -144,7 +144,7 @@ makeURL (char *comp)
 {
   char bfr[110];
 
-  snprintf (bfr, sizeof (bfr) - 1, "%s%s.html", htmldir, comp);   /* htmldir is guaranteed to have a trailing slash('/'). */
+  snprintf (bfr, sizeof (bfr) - 1, "%s/%s.html", htmldir, comp);   /* htmldir is guaranteed to have a trailing slash('/'). */
   return strndup (bfr, sizeof (bfr) - 1);
 }
 
