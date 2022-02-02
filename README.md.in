@@ -30,21 +30,20 @@ StreamWork
 
 StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
 
-By default, StreamWork reads, parses and analyzes, an SWL language StreamWork network 
-definition(ND) file (suffix: .sw),  then generates a main Go program. 
+By default, StreamWork reads, parses, and analyzes; a simple SWL language StreamWork
+network definition(ND) file,  then generates a main Go program. 
 
 ## Network Definition 
-A StreamWork network definition describes a program as a simple, list of data streams, 
-wherein each stream consists of a source process, a director, and a sink process; in essence as
-a data flow diagram.  
+A StreamWork network definition describes a program as a  list of data streams.
+Each stream consists of a source process, a director, and a sink process. 
+The network definition is a text-based representation of a data flow diagram.  
 
-StreamWork is concerned primarily with Go language FBP programs; 
+StreamWork is concerned primarily with Go language FBP programs,
 however, the network definition described here is language agnostic.  It is quite possible 
 to generate corresponding code in other languages from a StreamWork ND.         
 
-By default, **_sw_** generates 
+The script, **_swgo_**, reads and executes an ND employing **_sw_** to properly launch the and connect the processes.  By default, **_sw_** generates 
 and builds a single main Go program which:  
-
   * imports sw compatible component package(s) as specified in the network definition,  
   * launches a goroutine for each process,  
   * connects these processes via Golang interface channels, and 
@@ -52,7 +51,7 @@ and builds a single main Go program which:
   * StreamWork has no other interaction with the processes, which do not call on StreamWork functions
     in any way. 
 
-On option, StreamWork will read, parse and interpret a network definition file then  create either a:
+On option, **_sw_** will read, parse and interpret a network definition file then  create either a:
  
  * a StreamWork Go main program,
  * a gofbp      Go main program (see github.com/jpaulm/gofbp), 
@@ -88,8 +87,8 @@ On option, StreamWork will read, parse and interpret a network definition file t
 **_sw_** returns SUCCESS unless it encounters an error, in which case **_sw_** returns FAILURE.
 See package documention for component return codes. 
 
-## **_TestSW_** program 
-**_TestSW_** syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
+## **_TestSWL_** program 
+**_TestSWL_** syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
 ### synopsis
 ```usage: Call with one of the following argument combinations:
 	--help		Display this help message.
@@ -154,17 +153,13 @@ are assumed for sink, source, and filter(has both inputs and outputs) processes.
 Subnet components are identified by ```'``` prefixing its identifier, as in
 (A ^SubnetName) ...
  
-Stream directors consist of ```<```, an optional type identifier,
+Stream directors consist of ```<```, an optional, comma-separated list of type identifiers,
 an optional buffersize integer, and ```-```. Example: ```<100-```
-The reverse (Ex: ```-myData_t 100>```) is also valid.
+The reverse (Ex: ```-myDataType,yourType 100>```) is also valid.
  
 Information packets(IPs) are designed as nil(empty) interfaces.  The
 data type is determined by the sending component.  It is possible for 
-properly coded sink components to handle multiple data types over a single
-channel  interface,  but this is not generally recommended, as there is no
-way now to show this on generated network diagrams.
-Multiple data types can be handled 
-within a struct or over multiple channels.
+properly coded sink components to handle multiple data types.
 A type mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
 type(including user-defined types and structures). 
@@ -273,6 +268,9 @@ Foo Bar-7
   
 ### 0.19.0 
   * Many fixes to **_swproject_** script     
+  
+### 0.20.1
+  * Fix swgraph file search    
     
 ## StreamWork Language(SWL or SWIRL) Notes
 
