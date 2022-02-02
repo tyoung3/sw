@@ -644,6 +644,7 @@ void ppProc(Proc p, int _i_)
     ppSymvalu(p->u.processx_.symvalu_, 0);
     ppComp(p->u.processx_.comp_, 0);
     ppListArgument(p->u.processx_.listargument_, 0);
+    ppAttributes(p->u.processx_.attributes_, 0);
     renderC(')');
 
     if (_i_ > 0) renderC(_R_PAREN);
@@ -653,7 +654,7 @@ void ppProc(Proc p, int _i_)
     if (_i_ > 0) renderC(_L_PAREN);
     renderC('(');
     ppSymvalu(p->u.processy_.symvalu_, 0);
-    ppListArgument(p->u.processy_.listargument_, 0);
+    ppAttributes(p->u.processy_.attributes_, 0);
     renderC(')');
 
     if (_i_ > 0) renderC(_R_PAREN);
@@ -663,6 +664,81 @@ void ppProc(Proc p, int _i_)
   default:
     fprintf(stderr, "Error: bad kind field when printing Proc!\n");
     exit(1);
+  }
+}
+
+void ppAttributes(Attributes p, int _i_)
+{
+  switch(p->kind)
+  {
+  case is_Attribe:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderS("ATTRIBUTES");
+    renderC('{');
+    ppListAttr(p->u.attribe_.listattr_, 0);
+    renderC('}');
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_Attribs:
+    if (_i_ > 0) renderC(_L_PAREN);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Attributes!\n");
+    exit(1);
+  }
+}
+
+void ppAttr(Attr p, int _i_)
+{
+  switch(p->kind)
+  {
+  case is_Attrs:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppSymval(p->u.attrs_.symval_, 0);
+    renderC('=');
+    ppStringval(p->u.attrs_.stringval_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_Attrn:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppSymval(p->u.attrn_.symval_, 0);
+    renderC('=');
+    ppNumval(p->u.attrn_.numval_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Attr!\n");
+    exit(1);
+  }
+}
+
+void ppListAttr(ListAttr listattr, int i)
+{
+  while(listattr != 0)
+  {
+    if (listattr->listattr_ == 0)
+    {
+      ppAttr(listattr->attr_, i);
+
+      listattr = 0;
+    }
+    else
+    {
+      ppAttr(listattr->attr_, i);
+      renderC(',');
+      listattr = listattr->listattr_;
+    }
   }
 }
 
@@ -2041,6 +2117,8 @@ void shProc(Proc p)
     shComp(p->u.processx_.comp_);
   bufAppendC(' ');
     shListArgument(p->u.processx_.listargument_);
+  bufAppendC(' ');
+    shAttributes(p->u.processx_.attributes_);
 
     bufAppendC(')');
 
@@ -2054,7 +2132,7 @@ void shProc(Proc p)
 
     shSymvalu(p->u.processy_.symvalu_);
   bufAppendC(' ');
-    shListArgument(p->u.processy_.listargument_);
+    shAttributes(p->u.processy_.attributes_);
 
     bufAppendC(')');
 
@@ -2064,6 +2142,96 @@ void shProc(Proc p)
     fprintf(stderr, "Error: bad kind field when showing Proc!\n");
     exit(1);
   }
+}
+
+void shAttributes(Attributes p)
+{
+  switch(p->kind)
+  {
+  case is_Attribe:
+    bufAppendC('(');
+
+    bufAppendS("Attribe");
+
+    bufAppendC(' ');
+
+    shListAttr(p->u.attribe_.listattr_);
+
+    bufAppendC(')');
+
+    break;
+  case is_Attribs:
+
+    bufAppendS("Attribs");
+
+
+
+
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when showing Attributes!\n");
+    exit(1);
+  }
+}
+
+void shAttr(Attr p)
+{
+  switch(p->kind)
+  {
+  case is_Attrs:
+    bufAppendC('(');
+
+    bufAppendS("Attrs");
+
+    bufAppendC(' ');
+
+    shSymval(p->u.attrs_.symval_);
+  bufAppendC(' ');
+    shStringval(p->u.attrs_.stringval_);
+
+    bufAppendC(')');
+
+    break;
+  case is_Attrn:
+    bufAppendC('(');
+
+    bufAppendS("Attrn");
+
+    bufAppendC(' ');
+
+    shSymval(p->u.attrn_.symval_);
+  bufAppendC(' ');
+    shNumval(p->u.attrn_.numval_);
+
+    bufAppendC(')');
+
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when showing Attr!\n");
+    exit(1);
+  }
+}
+
+void shListAttr(ListAttr listattr)
+{
+  bufAppendC('[');
+  while(listattr != 0)
+  {
+    if (listattr->listattr_)
+    {
+      shAttr(listattr->attr_);
+      bufAppendS(", ");
+      listattr = listattr->listattr_;
+    }
+    else
+    {
+      shAttr(listattr->attr_);
+      listattr = 0;
+    }
+  }
+  bufAppendC(']');
 }
 
 void shPrt(Prt p)

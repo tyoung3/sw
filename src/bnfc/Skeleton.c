@@ -384,16 +384,66 @@ void visitProc(Proc p)
     visitSymvalu(p->u.processx_.symvalu_);
     visitComp(p->u.processx_.comp_);
     visitListArgument(p->u.processx_.listargument_);
+    visitAttributes(p->u.processx_.attributes_);
     break;
   case is_Processy:
     /* Code for Processy Goes Here */
     visitSymvalu(p->u.processy_.symvalu_);
-    visitListArgument(p->u.processy_.listargument_);
+    visitAttributes(p->u.processy_.attributes_);
     break;
 
   default:
     fprintf(stderr, "Error: bad kind field when printing Proc!\n");
     exit(1);
+  }
+}
+
+void visitAttributes(Attributes p)
+{
+  switch(p->kind)
+  {
+  case is_Attribe:
+    /* Code for Attribe Goes Here */
+    visitListAttr(p->u.attribe_.listattr_);
+    break;
+  case is_Attribs:
+    /* Code for Attribs Goes Here */
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Attributes!\n");
+    exit(1);
+  }
+}
+
+void visitAttr(Attr p)
+{
+  switch(p->kind)
+  {
+  case is_Attrs:
+    /* Code for Attrs Goes Here */
+    visitSymval(p->u.attrs_.symval_);
+    visitStringval(p->u.attrs_.stringval_);
+    break;
+  case is_Attrn:
+    /* Code for Attrn Goes Here */
+    visitSymval(p->u.attrn_.symval_);
+    visitNumval(p->u.attrn_.numval_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Attr!\n");
+    exit(1);
+  }
+}
+
+void visitListAttr(ListAttr listattr)
+{
+  while(listattr  != 0)
+  {
+    /* Code For ListAttr Goes Here */
+    visitAttr(listattr->attr_);
+    listattr = listattr->listattr_;
   }
 }
 

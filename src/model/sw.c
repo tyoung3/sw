@@ -1096,6 +1096,54 @@ visitListStm (ListStm liststm)
     }
 }
 
+void visitAttr(Attr p)
+{
+  switch(p->kind)
+  {
+  case is_Attrs:
+    /* Code for Attrs Goes Here */
+    visitSymval(p->u.attrs_.symval_);
+    visitStringval(p->u.attrs_.stringval_);
+    break;
+  case is_Attrn:
+    /* Code for Attrn Goes Here */
+    visitSymval(p->u.attrn_.symval_);
+    visitNumval(p->u.attrn_.numval_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Attr!\n");
+    exit(1);
+  }
+}
+
+void visitListAttr(ListAttr listattr)
+{
+  while(listattr  != 0)
+  {
+    /* Code For ListAttr Goes Here */
+    visitAttr(listattr->attr_);
+    listattr = listattr->listattr_;
+  }
+}
+
+void visitAttributes(Attributes p)
+{
+  switch(p->kind)
+  {
+  case is_Attribe:
+    /* Code for Attribe Goes Here */
+    visitListAttr(p->u.attribe_.listattr_);
+    break;
+  case is_Attribs:
+    /* Code for Attribs Goes Here */
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing Attributes!\n");
+    exit(1);
+  }
+}
 
 /** Get process */
 Process
@@ -1113,12 +1161,12 @@ visitProc (Proc _p_)
 				   (_p_->u.processx_.listargument_),
 				   visitSymvalu (_p_->u.processx_.symvalu_)));
 
-    case is_Processy:
+    case is_Processy:           
       return MakeProcess (net_model,
 			  visitSymvalu (_p_->u.processy_.symvalu_),
 			  NULL,
-			  MakeArg (visitListArgument
-				   (_p_->u.processy_.listargument_), NULL));
+			  MakeArg ( NULL, NULL));
+			  //MakeArg ( visitAttributes(_p_->u.processy_.attributes_), NULL));
     default:
       badkind (Proc);
     }

@@ -530,7 +530,7 @@ Symvalu make_Symvaluu()
     tmp->kind = is_Symvaluu;
     return tmp;
 }/********************   Processx    ********************/
-Proc make_Processx(Symvalu p1, Comp p2, ListArgument p3)
+Proc make_Processx(Symvalu p1, Comp p2, ListArgument p3, Attributes p4)
 {
     Proc tmp = (Proc) malloc(sizeof(*tmp));
     if (!tmp)
@@ -542,10 +542,11 @@ Proc make_Processx(Symvalu p1, Comp p2, ListArgument p3)
     tmp->u.processx_.symvalu_ = p1;
     tmp->u.processx_.comp_ = p2;
     tmp->u.processx_.listargument_ = p3;
+    tmp->u.processx_.attributes_ = p4;
     return tmp;
 }
 /********************   Processy    ********************/
-Proc make_Processy(Symvalu p1, ListArgument p2)
+Proc make_Processy(Symvalu p1, Attributes p2)
 {
     Proc tmp = (Proc) malloc(sizeof(*tmp));
     if (!tmp)
@@ -555,7 +556,70 @@ Proc make_Processy(Symvalu p1, ListArgument p2)
     }
     tmp->kind = is_Processy;
     tmp->u.processy_.symvalu_ = p1;
-    tmp->u.processy_.listargument_ = p2;
+    tmp->u.processy_.attributes_ = p2;
+    return tmp;
+}/********************   Attribe    ********************/
+Attributes make_Attribe(ListAttr p1)
+{
+    Attributes tmp = (Attributes) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Attribe!\n");
+        exit(1);
+    }
+    tmp->kind = is_Attribe;
+    tmp->u.attribe_.listattr_ = p1;
+    return tmp;
+}
+/********************   Attribs    ********************/
+Attributes make_Attribs()
+{
+    Attributes tmp = (Attributes) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Attribs!\n");
+        exit(1);
+    }
+    tmp->kind = is_Attribs;
+    return tmp;
+}/********************   Attrs    ********************/
+Attr make_Attrs(Symval p1, Stringval p2)
+{
+    Attr tmp = (Attr) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Attrs!\n");
+        exit(1);
+    }
+    tmp->kind = is_Attrs;
+    tmp->u.attrs_.symval_ = p1;
+    tmp->u.attrs_.stringval_ = p2;
+    return tmp;
+}
+/********************   Attrn    ********************/
+Attr make_Attrn(Symval p1, Numval p2)
+{
+    Attr tmp = (Attr) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Attrn!\n");
+        exit(1);
+    }
+    tmp->kind = is_Attrn;
+    tmp->u.attrn_.symval_ = p1;
+    tmp->u.attrn_.numval_ = p2;
+    return tmp;
+}/********************   ListAttr    ********************/
+ListAttr make_ListAttr(Attr p1, ListAttr p2)
+{
+    ListAttr tmp = (ListAttr) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating ListAttr!\n");
+        exit(1);
+    }
+    tmp->attr_ = p1;
+    tmp->listattr_ = p2;
     return tmp;
 }/********************   Portx    ********************/
 Prt make_Portx(Numval p1)

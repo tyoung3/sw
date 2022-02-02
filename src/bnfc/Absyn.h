@@ -25,6 +25,8 @@ struct ListStm_;
 typedef struct ListStm_ *ListStm;
 struct ListSubnet_;
 typedef struct ListSubnet_ *ListSubnet;
+struct ListAttr_;
+typedef struct ListAttr_ *ListAttr;
 struct ListArgument_;
 typedef struct ListArgument_ *ListArgument;
 struct ListCentry_;
@@ -63,6 +65,10 @@ struct Symvalu_;
 typedef struct Symvalu_ *Symvalu;
 struct Proc_;
 typedef struct Proc_ *Proc;
+struct Attributes_;
+typedef struct Attributes_ *Attributes;
+struct Attr_;
+typedef struct Attr_ *Attr;
 struct Prt_;
 typedef struct Prt_ *Prt;
 struct Comp_;
@@ -344,14 +350,48 @@ struct Proc_
   enum { is_Processx, is_Processy } kind;
   union
   {
-    struct { Comp comp_; ListArgument listargument_; Symvalu symvalu_; } processx_;
-    struct { ListArgument listargument_; Symvalu symvalu_; } processy_;
+    struct { Attributes attributes_; Comp comp_; ListArgument listargument_; Symvalu symvalu_; } processx_;
+    struct { Attributes attributes_; Symvalu symvalu_; } processy_;
   } u;
 };
 
-Proc make_Processx(Symvalu p0, Comp p1, ListArgument p2);
-Proc make_Processy(Symvalu p0, ListArgument p1);
+Proc make_Processx(Symvalu p0, Comp p1, ListArgument p2, Attributes p3);
+Proc make_Processy(Symvalu p0, Attributes p1);
 
+struct Attributes_
+{
+
+  enum { is_Attribe, is_Attribs } kind;
+  union
+  {
+    struct { ListAttr listattr_; } attribe_;
+  } u;
+};
+
+Attributes make_Attribe(ListAttr p0);
+Attributes make_Attribs(void);
+
+struct Attr_
+{
+
+  enum { is_Attrs, is_Attrn } kind;
+  union
+  {
+    struct { Stringval stringval_; Symval symval_; } attrs_;
+    struct { Numval numval_; Symval symval_; } attrn_;
+  } u;
+};
+
+Attr make_Attrs(Symval p0, Stringval p1);
+Attr make_Attrn(Symval p0, Numval p1);
+
+struct ListAttr_
+{
+  Attr attr_;
+  ListAttr listattr_;
+};
+
+ListAttr make_ListAttr(Attr p1, ListAttr p2);
 struct Prt_
 {
 

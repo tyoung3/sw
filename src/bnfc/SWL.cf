@@ -67,17 +67,24 @@ Hermty.			Hermt		::=   Symvalu  [Argument]       ;
 Symvaluv.		Symvalu 	::= Symval			;
 Symvaluu.		Symvalu		::= "_"				; 
 
-Processx.		Proc		::= "(" Symvalu  Comp [Argument] ")" 	;
-Processy.		Proc		::= "(" Symvalu  [Argument] ")" 	;
+Processx.		Proc		::= "(" Symvalu  Comp [Argument] Attributes ")" 	;
+Processy.		Proc		::= "(" Symvalu                  Attributes ")" 	;
 
-Portx.			Prt		::= Numval		;
-Portni.         	Prt     	::= Numval "." Symval	; 
-Portin.         	Prt     	::= Symval "." Numval	; 
-Portn.          	Prt     	::= Symval		; 
-Porte.			Prt		::= ;		
+Attribe.        Attributes  ::=  "ATTRIBUTES"  "{" [Attr] "}"  ;
+Attribs.        Attributes  ::=  "";  
+
+Attrs.          Attr        ::=  Symval "=" Stringval   ;
+Attrn.          Attr        ::=  Symval "=" Numval      ;
+separator      Attr        "," ;
+
+Portx.			Prt		    ::= Numval		        ;
+Portni.         Prt     	::= Numval "." Symval	; 
+Portin.         Prt     	::= Symval "." Numval	; 
+Portn.          Prt     	::= Symval		        ; 
+Porte.			Prt		    ::= ;		
 
 Compx.			Comp		::= Symval		;	
-Compn.		    	Comp		::= SubId		;
+Compn.		    Comp		::= SubId		;
 Compz.			Comp		::= ModPath Symval	;
 Compa.			Comp		::= RemPath 		;
 
@@ -89,7 +96,7 @@ Modps.			ModPath		::= Stringvar "/"	;
 RemPatha.		RemPath 	::= ValidImport "." Symval 	;
 
 Argumentx.		Argument 	::= Stringval		;	
-separator	    	Argument   ""; 	
+separator	    Argument   ""; 	
 
 NumAssgnv.		Numassgn   	::= Numvar "=" Numval	;
 

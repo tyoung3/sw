@@ -13,6 +13,11 @@ OBJS = Absyn.o Lexer.o Parser.o Printer.o
 
 all : TestSWL 
 
+install: all /usr/local/bin/TestSWL
+
+/usr/local/bin/TestSWL:  TestSWL
+	cp TestSWL /usr/local/bin/
+
 doc: ../../docs/SWL.pdf
 
 ../../docs/SWL.pdf: SWL.tex
