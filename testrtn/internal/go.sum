@@ -18,8 +18,8 @@ github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeV
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/tyoung3/sw v0.18.6-0.20211219183519-758f4c9470a1 h1:grksRAZmBrI6gPyLe/EDsV+uZudVTnyFifhxHtpVu6g=
-github.com/tyoung3/sw v0.18.6-0.20211219183519-758f4c9470a1/go.mod h1:Q32Oc6K1GR3m4CHN37PhicUJhQ3zBO1GNtNL4AOyWvY=
+github.com/tyoung3/sw v0.20.0 h1:uz8fzOpCT45IpqcKXaio/OD9Ys5rQmQzKt+dyneh2Bg=
+github.com/tyoung3/sw v0.20.0/go.mod h1:ffaskp2rymWJiXLtVN8fDDs9ymIX31g88hERXwIv6Io=
 github.com/urfave/cli v1.22.5 h1:lNq9sAHXK2qfdI8W+GRItjCEkI+2oR4d+MEHy1CKXoU=
 github.com/urfave/cli v1.22.5/go.mod h1:Gos4lmkARVdJ6EkW0WaNv/tZAAMe9V7XWyB60NtXRu0=
 github.com/zpatrick/go-config v0.0.0-20191118215128-80ba6b3e54f6 h1:HFQk3tyNnBlQqtegStEollSNqPhuYQOczMhdCb02giw=
