@@ -272,6 +272,10 @@ Foo Bar-7
   
 ### 0.20.1
   * Fix swgraph file search    
+  
+### 0.20.6
+  * Incorporate component attributes in SWL for future graphing enhancements.
+  * Fix fan logic when connection is missing. 
     
 ## StreamWork Language(SWL or SWIRL) Notes
 
