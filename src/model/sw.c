@@ -1966,14 +1966,18 @@ fixFan (Model m, Process p)
 	  pt->id = fixId (pt->id);
 	  if (pt->id == id)
 	    {
-	      if (pt0->stream->sink == p && pt->stream->sink == p)
+	      if (pt0->stream->sink == p 
+	        && (pt->stream != NULL) 
+	        &&  pt->stream->sink == p)
 		{
 		  fixFan2 (m, p, pt0, pt);
 		  pt = p->port;	/* Go back to first port */
 		}
 	      else
 		{
-		  if (pt0->stream->source == p && pt->stream->source == p)
+		  if (pt0->stream->source == p 
+		     && (pt->stream != NULL)
+		     && pt->stream->source == p)
 		    {
 		      fixFanOut (m, p, pt0, pt);
 		      pt = p->port;	/* Go back to first port */
