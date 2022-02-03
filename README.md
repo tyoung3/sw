@@ -116,12 +116,13 @@ A stream definition looks something like:
 ```
 and consists of:
 
-  * processname, optional component identifier, and optional arguments in parens, 
+  * processname, optional component identifier, optional arguments in parens, and 
+    optional process attributes,
   * portnumber (defaults to 0), 
   * a stream director:  right arrow("->") or left arrow("<-), 
   * portnumber, 
-  * and another processname and component identifier, and optional arguments  in parens 
-  * a statement terminator(';'). 
+  * another processname, component identifier, etc. in parens,  
+  * and a statement terminator(';'). 
 
 The stream director(director) points from the source process to the sink process.  A director may 
 include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B 2>".  If not included, buffer size defaults to zero.
@@ -139,9 +140,9 @@ produces:
 Hello World
 ```
 
-A process is defined by its process name, its component identifier,
-and component arguments; all surrounded by parens. 
-The component identifier and arguments will default if omitted. 
+A process is defined by its process name, its component identifier, component arguments,
+and process attributes; all surrounded by parens.   
+The component identifier, arguments, and attributes will default if omitted. 
 Process names are not apparent to Go and so need not follow Go naming 
 rules, just the StreamWork conventions. 
 
@@ -276,13 +277,13 @@ Foo Bar-7
 
 SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
-You can find the StreamWork language description at .../docs/SWL.pdf. 
+See the bnf StreamWork language description file, SWL.pdf. 
 
-SWL has just two reserved words(INCLUDE and PREFIX) making it somewhat natural language
+SWL has few reserved words,  making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
 will be made to ensure that all currently valid SWL statements will remain valid.  Should 
 this prove impossible,  the minor version will be incremented, i.e. to v0.16.0 or greater.
-Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for netword definition files, **_sw_**, and published Go modules only.  
+Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for network definition files, **_sw_**, and published Go modules only.  
 Linux scripts and Go modules, are separately versioned.   
 
 #### Semi-colon comments
