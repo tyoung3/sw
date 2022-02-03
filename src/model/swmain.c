@@ -34,7 +34,7 @@ char *FixVersion()
 {
 	char bfr[100];
 
-	sprintf(bfr, "%d.%d.%d-edit", MAJOR, MINOR, SLEVEL);
+	sprintf(bfr, "%d.%d.%d", MAJOR, MINOR, SLEVEL);
 	version = strdup(bfr);
 }
 
