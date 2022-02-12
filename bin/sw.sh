@@ -1,6 +1,7 @@
 #!/bin/bash 
 
 # sw/bin/sw.sh
+# Lorca/pipes:  https://github.com/zserge/lorca/issues/43
 
 version="0.19.1"
 sw=/usr/local/bin/sw
@@ -183,8 +184,9 @@ case $1 in
 	rc) RunCollate;;
 	rl) ../bin/swlocusts r ;;
 	rm) pushd ../
-	    pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
+	    #pandoc -r gfm SECURITY.md > /tmp/SW_SECURITY.html;$BROWSER /tmp/SW_SECURITY.html &
 	    pandoc -r gfm README.md > /tmp/SW_README.html;$BROWSER /tmp/SW_README.html &
+	    $BROWSER https://sw.twyoung.com 
 	   ;;
 	s) shift; Shell $*;;
 	v|version) echo sw.sh-v$version;;

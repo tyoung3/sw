@@ -90,6 +90,7 @@ See package documention for component return codes.
 ## **_TestSWL_** program 
 **_TestSWL_** syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
 ### synopsis
+
 ```usage: Call with one of the following argument combinations:
 	--help		Display this help message.
 	(no arguments)	Parse stdin verbosely.
@@ -109,11 +110,13 @@ INCLUDE statements.  Exceeding 100 levels of includes will
 cause program termination.
 
 A stream definition looks something like:
+
 ```
 (a C "ARG..." ) -ipType> (b D);
     or [reversing direction and using default component names]
 (E)IN <- OUT.1(F)0 <- (G); 
 ```
+
 and consists of:
 
   * processname, optional component identifier, optional arguments in parens, and 
@@ -127,15 +130,19 @@ and consists of:
 The stream director(director) points from the source process to the sink process.  A director may 
 include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B 2>".  If not included, buffer size defaults to zero.
 Example with anonymous processes:
+
 ```
   (_) -int 3> (_); [integer stream with buffersize of three] 
 ```
 
 In this example, the default components [as specified in a config file, send their process names to the channel or to stdout: 
+
 ```
     (Hello) <- (World); 
 ```
+
 produces:
+
 ```
 Hello World
 ```
@@ -156,7 +163,7 @@ Subnet components are identified by ```'``` prefixing its identifier, as in
  
 Stream directors consist of ```<```, an optional, comma-separated list of type identifiers,
 an optional buffersize integer, and ```-```. Example: ```<100-```
-The reverse (Ex: ```-myDataType,yourType 100>```) is also valid.
+The reverse (Ex: `-myDataType,yourType 100>`) is also valid.
  
 Information packets(IPs) are designed as nil(empty) interfaces.  The
 data type is determined by the sending component.  It is possible for 
@@ -308,6 +315,7 @@ usage in the Go language.  The ```->``` token is also available:
 ---------------------
 
 Run the following (in Linux):
+
 ```
 	mkdir /tmp/collate
 	sw <  sw/nds/collate.sw   > /tmp/collate.go
@@ -344,18 +352,22 @@ WORLD HELLO-7
 ```	  
 	sw -m 3 <  sw/nds/collate.sw | dot -Tsvg > /tmp/collate.svg
 ```
+
 produces /tmp/collate.svg, an image of the collate 
 network definition.  
 
 ## Bash Scripts
 ### **_swgo_** script
 The bash script, **_swgo_**, will generate and run a GO program from a network definition:
+
 ```
   .../nds/hw.sw
 (Hello) <string- (World);
 ```
+
 **_swgo_** .../nds/hw
 produces:
+
 ```
 
 package main
@@ -408,6 +420,7 @@ Another bash script, **_swgraph_**, will display a graphic image of a network de
 (v)2            -event>          (c Control); 
 (c)1            -request>       (m);
 ```
+
 `**_swgraph_** .../nds/mvc`
 produces: 
 
@@ -428,10 +441,13 @@ from a StreamWork net definition file.
 
 #### gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)
 
-`gofbp -b loadbal`
+```gofbp -b loadbal```
+
 <p>produces </p>
-[gofbp loadbalance image](http://sw.twyoung.com/images/loadbal.jpg)
+
+![a graphic image of loadbal.sw](docs/images/loadbal.jpg)
 and
+
 ```
 Input to Receiver: Receiver1 > IP - # 1
 Input to Receiver: Receiver1 > IP - # 4
@@ -444,7 +460,9 @@ Input to DelayedReceiver: Receiver0 > IP - # 2
 Input to DelayedReceiver: Receiver0 > IP - # 5
 Input to DelayedReceiver: Receiver0 > IP - # 9
 ```
+
 #### LOADBAL.SW
+
 ```
 $core = "github.com/jpaulm/gofbp/core";
 $trtn = "github.com/jpaulm/gofbp/components/testrtn";
@@ -458,6 +476,7 @@ $trtn = "github.com/jpaulm/gofbp/components/testrtn";
 Try: **_swproject_** nds/postage
 
 #### **_sw.sh_** Synopsis
+
 ```
 sw.sh-1.0.1 USAGE: 
 		b|build		. Build project with Autotools.
@@ -479,7 +498,6 @@ sw.sh-1.0.1 USAGE:
 		x		. Edit this script
 		--help	. Display this help
 ```		
-
 
 BUGS:
 -----
