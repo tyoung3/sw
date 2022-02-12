@@ -14,6 +14,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
+All files in this repo are included in this license.
+
 SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ - STREAMWORK
 ======================
 
@@ -245,45 +247,6 @@ Foo Bar-7
   * bin/sw.sh c;      # Runs make check in .../sw/src
   * bin/sw.sh bw;     # Builds Windows/sw.exe.  Requires mingw.  Run make distclean first.
 
-## Release Notes
-
-### 0.18.0
-  * Reorganized repo tree structure 
-  * Renamed package swbase to sw and moved code to repo root
-  * Changed package swutility to import package sw
-  
-### 0.18.4
-  * Fixes for restructure problems
-  * Fixes to bash scripts 
-  * Fixes to githup builds   
-  
-### 0.18.5
-  * More fixes
-  * Moved .../sw/c to .../sw/src
-  
-### 0.18.6
-  * Created gofbp script  
-  * Added sw/testrtn package
-  
-### 0.18.7
-  * Moved build process to project tree root
-  
-### 0.18.8
-  * Fixed count in swbal.sw
-  
-### 0.18.9
-  * Fix testrtn/Sender
-  
-### 0.19.0 
-  * Many fixes to **_swproject_** script     
-  
-### 0.20.1
-  * Fix swgraph file search    
-  
-### 0.20.6
-  * Incorporate component attributes in SWL for future graphing enhancements.
-  * Fix fan logic when connection is missing. 
-    
 ## StreamWork Language(SWL or SWIRL) Notes
 
 SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
@@ -436,17 +399,27 @@ The resulting image is an annotated Data Flow Diagram.
 
 ### **_gofbp_ script** 
 **_gofbp_** produces and runs a gofbp program 
-[github.com/jpaulm/gofbp](https://github.com/jpaulm/gofbp)  
+(see [github.com/jpaulm/gofbp](https://github.com/jpaulm/gofbp)  )
 from a StreamWork net definition file.
 
 #### gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)
 
-```gofbp -b loadbal```
+##### Given: LOADBAL.SW
 
+```
+$core = "github.com/jpaulm/gofbp/core";
+$trtn = "github.com/jpaulm/gofbp/components/testrtn";
+(Sender $trtn/Sender "10 COUNT=10")OUT	-load> IN.0(LoadBalance $trtn/LoadBalance );
+(LoadBalance)OUT.1 -load> IN(Receiver0 $trtn/DelayedReceiver);
+(LoadBalance)OUT.2 -load> IN(Receiver1 $trtn/Receiver);
+(LoadBalance)OUT.3 -load> IN(Receiver2 $trtn/Receiver);
+```
+
+`gofbp -b loadbal`
 <p>produces </p>
 
-![a graphic image of loadbal.sw](docs/images/loadbal.jpg)
-and
+![a graphic image of loadbal.sw](docs/images/loadbal.svg)
+and (on console)
 
 ```
 Input to Receiver: Receiver1 > IP - # 1
@@ -459,17 +432,6 @@ Input to Receiver: Receiver2 > IP - # 7
 Input to DelayedReceiver: Receiver0 > IP - # 2
 Input to DelayedReceiver: Receiver0 > IP - # 5
 Input to DelayedReceiver: Receiver0 > IP - # 9
-```
-
-#### LOADBAL.SW
-
-```
-$core = "github.com/jpaulm/gofbp/core";
-$trtn = "github.com/jpaulm/gofbp/components/testrtn";
-(Sender $trtn/Sender "10 COUNT=10")OUT	-load> IN.0(LoadBalance $trtn/LoadBalance );
-(LoadBalance)OUT.1 -load> IN(Receiver0 $trtn/DelayedReceiver);
-(LoadBalance)OUT.2 -load> IN(Receiver1 $trtn/Receiver);
-(LoadBalance)OUT.3 -load> IN(Receiver2 $trtn/Receiver);
 ```
 
 ### Generate a project
@@ -508,9 +470,47 @@ Home Page
 ---------
 
 (https://sw.twyoung.com)
+## Release Notes
 
-Author
-------
+### 0.18.0
+  * Reorganized repo tree structure 
+  * Renamed package swbase to sw and moved code to repo root
+  * Changed package swutility to import package sw
+  
+### 0.18.4
+  * Fixes for restructure problems
+  * Fixes to bash scripts 
+  * Fixes to githup builds   
+  
+### 0.18.5
+  * More fixes
+  * Moved .../sw/c to .../sw/src
+  
+### 0.18.6
+  * Created gofbp script  
+  * Added sw/testrtn package
+  
+### 0.18.7
+  * Moved build process to project tree root
+  
+### 0.18.8
+  * Fixed count in swbal.sw
+  
+### 0.18.9
+  * Fix testrtn/Sender
+  
+### 0.19.0 
+  * Many fixes to **_swproject_** script     
+  
+### 0.20.1
+  * Fix swgraph file search    
+  
+### 0.20.6
+  * Incorporate component attributes in SWL for future graphing enhancements.
+  * Fix fan logic when connection is missing. 
+    
+
+## Author
 
     Tom Young, streamwork@twyoung.com
     
