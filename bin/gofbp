@@ -2,42 +2,100 @@
 
 # SWGO  script.   Create and run a StreamWork .SW program.
 
-version="0.19.0"
+Copyright() { 
+    cat << EOF
+Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file or its derivitaves except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+EOF
+}
+
+version="0.19.4"
 
 Die () {
 	echo "swgo/DIE: $*"
 	exit 1
 }
 
-swdir=$HOME/mygo/sw/bin
-[ -e $swdir/sw ] || swdir=/usr/local/bin
-SW=$swdir/sw
-[ -e $SW     ] || Die SW $SW is missing 
+SW=/usr/local/bin/sw
+[ -e $SW ] || SW=$HOME/.sw/bin/sw
+[ -e $SW ] || SW=/usr/local/src/sw/bin/sw   \
+    || Die SW $SW is missing 
 
 GenRun() {
-	file=$1
+  tmp=/dev/shm
+  [ -d $tmp ] || tmp=$TEMP
+  [ -d $tmp ] || tmp=/tmp
+  mkdir $tmp/gofbp$$ >/dev/null && tmp=$tmp/gofbp$$
+
+  for file in $*; do 
 	base=`basename $file`
-	swfile=${file}
-	if [ -f $swfile ]; then
-		mkdir /tmp/sw$$ >/dev/null
-		$SW -m 8 $swfile  2> /dev/null > /tmp/sw$$/$base.go
-		cd /tmp/sw$$ >/dev/null || Die cannot make /tmp/sw$$ 
+	swfile=$base
+	[ -f $swfile ] || swfile=${base}.sw
+	swfile=`pwd`/$swfile
+	if [ -f $swfile ]; then 
+            pushd $tmp >/dev/null || Die cannot pushd $tmp
+		    $SW -m 8 $swfile  2> $tmp/$base.err 1> $tmp/$base.go
 			go mod init main &> /dev/null
 			echo "require github.com/jpaulm/gofbp v1.0.1" >> go.mod
 			go mod tidy >/dev/null 
-			go run /tmp/sw$$/$base.go
-		 	
+			( go run $tmp/$base.go || (cat $tmp/$base.err) ) &
+		    popd	
 	else 
 		echo $swfile missing
 	fi
+  done	
+  
 }
 
+Graph() {
+  for file in $*; do 
+	base=`basename $file`
+	swfile=$base
+	[ -f $swfile ] || swfile=${base}.sw
+	swfile=`pwd`/$swfile
+	if [ -f $swfile ]; then 
+	    swgraph $swfile &
+	else
+	    echo ERROR/gofbp/Graph:  $file is missing    
+	fi   
+  done	 
+}
 
 case $1 in 
 	-v)echo gofbp-v$version;;
-	-g)shift
-	  swgraph $* &
-	  GenRun $*
+	-b)shift
+	   Graph $* 
+	   GenRun $*
 	  ;;
+	-g)shift;Graph $* 
+	   ;; 
+	--help|?)cat <<- EOF
+	
+	$0-v$version Usage: 
+	    -g) [ND...] . Browse graph of the network definition(s)
+	    -b) [ND...] . Browse graph(s) and run program(s)
+	    -v)         . Display version
+	    ?|--help)   . Show this usage
+	    [ND...]     . Build and run program(s) 
+	     
+	    Note: If .sw suffix is missing from ND, .sw will be appended.
+	
+EOF
+    ;;	   
 	 *)GenRun $*;; 
 esac	
+
+
+
+// ?? Does not fix message, as suggested. Just gets another msg. BROWSER="$BROWSER --disable-gpu --disable-software-rasterizer"
