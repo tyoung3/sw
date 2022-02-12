@@ -408,7 +408,7 @@ Another bash script, **_swgraph_**, will display a graphic image of a network de
 (v)2            -event>          (c Control); 
 (c)1            -request>       (m);
 ```
-**_swgraph_** .../nds/mvc
+`**_swgraph_** .../nds/mvc`
 produces: 
 
 ![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
@@ -422,15 +422,17 @@ are not guaranteed to remain unchanged in future sw versions.
 The resulting image is an annotated Data Flow Diagram.
 
 ### **_gofbp_ script** 
-**_gofbp_** produces and runs a gofbp program (see github.com/jpaulm/gofbp)  from a StreamWork net definition file.
+**_gofbp_** produces and runs a gofbp program 
+[github.com/jpaulm/gofbp](https://github.com/jpaulm/gofbp)  
+from a StreamWork net definition file.
 
 #### gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)
 
 `gofbp -b loadbal`
-<p>produces </>
-![gofbp loadbalance image](http://sw.twyoung.com/images/loadbal.jpg)
+<p>produces </p>
+[gofbp loadbalance image](http://sw.twyoung.com/images/loadbal.jpg)
 and
-`
+```
 Input to Receiver: Receiver1 > IP - # 1
 Input to Receiver: Receiver1 > IP - # 4
 Input to Receiver: Receiver1 > IP - # 6
@@ -441,7 +443,7 @@ Input to Receiver: Receiver2 > IP - # 7
 Input to DelayedReceiver: Receiver0 > IP - # 2
 Input to DelayedReceiver: Receiver0 > IP - # 5
 Input to DelayedReceiver: Receiver0 > IP - # 9
-`
+```
 #### LOADBAL.SW
 ```
 $core = "github.com/jpaulm/gofbp/core";

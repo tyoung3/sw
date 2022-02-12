@@ -422,15 +422,17 @@ are not guaranteed to remain unchanged in future sw versions.
 The resulting image is an annotated Data Flow Diagram.
 
 ### **_gofbp_ script** 
-**_gofbp_** produces and runs a gofbp program (see github.com/jpaulm/gofbp)  from a StreamWork net definition file.
+**_gofbp_** produces and runs a gofbp program 
+[github.com/jpaulm/gofbp](https://github.com/jpaulm/gofbp)  
+from a StreamWork net definition file.
 
 #### gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)
 
 `gofbp -b loadbal`
-<p>produces </>
-![gofbp loadbalance image](http://sw.twyoung.com/images/loadbal.jpg)
+<p>produces </p>
+[gofbp loadbalance image](http://sw.twyoung.com/images/loadbal.jpg)
 and
-`
+```
 Input to Receiver: Receiver1 > IP - # 1
 Input to Receiver: Receiver1 > IP - # 4
 Input to Receiver: Receiver1 > IP - # 6
@@ -441,7 +443,7 @@ Input to Receiver: Receiver2 > IP - # 7
 Input to DelayedReceiver: Receiver0 > IP - # 2
 Input to DelayedReceiver: Receiver0 > IP - # 5
 Input to DelayedReceiver: Receiver0 > IP - # 9
-`
+```
 #### LOADBAL.SW
 ```
 $core = "github.com/jpaulm/gofbp/core";
