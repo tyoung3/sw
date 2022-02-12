@@ -16,7 +16,7 @@ limitations under the License.
 
 All files in this repo are included in this license.
 
-SW-0.20.6 - STREAMWORK
+SW-0.20.7 - STREAMWORK
 ======================
 
 StreamWork
@@ -209,10 +209,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   
 ### Installation   
   * cd to any convenient workspace (/usr/src for example).
-  * Download the latest sw-0.20.6.tar.gz file 
+  * Download the latest sw-0.20.7.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-0.20.6.tar.gz' to extract source files
-  * cd  sw-0.20.6
+  * Run 'tar -xzf .../sw-0.20.7.tar.gz' to extract source files
+  * cd  sw-0.20.7
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -435,7 +435,7 @@ Input to DelayedReceiver: Receiver0 > IP - # 9
 ```
 
 ### Generate a project
-Try: **_swproject_** nds/postage
+Try: `**_swproject_** nds/postage`
 
 #### **_sw.sh_** Synopsis
 
@@ -509,7 +509,10 @@ Home Page
   * Incorporate component attributes in SWL for future graphing enhancements.
   * Fix fan logic when connection is missing. 
     
-
+### 0.20.7
+  * Improve gofbp script
+  * Update README
+  
 ## Author
 
     Tom Young, streamwork@twyoung.com

@@ -435,7 +435,7 @@ Input to DelayedReceiver: Receiver0 > IP - # 9
 ```
 
 ### Generate a project
-Try: **_swproject_** nds/postage
+Try: `**_swproject_** nds/postage`
 
 #### **_sw.sh_** Synopsis
 
@@ -509,7 +509,10 @@ Home Page
   * Incorporate component attributes in SWL for future graphing enhancements.
   * Fix fan logic when connection is missing. 
     
-
+### 0.20.7
+  * Improve gofbp script
+  * Update README
+  
 ## Author
 
     Tom Young, streamwork@twyoung.com
