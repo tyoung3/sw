@@ -141,10 +141,11 @@ Browse () {
 
 ## @Shell   Enters a bash subshell 
 Shell() {
-	export PATH=`pwd`/bin:$PATH
 	pushd ../
-	echo Entering StreamWork shell  PS1=$PS1
 	exec bash --rcfile .bashrc  
+	echo Entering StreamWork shell  PS1=$PS1
+	[ -z $1 ] || pushd ../$1 && bash
+	export PATH=`pwd`/bin:$PATH
 }
 
 case $1 in	

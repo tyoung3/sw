@@ -435,7 +435,7 @@ Input to DelayedReceiver: Receiver0 > IP - # 9
 ```
 
 ### Generate a project
-Try: `**_swproject_** nds/postage`
+Try: **_swproject_** nds/postage
 
 #### **_sw.sh_** Synopsis
 
@@ -519,5 +519,5 @@ Home Page
     
     with thanks to J. Paul Morrison, Phillip W. Young, Sam Watkins, 
     the contributors to flow-based-programming@googlegroups.com, 
-    and to the developers of Linux/Ubuntu, gcc, 
-    BNFC, Go, git, and Github. 
+    and to the developers/maintainers of Go, gcc, Linux/Ubuntu, 
+    BNFC, git, GraphViz,  and Github. 
