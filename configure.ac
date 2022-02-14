@@ -7,7 +7,7 @@ dnl Process this file with autoconf
 AC_INIT([sw], [0.20.7], [sw@twyoung.com])  # VERSION for releasing, not in sw
 AC_SUBST(SW_MAJOR, ["0"])
 AC_SUBST(SW_MINOR, ["20"])
-AC_SUBST(SW_LEVEL, ["7"])     # Patch level 
+AC_SUBST(SW_LEVEL, ["8"])     # Patch level 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])

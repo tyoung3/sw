@@ -2399,7 +2399,7 @@ SW_MAJOR="0"
 
 SW_MINOR="20"
 
-SW_LEVEL="7"
+SW_LEVEL="8"
      # Patch level
 ac_aux_dir=
 for ac_dir in build-aux "$srcdir"/build-aux; do

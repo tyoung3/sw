@@ -512,7 +512,10 @@ Home Page
 ### 0.20.7
   * Improve gofbp script
   * Update README
-  
+
+### 0.20.8 
+  * Created fileio package with GetFile and PutFile and FileT 
+    
 ## Author
 
     Tom Young, streamwork@twyoung.com
