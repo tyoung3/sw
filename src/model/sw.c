@@ -203,6 +203,56 @@ MakeArg (ListArgument la, char *name)
   return arg;
 }
 
+/** Numeric variable */
+Numvar
+visitNumvar (Numvar p)
+{
+  return p;
+}
+
+/** Get Numeric value */
+Integer
+visitNumval (Numval _p_)
+{
+  switch (_p_->kind)
+    {
+    case is_NumVali:
+      return (visitInteger (_p_->u.numvali_.integer_));
+    case is_NumValv:
+      visitNumvar (_p_->u.numvalv_.numvar_);
+      return 0;
+    default:
+      badkind (Numval);
+    }
+}
+
+Attribute MakeAttr(ListAttr la) {
+    Attribute attr, lattr;
+    ListAttr  la2 = la;
+    
+    if ( !la2) return NULL;
+    lattr=NULL;
+    
+  while (la2)
+    {
+      attr=(Attribute) malloc(sizeof(Attribute_));
+      switch (la2->attr_->kind) {
+      case is_Attrs:
+          attr->val.s   = visitStringval(la2->attr_->u.attrs_.stringval_);
+          attr->key = visitSymval(la2->attr_->u.attrs_.symval_);
+          break;
+      case is_Attrn:
+          attr->key = visitSymval(la2->attr_->u.attrn_.symval_);
+          attr->val.i   = visitNumval(la2->attr_->u.attrn_.numval_);
+      }
+      attr->next=lattr;      
+      la2 = la2->listattr_;
+      lattr=attr;
+    }
+    
+    return attr;
+}
+
 enum PREFIX_MODE
 { SET, GET };
 static char *
@@ -239,11 +289,9 @@ fixName (char *name)
   return strndup (bfr, 100);
 }
 
-static Process
-MakeProcess (Model model, Ident name, Component comp, char **arg)
-{
+static Process MakeProcess (Model model, Ident name, Component comp, 
+    char **arg, Attribute attr )  {
   Process p;
-
 
   // if (name[0] == '_' && name[1] == 0)
   name = fixName (name);
@@ -265,6 +313,7 @@ MakeProcess (Model model, Ident name, Component comp, char **arg)
       p->port = NULL;
       p->kind = type;
       p->depth = 0;
+      p->attr  = attr;
       if (type == IS_NET)
 	{
 	  p->next = model->proc;
@@ -420,13 +469,6 @@ visitSubId (SubId p)
   return p;
 }
 
-/** Numeric variable */
-Numvar
-visitNumvar (Numvar p)
-{
-  return p;
-}
-
 /** String variable */
 String
 visitStringvar (Stringvar p)
@@ -467,22 +509,6 @@ visitStringval (Stringval _p_)
       return (getEnvVar (visitEnvar (_p_->u.stringvale_.envar_)));
     default:
       badkind (Stringval);
-    }
-}
-
-/** Get Numeric value */
-Integer
-visitNumval (Numval _p_)
-{
-  switch (_p_->kind)
-    {
-    case is_NumVali:
-      return (visitInteger (_p_->u.numvali_.integer_));
-    case is_NumValv:
-      visitNumvar (_p_->u.numvalv_.numvar_);
-      return 0;
-    default:
-      badkind (Numval);
     }
 }
 
@@ -924,13 +950,15 @@ visitHermt (Hermt _p_)
 		       name,
 		       visitComp (_p_->u.hermtx_.comp_),
 		       MakeArg (visitListArgument
-				(_p_->u.hermtx_.listargument_), name));
+				(_p_->u.hermtx_.listargument_), name),
+				NULL);
       return p;
     case is_Hermty:
-      return (MakeProcess (net_model,
+      return MakeProcess (net_model,
 			   visitSymvalu (_p_->u.hermty_.symvalu_), NULL,
 			   MakeArg (visitListArgument
-				    (_p_->u.hermty_.listargument_), NULL)));
+				    (_p_->u.hermty_.listargument_),NULL),  
+			   NULL);
     default:
       badkind (Hermt);
     }
@@ -1096,52 +1124,59 @@ visitListStm (ListStm liststm)
     }
 }
 
-void visitAttr(Attr p)
+Attribute makeAttribute() {
+    return (Attribute) malloc (sizeof (Attribute_));
+}
+
+Attribute visitAttr(Attr p)
 {
+  Attribute a; 
+  a=makeAttribute(); 
   switch(p->kind)
   {
   case is_Attrs:
-    /* Code for Attrs Goes Here */
-    visitSymval(p->u.attrs_.symval_);
-    visitStringval(p->u.attrs_.stringval_);
-    break;
+    a->key=visitSymval(p->u.attrs_.symval_);
+    a->val.s=visitStringval(p->u.attrs_.stringval_);
+    return a;
   case is_Attrn:
-    /* Code for Attrn Goes Here */
-    visitSymval(p->u.attrn_.symval_);
-    visitNumval(p->u.attrn_.numval_);
-    break;
-
+    a->key=visitSymval(p->u.attrn_.symval_);
+    a->val.i=visitNumval(p->u.attrn_.numval_);
+    return a;
   default:
     fprintf(stderr, "Error: bad kind field when printing Attr!\n");
     exit(1);
   }
 }
 
-void visitListAttr(ListAttr listattr)
+ListAttr visitListAttr(ListAttr listattr)
 {
+  return listattr;
   while(listattr  != 0)
   {
     /* Code For ListAttr Goes Here */
     visitAttr(listattr->attr_);
     listattr = listattr->listattr_;
+   // return visitAttr(listattr->listattr_);
   }
 }
 
-void visitAttributes(Attributes p)
+#define FailKind(S, K) {          \
+    fprintf(stderr,               \
+        "SW/Error: bad kind field, %d, while visiting %s!\n", \
+        K, #S);                  \
+    exit(1);                      \
+}
+
+ListAttr visitAttributes(Attributes p)
 {
   switch(p->kind)
   {
   case is_Attribe:
-    /* Code for Attribe Goes Here */
-    visitListAttr(p->u.attribe_.listattr_);
-    break;
+    return visitListAttr(p->u.attribe_.listattr_);
   case is_Attribs:
-    /* Code for Attribs Goes Here */
-    break;
-
+    return NULL;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Attributes!\n");
-    exit(1);
+    FailKind(visitAttributes, p->kind);
   }
 }
 
@@ -1158,15 +1193,20 @@ visitProc (Proc _p_)
 			  visitSymvalu (_p_->u.processx_.symvalu_),
 			  visitComp (_p_->u.processx_.comp_),
 			  MakeArg (visitListArgument
-				   (_p_->u.processx_.listargument_),
-				   visitSymvalu (_p_->u.processx_.symvalu_)));
-
+                       (_p_->u.processx_.listargument_),
+                       visitSymvalu (_p_->u.processx_.symvalu_)
+               ),
+			   MakeAttr( 
+			      visitAttributes(_p_->u.processx_.attributes_))
+	   );
     case is_Processy:           
       return MakeProcess (net_model,
 			  visitSymvalu (_p_->u.processy_.symvalu_),
 			  NULL,
-			  MakeArg ( NULL, NULL));
-			  //MakeArg ( visitAttributes(_p_->u.processy_.attributes_), NULL));
+			  MakeArg ( NULL, NULL),
+			  MakeAttr( 
+                visitAttributes(_p_->u.processy_.attributes_))
+      );        
     default:
       badkind (Proc);
     }
@@ -1406,9 +1446,11 @@ Expand2 (Model m, Process p, Stream s)
 
   srcname = makeName (p->name, s->source->name);
   snkname = makeName (p->name, s->sink->name);
-  src = MakeProcess (m, srcname, s->source->comp, MakeArg (NULL, NULL));
+  src = MakeProcess (m, srcname, s->source->comp, 
+    MakeArg (NULL, NULL), NULL);
   src->arg = s->source->arg;
-  snk = MakeProcess (m, snkname, s->sink->comp, MakeArg (NULL, NULL));
+  snk = MakeProcess (m, snkname, s->sink->comp, 
+    MakeArg (NULL, NULL), NULL);
   snk->arg = s->sink->arg;
   psrc = MakePort (s->source_id, s->source->port->name);
   psnk = MakePort (s->sink_id, s->sink->port->name);
@@ -1464,7 +1506,8 @@ findAmatchingPort (Model m, Process p, Extport ep)
       p2 = getProc (srcname);
       if (!p2)
 	{
-	  p2 = MakeProcess (m, srcname, ep->source->comp, ep->source->arg);
+	  p2 = MakeProcess (m, srcname, ep->source->comp, 
+	  ep->source->arg, NULL);
 	}
 
       pt = MakePort (ep->source_id, ep->name);
@@ -1475,7 +1518,8 @@ findAmatchingPort (Model m, Process p, Extport ep)
       p2 = getProc (snkname);
       if (!p2)
 	{
-	  p2 = MakeProcess (m, snkname, ep->sink->comp, ep->sink->arg);
+	  p2 = MakeProcess (m, snkname, ep->sink->comp, 
+	    ep->sink->arg,NULL);
 	}
       pt = MakePort (ep->sink_id, ep->name);
     }
@@ -1529,7 +1573,8 @@ Expand3 (Model m, Process p, Extport ep)
 		  srcname = makeName (p->name, fixName (ep->source->name));
 		  pnew = MakeProcess (m,
 				      srcname, ep->source->comp,
-				      ep->source->arg);
+				      ep->source->arg,
+				      NULL);
 		  s->source = pnew;
 		  if (ep->bufsz > s->bufsz)
 		    s->bufsz = ep->bufsz;
@@ -1571,7 +1616,8 @@ Expand3 (Model m, Process p, Extport ep)
 		  assert (s && pt == s->SinkPort);
 		  snkname = makeName (p->name, fixName (ep->sink->name));
 		  pnew =
-		    MakeProcess (m, snkname, ep->sink->comp, ep->sink->arg);
+		    MakeProcess (m, snkname, ep->sink->comp, 
+		        ep->sink->arg,NULL);
 		  s->sink = pnew;
 		  if (ep->bufsz > s->bufsz)
 		    s->bufsz = ep->bufsz;
@@ -1780,7 +1826,7 @@ fixFan2 (Model m, Process p, Port pt0, Port pt)
    */
 
   c = MakeComponent ("Join", STDPACKAGE);
-  j = MakeProcess (m, "_", c, MakeArg (NULL, NULL));
+  j = MakeProcess (m, "_", c, MakeArg (NULL, NULL), NULL);
   j->depth = p->depth + 1;
 
   pt1 = MakePort (0, "");
@@ -1876,7 +1922,7 @@ fixFanOut (Model m, Process p, Port pt0, Port pt)
      (j)0 <- id(A);  [ s2    ]  */
 
   c = MakeComponent ("Split", STDPACKAGE);
-  j = MakeProcess (m, "_", c, MakeArg (NULL, NULL));
+  j = MakeProcess (m, "_", c, MakeArg (NULL, NULL), NULL);
   j->depth = p->depth + 1;
 
   pt1 = MakePort (1, "");

@@ -1,6 +1,7 @@
 #!/bin/bash 
 
 # SWGRAPH  script.  Generate a jpg image from  a StreamWork .sw file(ND).
+# opts="--disable-gpu --disable-software-rasterizer"
 
 Die () {
 	echo "$0/DIE: $*"
@@ -55,7 +56,7 @@ GenRun() {
 		$SW -m 3 $swfile > /tmp/${base}.dot || Die Cannot build /tmp/${base}.dot file 
 		dot -Tsvg /tmp/${base}.dot > /tmp/${base}.svg || Die Cannot convert /tmp/${base}.dot file to .svg
 		Debug Built /tmp/${base}.dot and /tmp/${base}.svg
-		$BROWSER  /tmp/${base}.svg 2>&1  >/dev/null	&
+		$BROWSER $opts /tmp/${base}.svg 2>&1  >/dev/null	&
 	else 
 		Die $swfile missing
 	fi

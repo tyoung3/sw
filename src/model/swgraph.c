@@ -152,6 +152,7 @@ makeURL (char *comp)
     
 	  // genProc (p->name, p->comp->name, p->comp->path, "taos_", p->arg);
 static void genProc1(Process p,  char *host) {
+  Attribute attr;
   char **args=p->arg;
   char *comp=p->comp->name;
   char *name=p->name;
@@ -160,12 +161,24 @@ static void genProc1(Process p,  char *host) {
   printf ("       \"%s\" ", name);
   printf ("[shape = Mrecord,");
   C (color = "black");
+  
   printf ("fillcolor=%s", fcolors[getPathColor(p->comp->path)]);
+  
+  
   printf ("  URL=\"%s\"\n", makeURL (comp));
   printf (" host=\"%s\" \n", host);
+  
+  
   printf (" tooltip=\"%s.%s ", path, comp);
+  
   genArgs (args);
   printf ("\"\n");
+  
+  attr=p->attr;
+  while(attr != NULL) {
+    printf("       %s=\"%s\",\n", attr->key, attr->val.s );
+    attr = attr->next;
+  }
   
   switch (showcomp)
     {

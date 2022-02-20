@@ -56,10 +56,10 @@ typedef enum {SINK,SOURCE} PortType;
 distinquish component attributes, such as language, development state, module path, etc.*/
 typedef struct Attribute_ {
         String key;
-        union n { 
-            int    nval;
-            String sval; 
-        } n;
+        union val { 
+            int    i;
+            String s; 
+        } val;
         struct Attribute_ *next;  /* Next attribute in process */
 } Attribute_;
 typedef struct Attribute_ *Attribute;
@@ -87,6 +87,7 @@ typedef struct Process_ {
 		char **arg;		    /**< Pointer to an array of strings. */
 		TYPE kind;	  	    /**< In subnet or net or orphan */
 		int  partn;		    /**< Partition number.  */
+		Attribute attr;     /**< List of attributes. */
 		struct Process_ *next;  /**<Pointer to next process in the network*/
 } Process_; 
 

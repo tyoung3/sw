@@ -75,7 +75,7 @@ Attribs.        Attributes  ::=  "";
 
 Attrs.          Attr        ::=  Symval "=" Stringval   ;
 Attrn.          Attr        ::=  Symval "=" Numval      ;
-separator      Attr        "," ;
+separator       Attr        "," ;
 
 Portx.			Prt		    ::= Numval		        ;
 Portni.         Prt     	::= Numval "." Symval	; 
