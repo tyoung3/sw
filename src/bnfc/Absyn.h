@@ -67,6 +67,8 @@ struct Proc_;
 typedef struct Proc_ *Proc;
 struct Attributes_;
 typedef struct Attributes_ *Attributes;
+struct AttrT_;
+typedef struct AttrT_ *AttrT;
 struct Attr_;
 typedef struct Attr_ *Attr;
 struct Prt_;
@@ -364,12 +366,26 @@ struct Attributes_
   enum { is_Attribe, is_Attribs } kind;
   union
   {
-    struct { ListAttr listattr_; } attribe_;
+    struct { AttrT attrt_; ListAttr listattr_; } attribe_;
   } u;
 };
 
-Attributes make_Attribe(ListAttr p0);
+Attributes make_Attribe(AttrT p0, ListAttr p1);
 Attributes make_Attribs(void);
+
+struct AttrT_
+{
+
+  enum { is_Aa1, is_Aa2, is_Aa3, is_Aa4 } kind;
+  union
+  {
+  } u;
+};
+
+AttrT make_Aa1(void);
+AttrT make_Aa2(void);
+AttrT make_Aa3(void);
+AttrT make_Aa4(void);
 
 struct Attr_
 {

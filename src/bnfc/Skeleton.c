@@ -404,6 +404,7 @@ void visitAttributes(Attributes p)
   {
   case is_Attribe:
     /* Code for Attribe Goes Here */
+    visitAttrT(p->u.attribe_.attrt_);
     visitListAttr(p->u.attribe_.listattr_);
     break;
   case is_Attribs:
@@ -412,6 +413,29 @@ void visitAttributes(Attributes p)
 
   default:
     fprintf(stderr, "Error: bad kind field when printing Attributes!\n");
+    exit(1);
+  }
+}
+
+void visitAttrT(AttrT p)
+{
+  switch(p->kind)
+  {
+  case is_Aa1:
+    /* Code for Aa1 Goes Here */
+    break;
+  case is_Aa2:
+    /* Code for Aa2 Goes Here */
+    break;
+  case is_Aa3:
+    /* Code for Aa3 Goes Here */
+    break;
+  case is_Aa4:
+    /* Code for Aa4 Goes Here */
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing AttrT!\n");
     exit(1);
   }
 }

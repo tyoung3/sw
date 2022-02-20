@@ -16,7 +16,7 @@ limitations under the License.
 
 All files in this repo are included in this license.
 
-SW-0.20.9 - STREAMWORK
+SW-0.20.10 - STREAMWORK
 ======================
 
 StreamWork
@@ -209,10 +209,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   
 ### Installation   
   * cd to any convenient workspace (/usr/src for example).
-  * Download the latest sw-0.20.9.tar.gz file 
+  * Download the latest sw-0.20.10.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-0.20.9.tar.gz' to extract source files
-  * cd  sw-0.20.9
+  * Run 'tar -xzf .../sw-0.20.10.tar.gz' to extract source files
+  * cd  sw-0.20.10
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -516,9 +516,9 @@ Home Page
 ### 0.20.8 
   * Created fileio package with GetFile and PutFile and FileT 
     
-### 0.20.9
-  * Provide for one attribute/process 
-    
+### 0.20.10
+  * Provide process attributes.  
+  
 ## Author
 
     Tom Young, streamwork@twyoung.com

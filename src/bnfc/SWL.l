@@ -61,11 +61,14 @@ IDENT [a-zA-Z0-9'_]
 <YYINITIAL>"StreamWork:"      	 return _SYMB_13;
 <YYINITIAL>"---"      	 return _SYMB_14;
 <YYINITIAL>":"      	 return _SYMB_15;
-<YYINITIAL>"ATTRIBUTES"      	 return _SYMB_16;
-<YYINITIAL>"INCLUDE"      	 return _SYMB_17;
-<YYINITIAL>"PREFIX"      	 return _SYMB_18;
-<YYINITIAL>"include"      	 return _SYMB_19;
-<YYINITIAL>"prefix"      	 return _SYMB_20;
+<YYINITIAL>"ATTR"      	 return _SYMB_16;
+<YYINITIAL>"ATTRIBUTES"      	 return _SYMB_17;
+<YYINITIAL>"INCLUDE"      	 return _SYMB_18;
+<YYINITIAL>"PREFIX"      	 return _SYMB_19;
+<YYINITIAL>"attr"      	 return _SYMB_20;
+<YYINITIAL>"attributes"      	 return _SYMB_21;
+<YYINITIAL>"include"      	 return _SYMB_22;
+<YYINITIAL>"prefix"      	 return _SYMB_23;
 
 <YYINITIAL>"#"[^\n]*\n /* skip */; // BNFC: comment "#";
 <YYINITIAL>"{#" BEGIN COMMENT; // BNFC: comment "{#" "#}";
@@ -73,14 +76,14 @@ IDENT [a-zA-Z0-9'_]
 <COMMENT>. /* skip */;
 <COMMENT>[\n] /* skip */;
 
-<YYINITIAL>\%{LETTER}({LETTER}|{DIGIT})*     	 yylval.string_ = strdup(yytext); return _SYMB_21;
-<YYINITIAL>\${LETTER}({LETTER}|{DIGIT})*     	 yylval.string_ = strdup(yytext); return _SYMB_22;
-<YYINITIAL>\$\_{LETTER}({LETTER}|{DIGIT})*     	 yylval.string_ = strdup(yytext); return _SYMB_23;
-<YYINITIAL>\&{LETTER}({LETTER}|{DIGIT}|\_)*     	 yylval.string_ = strdup(yytext); return _SYMB_24;
-<YYINITIAL>\^{LETTER}({LETTER}|{DIGIT}|\_)*     	 yylval.string_ = strdup(yytext); return _SYMB_25;
-<YYINITIAL>{LETTER}({LETTER}|{DIGIT}|\_)*     	 yylval.string_ = strdup(yytext); return _SYMB_26;
-<YYINITIAL>\{({LETTER}|{DIGIT}|\_|\.|\/)*\}     	 yylval.string_ = strdup(yytext); return _SYMB_27;
-<YYINITIAL>{DIGIT}{DIGIT}{DIGIT}{DIGIT}(\-{DIGIT}{DIGIT})*T(\:|{DIGIT}|\-)*     	 yylval.string_ = strdup(yytext); return _SYMB_28;
+<YYINITIAL>\%{LETTER}({LETTER}|{DIGIT})*     	 yylval.string_ = strdup(yytext); return _SYMB_24;
+<YYINITIAL>\${LETTER}({LETTER}|{DIGIT})*     	 yylval.string_ = strdup(yytext); return _SYMB_25;
+<YYINITIAL>\$\_{LETTER}({LETTER}|{DIGIT})*     	 yylval.string_ = strdup(yytext); return _SYMB_26;
+<YYINITIAL>\&{LETTER}({LETTER}|{DIGIT}|\_)*     	 yylval.string_ = strdup(yytext); return _SYMB_27;
+<YYINITIAL>\^{LETTER}({LETTER}|{DIGIT}|\_)*     	 yylval.string_ = strdup(yytext); return _SYMB_28;
+<YYINITIAL>{LETTER}({LETTER}|{DIGIT}|\_)*     	 yylval.string_ = strdup(yytext); return _SYMB_29;
+<YYINITIAL>\{({LETTER}|{DIGIT}|\_|\.|\/)*\}     	 yylval.string_ = strdup(yytext); return _SYMB_30;
+<YYINITIAL>{DIGIT}{DIGIT}{DIGIT}{DIGIT}(\-{DIGIT}{DIGIT})*T(\:|{DIGIT}|\-)*     	 yylval.string_ = strdup(yytext); return _SYMB_31;
 <YYINITIAL>"\""      	 BEGIN STRING;
 <STRING>\\      	 BEGIN ESCAPED;
 <STRING>\"      	 yylval.string_ = strdup(YY_PARSED_STRING); YY_BUFFER_RESET(); BEGIN YYINITIAL; return _STRING_;

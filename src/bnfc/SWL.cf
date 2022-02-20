@@ -70,8 +70,13 @@ Symvaluu.		Symvalu		::= "_"				;
 Processx.		Proc		::= "(" Symvalu  Comp [Argument] Attributes ")" 	;
 Processy.		Proc		::= "(" Symvalu                  Attributes ")" 	;
 
-Attribe.        Attributes  ::=  "ATTRIBUTES"  "{" [Attr] "}"  ;
+Attribe.        Attributes  ::=  AttrT  "{" [Attr] "}"  ;
 Attribs.        Attributes  ::=  "";  
+
+Aa1.             AttrT       ::=  "ATTR";
+Aa2.             AttrT       ::=  "attr";
+Aa3.             AttrT       ::=  "ATTRIBUTES";
+Aa4.             AttrT       ::=  "attributes";
 
 Attrs.          Attr        ::=  Symval "=" Stringval   ;
 Attrn.          Attr        ::=  Symval "=" Numval      ;
@@ -128,6 +133,7 @@ token	Symvar    '&' letter  ( letter | digit | '_' )* ;
 token   SubId	  '^' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
 token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
 token   ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Legal remote package import identifier 
+-- token   AttrT  ("ATTR") ; 
 	 
 ----------------------  StreamWork YAML Configuration Interpreter  ----------------------
 

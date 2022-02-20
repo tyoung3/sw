@@ -28,6 +28,7 @@ typedef union
   Symvalu symvalu_;
   Proc proc_;
   Attributes attributes_;
+  AttrT attrt_;
   Attr attr_;
   ListAttr listattr_;
   Prt prt_;
@@ -90,8 +91,11 @@ typedef struct YYLTYPE
 #define _SYMB_26 285
 #define _SYMB_27 286
 #define _SYMB_28 287
-#define _STRING_ 288
-#define _INTEGER_ 289
+#define _SYMB_29 288
+#define _SYMB_30 289
+#define _SYMB_31 290
+#define _STRING_ 291
+#define _INTEGER_ 292
 
 extern YYLTYPE yylloc;
 extern YYSTYPE yylval;
