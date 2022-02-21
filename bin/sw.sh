@@ -3,7 +3,7 @@
 # sw/bin/sw.sh
 # Lorca/pipes:  https://github.com/zserge/lorca/issues/43
 
-version="0.19.1"
+version="0.19.2"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -150,6 +150,7 @@ Shell() {
 
 case $1 in	
     bw|buildw) cd ../;
+        [ -d build-aux ] || mkdir build-aux
     	make distclean 
         ./configure --host=x86_64-w64-mingw32 && make || Die configure/make failed.
     	pushd ./build-aux || Die Cannot pushd ./build-aux
@@ -157,6 +158,7 @@ case $1 in
    	;;
     auto|b|build) 
     	cd ../
+        [ -d build-aux ] || mkdir build-aux
     	[ -f src/Makefile.am ] || Die Missing src/Makefile.am
     	pushd src/model
     		./mktest.sh || Die Failed making sw.test script
