@@ -208,7 +208,7 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   * **_sw_** is written in C. 
   
 ### Installation   
-  * cd to any convenient workspace (/usr/src for example).
+  * cd to any convenient workspace (/usr/local/src for example).
   * Download the latest sw-0.20.10.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
   * Run 'tar -xzf .../sw-0.20.10.tar.gz' to extract source files
@@ -241,7 +241,7 @@ Foo Bar-7
 ## Building on Linux
 
   * Install autotools, ctags, libyaml-dev, bnfc, bison, and flex 
-  * cd to your project workspace (like /usr/src )
+  * cd to your project workspace (like /usr/local/src )
   * git clone https://github.com/tyoung3/sw.git
   * bin/sw.sh build;  # Runs autotools including .../sw/bin/configure. 
   * bin/sw.sh c;      # Runs make check in .../sw/src
