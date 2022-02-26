@@ -3,6 +3,11 @@
 **/
  
 /** 
+    @todo Compare SWL files;  ala git diff 
+    @todo Make channels uni-directional
+    @toto Make process parens optional
+    @todo Concrete type streams
+    @todo Inter-host stream sockets (IHSS component) and mocks.
 	@todo Show full path for .sw and cfg files in generated commentary. 
 	@todo Fix swproject.sh/postage type error.
 	@todo Use PACKAGE_NAME { key: value} format for generated .yaml files.
