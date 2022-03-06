@@ -22,6 +22,8 @@ typedef union
   DataFlow dataflow_;
   Larrow larrow_;
   Rarrow rarrow_;
+  LSarrow lsarrow_;
+  RSarrow rsarrow_;
   TypeDef typedef_;
   Buffsize buffsize_;
   Hermt hermt_;

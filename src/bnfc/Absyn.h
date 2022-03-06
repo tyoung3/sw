@@ -55,6 +55,10 @@ struct Larrow_;
 typedef struct Larrow_ *Larrow;
 struct Rarrow_;
 typedef struct Rarrow_ *Rarrow;
+struct LSarrow_;
+typedef struct LSarrow_ *LSarrow;
+struct RSarrow_;
+typedef struct RSarrow_ *RSarrow;
 struct TypeDef_;
 typedef struct TypeDef_ *TypeDef;
 struct Buffsize_;
@@ -252,20 +256,28 @@ Tab make_Tabs(Symval p0);
 struct DataFlow_
 {
 
-  enum { is_Streamx, is_Streamrx, is_Streamy, is_Streamry } kind;
+  enum { is_Streamx, is_Streamrx, is_Streamls, is_Streamrs, is_Streamy, is_Streamry, is_Streamlsy, is_Streamrsy } kind;
   union
   {
     struct { Larrow larrow_; Proc proc_1, proc_2; Prt prt_1, prt_2; } streamx_;
     struct { Proc proc_1, proc_2; Prt prt_1, prt_2; Rarrow rarrow_; } streamrx_;
+    struct { LSarrow lsarrow_; Proc proc_1, proc_2; Prt prt_1, prt_2; } streamls_;
+    struct { Proc proc_1, proc_2; Prt prt_1, prt_2; RSarrow rsarrow_; } streamrs_;
     struct { DataFlow dataflow_; Larrow larrow_; Proc proc_; Prt prt_1, prt_2; } streamy_;
     struct { DataFlow dataflow_; Proc proc_; Prt prt_1, prt_2; Rarrow rarrow_; } streamry_;
+    struct { DataFlow dataflow_; LSarrow lsarrow_; Proc proc_; Prt prt_1, prt_2; } streamlsy_;
+    struct { DataFlow dataflow_; Proc proc_; Prt prt_1, prt_2; RSarrow rsarrow_; } streamrsy_;
   } u;
 };
 
 DataFlow make_Streamx(Proc p0, Prt p1, Larrow p2, Prt p3, Proc p4);
 DataFlow make_Streamrx(Proc p0, Prt p1, Rarrow p2, Prt p3, Proc p4);
+DataFlow make_Streamls(Proc p0, Prt p1, LSarrow p2, Prt p3, Proc p4);
+DataFlow make_Streamrs(Proc p0, Prt p1, RSarrow p2, Prt p3, Proc p4);
 DataFlow make_Streamy(DataFlow p0, Prt p1, Larrow p2, Prt p3, Proc p4);
 DataFlow make_Streamry(DataFlow p0, Prt p1, Rarrow p2, Prt p3, Proc p4);
+DataFlow make_Streamlsy(DataFlow p0, Prt p1, LSarrow p2, Prt p3, Proc p4);
+DataFlow make_Streamrsy(DataFlow p0, Prt p1, RSarrow p2, Prt p3, Proc p4);
 
 struct Larrow_
 {
@@ -290,6 +302,30 @@ struct Rarrow_
 };
 
 Rarrow make_Arrowr(TypeDef p0, Buffsize p1);
+
+struct LSarrow_
+{
+
+  enum { is_Arrowsl } kind;
+  union
+  {
+    struct { Buffsize buffsize_; TypeDef typedef_; } arrowsl_;
+  } u;
+};
+
+LSarrow make_Arrowsl(TypeDef p0, Buffsize p1);
+
+struct RSarrow_
+{
+
+  enum { is_Arrowsr } kind;
+  union
+  {
+    struct { Buffsize buffsize_; TypeDef typedef_; } arrowsr_;
+  } u;
+};
+
+RSarrow make_Arrowsr(TypeDef p0, Buffsize p1);
 
 struct TypeDef_
 {

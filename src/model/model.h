@@ -33,7 +33,7 @@
 /*    MODEL  Structures   */
    
 /** Type of Stream: Network, Subnet, or Orphan */
-typedef enum {IS_NET, IS_SUB, IS_ORPHAN} TYPE;
+typedef enum {IS_NET, IS_SUB, IS_ORPHAN, IS_IFACE, IS_STRUCT} TYPE;
 
 /** Port structure */
 typedef struct Port_ {
@@ -116,7 +116,7 @@ typedef struct Stream_ {
 	int source_id; 		/**<Souce port number*/
 	int sink_id; 		/**<Sink port number*/
 	int bufsz; 		/**<Buffersize */
-	TYPE  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN*/
+	TYPE  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN* or IS_STRUCT or IS_IFACE*/
 	char *iptype;    	/**< Type of data being sent -- the information packet type*/
 	struct Stream_ *next;	/**<Pointer to next Stream*/
 } Stream_;

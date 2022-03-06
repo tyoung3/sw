@@ -47,12 +47,19 @@ Tabs.			Tab	 	::= Symval;
 
 Streamx.		DataFlow	::= Proc Prt 	 Larrow Prt Proc;
 Streamrx.		DataFlow  	::= Proc Prt     Rarrow Prt Proc;
+Streamls.		DataFlow	::= Proc Prt 	 LSarrow Prt Proc;
+Streamrs.		DataFlow  	::= Proc Prt     RSarrow Prt Proc;
 Streamy.		DataFlow  	::= DataFlow Prt Larrow Prt Proc ;
 Streamry.		DataFlow  	::= DataFlow Prt Rarrow Prt Proc ; 
+Streamlsy.		DataFlow  	::= DataFlow Prt LSarrow Prt Proc ;
+Streamrsy.		DataFlow  	::= DataFlow Prt RSarrow Prt Proc ; 
 --separator		DataFlow	 ";" ;  
 
 Arrowx.			Larrow	 	::=  "<" TypeDef Buffsize "-" 		;
 Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		; 
+
+Arrowsl.		LSarrow	 	::=  "<" TypeDef Buffsize "=" 		;
+Arrowsr.		RSarrow	 	::=  "=" TypeDef Buffsize ">" 		; 
 
 Typedefa.		TypeDef		::=  Symvalu 	 			;
 Typedefnull.	TypeDef		::=  ""					;

@@ -18,6 +18,8 @@ void visitTab(Tab p);
 void visitDataFlow(DataFlow p);
 void visitLarrow(Larrow p);
 void visitRarrow(Rarrow p);
+void visitLSarrow(LSarrow p);
+void visitRSarrow(RSarrow p);
 void visitTypeDef(TypeDef p);
 void visitBuffsize(Buffsize p);
 void visitHermt(Hermt p);
