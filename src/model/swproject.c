@@ -3,16 +3,21 @@
 **/
  
 /** 
-    @todo Compare SWL files;  ala git diff 
-    @todo Make channels uni-directional
-    @toto Make process parens optional
     @todo Concrete type streams
+	@todo Fix swproject.sh/postage type error.
+    @todo Generate drawFBP format
+        @todo Convert drawFBP format to SWL format
+	    @todo Convert JPM's javaFBP NDs to SW NDs. https://jpaulm.github.io/fbp/jsyntax.htm
+        @toto Make process parens optional
+    @todo Make channels uni-directional
     @todo Inter-host stream sockets (IHSS component) and mocks.
 	@todo Show full path for .sw and cfg files in generated commentary. 
+	@todo Document environment variable usage.  DEBUG/USER/HOME
+	    
+    @todo Compare SWL files;  ala git diff 
+    @toto Make process parens optional
 	@todo Fix swproject.sh/postage type error.
 	@todo Use PACKAGE_NAME { key: value} format for generated .yaml files.
-	@todo Convert JPM's javaFBP NDs to SW NDs. https://jpaulm.github.io/fbp/jsyntax.htm
-	@todo Document environment variable usage.  DEBUG/USER/HOME
 	@todo If .github, do not generate project
     @todo Remove obsolete github branches
     @todo Update fbp.twyoung.com web pages

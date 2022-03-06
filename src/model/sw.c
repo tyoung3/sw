@@ -696,6 +696,37 @@ SetSource (Process p)
 
   p->nportsOut++;
 }
+void visitLSarrow(LSarrow p)
+{
+  switch(p->kind)
+  {
+  case is_Arrowsl:
+    /* Code for Arrowsl Goes Here */
+    visitTypeDef(p->u.arrowsl_.typedef_);
+    visitBuffsize(p->u.arrowsl_.buffsize_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing LSarrow!\n");
+    exit(1);
+  }
+}
+
+void visitRSarrow(RSarrow p)
+{
+  switch(p->kind) 
+  {
+  case is_Arrowsr:
+    /* Code for Arrowsr Goes Here */
+    visitTypeDef(p->u.arrowsr_.typedef_);
+    visitBuffsize(p->u.arrowsr_.buffsize_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing RSarrow!\n");
+    exit(1);
+  }
+}
 
 /** Set number of input ports in sink process */
 static void
@@ -707,6 +738,7 @@ SetSink (Process p)
 
 static Process lastProc = NULL;
 
+#define visitDataFlow visitdataflow
 /** Get stream structure */
 Stream
 visitdataflow (DataFlow _p_)
@@ -762,7 +794,22 @@ visitdataflow (DataFlow _p_)
       s->SourcePort->match = s->SinkPort;
       VerifyStream (s);
       return s;
-
+ case is_Streamls:
+    /* Code for Streamls Goes Here */
+    visitProc(_p_->u.streamls_.proc_1);
+    visitPrt(_p_->u.streamls_.prt_1);
+    visitLSarrow(_p_->u.streamls_.lsarrow_);
+    visitPrt(_p_->u.streamls_.prt_2);
+    visitProc(_p_->u.streamls_.proc_2);
+    break;
+  case is_Streamrs:
+    /* Code for Streamrs Goes Here */
+    visitProc(_p_->u.streamrs_.proc_1);
+    visitPrt(_p_->u.streamrs_.prt_1);
+    visitRSarrow(_p_->u.streamrs_.rsarrow_);
+    visitPrt(_p_->u.streamrs_.prt_2);
+    visitProc(_p_->u.streamrs_.proc_2);
+    break;
     case is_Streamy:
       visitdataflow (_p_->u.streamy_.dataflow_);
       snk = lastProc;
@@ -812,6 +859,22 @@ visitdataflow (DataFlow _p_)
       s2->SourcePort->match = s2->SinkPort;
       VerifyStream (s2);
       return s2;
+    case is_Streamlsy:
+    /* Code for Streamlsy Goes Here */
+    visitDataFlow(_p_->u.streamlsy_.dataflow_);
+    visitPrt(_p_->u.streamlsy_.prt_1);
+    visitLSarrow(_p_->u.streamlsy_.lsarrow_);
+    visitPrt(_p_->u.streamlsy_.prt_2);
+    visitProc(_p_->u.streamlsy_.proc_);
+    break;
+  case is_Streamrsy:
+    /* Code for Streamrsy Goes Here */
+    visitDataFlow(_p_->u.streamrsy_.dataflow_);
+    visitPrt(_p_->u.streamrsy_.prt_1);
+    visitRSarrow(_p_->u.streamrsy_.rsarrow_);
+    visitPrt(_p_->u.streamrsy_.prt_2);
+    visitProc(_p_->u.streamrsy_.proc_);
+    break;
 
     default:
       badkind (dataflow);

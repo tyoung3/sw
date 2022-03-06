@@ -208,6 +208,8 @@ ListEntry reverseListEntry(ListEntry l)
   DataFlow dataflow_;
   Larrow larrow_;
   Rarrow rarrow_;
+  LSarrow lsarrow_;
+  RSarrow rsarrow_;
   TypeDef typedef_;
   Buffsize buffsize_;
   Hermt hermt_;
@@ -248,11 +250,11 @@ ListEntry reverseListEntry(ListEntry l)
 %token _SYMB_3    /*   <   */
 %token _SYMB_4    /*   -   */
 %token _SYMB_5    /*   >   */
-%token _SYMB_6    /*   ,   */
-%token _SYMB_7    /*   _   */
-%token _SYMB_8    /*   (   */
-%token _SYMB_9    /*   )   */
-%token _SYMB_10    /*   =   */
+%token _SYMB_6    /*   =   */
+%token _SYMB_7    /*   ,   */
+%token _SYMB_8    /*   _   */
+%token _SYMB_9    /*   (   */
+%token _SYMB_10    /*   )   */
 %token _SYMB_11    /*   .   */
 %token _SYMB_12    /*   /   */
 %token _SYMB_13    /*   StreamWork:   */
@@ -288,6 +290,8 @@ ListEntry reverseListEntry(ListEntry l)
 %type <dataflow_> DataFlow
 %type <larrow_> Larrow
 %type <rarrow_> Rarrow
+%type <lsarrow_> LSarrow
+%type <rsarrow_> RSarrow
 %type <typedef_> TypeDef
 %type <buffsize_> Buffsize
 %type <hermt_> Hermt
@@ -362,16 +366,24 @@ Tab : Numval { $$ = make_Tabn($1);  }
 ;
 DataFlow : Proc Prt Larrow Prt Proc { $$ = make_Streamx($1, $2, $3, $4, $5);  }
   | Proc Prt Rarrow Prt Proc { $$ = make_Streamrx($1, $2, $3, $4, $5);  }
+  | Proc Prt LSarrow Prt Proc { $$ = make_Streamls($1, $2, $3, $4, $5);  }
+  | Proc Prt RSarrow Prt Proc { $$ = make_Streamrs($1, $2, $3, $4, $5);  }
   | DataFlow Prt Larrow Prt Proc { $$ = make_Streamy($1, $2, $3, $4, $5);  }
   | DataFlow Prt Rarrow Prt Proc { $$ = make_Streamry($1, $2, $3, $4, $5);  }
+  | DataFlow Prt LSarrow Prt Proc { $$ = make_Streamlsy($1, $2, $3, $4, $5);  }
+  | DataFlow Prt RSarrow Prt Proc { $$ = make_Streamrsy($1, $2, $3, $4, $5);  }
 ;
 Larrow : _SYMB_3 TypeDef Buffsize _SYMB_4 { $$ = make_Arrowx($2, $3);  }
 ;
 Rarrow : _SYMB_4 TypeDef Buffsize _SYMB_5 { $$ = make_Arrowr($2, $3);  }
 ;
+LSarrow : _SYMB_3 TypeDef Buffsize _SYMB_6 { $$ = make_Arrowsl($2, $3);  }
+;
+RSarrow : _SYMB_6 TypeDef Buffsize _SYMB_5 { $$ = make_Arrowsr($2, $3);  }
+;
 TypeDef : Symvalu { $$ = make_Typedefa($1);  }
   | /* empty */ { $$ = make_Typedefnull();  }
-  | TypeDef _SYMB_6 TypeDef { $$ = make_Typdefl($1, $3);  }
+  | TypeDef _SYMB_7 TypeDef { $$ = make_Typdefl($1, $3);  }
 ;
 Buffsize : Numval { $$ = make_Bufszi($1);  }
   | /* empty */ { $$ = make_Bufsze();  }
@@ -380,10 +392,10 @@ Hermt : Symvalu Comp ListArgument { $$ = make_Hermtx($1, $2, reverseListArgument
   | Symvalu ListArgument { $$ = make_Hermty($1, reverseListArgument($2));  }
 ;
 Symvalu : Symval { $$ = make_Symvaluv($1);  }
-  | _SYMB_7 { $$ = make_Symvaluu();  }
+  | _SYMB_8 { $$ = make_Symvaluu();  }
 ;
-Proc : _SYMB_8 Symvalu Comp ListArgument Attributes _SYMB_9 { $$ = make_Processx($2, $3, reverseListArgument($4), $5);  }
-  | _SYMB_8 Symvalu Attributes _SYMB_9 { $$ = make_Processy($2, $3);  }
+Proc : _SYMB_9 Symvalu Comp ListArgument Attributes _SYMB_10 { $$ = make_Processx($2, $3, reverseListArgument($4), $5);  }
+  | _SYMB_9 Symvalu Attributes _SYMB_10 { $$ = make_Processy($2, $3);  }
 ;
 Attributes : AttrT _SYMB_1 ListAttr _SYMB_2 { $$ = make_Attribe($1, $3);  }
   | /* empty */ { $$ = make_Attribs();  }
@@ -393,12 +405,12 @@ AttrT : _SYMB_16 { $$ = make_Aa1();  }
   | _SYMB_17 { $$ = make_Aa3();  }
   | _SYMB_21 { $$ = make_Aa4();  }
 ;
-Attr : Symval _SYMB_10 Stringval { $$ = make_Attrs($1, $3);  }
-  | Symval _SYMB_10 Numval { $$ = make_Attrn($1, $3);  }
+Attr : Symval _SYMB_6 Stringval { $$ = make_Attrs($1, $3);  }
+  | Symval _SYMB_6 Numval { $$ = make_Attrn($1, $3);  }
 ;
 ListAttr : /* empty */ { $$ = 0;  }
   | Attr { $$ = make_ListAttr($1, 0);  }
-  | Attr _SYMB_6 ListAttr { $$ = make_ListAttr($1, $3);  }
+  | Attr _SYMB_7 ListAttr { $$ = make_ListAttr($1, $3);  }
 ;
 Prt : Numval { $$ = make_Portx($1);  }
   | Numval _SYMB_11 Symval { $$ = make_Portni($1, $3);  }
@@ -423,11 +435,11 @@ Argument : Stringval { $$ = make_Argumentx($1);  }
 ListArgument : /* empty */ { $$ = 0;  }
   | ListArgument Argument { $$ = make_ListArgument($2, $1);  }
 ;
-Numassgn : _SYMB_24 _SYMB_10 Numval { $$ = make_NumAssgnv($1, $3);  }
+Numassgn : _SYMB_24 _SYMB_6 Numval { $$ = make_NumAssgnv($1, $3);  }
 ;
-Strassgn : _SYMB_25 _SYMB_10 Stringval { $$ = make_StrAssgnv($1, $3);  }
+Strassgn : _SYMB_25 _SYMB_6 Stringval { $$ = make_StrAssgnv($1, $3);  }
 ;
-SymAssgn : _SYMB_27 _SYMB_10 Symval { $$ = make_SymAssgni($1, $3);  }
+SymAssgn : _SYMB_27 _SYMB_6 Symval { $$ = make_SymAssgni($1, $3);  }
 ;
 Numval : _INTEGER_ { $$ = make_NumVali($1);  }
   | _SYMB_24 { $$ = make_NumValv($1);  }
@@ -453,7 +465,7 @@ Centry : KeyVal { $$ = make_CfgcEntrya($1);  }
   | KeyName { $$ = make_CfgcEntryb($1);  }
 ;
 ListCentry : /* empty */ { $$ = 0;  }
-  | ListCentry Centry _SYMB_6 { $$ = make_ListCentry($2, $1);  }
+  | ListCentry Centry _SYMB_7 { $$ = make_ListCentry($2, $1);  }
 ;
 Entry : KeyVal { $$ = make_CfgEntrya($1);  }
   | KeyName { $$ = make_CfgEntryb($1);  }

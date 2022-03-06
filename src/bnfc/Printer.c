@@ -453,6 +453,28 @@ void ppDataFlow(DataFlow p, int _i_)
     if (_i_ > 0) renderC(_R_PAREN);
     break;
 
+  case is_Streamls:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppProc(p->u.streamls_.proc_1, 0);
+    ppPrt(p->u.streamls_.prt_1, 0);
+    ppLSarrow(p->u.streamls_.lsarrow_, 0);
+    ppPrt(p->u.streamls_.prt_2, 0);
+    ppProc(p->u.streamls_.proc_2, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_Streamrs:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppProc(p->u.streamrs_.proc_1, 0);
+    ppPrt(p->u.streamrs_.prt_1, 0);
+    ppRSarrow(p->u.streamrs_.rsarrow_, 0);
+    ppPrt(p->u.streamrs_.prt_2, 0);
+    ppProc(p->u.streamrs_.proc_2, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
   case is_Streamy:
     if (_i_ > 0) renderC(_L_PAREN);
     ppDataFlow(p->u.streamy_.dataflow_, 0);
@@ -471,6 +493,28 @@ void ppDataFlow(DataFlow p, int _i_)
     ppRarrow(p->u.streamry_.rarrow_, 0);
     ppPrt(p->u.streamry_.prt_2, 0);
     ppProc(p->u.streamry_.proc_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_Streamlsy:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppDataFlow(p->u.streamlsy_.dataflow_, 0);
+    ppPrt(p->u.streamlsy_.prt_1, 0);
+    ppLSarrow(p->u.streamlsy_.lsarrow_, 0);
+    ppPrt(p->u.streamlsy_.prt_2, 0);
+    ppProc(p->u.streamlsy_.proc_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+  case is_Streamrsy:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppDataFlow(p->u.streamrsy_.dataflow_, 0);
+    ppPrt(p->u.streamrsy_.prt_1, 0);
+    ppRSarrow(p->u.streamrsy_.rsarrow_, 0);
+    ppPrt(p->u.streamrsy_.prt_2, 0);
+    ppProc(p->u.streamrsy_.proc_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -520,6 +564,48 @@ void ppRarrow(Rarrow p, int _i_)
 
   default:
     fprintf(stderr, "Error: bad kind field when printing Rarrow!\n");
+    exit(1);
+  }
+}
+
+void ppLSarrow(LSarrow p, int _i_)
+{
+  switch(p->kind)
+  {
+  case is_Arrowsl:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderC('<');
+    ppTypeDef(p->u.arrowsl_.typedef_, 0);
+    ppBuffsize(p->u.arrowsl_.buffsize_, 0);
+    renderC('=');
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing LSarrow!\n");
+    exit(1);
+  }
+}
+
+void ppRSarrow(RSarrow p, int _i_)
+{
+  switch(p->kind)
+  {
+  case is_Arrowsr:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderC('=');
+    ppTypeDef(p->u.arrowsr_.typedef_, 0);
+    ppBuffsize(p->u.arrowsr_.buffsize_, 0);
+    renderC('>');
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing RSarrow!\n");
     exit(1);
   }
 }
@@ -1895,6 +1981,46 @@ void shDataFlow(DataFlow p)
     bufAppendC(')');
 
     break;
+  case is_Streamls:
+    bufAppendC('(');
+
+    bufAppendS("Streamls");
+
+    bufAppendC(' ');
+
+    shProc(p->u.streamls_.proc_1);
+  bufAppendC(' ');
+    shPrt(p->u.streamls_.prt_1);
+  bufAppendC(' ');
+    shLSarrow(p->u.streamls_.lsarrow_);
+  bufAppendC(' ');
+    shPrt(p->u.streamls_.prt_2);
+  bufAppendC(' ');
+    shProc(p->u.streamls_.proc_2);
+
+    bufAppendC(')');
+
+    break;
+  case is_Streamrs:
+    bufAppendC('(');
+
+    bufAppendS("Streamrs");
+
+    bufAppendC(' ');
+
+    shProc(p->u.streamrs_.proc_1);
+  bufAppendC(' ');
+    shPrt(p->u.streamrs_.prt_1);
+  bufAppendC(' ');
+    shRSarrow(p->u.streamrs_.rsarrow_);
+  bufAppendC(' ');
+    shPrt(p->u.streamrs_.prt_2);
+  bufAppendC(' ');
+    shProc(p->u.streamrs_.proc_2);
+
+    bufAppendC(')');
+
+    break;
   case is_Streamy:
     bufAppendC('(');
 
@@ -1931,6 +2057,46 @@ void shDataFlow(DataFlow p)
     shPrt(p->u.streamry_.prt_2);
   bufAppendC(' ');
     shProc(p->u.streamry_.proc_);
+
+    bufAppendC(')');
+
+    break;
+  case is_Streamlsy:
+    bufAppendC('(');
+
+    bufAppendS("Streamlsy");
+
+    bufAppendC(' ');
+
+    shDataFlow(p->u.streamlsy_.dataflow_);
+  bufAppendC(' ');
+    shPrt(p->u.streamlsy_.prt_1);
+  bufAppendC(' ');
+    shLSarrow(p->u.streamlsy_.lsarrow_);
+  bufAppendC(' ');
+    shPrt(p->u.streamlsy_.prt_2);
+  bufAppendC(' ');
+    shProc(p->u.streamlsy_.proc_);
+
+    bufAppendC(')');
+
+    break;
+  case is_Streamrsy:
+    bufAppendC('(');
+
+    bufAppendS("Streamrsy");
+
+    bufAppendC(' ');
+
+    shDataFlow(p->u.streamrsy_.dataflow_);
+  bufAppendC(' ');
+    shPrt(p->u.streamrsy_.prt_1);
+  bufAppendC(' ');
+    shRSarrow(p->u.streamrsy_.rsarrow_);
+  bufAppendC(' ');
+    shPrt(p->u.streamrsy_.prt_2);
+  bufAppendC(' ');
+    shProc(p->u.streamrsy_.proc_);
 
     bufAppendC(')');
 
@@ -1988,6 +2154,56 @@ void shRarrow(Rarrow p)
 
   default:
     fprintf(stderr, "Error: bad kind field when showing Rarrow!\n");
+    exit(1);
+  }
+}
+
+void shLSarrow(LSarrow p)
+{
+  switch(p->kind)
+  {
+  case is_Arrowsl:
+    bufAppendC('(');
+
+    bufAppendS("Arrowsl");
+
+    bufAppendC(' ');
+
+    shTypeDef(p->u.arrowsl_.typedef_);
+  bufAppendC(' ');
+    shBuffsize(p->u.arrowsl_.buffsize_);
+
+    bufAppendC(')');
+
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when showing LSarrow!\n");
+    exit(1);
+  }
+}
+
+void shRSarrow(RSarrow p)
+{
+  switch(p->kind)
+  {
+  case is_Arrowsr:
+    bufAppendC('(');
+
+    bufAppendS("Arrowsr");
+
+    bufAppendC(' ');
+
+    shTypeDef(p->u.arrowsr_.typedef_);
+  bufAppendC(' ');
+    shBuffsize(p->u.arrowsr_.buffsize_);
+
+    bufAppendC(')');
+
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when showing RSarrow!\n");
     exit(1);
   }
 }

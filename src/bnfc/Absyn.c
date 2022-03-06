@@ -356,6 +356,40 @@ DataFlow make_Streamrx(Proc p1, Prt p2, Rarrow p3, Prt p4, Proc p5)
     tmp->u.streamrx_.proc_2 = p5;
     return tmp;
 }
+/********************   Streamls    ********************/
+DataFlow make_Streamls(Proc p1, Prt p2, LSarrow p3, Prt p4, Proc p5)
+{
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Streamls!\n");
+        exit(1);
+    }
+    tmp->kind = is_Streamls;
+    tmp->u.streamls_.proc_1 = p1;
+    tmp->u.streamls_.prt_1 = p2;
+    tmp->u.streamls_.lsarrow_ = p3;
+    tmp->u.streamls_.prt_2 = p4;
+    tmp->u.streamls_.proc_2 = p5;
+    return tmp;
+}
+/********************   Streamrs    ********************/
+DataFlow make_Streamrs(Proc p1, Prt p2, RSarrow p3, Prt p4, Proc p5)
+{
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Streamrs!\n");
+        exit(1);
+    }
+    tmp->kind = is_Streamrs;
+    tmp->u.streamrs_.proc_1 = p1;
+    tmp->u.streamrs_.prt_1 = p2;
+    tmp->u.streamrs_.rsarrow_ = p3;
+    tmp->u.streamrs_.prt_2 = p4;
+    tmp->u.streamrs_.proc_2 = p5;
+    return tmp;
+}
 /********************   Streamy    ********************/
 DataFlow make_Streamy(DataFlow p1, Prt p2, Larrow p3, Prt p4, Proc p5)
 {
@@ -389,6 +423,40 @@ DataFlow make_Streamry(DataFlow p1, Prt p2, Rarrow p3, Prt p4, Proc p5)
     tmp->u.streamry_.prt_2 = p4;
     tmp->u.streamry_.proc_ = p5;
     return tmp;
+}
+/********************   Streamlsy    ********************/
+DataFlow make_Streamlsy(DataFlow p1, Prt p2, LSarrow p3, Prt p4, Proc p5)
+{
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Streamlsy!\n");
+        exit(1);
+    }
+    tmp->kind = is_Streamlsy;
+    tmp->u.streamlsy_.dataflow_ = p1;
+    tmp->u.streamlsy_.prt_1 = p2;
+    tmp->u.streamlsy_.lsarrow_ = p3;
+    tmp->u.streamlsy_.prt_2 = p4;
+    tmp->u.streamlsy_.proc_ = p5;
+    return tmp;
+}
+/********************   Streamrsy    ********************/
+DataFlow make_Streamrsy(DataFlow p1, Prt p2, RSarrow p3, Prt p4, Proc p5)
+{
+    DataFlow tmp = (DataFlow) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Streamrsy!\n");
+        exit(1);
+    }
+    tmp->kind = is_Streamrsy;
+    tmp->u.streamrsy_.dataflow_ = p1;
+    tmp->u.streamrsy_.prt_1 = p2;
+    tmp->u.streamrsy_.rsarrow_ = p3;
+    tmp->u.streamrsy_.prt_2 = p4;
+    tmp->u.streamrsy_.proc_ = p5;
+    return tmp;
 }/********************   Arrowx    ********************/
 Larrow make_Arrowx(TypeDef p1, Buffsize p2)
 {
@@ -414,6 +482,32 @@ Rarrow make_Arrowr(TypeDef p1, Buffsize p2)
     tmp->kind = is_Arrowr;
     tmp->u.arrowr_.typedef_ = p1;
     tmp->u.arrowr_.buffsize_ = p2;
+    return tmp;
+}/********************   Arrowsl    ********************/
+LSarrow make_Arrowsl(TypeDef p1, Buffsize p2)
+{
+    LSarrow tmp = (LSarrow) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Arrowsl!\n");
+        exit(1);
+    }
+    tmp->kind = is_Arrowsl;
+    tmp->u.arrowsl_.typedef_ = p1;
+    tmp->u.arrowsl_.buffsize_ = p2;
+    return tmp;
+}/********************   Arrowsr    ********************/
+RSarrow make_Arrowsr(TypeDef p1, Buffsize p2)
+{
+    RSarrow tmp = (RSarrow) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Arrowsr!\n");
+        exit(1);
+    }
+    tmp->kind = is_Arrowsr;
+    tmp->u.arrowsr_.typedef_ = p1;
+    tmp->u.arrowsr_.buffsize_ = p2;
     return tmp;
 }/********************   Typedefa    ********************/
 TypeDef make_Typedefa(Symvalu p1)

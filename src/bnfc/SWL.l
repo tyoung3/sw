@@ -51,11 +51,11 @@ IDENT [a-zA-Z0-9'_]
 <YYINITIAL>"<"      	 return _SYMB_3;
 <YYINITIAL>"-"      	 return _SYMB_4;
 <YYINITIAL>">"      	 return _SYMB_5;
-<YYINITIAL>","      	 return _SYMB_6;
-<YYINITIAL>"_"      	 return _SYMB_7;
-<YYINITIAL>"("      	 return _SYMB_8;
-<YYINITIAL>")"      	 return _SYMB_9;
-<YYINITIAL>"="      	 return _SYMB_10;
+<YYINITIAL>"="      	 return _SYMB_6;
+<YYINITIAL>","      	 return _SYMB_7;
+<YYINITIAL>"_"      	 return _SYMB_8;
+<YYINITIAL>"("      	 return _SYMB_9;
+<YYINITIAL>")"      	 return _SYMB_10;
 <YYINITIAL>"."      	 return _SYMB_11;
 <YYINITIAL>"/"      	 return _SYMB_12;
 <YYINITIAL>"StreamWork:"      	 return _SYMB_13;

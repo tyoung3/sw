@@ -187,7 +187,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/README.md.in \
 	$(top_srcdir)/build-aux/missing \
 	$(top_srcdir)/build-aux/tap-driver.sh \
 	$(top_srcdir)/docs/Doxyfile.in README.md build-aux/compile \
-	build-aux/install-sh build-aux/missing
+	build-aux/depcomp build-aux/install-sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)

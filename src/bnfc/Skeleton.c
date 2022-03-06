@@ -239,6 +239,22 @@ void visitDataFlow(DataFlow p)
     visitPrt(p->u.streamrx_.prt_2);
     visitProc(p->u.streamrx_.proc_2);
     break;
+  case is_Streamls:
+    /* Code for Streamls Goes Here */
+    visitProc(p->u.streamls_.proc_1);
+    visitPrt(p->u.streamls_.prt_1);
+    visitLSarrow(p->u.streamls_.lsarrow_);
+    visitPrt(p->u.streamls_.prt_2);
+    visitProc(p->u.streamls_.proc_2);
+    break;
+  case is_Streamrs:
+    /* Code for Streamrs Goes Here */
+    visitProc(p->u.streamrs_.proc_1);
+    visitPrt(p->u.streamrs_.prt_1);
+    visitRSarrow(p->u.streamrs_.rsarrow_);
+    visitPrt(p->u.streamrs_.prt_2);
+    visitProc(p->u.streamrs_.proc_2);
+    break;
   case is_Streamy:
     /* Code for Streamy Goes Here */
     visitDataFlow(p->u.streamy_.dataflow_);
@@ -254,6 +270,22 @@ void visitDataFlow(DataFlow p)
     visitRarrow(p->u.streamry_.rarrow_);
     visitPrt(p->u.streamry_.prt_2);
     visitProc(p->u.streamry_.proc_);
+    break;
+  case is_Streamlsy:
+    /* Code for Streamlsy Goes Here */
+    visitDataFlow(p->u.streamlsy_.dataflow_);
+    visitPrt(p->u.streamlsy_.prt_1);
+    visitLSarrow(p->u.streamlsy_.lsarrow_);
+    visitPrt(p->u.streamlsy_.prt_2);
+    visitProc(p->u.streamlsy_.proc_);
+    break;
+  case is_Streamrsy:
+    /* Code for Streamrsy Goes Here */
+    visitDataFlow(p->u.streamrsy_.dataflow_);
+    visitPrt(p->u.streamrsy_.prt_1);
+    visitRSarrow(p->u.streamrsy_.rsarrow_);
+    visitPrt(p->u.streamrsy_.prt_2);
+    visitProc(p->u.streamrsy_.proc_);
     break;
 
   default:
@@ -290,6 +322,38 @@ void visitRarrow(Rarrow p)
 
   default:
     fprintf(stderr, "Error: bad kind field when printing Rarrow!\n");
+    exit(1);
+  }
+}
+
+void visitLSarrow(LSarrow p)
+{
+  switch(p->kind)
+  {
+  case is_Arrowsl:
+    /* Code for Arrowsl Goes Here */
+    visitTypeDef(p->u.arrowsl_.typedef_);
+    visitBuffsize(p->u.arrowsl_.buffsize_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing LSarrow!\n");
+    exit(1);
+  }
+}
+
+void visitRSarrow(RSarrow p)
+{
+  switch(p->kind)
+  {
+  case is_Arrowsr:
+    /* Code for Arrowsr Goes Here */
+    visitTypeDef(p->u.arrowsr_.typedef_);
+    visitBuffsize(p->u.arrowsr_.buffsize_);
+    break;
+
+  default:
+    fprintf(stderr, "Error: bad kind field when printing RSarrow!\n");
     exit(1);
   }
 }
