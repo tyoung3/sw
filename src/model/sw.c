@@ -696,36 +696,24 @@ SetSource (Process p)
 
   p->nportsOut++;
 }
-void visitLSarrow(LSarrow p)
+
+int visitLSarrow(LSarrow p)
 {
   switch(p->kind)
   {
   case is_Arrowsl:
-    /* Code for Arrowsl Goes Here */
-    visitTypeDef(p->u.arrowsl_.typedef_);
-    visitBuffsize(p->u.arrowsl_.buffsize_);
-    break;
+    // iptype=visitTypeDef(p->u.arrowsl_.typedef_);
+    return visitBuffsize(p->u.arrowsl_.buffsize_);
 
   default:
-    fprintf(stderr, "Error: bad kind field when printing LSarrow!\n");
-    exit(1);
+    badkind("LSarrow");
   }
 }
 
-void visitRSarrow(RSarrow p)
+int visitRSarrow(RSarrow p)
 {
-  switch(p->kind) 
-  {
-  case is_Arrowsr:
-    /* Code for Arrowsr Goes Here */
-    visitTypeDef(p->u.arrowsr_.typedef_);
-    visitBuffsize(p->u.arrowsr_.buffsize_);
-    break;
-
-  default:
-    fprintf(stderr, "Error: bad kind field when printing RSarrow!\n");
-    exit(1);
-  }
+    // visitTypeDef(p->u.arrowsr_.typedef_);
+    return(visitBuffsize(p->u.arrowsr_.buffsize_));
 }
 
 /** Set number of input ports in sink process */
@@ -736,26 +724,12 @@ SetSink (Process p)
   p->nportsIn++;
 }
 
-static Process lastProc = NULL;
-
 #define visitDataFlow visitdataflow
-/** Get stream structure */
-Stream
-visitdataflow (DataFlow _p_)
-{
-  Process snk, src;
-  Port pt, src_pt, snk_pt;
-  Stream s, s2;
-  int bs;
 
-  switch (_p_->kind)
-    {
-    case is_Streamx:
-      bs = visitLarrow (_p_->u.streamx_.larrow_);
-      lastProc = src = visitProc (_p_->u.streamx_.proc_2);
-      snk = visitProc (_p_->u.streamx_.proc_1);
-      src_pt = visitPrt (_p_->u.streamx_.prt_2);
-      snk_pt = visitPrt (_p_->u.streamx_.prt_1);
+Stream df(TYPE type, int bs, Process src, Process snk, 
+            Port src_pt, Port snk_pt) {
+      Stream s;      
+            
       linkPort (snk, snk_pt);
       SetSink (snk);
       SetSource (src);
@@ -773,108 +747,85 @@ visitdataflow (DataFlow _p_)
       s->SourcePort->match = s->SinkPort;
       VerifyStream (s);
       return s;
+}
+
+/** Get stream structure */
+Stream
+visitdataflow (DataFlow _p_)
+{
+  Process snk, src;
+  Port pt, src_pt, snk_pt;
+  Stream s, s2;
+  int bs;
+
+  switch (_p_->kind)
+    {
+    case is_Streamx:
+        return df(type, 
+            visitLarrow (_p_->u.streamx_.larrow_),
+            visitProc (_p_->u.streamx_.proc_2),
+            visitProc (_p_->u.streamx_.proc_1),
+            visitPrt (_p_->u.streamx_.prt_2),
+            visitPrt (_p_->u.streamx_.prt_1)
+            );
+    
     case is_Streamrx:
-      src = visitProc (_p_->u.streamrx_.proc_1);
-      LatestSrcPort = visitPrt (_p_->u.streamrx_.prt_1);
-      linkPort (src, LatestSrcPort);
-      SetSource (src);
-      lastProc = snk = visitProc (_p_->u.streamrx_.proc_2);
-      pt = visitPrt (_p_->u.streamrx_.prt_2);
-      linkPort (snk, pt);
-      SetSink (snk);
-      bs = visitRarrow (_p_->u.streamrx_.rarrow_);
-      s = MakeStream (type, src, snk, bs, net_model, LatestSrcPort,
-		      pt, iptype_save);
-      iptype_save = "";
-      setStream (LatestSrcPort, s);
-      setStream (pt, s);
-      s->sink_id = pt->id = fixId (pt->id);
-      s->source_id = LatestSrcPort->id = fixId (LatestSrcPort->id);
-      s->SinkPort->match = s->SourcePort;
-      s->SourcePort->match = s->SinkPort;
-      VerifyStream (s);
-      return s;
+         return df(type,
+            visitRarrow (_p_->u.streamrx_.rarrow_),
+            visitProc (_p_->u.streamrx_.proc_1),
+            visitProc (_p_->u.streamrx_.proc_2),
+            visitPrt (_p_->u.streamrx_.prt_1),
+            visitPrt (_p_->u.streamrx_.prt_2)
+            );
+    
  case is_Streamls:
-    /* Code for Streamls Goes Here */
-    visitProc(_p_->u.streamls_.proc_1);
-    visitPrt(_p_->u.streamls_.prt_1);
-    visitLSarrow(_p_->u.streamls_.lsarrow_);
-    visitPrt(_p_->u.streamls_.prt_2);
-    visitProc(_p_->u.streamls_.proc_2);
-    break;
+    return df(type,
+            visitLSarrow(_p_->u.streamls_.lsarrow_),
+            visitProc(_p_->u.streamls_.proc_1),
+            visitProc(_p_->u.streamls_.proc_2),
+            visitPrt (_p_->u.streamls_.prt_1),
+            visitPrt (_p_->u.streamls_.prt_2)
+            ); 
   case is_Streamrs:
-    /* Code for Streamrs Goes Here */
-    visitProc(_p_->u.streamrs_.proc_1);
-    visitPrt(_p_->u.streamrs_.prt_1);
-    visitRSarrow(_p_->u.streamrs_.rsarrow_);
-    visitPrt(_p_->u.streamrs_.prt_2);
-    visitProc(_p_->u.streamrs_.proc_2);
-    break;
+    return df(type,
+        visitRSarrow(_p_->u.streamrs_.rsarrow_),
+        visitProc(_p_->u.streamrs_.proc_1),
+        visitProc(_p_->u.streamrs_.proc_2),
+        visitPrt(_p_->u.streamrs_.prt_1),
+        visitPrt(_p_->u.streamrs_.prt_2)
+    );
     case is_Streamy:
-      visitdataflow (_p_->u.streamy_.dataflow_);
-      snk = lastProc;
-      pt = visitPrt (_p_->u.streamy_.prt_1);
-      bs = visitLarrow (_p_->u.streamy_.larrow_);
-      LatestSrcPort = visitPrt (_p_->u.streamy_.prt_2);
-      lastProc = src = visitProc (_p_->u.streamy_.proc_);
-      linkPort (src, LatestSrcPort);
-      SetSource (src);
-      linkPort (snk, pt);
-      SetSink (snk);
-      s2 = MakeStream (type, src, snk, bs, net_model, LatestSrcPort,
-		       pt, iptype_save);
-      iptype_save = "";
-      s2->SourcePort->stream = s2->SinkPort->stream = s2;
-      s2->SourcePort = LatestSrcPort;
-      s2->SinkPort = pt;
-      s2->SourcePort->stream = s2->SinkPort->stream = s2;
-      s2->sink_id = pt->id = fixId (pt->id);
-      s2->source_id = LatestSrcPort->id = fixId (LatestSrcPort->id);
-      s2->SinkPort->match = s2->SourcePort;
-      s2->SourcePort->match = s2->SinkPort;
-      VerifyStream (s2);
-      return s2;
+        return df(type,visitLarrow (_p_->u.streamy_.larrow_),
+                visitProc (_p_->u.streamy_.proc_),
+                visitdataflow (_p_->u.streamy_.dataflow_)->source,
+                visitPrt (_p_->u.streamy_.prt_2),
+                visitPrt (_p_->u.streamy_.prt_1)
+        );
+    
     case is_Streamry:
-      visitdataflow (_p_->u.streamry_.dataflow_);
-      src = lastProc;
-      lastProc = snk = visitProc (_p_->u.streamry_.proc_);
-      bs = visitRarrow (_p_->u.streamry_.rarrow_);
-      src_pt = visitPrt (_p_->u.streamry_.prt_1);	/* Source Port */
-      src_pt->id = fixId (src_pt->id);
-      linkPort (src, src_pt);
-      SetSource (src);
-      pt = visitPrt (_p_->u.streamry_.prt_2);	/* Sink Port */
-      pt->id = fixId (pt->id);
-      linkPort (snk, pt);
-      SetSink (snk);
-      s2 =
-	MakeStream (type, src, snk, bs, net_model, src_pt, pt, iptype_save);
-      iptype_save = "";
-      s2->SinkPort = pt;
-      setStream (src_pt, s2);
-      setStream (pt, s2);
-      s2->sink_id = pt->id;
-      s2->source_id = src_pt->id;
-      s2->SinkPort->match = s2->SourcePort;
-      s2->SourcePort->match = s2->SinkPort;
-      VerifyStream (s2);
-      return s2;
+        return df(type,visitRarrow (_p_->u.streamry_.rarrow_),
+                  visitdataflow (_p_->u.streamry_.dataflow_)->sink,
+                  visitProc (_p_->u.streamry_.proc_),
+                  visitPrt (_p_->u.streamry_.prt_1),
+                  visitPrt (_p_->u.streamry_.prt_2)
+        );          
+    
     case is_Streamlsy:
-    /* Code for Streamlsy Goes Here */
-    visitDataFlow(_p_->u.streamlsy_.dataflow_);
-    visitPrt(_p_->u.streamlsy_.prt_1);
-    visitLSarrow(_p_->u.streamlsy_.lsarrow_);
-    visitPrt(_p_->u.streamlsy_.prt_2);
-    visitProc(_p_->u.streamlsy_.proc_);
-    break;
+    return df(type,
+        visitLSarrow(_p_->u.streamlsy_.lsarrow_),
+        visitProc(_p_->u.streamlsy_.proc_),
+        visitDataFlow(_p_->u.streamlsy_.dataflow_)->sink,
+        visitPrt(_p_->u.streamlsy_.prt_2),
+        visitPrt(_p_->u.streamlsy_.prt_1)
+    );
   case is_Streamrsy:
-    /* Code for Streamrsy Goes Here */
-    visitDataFlow(_p_->u.streamrsy_.dataflow_);
-    visitPrt(_p_->u.streamrsy_.prt_1);
-    visitRSarrow(_p_->u.streamrsy_.rsarrow_);
-    visitPrt(_p_->u.streamrsy_.prt_2);
-    visitProc(_p_->u.streamrsy_.proc_);
-    break;
+    return df(type,
+        visitRSarrow(_p_->u.streamrsy_.rsarrow_),
+        visitDataFlow(_p_->u.streamrsy_.dataflow_)->source,
+        visitProc(_p_->u.streamrsy_.proc_),
+        visitPrt(_p_->u.streamrsy_.prt_1),
+        visitPrt(_p_->u.streamrsy_.prt_2)
+    );
 
     default:
       badkind (dataflow);

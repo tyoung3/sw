@@ -547,9 +547,9 @@ cat << EOF.split.sw | ./sw >/dev/null && echo ok 36 - split.sw || echo not ok 36
 EOF.split.sw
 
 cat << EOF.struct.sw | ./sw >/dev/null && echo ok 37 - struct.sw || echo not ok 37 -  struct.sw
-(A)=bT 7>(B);
+(A)=bT 7>1(B);
 (A)-cT>(C);
-(B b)1<cT=1(C);
+(B b)0<cT=1(C);
 (D d)=aT>(E e)=bT>(F c);
 EOF.struct.sw
 
