@@ -1,5 +1,4 @@
-/** @file swgo.c 
-		  Greate a gofbp  program from the network model
+/*		  Greate a gofbp  program from the network model
 		  See github.com/jpaulm/gofbp	
 */
 
@@ -186,6 +185,7 @@ static void assignChannels(Model m)
 	   case IS_SUB:
 	   case IS_ORPHAN:
 		break;
+	   case IS_STRUCT:
 	   case IS_NET:
 		assign_channel(ch--, f);
 	    	break;
@@ -303,6 +303,7 @@ static void showND(Model m)
 	switch (f->source->kind) {
 		case IS_SUB:
 			break;
+		case IS_STRUCT:
 		case IS_NET:
 	    		showSink(f->sink, f->sink_id);
 	    		showSource(f->source, f->source_id, f->bufsz, f->iptype);
@@ -532,7 +533,7 @@ static void genND(Model mod)
 
     f = mod->stream;
     while (f) {
-      if( f->type==IS_NET) {
+      if( f->type==IS_NET || f->type == IS_STRUCT) {
 		if (f->sink->port->id) {
 	    		printf("(%s)%d<%s-%d(%s); \n", f->sink->name,
 		   		f->sink->port->id,

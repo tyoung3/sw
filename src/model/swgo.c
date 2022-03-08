@@ -150,14 +150,22 @@ static void showSink(Process p, int id)
 }
 
 /** Print Source Process */
-static void showSource(Process p, int id, int bfsz, char *iptype)
+static void showSource(int kind, Process p, int id, int bfsz, char *iptype)
 {
-
+    char dash='-';
+    switch (kind) {
+        case IS_STRUCT:
+            dash='=';
+            break;
+        default:
+            dash='-';    
+    }
+    
     if (bfsz == defaultBufferSize) {
-	printf("\t\t<%s-\t%d(%s %s.%s",
-	       iptype, id, p->name, p->comp->path, p->comp->name);
+	    printf("\t\t<%s%c\t%d(%s %s.%s",
+	       iptype, dash, id, p->name, p->comp->path, p->comp->name);
     } else {
-	printf("\t\t<%s %d-\t", iptype, bfsz);
+	    printf("\t\t<%s %d%c\t", iptype, bfsz, dash);
 	if (id > 0)
 	    printf("%d", id);
 	printf("(%s %s.%s", p->name, p->comp->path, p->comp->name);
@@ -192,6 +200,7 @@ static void assignChannels(Model m)
 	   case IS_ORPHAN:
 		break;
 	   case IS_NET:
+	   case IS_STRUCT:
 		assign_channel(ch--, f);
 	    	break;
 	}
@@ -305,12 +314,18 @@ static void showND(Model m)
     assignChannels(m);
 
     while (f) {
-	switch (f->source->kind) {
+	switch (f->type) {
 		case IS_SUB:
 			break;
+		case IS_STRUCT:
+	    		showSink(f->sink, f->sink_id);
+	    		showSource(IS_STRUCT,f->source, f->source_id, 
+	    		    f->bufsz, f->iptype);
+	    		break;    
 		case IS_NET:
 	    		showSink(f->sink, f->sink_id);
-	    		showSource(f->source, f->source_id, f->bufsz, f->iptype);
+	    		showSource(IS_NET,f->source, f->source_id, 
+	    		    f->bufsz, f->iptype);
 			break;
 		case IS_ORPHAN:
 			ShowOrphan(f->source);
@@ -509,7 +524,7 @@ void genND(Model mod)
 
     f = mod->stream;
     while (f) {
-      if( f->type==IS_NET) {
+      if( f->type==IS_NET || f->type==IS_STRUCT) {
 		if (f->sink->port->id) {
 	    		printf("(%s)%d<%s-%d(%s); \n", f->sink->name,
 		   		f->sink->port->id,

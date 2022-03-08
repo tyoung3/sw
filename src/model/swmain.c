@@ -65,7 +65,7 @@ static int badProc(Process p)
 	port = p->port;
 	i = 0;
 
-	if (port && p->kind == IS_NET) {
+	if (port && ( p->kind == IS_NET || p->kind == IS_STRUCT) ) {
 		if (port->id < 0) {
 			port->id = 0;	// Expand missing port number 
 		}
@@ -219,6 +219,7 @@ static int verifyOK(Model model)
 			break;
 		case IS_SUB:
 			break;
+		case IS_STRUCT:
 		case IS_NET:
 			FixComps(f);
 			if (f->sink->name == NULL) {

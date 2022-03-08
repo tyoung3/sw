@@ -66,7 +66,7 @@ assignChannels (Model m)
 
   while (f)
     {
-      if (f->type == IS_NET)
+      if (f->type == IS_NET || f->type == IS_STRUCT)
 	assign_channel (ch--, f);
       f = f->next;
     }
@@ -176,7 +176,16 @@ static void genProc1(Process p,  char *host) {
   
   attr=p->attr;
   while(attr != NULL) {
-    printf("       %s=\"%s\",\n", attr->key, attr->val.s );
+    switch (attr->type) {
+    case STRING:
+         printf("       %s=\"%s\",\n", attr->key, attr->val.s );
+         break;
+    case INT:    
+         printf("       %s=%d,\n", attr->key, attr->val.i );
+         break;
+    default:
+        badkind(attribute Type);     
+    }
     attr = attr->next;
   }
   
@@ -241,14 +250,20 @@ findChannel (Port p, int id)
 static void
 showPorts (Stream f, Process src, Process snk, int channel)
 {
+
+char *arrowhead="normal";  // diamond, ediamond, dot, tee, empty, box, open,
+
 #ifdef SHOW_PORTS
-  printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.2i\",taillabel=\"%.2i\",tooltip = \"%i[%i]\"];\n", 
+  printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.2i\",taillabel=\"%.2i\",tooltip = \"%i[%i]\",arrowhead=\"%s\"];\n", 
      src->name,f->source_id,
-     snk->name, f->sink_id, channel, f->sink_id, f->source_id, channel, f->bufsz);
+     snk->name, f->sink_id, channel, 
+        f->sink_id, f->source_id, channel, 
+        f->bufsz,arrowhead);
 #else
-  printf("\"%s\" -> \"%s\"       [label=\"%i]\",  headlabel=\"%.i\",taillabel=\"%i\",	tooltip=\"%i[%i]\"];\n",
+  printf("\"%s\" -> \"%s\"       [label=\"%i]\",  headlabel=\"%.i\",taillabel=\"%i\",	tooltip=\"%i[%i]\",arrowhead=\"%s\"];\n",
      src->name,
-     snk->name, channel, f->sink_id, f->source_id, channel, f->bufsz);
+     snk->name, channel, f->sink_id, f->source_id, channel, 
+        f->bufsz,arrowhead);
 #endif
 }
 
@@ -275,11 +290,16 @@ genLinks (Model m)
   int channel = 7;
   char *edgeColor = "purple";
   char *sourceColor = "pink";
+  char *arrowhead="normal"; 
+  char *style="solid";  //dashed", "dotted", "solid", "invis" "bold"     "tapered" 
+  
   f = m->stream;
-  while (f)
-    {
-      if (f->type == IS_NET)
-	{
+  while (f) {
+        arrowhead="normal"; style="solid";
+    switch (f->type) {
+    case IS_STRUCT:
+        arrowhead="diamond"; style="tapered";
+    case IS_NET:
 	  edgeColor = "black";
 	  src = f->source;
 	  snk = f->sink;
@@ -306,19 +326,18 @@ genLinks (Model m)
 		src->name, f->source_id, snk->name, f->sink_id,  edgeColor,sourceColor,  channel, f->iptype, f->sink_id, f->source_id,
 		   f->bufsz);
 #else
-	      printf
-		("\"%s\"  -> \"%s\"  [color=%s, fontcolor=%s, label=\"%i %s\",headlabel=\"%s%i\",taillabel=\"%s%i\",tooltip=\"%i\"];\n",
-		src->name, snk->name, edgeColor, sourceColor, channel, f->iptype, snkPortName, f->sink_id, srcPortName,f->source_id,
-		   f->bufsz);
+	      printf("\"%s\"  -> \"%s\"  [color=%s, fontcolor=%s, label=\"%i %s\",headlabel=\"%s%i\",taillabel=\"%s%i\",tooltip=\"%i\",arrowhead=\"%s\",style=\"%s\"];\n",
+		src->name, snk->name, edgeColor, sourceColor, channel, 
+		f->iptype, snkPortName, f->sink_id, srcPortName,f->source_id,
+		   f->bufsz,arrowhead,style);
 #endif
-	    }
-	  else
-	    {
+	    }  // End if bfsz
+	    break;
+	  default:
 	      showPorts (f, src, snk, channel);
-	    }
-	}			// End if IS_NET             
-      f = f->next; 		// Get next stream
-    }				// End while
+	}			// End switch on type            
+    f = f->next; 		// Get next stream
+  }				// End while
 }
 
 
@@ -328,7 +347,7 @@ genProcs (Process p)
 
   while (p)
     {
-      if (p->kind == IS_NET)
+      if (p->kind == IS_NET || p->kind == IS_STRUCT)
 	{
 	  printf ("#(%s %s.%s) %d ports\n",
 		  p->name,
@@ -376,19 +395,24 @@ genGraph (Model model)
 {
   Stream f;
   Process p;
+  char dash;  // - OR =     
+  
   assignChannels (model);
   //* Generate commented Reconstructed Network Definition */
   printf ("#########   Expanded Network Definition   ######### \n");
   f = model->stream;
 
-  while (f)
-    {
+  while (f)  {
+      dash='-';
       switch (f->type)
 	{
+	case IS_STRUCT:
+	    dash='=';
 	case IS_NET:
-	  printf ("# (%s %s/%s)%d\t\t<- %d(%s %s/%s) \n",
+	  printf ("# (%s %s/%s)%d\t\t<%c %d(%s %s/%s) \n",
 		  f->sink->name, f->sink->comp->path,
 		  f->sink->comp->name, f->sink_id,
+		  dash,
 		  f->source_id, f->source->name,
 		  f->source->comp->path, f->source->comp->name);
 	  break;
