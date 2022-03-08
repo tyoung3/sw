@@ -31,8 +31,9 @@ static Process fl = NULL;		/** List of processes to free	*/
 /** Place to store latest visited source port. */
 Port LatestSrcPort = NULL;
 
+#define stype type
 /** Current network type. */
-TYPE type = IS_NET;
+streamType type = IS_NET;
 
 int bs = 1;			/**<  Buffer size */
 Model net_model = NULL;		/**<  Network model anchor point. */
@@ -59,7 +60,7 @@ VerifyStream (Stream s)
   assert (s->SourcePort->stream->SourcePort == s->SourcePort);
   assert (s->SinkPort->stream->SinkPort == s->SinkPort);
 
-  if (src->kind == IS_NET)
+  if (src->kind == IS_NET || src->kind == IS_STRUCT )
     {
       assert (psnk->match == psrc);
       assert (psrc->match == psnk);
@@ -240,10 +241,12 @@ Attribute MakeAttr(ListAttr la) {
       case is_Attrs:
           attr->val.s   = visitStringval(la2->attr_->u.attrs_.stringval_);
           attr->key = visitSymval(la2->attr_->u.attrs_.symval_);
+          attr->type=STRING;
           break;
       case is_Attrn:
           attr->key = visitSymval(la2->attr_->u.attrn_.symval_);
           attr->val.i   = visitNumval(la2->attr_->u.attrn_.numval_);
+          attr->type = INT;
       }
       attr->next=lattr;      
       la2 = la2->listattr_;
@@ -304,17 +307,17 @@ static Process MakeProcess (Model model, Ident name, Component comp,
 	{
 	  FAIL (MakeProcess, "Out of memory when allocating Process!\n");
 	}
-      p->comp = NULL;
+      p->comp = NULL; 
       if (comp)
 	p->comp = comp;
       p->name = name;
       p->nportsIn = 0;
       p->nportsOut = 0;
       p->port = NULL;
-      p->kind = type;
+      p->kind = stype;
       p->depth = 0;
       p->attr  = attr;
-      if (type == IS_NET)
+      if (stype == IS_NET || stype == IS_STRUCT)
 	{
 	  p->next = model->proc;
 	  model->proc = p;
@@ -413,7 +416,7 @@ MakeComponent (Ident name, String path)
 
 /** Make Stream structure */
 static Stream
-MakeStream (TYPE type, Process src, Process snk, int bs, Model m,
+MakeStream (streamType stype, Process src, Process snk, int bs, Model m,
 	    Port SourcePort, Port SinkPort, char *iptype)
 {
   Stream f;
@@ -435,7 +438,7 @@ MakeStream (TYPE type, Process src, Process snk, int bs, Model m,
   f->source = src;
   f->sink = snk;
   f->next = NULL;
-  f->type = type;
+  f->type = stype;
   f->next = m->stream;
   m->stream = f;
   if (bs < 0)
@@ -445,8 +448,9 @@ MakeStream (TYPE type, Process src, Process snk, int bs, Model m,
   f->bufsz = bs;
   f->iptype = iptype;		/* From visiting arrows */
 
-  switch (type)
+  switch (stype)
     {
+    case IS_STRUCT:
     case IS_NET:
       m->nstreams++;
       __attribute__((fallthrough));
@@ -726,7 +730,7 @@ SetSink (Process p)
 
 #define visitDataFlow visitdataflow
 
-Stream df(TYPE type, int bs, Process src, Process snk, 
+Stream df(streamType stype, int bs, Process src, Process snk, 
             Port src_pt, Port snk_pt) {
       Stream s;      
             
@@ -735,7 +739,7 @@ Stream df(TYPE type, int bs, Process src, Process snk,
       SetSource (src);
       linkPort (src, src_pt);
       s =
-	MakeStream (type, src, snk, bs, net_model, src_pt, snk_pt,
+	MakeStream (stype, src, snk, bs, net_model, src_pt, snk_pt,
 		    iptype_save);
       iptype_save = "";
       s->SourcePort = src_pt;
@@ -761,7 +765,7 @@ visitdataflow (DataFlow _p_)
   switch (_p_->kind)
     {
     case is_Streamx:
-        return df(type, 
+        return df(stype, 
             visitLarrow (_p_->u.streamx_.larrow_),
             visitProc (_p_->u.streamx_.proc_2),
             visitProc (_p_->u.streamx_.proc_1),
@@ -770,7 +774,7 @@ visitdataflow (DataFlow _p_)
             );
     
     case is_Streamrx:
-         return df(type,
+         return df(stype,
             visitRarrow (_p_->u.streamrx_.rarrow_),
             visitProc (_p_->u.streamrx_.proc_1),
             visitProc (_p_->u.streamrx_.proc_2),
@@ -779,15 +783,15 @@ visitdataflow (DataFlow _p_)
             );
     
  case is_Streamls:
-    return df(type,
+    return df(IS_STRUCT,
             visitLSarrow(_p_->u.streamls_.lsarrow_),
-            visitProc(_p_->u.streamls_.proc_1),
             visitProc(_p_->u.streamls_.proc_2),
-            visitPrt (_p_->u.streamls_.prt_1),
-            visitPrt (_p_->u.streamls_.prt_2)
+            visitProc(_p_->u.streamls_.proc_1),
+            visitPrt (_p_->u.streamls_.prt_2),
+            visitPrt (_p_->u.streamls_.prt_1)
             ); 
   case is_Streamrs:
-    return df(type,
+    return df(IS_STRUCT,
         visitRSarrow(_p_->u.streamrs_.rsarrow_),
         visitProc(_p_->u.streamrs_.proc_1),
         visitProc(_p_->u.streamrs_.proc_2),
@@ -795,7 +799,7 @@ visitdataflow (DataFlow _p_)
         visitPrt(_p_->u.streamrs_.prt_2)
     );
     case is_Streamy:
-        return df(type,visitLarrow (_p_->u.streamy_.larrow_),
+        return df(stype,visitLarrow (_p_->u.streamy_.larrow_),
                 visitProc (_p_->u.streamy_.proc_),
                 visitdataflow (_p_->u.streamy_.dataflow_)->source,
                 visitPrt (_p_->u.streamy_.prt_2),
@@ -803,7 +807,7 @@ visitdataflow (DataFlow _p_)
         );
     
     case is_Streamry:
-        return df(type,visitRarrow (_p_->u.streamry_.rarrow_),
+        return df(stype,visitRarrow (_p_->u.streamry_.rarrow_),
                   visitdataflow (_p_->u.streamry_.dataflow_)->sink,
                   visitProc (_p_->u.streamry_.proc_),
                   visitPrt (_p_->u.streamry_.prt_1),
@@ -811,7 +815,7 @@ visitdataflow (DataFlow _p_)
         );          
     
     case is_Streamlsy:
-    return df(type,
+    return df(IS_STRUCT,
         visitLSarrow(_p_->u.streamlsy_.lsarrow_),
         visitProc(_p_->u.streamlsy_.proc_),
         visitDataFlow(_p_->u.streamlsy_.dataflow_)->sink,
@@ -819,12 +823,12 @@ visitdataflow (DataFlow _p_)
         visitPrt(_p_->u.streamlsy_.prt_1)
     );
   case is_Streamrsy:
-    return df(type,
+    return df(IS_STRUCT,
         visitRSarrow(_p_->u.streamrsy_.rsarrow_),
-        visitDataFlow(_p_->u.streamrsy_.dataflow_)->source,
+        visitDataFlow(_p_->u.streamrsy_.dataflow_)->sink,
         visitProc(_p_->u.streamrsy_.proc_),
-        visitPrt(_p_->u.streamrsy_.prt_1),
-        visitPrt(_p_->u.streamrsy_.prt_2)
+        visitPrt(_p_->u.streamrsy_.prt_2),
+        visitPrt(_p_->u.streamrsy_.prt_1)
     );
 
     default:
@@ -840,12 +844,12 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
   Extport ep;
 
   ep = (Extport) malloc (sizeof (Extport_));
-  ep->type = type;
+  ep->type = stype;
   linkPort (p, prt);
   ep->name = prt->name = saves;
   saves = NULL;
 
-  if (type == SINK)
+  if (stype == SINK)
     {
       ep->sink = p;
       ep->source = NULL;
@@ -955,7 +959,7 @@ visitHermt (Hermt _p_)
 {
   char *name;
   Process p;
-  type = IS_NET;
+  stype = IS_NET;
   switch (_p_->kind)
     {
     case is_Hermtx:
@@ -1082,7 +1086,7 @@ visitStm (Stm _p_)
   ValidSW pt;
   static int includeLevel = 0;
 
-  type = IS_NET;
+  stype = IS_NET;
 
   switch (_p_->kind)
     {
@@ -1113,7 +1117,7 @@ visitStm (Stm _p_)
       visitSymAssgn (_p_->u.stmb_.symassgn_);
       break;
     case is_Stmnet:
-      type = IS_SUB;
+      stype = IS_SUB;
       visitSubdef (_p_->u.stmnet_.subdef_);
       break;
     case is_Stmh:
@@ -1151,14 +1155,15 @@ Attribute visitAttr(Attr p)
   case is_Attrs:
     a->key=visitSymval(p->u.attrs_.symval_);
     a->val.s=visitStringval(p->u.attrs_.stringval_);
+    a->type=STRING;
     return a;
   case is_Attrn:
     a->key=visitSymval(p->u.attrn_.symval_);
     a->val.i=visitNumval(p->u.attrn_.numval_);
+    a->type=INT;
     return a;
   default:
-    fprintf(stderr, "Error: bad kind field when printing Attr!\n");
-    exit(1);
+    badkind(Attribute)
   }
 }
 
@@ -1456,7 +1461,7 @@ Expand2 (Model m, Process p, Stream s)
   Process src, snk;
   Port psrc, psnk;
   Stream ns;			/* New Stream */
-  type = IS_NET;
+  stype = IS_NET;
 
   srcname = makeName (p->name, s->source->name);
   snkname = makeName (p->name, s->sink->name);
@@ -1473,11 +1478,11 @@ Expand2 (Model m, Process p, Stream s)
   src->nportsOut++;
   snk->nportsIn++;
   bs = s->bufsz;
-  ns = MakeStream (type, src, snk, bs, m, psrc, psnk, s->iptype);
+  ns = MakeStream (stype, src, snk, bs, m, psrc, psnk, s->iptype);
   ns->sink_id = s->sink_id;
   ns->source_id = s->source_id;
   ns->bufsz = s->bufsz;
-  ns->type = type;
+  ns->type = stype;
   psrc->stream = psnk->stream = ns;
   ns->source->depth = ns->sink->depth = CheckDepth (p->depth);
   ns->SinkPort->match = ns->SourcePort;
@@ -1512,7 +1517,7 @@ findAmatchingPort (Model m, Process p, Extport ep)
   char *srcname;
   char *snkname;
 
-  type = IS_ORPHAN;
+  stype = IS_ORPHAN;
 
   if (ep->type == SOURCE)
     {
@@ -2287,7 +2292,7 @@ autolink (Model m)
   Process p;
 
   ep = extprtList;
-  type = IS_NET;
+  stype = IS_NET;
   while (ep)
     {
       if (ep->type == SOURCE)

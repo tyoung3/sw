@@ -53,7 +53,8 @@ cat << EOF.ae2.sw | ./sw >/dev/null && echo ok 5 - ae2.sw || echo not ok 5 -  ae
 EOF.ae2.sw
 
 cat << EOF.aef.sw | ./sw >/dev/null && echo ok 6 - aef.sw || echo not ok 6 -  aef.sw
-(A a)0 <- 1(B b)0 <ip_t- 1(C c)0 <- 0(D d);
+(D)IN.0 <- OUT.1(C)IN.0 <ip_t- OUT.1(B)IN.0 <- OUT.0(A);  
+
  
 EOF.aef.sw
 
@@ -547,10 +548,13 @@ cat << EOF.split.sw | ./sw >/dev/null && echo ok 36 - split.sw || echo not ok 36
 EOF.split.sw
 
 cat << EOF.struct.sw | ./sw >/dev/null && echo ok 37 - struct.sw || echo not ok 37 -  struct.sw
-(A)=bT 7>1(B);
+{# (A)=bT 7>1(B);
 (A)-cT>(C);
 (B b)0<cT=1(C);
-(D d)=aT>(E e)=bT>(F c);
+(D Gen)=aT>(E Pass)=bT>(F Print);
+#}
+(X)=>(Y);
+(U)<=(T);
 EOF.struct.sw
 
 cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 38 - subnet1.sw || echo not ok 38 -  subnet1.sw

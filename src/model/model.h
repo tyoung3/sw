@@ -33,7 +33,7 @@
 /*    MODEL  Structures   */
    
 /** Type of Stream: Network, Subnet, or Orphan */
-typedef enum {IS_NET, IS_SUB, IS_ORPHAN, IS_IFACE, IS_STRUCT} TYPE;
+typedef enum {IS_NET, IS_SUB, IS_ORPHAN, IS_IFACE, IS_STRUCT} streamType;
 
 /** Port structure */
 typedef struct Port_ {
@@ -52,10 +52,12 @@ typedef struct Port_ *Port; /**<Pointer to Port */
 /** Port Direction */
 typedef enum {SINK,SOURCE} PortType;  
 
+typedef enum {INT, STRING} DataType;
 /* Attributes will be used to decorate graphs in order to 
 distinquish component attributes, such as language, development state, module path, etc.*/
 typedef struct Attribute_ {
         String key;
+        DataType type;   
         union val { 
             int    i;
             String s; 
@@ -85,7 +87,7 @@ typedef struct Process_ {
 		int  ch;		    /**<Low channel number */
 		int  depth;		    /**<Subnet depth */
 		char **arg;		    /**< Pointer to an array of strings. */
-		TYPE kind;	  	    /**< In subnet or net or orphan */
+		streamType kind;	  	    /**< In subnet or net or orphan */
 		int  partn;		    /**< Partition number.  */
 		Attribute attr;     /**< List of attributes. */
 		struct Process_ *next;  /**<Pointer to next process in the network*/
@@ -116,7 +118,7 @@ typedef struct Stream_ {
 	int source_id; 		/**<Souce port number*/
 	int sink_id; 		/**<Sink port number*/
 	int bufsz; 		/**<Buffersize */
-	TYPE  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN* or IS_STRUCT or IS_IFACE*/
+	streamType  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN* or IS_STRUCT or IS_IFACE*/
 	char *iptype;    	/**< Type of data being sent -- the information packet type*/
 	struct Stream_ *next;	/**<Pointer to next Stream*/
 } Stream_;
