@@ -551,8 +551,8 @@ cat << EOF.struct.sw | ./sw >/dev/null && echo ok 37 - struct.sw || echo not ok 
 {# (A)=bT 7>1(B);
 (A)-cT>(C);
 (B b)0<cT=1(C);
-(D Gen)=aT>(E Pass)=bT>(F Print);
 #}
+(D Gen)=aT>(E Pass)=bT>(F Print);
 (X)=>(Y);
 (U)<=(T);
 EOF.struct.sw
