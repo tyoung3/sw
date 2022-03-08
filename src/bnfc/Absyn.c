@@ -653,7 +653,7 @@ Proc make_Processy(Symvalu p1, Attributes p2)
     tmp->u.processy_.attributes_ = p2;
     return tmp;
 }/********************   Attribe    ********************/
-Attributes make_Attribe(AttrT p1, ListAttr p2)
+Attributes make_Attribe(ListAttr p1)
 {
     Attributes tmp = (Attributes) malloc(sizeof(*tmp));
     if (!tmp)
@@ -662,8 +662,7 @@ Attributes make_Attribe(AttrT p1, ListAttr p2)
         exit(1);
     }
     tmp->kind = is_Attribe;
-    tmp->u.attribe_.attrt_ = p1;
-    tmp->u.attribe_.listattr_ = p2;
+    tmp->u.attribe_.listattr_ = p1;
     return tmp;
 }
 /********************   Attribs    ********************/
@@ -676,53 +675,6 @@ Attributes make_Attribs()
         exit(1);
     }
     tmp->kind = is_Attribs;
-    return tmp;
-}/********************   Aa1    ********************/
-AttrT make_Aa1()
-{
-    AttrT tmp = (AttrT) malloc(sizeof(*tmp));
-    if (!tmp)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Aa1!\n");
-        exit(1);
-    }
-    tmp->kind = is_Aa1;
-    return tmp;
-}
-/********************   Aa2    ********************/
-AttrT make_Aa2()
-{
-    AttrT tmp = (AttrT) malloc(sizeof(*tmp));
-    if (!tmp)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Aa2!\n");
-        exit(1);
-    }
-    tmp->kind = is_Aa2;
-    return tmp;
-}
-/********************   Aa3    ********************/
-AttrT make_Aa3()
-{
-    AttrT tmp = (AttrT) malloc(sizeof(*tmp));
-    if (!tmp)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Aa3!\n");
-        exit(1);
-    }
-    tmp->kind = is_Aa3;
-    return tmp;
-}
-/********************   Aa4    ********************/
-AttrT make_Aa4()
-{
-    AttrT tmp = (AttrT) malloc(sizeof(*tmp));
-    if (!tmp)
-    {
-        fprintf(stderr, "Error: out of memory when allocating Aa4!\n");
-        exit(1);
-    }
-    tmp->kind = is_Aa4;
     return tmp;
 }/********************   Attrs    ********************/
 Attr make_Attrs(Symval p1, Stringval p2)

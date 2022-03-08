@@ -26,7 +26,6 @@ void visitHermt(Hermt p);
 void visitSymvalu(Symvalu p);
 void visitProc(Proc p);
 void visitAttributes(Attributes p);
-void visitAttrT(AttrT p);
 void visitAttr(Attr p);
 void visitListAttr(ListAttr p);
 void visitPrt(Prt p);

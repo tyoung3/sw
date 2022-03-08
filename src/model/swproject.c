@@ -3,7 +3,7 @@
 **/
  
 /** 
-    @todo Concrete type streams
+    @todo Structure streams swgo.c
 	@todo Fix swproject.sh/postage type error.
     @todo Generate drawFBP format
         @todo Convert drawFBP format to SWL format

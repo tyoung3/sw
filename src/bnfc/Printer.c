@@ -759,10 +759,9 @@ void ppAttributes(Attributes p, int _i_)
   {
   case is_Attribe:
     if (_i_ > 0) renderC(_L_PAREN);
-    ppAttrT(p->u.attribe_.attrt_, 0);
-    renderC('{');
+    renderC('[');
     ppListAttr(p->u.attribe_.listattr_, 0);
-    renderC('}');
+    renderC(']');
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -776,45 +775,6 @@ void ppAttributes(Attributes p, int _i_)
 
   default:
     fprintf(stderr, "Error: bad kind field when printing Attributes!\n");
-    exit(1);
-  }
-}
-
-void ppAttrT(AttrT p, int _i_)
-{
-  switch(p->kind)
-  {
-  case is_Aa1:
-    if (_i_ > 0) renderC(_L_PAREN);
-    renderS("ATTR");
-
-    if (_i_ > 0) renderC(_R_PAREN);
-    break;
-
-  case is_Aa2:
-    if (_i_ > 0) renderC(_L_PAREN);
-    renderS("attr");
-
-    if (_i_ > 0) renderC(_R_PAREN);
-    break;
-
-  case is_Aa3:
-    if (_i_ > 0) renderC(_L_PAREN);
-    renderS("ATTRIBUTES");
-
-    if (_i_ > 0) renderC(_R_PAREN);
-    break;
-
-  case is_Aa4:
-    if (_i_ > 0) renderC(_L_PAREN);
-    renderS("attributes");
-
-    if (_i_ > 0) renderC(_R_PAREN);
-    break;
-
-
-  default:
-    fprintf(stderr, "Error: bad kind field when printing AttrT!\n");
     exit(1);
   }
 }
@@ -2410,8 +2370,6 @@ void shAttributes(Attributes p)
 
     bufAppendC(' ');
 
-    shAttrT(p->u.attribe_.attrt_);
-  bufAppendC(' ');
     shListAttr(p->u.attribe_.listattr_);
 
     bufAppendC(')');
@@ -2428,49 +2386,6 @@ void shAttributes(Attributes p)
 
   default:
     fprintf(stderr, "Error: bad kind field when showing Attributes!\n");
-    exit(1);
-  }
-}
-
-void shAttrT(AttrT p)
-{
-  switch(p->kind)
-  {
-  case is_Aa1:
-
-    bufAppendS("Aa1");
-
-
-
-
-    break;
-  case is_Aa2:
-
-    bufAppendS("Aa2");
-
-
-
-
-    break;
-  case is_Aa3:
-
-    bufAppendS("Aa3");
-
-
-
-
-    break;
-  case is_Aa4:
-
-    bufAppendS("Aa4");
-
-
-
-
-    break;
-
-  default:
-    fprintf(stderr, "Error: bad kind field when showing AttrT!\n");
     exit(1);
   }
 }
