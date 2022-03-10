@@ -2,21 +2,26 @@
 		  Generate a  script to create FBP project files from the network model.
 **/
  
-/** 
-    @todo Concrete type streams
-	@todo Fix swproject.sh/postage type error.
+/**   These TODOs are sw general, not swproject specific: 
+
+    @todo Update project generation
+	    @todo Send multiple(N option) IPs in go tests.
+	    @todo Make config an option in project generation.poc
+	    @todo Fix swproject.sh/postage type error.
+	
+    @todo Structure streams swgo.c
+        
+    @todo remove log.Fatal from packages
+        panic or return/log error instead
     @todo Generate drawFBP format
         @todo Convert drawFBP format to SWL format
 	    @todo Convert JPM's javaFBP NDs to SW NDs. https://jpaulm.github.io/fbp/jsyntax.htm
         @toto Make process parens optional
-    @todo Make channels uni-directional
     @todo Inter-host stream sockets (IHSS component) and mocks.
 	@todo Show full path for .sw and cfg files in generated commentary. 
 	@todo Document environment variable usage.  DEBUG/USER/HOME
 	    
     @todo Compare SWL files;  ala git diff 
-    @toto Make process parens optional
-	@todo Fix swproject.sh/postage type error.
 	@todo Use PACKAGE_NAME { key: value} format for generated .yaml files.
 	@todo If .github, do not generate project
     @todo Remove obsolete github branches
@@ -36,12 +41,14 @@
 	@todo Process command/config arguments. 
 	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines.
 	@todo Fix swgen arguments w/default generation. Generate in config file
-	@todo Send multiple(N option) IPs in go tests.
-	@todo Make config an option in project generation.poc
  	@todo Generate project examples.
  	@todo Graph .ISW files (prevent 'no processes' message.
  	@todo Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
-	
+
+DEFERRED:	
+        @todo Make channels uni-directional
+            
+            
  DONE: 
 	@done Make JPM's FBPgo (fbpGO?) Check feasability. 
 	@done Discuss differences from 'classic' FBP.

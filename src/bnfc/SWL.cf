@@ -77,13 +77,14 @@ Symvaluu.		Symvalu		::= "_"				;
 Processx.		Proc		::= "(" Symvalu  Comp [Argument] Attributes ")" 	;
 Processy.		Proc		::= "(" Symvalu                  Attributes ")" 	;
 
-Attribe.        Attributes  ::=  AttrT  "{" [Attr] "}"  ;
+--Attribe.        Attributes  ::=  AttrT  "{" [Attr] "}"  ;
+Attribe.        Attributes  ::=  "[" [Attr] "]"; 
 Attribs.        Attributes  ::=  "";  
 
-Aa1.             AttrT       ::=  "ATTR";
-Aa2.             AttrT       ::=  "attr";
-Aa3.             AttrT       ::=  "ATTRIBUTES";
-Aa4.             AttrT       ::=  "attributes";
+--Aa1.             AttrT       ::=  "ATTR";
+--Aa2.             AttrT       ::=  "attr";
+--Aa3.             AttrT       ::=  "ATTRIBUTES";
+--Aa4.             AttrT       ::=  "attributes";
 
 Attrs.          Attr        ::=  Symval "=" Stringval   ;
 Attrn.          Attr        ::=  Symval "=" Numval      ;

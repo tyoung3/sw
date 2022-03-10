@@ -308,7 +308,7 @@ static int BadArg(int argc, char **argv)
 			} else {
 				if (strncmp(argv[i], "-v", 4) == 0) {
 					printf("StreamWork/sw-%s\n", version);
-					exit(EXIT_FAILURE);
+					exit(EXIT_SUCCESS);
 				} else {
 					if (strncmp(argv[i], "-cfg", 6) == 0) {
 						configfile = argv[++i];
@@ -432,5 +432,5 @@ int main(int argc, char **argv)
 	}
 
 	return EXIT_SUCCESS;
-
+    // return 0;
 }

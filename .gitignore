@@ -51,3 +51,7 @@ tags
 # *.y
 build-aux
 swedit
+swr
+swr.go
+pill.go
+pill_string.go

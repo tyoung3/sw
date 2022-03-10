@@ -48,7 +48,7 @@ func recv(stdin *io.WriteCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 		ipt := ip.(string)
 		_, err := io.WriteString(*stdin, ipt)
 		if err != nil {
-			log.Fatal(err)
+			os.Panic(err)
 		}
 	}
 
@@ -67,17 +67,17 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		log.Fatal(err)
+		os.Panic(err)
 	}
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Fatal(err)
+		os.Panic(err)
 	}
 
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
-		log.Fatal(err)
+		os.Panic(err)
 	}
 
 	var wg2 sync.WaitGroup
@@ -88,10 +88,10 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	go send(&stderr, &cs[2], &wg2)
 
 	if err := cmd.Start(); err != nil {
-		log.Fatal(err)
+		os.Panic(err)
 	}
 	if err := cmd.Wait(); err != nil {
-		log.Fatal(err)
+		os.Panic(err)
 	}
 	wg2.Wait()
 }
