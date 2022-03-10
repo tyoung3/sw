@@ -4,6 +4,8 @@
  
 /** 
     @todo Structure streams swgo.c
+    @todo remove log.Fatal from packages
+        return/log error instead
 	@todo Fix swproject.sh/postage type error.
     @todo Generate drawFBP format
         @todo Convert drawFBP format to SWL format
