@@ -193,7 +193,7 @@ EOF
         
 }
 
-genPkgConfig() {        fconfig="
+genPkgConfigxxx() {        fconfig="
 // PkgConfig initializes the go-config package.  See: https://github.com/zpatrick/go-config for details.
 func PkgConfig()  *config.Config {
         mappings := map[string]string{

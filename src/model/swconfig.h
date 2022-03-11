@@ -57,6 +57,8 @@ struct cfg_ {
 		(S),#N);					\
 	exit(EXIT_FAILURE);						\
   }
+
+extern String  yamlOption;
 	
 	/* swconfig.c prototypes */
 String 	visitSymval(Symval _p_);
