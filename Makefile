@@ -186,7 +186,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/README.md.in \
 	$(top_srcdir)/build-aux/install-sh \
 	$(top_srcdir)/build-aux/missing \
 	$(top_srcdir)/build-aux/tap-driver.sh \
-	$(top_srcdir)/docs/Doxyfile.in README.md build-aux/compile \
+	$(top_srcdir)/docs/Doxyfile.in build-aux/compile \
 	build-aux/depcomp build-aux/install-sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
@@ -336,7 +336,7 @@ top_builddir = .
 top_srcdir = .
 SUBDIRS = src/bnfc src/model   
 EXTRA_DIST = src/nds 
-dist_bin_SCRIPTS = bin/sw.sh bin/swgraph bin/swgo bin/gofbp bin/swgen.sh bin/swproject  bin/swskel.sh bin/swgen_none.sh src/model/sw.exe bin/TestSWL.exe 
+dist_bin_SCRIPTS = bin/sw.sh bin/swgraph bin/swgo bin/gofbp bin/swgen.sh bin/swproject  bin/swskel.sh  src/model/sw.exe bin/TestSWL.exe 
 all: all-recursive
 
 .SUFFIXES:
