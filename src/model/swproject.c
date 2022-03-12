@@ -6,7 +6,6 @@
 
     @todo Update project generation
 	    @todo Send multiple(N option) IPs in go tests.
-	    @todo Make config an option in project generation.poc
 	    @todo Fix swproject.sh/postage type error.
 	
     @todo Structure streams swgo.c
@@ -50,6 +49,7 @@ DEFERRED:
             
             
  DONE: 
+	@done Make config an option in project generation.
 	@done Make JPM's FBPgo (fbpGO?) Check feasability. 
 	@done Discuss differences from 'classic' FBP.
 		FBP inspired: 	http://www.jpaulmorrison.com/fbp/noflo.html

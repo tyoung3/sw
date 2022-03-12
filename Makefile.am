@@ -4,5 +4,5 @@
 SUBDIRS = src/bnfc src/model   
 EXTRA_DIST = src/nds 
 
-dist_bin_SCRIPTS =  bin/sw.sh bin/swgraph bin/swgo bin/gofbp bin/swgen.sh bin/swproject  bin/swskel.sh src/model/sw.exe bin/TestSWL.exe 
+dist_bin_SCRIPTS =  bin/sw.sh bin/swgraph bin/swgo bin/gofbp bin/swgen.sh bin/swproject  bin/swskel.sh bin/swgen_none.sh src/model/sw.exe bin/TestSWL.exe 
 

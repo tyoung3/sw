@@ -23,24 +23,15 @@
         white="\u001b[37m"
         reset="\u001b[0m"
         
-# @@TODO:  List of banned Modules.   Push Data to file, then have script read file. 
-#    git branch to PS1
-#    all packages import project code.
-
-version="0.21.0"  
+version="0.0.0"  
 targetdir=/usr/local/src
-pgm=swproject
+pgm=swp
 
 Die() {
 	echo -e "${red}$self/DIE: $*$reset"
 	exit 1
 }
 
-[ -d $targetdir ] || Die Cannot find directory: $targetdir 
-swdir=/usr/local/bin
-[ -e $swdir/sw ] || swdir=/usr/local/bin
-SW=$swdir/sw
-[ -e $SW     ] || Die $SW is missing 
 
 Debug() {
         [ "$DEBUG" == "y" ] && echo -e "$yellow$pgm/DEBUG: $* $reset " 
@@ -48,22 +39,22 @@ Debug() {
         echo -n 
 }
 
-
-self=$pgm
-modpath="github.com/tyoung3/"
-dir=$targetdir
-
-Debug Running ${pgm}-$version w/DEBUG args: $*
+init() {
+    [ -d $targetdir ] || Die Cannot find directory: $targetdir 
+    swdir=/usr/local/bin
+    [ -e $swdir/sw ] || swdir=/usr/local/bin
+    SW=$swdir/sw
+    [ -e $SW     ] || Die $SW is missing 
+    self=$pgm
+    modpath="github.com/tyoung3/"
+    dir=$targetdir
+    Debug Running ${pgm}-$version w/DEBUG args: $*
+    [ -d $dir ] || Die Missing directory: $dir
+}
 
 Display() {
 	Debug $*
 }
-
-[ -d $dir ] || Die Missing directory: $dir
-
-Init() {
-	pushd $dir || Die Cannot pushd $dir
-}	
 
 GenCFG() {
 	Debug $0/GenCFG $* 
@@ -91,45 +82,18 @@ EOF
 		*)	 
 			cat $1 > sw.cfg	
 			    ;;
-esac	
+    esac	
 }
 
 GenGo() {
 	 module=$p
-	 Debug GenGo:  $*  module=$module
-	 $SW -m 5 -yaml NONE ${p}.sw > ./gen_$pgm
+	 Debug GenGo:  $*  module=$module yaml=$yamlq  pgm=$pgm
+	 $SW -m 5 -yaml $yamlq ${p}.sw > ./gen_$pgm
 	 chmod a+x ./gen_$pgm				 
 	 ./gen_$pgm
-	 		 
 }    
 
-selectExample() {   # Reverse for _test.go
-	cat <<- EOF
-	var wg2 sync.WaitGroup
-	wg2.Add(2)
-	state := 3
-	
-	go  func() {
-		defer wg2.Done()
-		cs[1]   <- state
-		fmt.Println("A/sent state:",state)
-			
-	}()
-	
-	go func() {
-		defer wg2.Done()	
-		msg1,ok  := <-cs[0]
-		for ok==true {
-			fmt.Println("A/receivedx:", msg1)
-			msg1,ok  = <-cs[0]
-		}	
-	}()
-	
-        wg2.Wait()
-EOF
-}	
-
-Genp() {
+Genp1() {
 	Display Genp/$GENPy: $*
 	sw=$1; cfg=$2 yamlq=$3
 	[ -f $sw ] || sw="${sw}.sw"
@@ -140,7 +104,6 @@ Genp() {
 	if [ -f `pwd`/$sw ]; then 
 		sw=`pwd`/$sw
 	fi
-	
 	Debug sw=$sw p=$p $* 
 	icfg=$2
 	[ -f $sw ] || Die Genp: Cannot locate $sw 
@@ -149,23 +112,32 @@ Genp() {
 	echo; Display $0/GenP: Generating  go module $p  from $sw
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
-	pushd $dir/$p							\
-	   && ( [ -d internal ] || mkdir internal )			\
-	   && ( [ -f go.mod ]  						\
-	        || (go mod init $modpath$p; echo "replace $modpath$p => ./ " >> go.mod  ) \
-	      )	\
-	   && pushd internal || Die Cannot pushd internal		
-	         [ -f ${p}.go ] && mv  ${p}.go ${p}.go.bak
+}
+
+Genp4() {
+	      
+	   pushd internal || Die Cannot pushd internal	
+	     [ -f ${p}.go ] && mv  ${p}.go ${p}.go.bak
 	   	 ([ -f ${p}.sw ] && mv ${p}.sw ${p}.sw.bak) || true  \
 	   	 && cp  $sw ${p}.sw					\
 	   	 && [ -f sw.cfg ]  || GenCFG  		\
 	   	 && Debug internal run sw `pwd`/${p}.sw			\
 	   	 && sw ${p}.sw > ${p}.go				\
 	   	 && go mod tidy						\
+	   	 && Debug GenGo $*                  \
 	   	 ; GenGo $* 						\
 	   	 && swgraph ${p}.sw 					\
-	   	 && wait						\
-	   && popd							\
+	   	 && wait
+	   popd							
+}
+
+Genp2() {
+
+	   ( [ -d internal ] || mkdir internal )	\
+	   && ( [ -f go.mod ]  						\
+	        || (go mod init $modpath$p; echo "replace $modpath$p => ./ " >> go.mod  ) \
+	      )	    \
+	   &&  Genp4 					\
 	   && echo -e "${green}$self: Create project from $sw: Success!$reset" 		\
 	   || Die "${red}$self: Create project from $sw: FAILED.$reset"	\
 	   && go mod tidy						\
@@ -176,11 +148,17 @@ Genp() {
 	   || Die "${red}$self:  ${p}.go FAILED.$reset"			 
 	   # && (pushd internal; go build *.go; popd)		
 	echo
-				 
+}
+
+Genp() {
+    Genp1 $*
+    pushd $dir/$p || Die Cannot pushd $dir/$p	//pushd $dir/$p	
+	    Genp2			
+	popd 			 
 }
 
 GenProjectP() {
-    yamlq='Y'
+    init
     cfg=sw.cfg
     case $1 in 
         -yaml)yamlq=$2; shift 2;GenProjectP $*;;
@@ -203,27 +181,7 @@ GenProjectP() {
     esac
 }
 
-GenProject() {
-    case $1 in 
-        -cfg) ;;
-        *) 
-	        [ -z $1 ] && ( Genp X Y ; exit 0 )  	\
-	        || Display GenProject for $*		\
-	            , Genp $* 
-	esac            
-}
-
-KillEm() {
-	for p in $*; do
-		echo Kill $p
-	done
-
-}
-
 case $1 in
-	XXX)shift; Die option OBSOLETE;;   
-	XXX)shift; Init; KillEm $*;;
-	XXX)shift; Init; tree --noreport  -L 2 $*;;
 	x)shift; $EDITOR $self;;
 	--help|/?|?)cat <<- EOF 
 
@@ -235,5 +193,5 @@ case $1 in
 EOF
 	;;
 	-v) echo genproject-v$version;;
-	*) GenProjectP $*;;
+	*)  yamlq='YAML'; GenProjectP $*;;
 esac

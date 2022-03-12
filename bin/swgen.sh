@@ -549,6 +549,12 @@ FixPkg() {
         
 #  Generate a skeleton component
 GenSkel() {
+    config=$3
+    Debug GenSkel config=$config $*
+    if [ "$config" == "NONE" ]; then
+        swgen_none.sh gs $* 
+        return
+    fi
 	module=$1;shift;
         pkg=$1; 
         FixPkg
@@ -641,7 +647,8 @@ case  $pgm in
 esac
         
 case $1 in      
-        gs|skel)shift;GenSkel $*;;
+        gs|skel)
+            shift;GenSkel $*;;
         v)      echo $pgm-v$version;;
         x)  $EDITOR ${pgm}  &;;
         *)  cat <<- EOFX
