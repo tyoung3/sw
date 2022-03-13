@@ -14,6 +14,9 @@ limitations under the License.
 
 All files in this repo are included in this license.
 
+
+![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.jpg)
+
 SW-0.21.0 - STREAMWORK
 ======================
 
@@ -28,10 +31,16 @@ StreamWork
 
 ## Description
 
-StreamWork is a Go language(Golang), flow-based-programming(FBP) system.  	
+StreamWork is a simple system for building complex programs. 
 
-By default, StreamWork reads, parses, and analyzes; a simple SWL language StreamWork
-network definition(ND) file,  then generates a main Go program. 
+StreamWork can generate and test a complete Golang project from a simple
+text file.
+
+By default, StreamWork reads, parses, and analyzes; a simple 
+SWL language StreamWork network definition(ND) file,  
+then generates a main Go program.
+
+Options allow you to produce an abstract syntax tree, a GraphViz dot file,  or a goFBP main prgram instead.
 
 ## Network Definition 
 A StreamWork network definition describes a program as a  list of data streams.
@@ -42,7 +51,7 @@ StreamWork is concerned primarily with Go language FBP programs,
 however, the network definition described here is language agnostic.  It is quite possible 
 to generate corresponding code in other languages from a StreamWork ND.         
 
-The script, **_swgo_**, reads and executes an ND employing **_sw_** to properly launch the and connect the processes.  By default, **_sw_** generates 
+The script, **_swgo_**, reads and executes an ND employing **_sw_** to properly launch and connect the processes.  By default, **_sw_** generates 
 and builds a single main Go program which:  
   * imports sw compatible component package(s) as specified in the network definition,  
   * launches a goroutine for each process,  
@@ -382,7 +391,7 @@ Another bash script, **_swgraph_**, will display a graphic image of a network de
 (c)1            -request>       (m);
 ```
 
-`**_swgraph_** .../nds/mvc`
+**_swgraph_** .../nds/mvc
 produces: 
 
 ![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
@@ -516,6 +525,10 @@ Home Page
     
 ### 0.20.10
   * Provide process attributes.  
+  
+### 0.21.0 
+  * Can generate projects with or without YAML configuration. 
+  * Fixes to Wrap function.  
   
 ## Author
 

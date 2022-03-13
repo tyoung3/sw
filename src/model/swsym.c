@@ -253,8 +253,8 @@ String getConfType(char *path)
 
     b = lookup(key);
     if( b->u.type == NULL ) {
-    	b->u.type="NONE";
-    	return "YAML";
+    	b->u.type=yamlOption;
+    	return yamlOption;
     }
     
     return b->u.type;

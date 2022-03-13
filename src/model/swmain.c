@@ -291,11 +291,22 @@ char *baseOf(char *s)
 	return sr;
 }
 
+String  yamlOption="YAML";  /* YAML | NONE */   
+
 static int BadArg(int argc, char **argv)
 {
 	int i = 1;
 
+/*
 	while (i < argc) {
+	    switch 
+	}
+*/
+    yamlOption="YAML";
+	while (i < argc) {
+	    if (strncmp(argv[i], "-yaml", 30) == 0) {
+	        yamlOption=argv[++i];
+	    } else {
 		if (strncmp(argv[i], "-m", 30) == 0) {
 			if (i == argc - 1)
 				return 1;
@@ -333,9 +344,10 @@ static int BadArg(int argc, char **argv)
 					}
 				}
 			}
-		}
+		}}
 		i++;
 	}
+	
 	return 0;
 }
 

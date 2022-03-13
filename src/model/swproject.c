@@ -3,31 +3,37 @@
 **/
  
 /**   These TODOs are sw general, not swproject specific: 
-
+  High Priority:
+    @todo use $PATH to find .sw files
+    @todo fix 'swgraph n1.sw'
     @todo Update project generation
+        @todo clean code
+            @todo remove dead code
+            @todo use templates
 	    @todo Send multiple(N option) IPs in go tests.
-	    @todo Make config an option in project generation.poc
-	    @todo Fix swproject.sh/postage type error.
+	    @todo If .github, do not generate project
+	    @todo eliminate unneeded go mod tidy commands
 	
-    @todo Structure streams swgo.c
+	@todo Design Project logo and publish.
+    @todo Structure streams swgo.c [/usr/local/src/hw example code]
         
-    @todo remove log.Fatal from packages
-        panic or return/log error instead
     @todo Generate drawFBP format
         @todo Convert drawFBP format to SWL format
 	    @todo Convert JPM's javaFBP NDs to SW NDs. https://jpaulm.github.io/fbp/jsyntax.htm
-        @toto Make process parens optional
-    @todo Inter-host stream sockets (IHSS component) and mocks.
+	Language changes:    
+        @todo Make process parens optional
+        @todo Inter-host stream sockets (IHSS component) and mocks.
 	@todo Show full path for .sw and cfg files in generated commentary. 
 	@todo Document environment variable usage.  DEBUG/USER/HOME
-	    
+	
+    @todo Update fbp.twyoung.com web pages
+	@todo Synopsis to README.md.in
+	@todo Create Man pages w/Doxygen
+ 	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
+	
+  Low Priority:	    
     @todo Compare SWL files;  ala git diff 
 	@todo Use PACKAGE_NAME { key: value} format for generated .yaml files.
-	@todo If .github, do not generate project
-    @todo Remove obsolete github branches
-    @todo Update fbp.twyoung.com web pages
-	@todo Synopsis to README
-	@todo Create Man pages w/Doxygen
 	@todo Add tests for all useful sw modes.
 	@todo Verify output from make check & make distcheck
 	@todo Security check:
@@ -35,21 +41,19 @@
 		Limited data lifetime (clearing buffers and heap data)
 		Protection from ownership conflicts. 
 	@todo Plugins:
-		https://pkg.go.dev/plugin
-	@todo Design Project logo and publish. 
- 	@todo Create internal/html with module, package, function, and struct pages. Fix swgraph to find the pages.
+		https://pkg.go.dev/plugin 
 	@todo Process command/config arguments. 
 	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines.
 	@todo Fix swgen arguments w/default generation. Generate in config file
  	@todo Generate project examples.
  	@todo Graph .ISW files (prevent 'no processes' message.
  	@todo Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
-
-DEFERRED:	
-        @todo Make channels uni-directional
-            
-            
+ 	          
  DONE: 
+    @done Remove obsolete github branches
+    @done remove log.Fatal from packages [ no more found ]
+        panic or return/log error instead
+	@done Make config an option in project generation.
 	@done Make JPM's FBPgo (fbpGO?) Check feasability. 
 	@done Discuss differences from 'classic' FBP.
 		FBP inspired: 	http://www.jpaulmorrison.com/fbp/noflo.html
@@ -77,6 +81,12 @@ DEFERRED:
 	@shelved Blue/Gold code generation for deadlock prevention	
 	@shelved output Buffer > 0  filtercode generation for deadlock prevention
  
+
+Dumped:	
+	    @todo Fix swproject.sh/postage type error. [Works now]
+        @todo Make channels uni-directional [Makes no sense]
+            
+  
 */
 
 #include <stdio.h>

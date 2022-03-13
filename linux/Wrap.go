@@ -10,7 +10,8 @@ package linux
 import (
 	"bufio"
 	"io"
-	"log"
+	_ "log"
+	_ "os"
 	"os/exec"
 	"sync"
 	"time"
@@ -48,7 +49,7 @@ func recv(stdin *io.WriteCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 		ipt := ip.(string)
 		_, err := io.WriteString(*stdin, ipt)
 		if err != nil {
-			os.Panic(err)
+			panic(err)
 		}
 	}
 
@@ -67,17 +68,17 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
-		os.Panic(err)
+		panic(err)
 	}
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		os.Panic(err)
+		panic(err)
 	}
 
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
-		os.Panic(err)
+		panic(err)
 	}
 
 	var wg2 sync.WaitGroup
@@ -88,10 +89,10 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	go send(&stderr, &cs[2], &wg2)
 
 	if err := cmd.Start(); err != nil {
-		os.Panic(err)
+		panic(err)
 	}
 	if err := cmd.Wait(); err != nil {
-		os.Panic(err)
+		panic(err)
 	}
 	wg2.Wait()
 }

@@ -490,6 +490,8 @@ static void genLaunches(Process p)
 static char *mkPort (Port p) {
 	char bfr[100]; 
 	
+	if(p == NULL) 
+	    return;
 	if(p->id == 0) 
 		sprintf(bfr,"\"%s\"", p->name);
 	else 
@@ -502,9 +504,11 @@ static char *mkPort (Port p) {
 static void genConnections(Stream s) {
 
 	while( s!=NULL) {
-		printf( "\tnet.Connect(%s, %s, %s, %s, 6)\n" ,
-			s->source->name, mkPort(s->SourcePort), 
-			s->sink->name, mkPort(s->SinkPort) );
+	    if(s->type != IS_ORPHAN) {
+		    printf( "\tnet.Connect(%s, %s, %s, %s, 6)\n" ,
+			    s->source->name, mkPort(s->SourcePort), 
+			    s->sink->name, mkPort(s->SinkPort) );
+		}	    
 		s=s->next;
 	}
 	
