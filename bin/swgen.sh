@@ -6,8 +6,9 @@ Debug() {
 
 init() {
     #pgm=swgen_none.sh
+    fmt=""
     pgm=`basename $0`
-    version="0.0.0"
+    version="0.0.4"
     HTML=fbpgo.html
     export modpath="$GOPATH/src"
 
@@ -22,7 +23,7 @@ init() {
              reset="\u001b[0m"   
         lightgreen="\u001b[32;1m"
 
-    Debug INIT: Running $pgm w/DEBUG.  Args: $*
+    Debug INIT: Running $pgm-v$version w/DEBUG.  Args: $*
     src=/usr/local/src
     [ -d $src ] || Die Cannot find directory $src
 
@@ -145,27 +146,27 @@ genPkgYAML() {
 	Debug make args $*
 }         
 
+# Generate component code
 GenGo() {       
 	 nports=$(($inps + $outps))
          Debug GenGo $name $* $config  $inps $outps  $nports $cfg_file
-         #echo "$module/$pkg/${name}:" >> $cfg_file
 	 
-         cat << EOF > ${name}.go 
-                package $pkg2
+         cat <<- EOF > ${name}.go 
+    package $pkg2
                 
-                `IdSkel` 
+    `IdSkel` 
                  
-                import (
-                        _ "fmt"
-                       "sync"
-                       ${NULLIT}"github.com/$USER/$module"
-                )
+    import (
+        $fmt
+        "sync"
+        ${NULLIT}"github.com/$USER/$module"
+    )
                 
 		// $name is @todo undocumented
-            func $name(wg *sync.WaitGroup, arg []string, cs []chan interface{} ){
+    func $name(wg *sync.WaitGroup, arg []string, cs []chan interface{} ){
                 
-                defer wg.Done()
-                $go_config3
+        defer wg.Done()
+        $go_config3
 EOF
 	    
 	 if [ $nports -gt 0 ]; then 
@@ -290,14 +291,44 @@ EOFZ
         }() 
         
         go $name(&wg, arg,  cs)
-        wg.Wait()       
-
-}
-        
+        wg.Wait() 
+}             
 EOFY
-	#go mod init $pkg 
         go fmt ${name}_test.go
 }
+
+GenYamlGo() {
+    Debug GenYamlGo $*
+    fmt="\"fmt\""
+    go_config='config "github.com/zpatrick/go-config"'      
+        go_config2="$fconfig"
+        go_config3="cfg := ${pfx}PkgConfig()
+    bs, _ := cfg.IntOr(\"$module/${pkg}.buffersize\", 1)
+    seqno, _ := cfg.IntOr(\"$module/${pkg}.seqno\", 1)
+    title, _ := cfg.StringOr(\"$module/${pkg}.title\", \"n/a\")
+    version := \"v0.0.0\"
+    
+    fmt.Println(title, 
+                \"${cyan}gRunning7\", 
+                arg[0],\"-\",  
+                \"$name\",
+                version, 
+                \"bs =\", bs, 
+                \"seqno = \", seqno,\"$reset\") 
+    
+    if seqno != 1234 {
+        fmt.Println(
+          \"$module/${pkg}/$name: Seqno is, seqno, not = 1234.  Missing config file?\")
+    } 
+    "    
+    GenGo $*
+    concatYAML $cfg_file
+}
+
+GenYamlTestGo() {
+    GenTestGo $*
+}
+        
         
 Fail() {
 	echo -e Usage: $pgm gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS Component [ARG VAL]...
@@ -419,10 +450,11 @@ type ipT struct {   /* Information Packet type */
 func PkgConfig()  *config.Config {
         mappings := map[string]string{
                 "${pkg^^}_BUFFERSIZE": "${pkg}.buffersize",
+                "SEQNO":      "seqno=7",
         }
         
         return config.NewConfig([]config.Provider  {
-                config.New${config}File("$src/${module}.yaml"), 
+                config.New${config}File("$src/$pkg/${module}.yaml"), 
                 config.NewEnvironment(mappings)} )      
 }
 
@@ -452,8 +484,8 @@ EOF
         inps=$inp;outps=$outp
         	makePkg2
         	Debug `pwd` name: $name $inps $outps
-        	[ -f ${name}.go ]       || GenGo     $inps $outps
-        	[ -f ${name}_test.go ]  || GenTestGo $inps $outps
+        	[ -f ${name}.go ]       || GenYamlGo     $inps $outps
+        	[ -f ${name}_test.go ]  || GenYamlTestGo $inps $outps
         Debug GenYamlSkel/Generate go.mod at $src/$mdl
         [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init ${modpath}/$module && popd) 
         go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go

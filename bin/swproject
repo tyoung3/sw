@@ -9,7 +9,7 @@
 #   Project sub-directories are created in the current directory.
 #   
 #   Example:
-#	$ ./$pgm g test/X.sw
+#	$ ./swproject  nds/postage.sw
 #
 
         black="\u001b[30m"
@@ -23,7 +23,7 @@
         white="\u001b[37m"
         reset="\u001b[0m"
         
-version="0.0.0"  
+version="0.21.0"  
 targetdir=/usr/local/src
 pgm=swp
 
@@ -188,6 +188,8 @@ case $1 in
 	Usage: ${self}  v$version 
 	 	PROJECT   [ CONFIG_FILE ] . Generate project(s) from PROJECT[.sw] 
 	 	-v              . Display version
+	 	[-yaml YAMLOPT] . YAMLOPT = ["YAML"] or "NONE" 
+	 	[-cfg CFG_FILE  . sw configuration vile
 	 	--help 			. Display this help
 
 EOF
