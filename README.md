@@ -19,6 +19,7 @@ All files in this repo are included in this license.
 SW-0.21.0 - STREAMWORK
 ======================
 
+[StreamWork Logo](http://sw.twyoung.com/images/StreamWork.jpg)
 StreamWork
 ==========
          
@@ -384,7 +385,7 @@ Another bash script, **_swgraph_**, will display a graphic image of a network de
 (c)1            -request>       (m);
 ```
 
-`**_swgraph_** .../nds/mvc`
+**_swgraph_** .../nds/mvc
 produces: 
 
 ![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
@@ -518,6 +519,10 @@ Home Page
     
 ### 0.20.10
   * Provide process attributes.  
+  
+### 0.21.0 
+  * Can generate projects with or without YAML configuration. 
+  * Fixes to Wrap function.  
   
 ## Author
 

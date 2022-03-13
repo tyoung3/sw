@@ -250,9 +250,12 @@ findChannel (Port p, int id)
 static void
 showPorts (Stream f, Process src, Process snk, int channel)
 {
-
 char *arrowhead="normal";  // diamond, ediamond, dot, tee, empty, box, open,
 
+    if ( f->type == IS_ORPHAN ) {
+        return;
+     }
+        
 #ifdef SHOW_PORTS
   printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.2i\",taillabel=\"%.2i\",tooltip = \"%i[%i]\",arrowhead=\"%s\"];\n", 
      src->name,f->source_id,
