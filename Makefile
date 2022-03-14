@@ -186,7 +186,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/README.md.in \
 	$(top_srcdir)/build-aux/install-sh \
 	$(top_srcdir)/build-aux/missing \
 	$(top_srcdir)/build-aux/tap-driver.sh \
-	$(top_srcdir)/docs/Doxyfile.in build-aux/compile \
+	$(top_srcdir)/docs/Doxyfile.in README.md build-aux/compile \
 	build-aux/depcomp build-aux/install-sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
@@ -278,18 +278,18 @@ OBJEXT = o
 PACKAGE = sw
 PACKAGE_BUGREPORT = sw@twyoung.com
 PACKAGE_NAME = sw
-PACKAGE_STRING = sw 0.21.0
+PACKAGE_STRING = sw 0.21.1
 PACKAGE_TARNAME = sw
 PACKAGE_URL = 
-PACKAGE_VERSION = 0.21.0
+PACKAGE_VERSION = 0.21.1
 PATH_SEPARATOR = :
 SET_MAKE = 
 SHELL = /bin/bash
-STRIP = 
-SW_LEVEL = 0
+STRIP = strip
+SW_LEVEL = 1
 SW_MAJOR = 0
 SW_MINOR = 21
-VERSION = 0.21.0
+VERSION = 0.21.1
 abs_builddir = /usr/local/src/sw
 abs_srcdir = /usr/local/src/sw
 abs_top_builddir = /usr/local/src/sw
@@ -309,7 +309,7 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host_alias = 
+host_alias = x86_64-w64-mingw32
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
