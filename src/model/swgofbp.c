@@ -491,7 +491,7 @@ static char *mkPort (Port p) {
 	char bfr[100]; 
 	
 	if(p == NULL) 
-	    return;
+	    return "";
 	if(p->id == 0) 
 		sprintf(bfr,"\"%s\"", p->name);
 	else 

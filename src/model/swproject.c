@@ -5,7 +5,6 @@
 /**   These TODOs are sw general, not swproject specific: 
   High Priority:
     @todo use $PATH to find .sw files
-    @todo fix 'swgraph n1.sw'
     @todo Update project generation
         @todo clean code
             @todo remove dead code
@@ -14,7 +13,6 @@
 	    @todo If .github, do not generate project
 	    @todo eliminate unneeded go mod tidy commands
 	
-	@todo Design Project logo and publish.
     @todo Structure streams swgo.c [/usr/local/src/hw example code]
         
     @todo Generate drawFBP format
@@ -45,11 +43,13 @@
 	@todo Process command/config arguments. 
 	@todo negative nimports and noutports in swgen.sh to prioritize ports and reduce the number of goroutines.
 	@todo Fix swgen arguments w/default generation. Generate in config file
- 	@todo Generate project examples.
  	@todo Graph .ISW files (prevent 'no processes' message.
  	@todo Implement Process name expansion. Ex. "_MONITOR;" launches system monitor
  	          
  DONE: 
+	@done Design Project logo and publish.
+    @done fix logo graph if necessary
+    @done fix 'swgraph n1.sw'
     @done Remove obsolete github branches
     @done remove log.Fatal from packages [ no more found ]
         panic or return/log error instead
@@ -83,8 +83,9 @@
  
 
 Dumped:	
-	    @todo Fix swproject.sh/postage type error. [Works now]
-        @todo Make channels uni-directional [Makes no sense]
+ 	@dumped Generate project examples.
+	    @dumped Fix swproject.sh/postage type error. [Works now]
+        @dumped Make channels uni-directional [Makes no sense]
             
   
 */

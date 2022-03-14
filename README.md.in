@@ -15,10 +15,10 @@ limitations under the License.
 All files in this repo are included in this license.
 
 
-![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.jpg)
 
 SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ - STREAMWORK
 ======================
+![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
 StreamWork
 ==========
@@ -80,8 +80,9 @@ On option, **_sw_** will read, parse and interpret a network definition file the
 
 **_sw_** --help 
 
-```	
-        If SW_FILE is omitted, **_sw_** will read from stdin. 
+If SW_FILE is omitted, **_sw_**  will read from stdin.
+
+```	 
 		MODE= 
 			0-GOMODE		. Generate a main SW Go program[DEFAULT].
 			1-ASTMODE		. Display the Abstract Syntax Tree 
@@ -123,27 +124,33 @@ A stream definition looks something like:
 
 ```
 (a C "ARG..." ) -ipType> (b D);
-    or [reversing direction and using default component names]
+#    or [reversing direction and using default component names]
 (E)IN <- OUT.1(F)0 <- (G); 
 ```
 
-and consists of:
+![Figure 1](http://sw.twyoung.com/images/fig1.svg)
 
-  * processname, optional component identifier, optional arguments in parens, and 
-    optional process attributes,
-  * portnumber (defaults to 0), 
-  * a stream director:  right arrow("->") or left arrow("<-), 
-  * portnumber, 
-  * another processname, component identifier, etc. in parens,  
-  * and a statement terminator(';'). 
+and consists of a list of streams.  Each stream consists of 
+a source process, a stream director, a sink process and a terminating semicolon(;).   Each process consists of
 
-The stream director(director) points from the source process to the sink process.  A director may 
+
+  * a processname
+  * optional component identifier 
+  * optional arguments in parens, and 
+  * optional process attributes
+surrounded by parens, and followed and/or preceded by port identifiers
+consisting of a port number preceded by an optional port name and period(.).  Omitted port identifiers default to zero(0).
+
+The stream director points from the source process to the sink process.  A director may 
 include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B 2>".  If not included, buffer size defaults to zero.
-Example with anonymous processes:
+
+Example with anonymous process names and default components:
 
 ```
-  (_) -int 3> (_); [integer stream with buffersize of three] 
+  (_) -int 3> (_); #[integer stream with buffersize of three]; 
 ```
+
+![Figure 2](http://sw.twyoung.com/images/fig2.svg)
 
 In this example, the default components [as specified in a config file, send their process names to the channel or to stdout: 
 
@@ -266,18 +273,21 @@ agnostic.  There is no guarantee this condition will continue, however, every ef
 will be made to ensure that all currently valid SWL statements will remain valid.  Should 
 this prove impossible,  the minor version will be incremented, i.e. to v0.16.0 or greater.
 Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for network definition files, **_sw_**, and published Go modules only.  
-Linux scripts and Go modules, are separately versioned.   
+Linux scripts and Go modules, are separately versioned.  
 
-#### Semi-colon comments
+#### Variables
+SWL accepts string($NAME), environment string($_NAME), symbol(&NAME),  and numeric(%NAME) variables.  See SWL.pdf for acceptable usage.
+
+#### Semi-colon commentary
 Statements in SWL, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
 they tell the reader (and the SWL interpreter) when
 you have reached the end of a statement; making reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
 Additionally, without semi-colons line breaks become part of the language 
-definition, leading to awkward and confusing syntax rules.  
+definition, leading to awkward, confusing syntax rules.  
 
-#### Left Arror comments
+#### Left Arrow comments
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
 "(A) -> (B)1 <- (C);"  is valid SWL.   
@@ -324,7 +334,10 @@ WORLD HELLO-7
 	sw -m 3 <  sw/nds/collate.sw | dot -Tsvg > /tmp/collate.svg
 ```
 
-produces /tmp/collate.svg, an image of the collate 
+produces 
+
+![/tmp/collate.svg](http://sw.twyoung.com/images/collate.svg)
+an image of the collate 
 network definition.  
 
 ## Bash Scripts
@@ -426,7 +439,7 @@ $trtn = "github.com/jpaulm/gofbp/components/testrtn";
 `gofbp -b loadbal`
 <p>produces </p>
 
-![a graphic image of loadbal.sw](docs/images/loadbal.svg)
+![a graphic image of loadbal.sw](http://sw.twyoung.com/images/loadbal.svg)
 and (on console)
 
 ```
@@ -443,7 +456,38 @@ Input to DelayedReceiver: Receiver0 > IP - # 9
 ```
 
 ### Generate a project
-Try: **_swproject_** nds/postage
+**_swproject_** .../nds/postage.sw
+produces the following source tree:
+
+```
+postage
+├── addr
+│   ├── GetDest.go
+│   └── GetDest_test.go
+├── ComputePostage.go
+├── ComputePostage_test.go
+├── config.go
+├── getr
+│   ├── Rates.go
+│   └── Rates_test.go
+├── go.mod
+├── go.sum
+├── internal
+│   ├── gen_swproject
+│   ├── postage.go
+│   ├── postage.sw
+│   └── sw.cfg
+├── postage.yaml
+├── PrintLabel.go
+└── PrintLabel_test.go
+
+```
+
+then produces this graph 
+
+![postage.svg](http://sw.twyoung.com/images/postage.svg)
+
+vets the code, and finally runs it.
 
 #### **_sw.sh_** Synopsis
 
@@ -473,6 +517,11 @@ BUGS:
 -----
 
 **_sw.Gen_** fails unless all three arguments are present.
+
+Stream directors like => and <= are accepted, but treated the same
+as -> and <-, except for appearing differently in graphs.  
+The meaning is reserved for future use, which could 
+break existing NDs.
 	 
 Home Page
 ---------
@@ -531,6 +580,10 @@ Home Page
   * Can generate projects with or without YAML configuration. 
   * Fixes to Wrap function.  
   
+### 0.21.1
+  * README updates  
+  * Updated SWL.pdf
+  
 ## Author
 
     Tom Young, streamwork@twyoung.com
@@ -538,4 +591,4 @@ Home Page
     with thanks to J. Paul Morrison, Phillip W. Young, Sam Watkins, 
     the contributors to flow-based-programming@googlegroups.com, 
     and to the developers/maintainers of Go, gcc, Linux/Ubuntu, 
-    BNFC, git, GraphViz,  and Github. 
+    BNFC, git, GraphViz, Github and others. 
