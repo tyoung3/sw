@@ -129,17 +129,19 @@ A stream definition looks something like:
 ```
 
 ![Figure 1](http://sw.twyoung.com/images/fig1.svg)
-
 and consists of a list of streams.  Each stream consists of 
 a source process, a stream director, a sink process and a terminating semicolon(;).   Each process consists of
 
 
   * a processname
   * optional component identifier 
-  * optional arguments in parens, and 
-  * optional process attributes
-surrounded by parens, and followed and/or preceded by port identifiers
-consisting of a port number preceded by an optional port name and period(.).  Omitted port identifiers default to zero(0).
+  * optional string arguments, and 
+  * optional process attributes [surrounded by brackets].  Attributes
+    consist  of KEY=STRING|NUMBER statements, used mainly to enhance
+    graphic images.
+   
+all surrounded by parens, and followed and/or preceded by optional 
+port identifiers consisting of a port number preceded by an optional port name and period(.).  Omitted port identifiers default to zero(0).
 
 The stream director points from the source process to the sink process.  A director may 
 include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B 2>".  If not included, buffer size defaults to zero.
@@ -151,7 +153,6 @@ Example with anonymous process names and default components:
 ```
 
 ![Figure 2](http://sw.twyoung.com/images/fig2.svg)
-
 In this example, the default components [as specified in a config file, send their process names to the channel or to stdout: 
 
 ```
@@ -338,7 +339,7 @@ produces
 
 ![/tmp/collate.svg](http://sw.twyoung.com/images/collate.svg)
 an image of the collate 
-network definition.  
+network.  
 
 ## Bash Scripts
 ### **_swgo_** script
@@ -409,8 +410,7 @@ Another bash script, **_swgraph_**, will display a graphic image of a network de
 produces: 
 
 ![Model/View/Control image](http://sw.twyoung.com/images/mvc.jpg)
-for instance;
-
+for instance.
 Processes are colored such that all components in the same package have the same color.
 Not shown here, unfortunately, are the tooltips and html references.  Arrows are colored according to stream buffersize: 0 - black; 1-green; 2 or more - orange.   Coloring rules 
 are not guaranteed to remain unchanged in future sw versions. 
@@ -484,9 +484,7 @@ postage
 ```
 
 then produces this graph 
-
 ![postage.svg](http://sw.twyoung.com/images/postage.svg)
-
 vets the code, and finally runs it.
 
 #### **_sw.sh_** Synopsis
