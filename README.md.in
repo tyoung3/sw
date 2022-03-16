@@ -582,6 +582,12 @@ Home Page
   * README updates  
   * Updated SWL.pdf
   
+### 0.22.0
+  * Go code generation revamped
+  * Typed channels partly implemented, possibly breaking NDs
+    with types specified in a director. 
+      
+  
 ## Author
 
     Tom Young, streamwork@twyoung.com

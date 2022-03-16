@@ -421,14 +421,14 @@ void genPrefix(Model m)
         }}
         f->iptype=ftype;
         f->streamNum=nstream;
-	    //printf("cs = append(cs,make(chan %s,%i))\n",
 	    printf("cs%d := make(chan %s,%i)\t//%s.%d->%s.%d\n",
-		    nstream++,ftype,bfrtbl[i],
-		    f->source->name,f->SourcePort->id, f->sink->name,f->SinkPort->id);
+		    nstream++,ftype,f->bufsz,           // bfrtbl[i],
+		    f->source->name,f->SourcePort->id, 
+		    f->sink->name,f->SinkPort->id);
 	   }  // End if not orphan 	    
 	    f=f->next;
     }
-    printf("\n\twg.Add(nstreams)\n");
+    printf("\n\twg.Add(%d)\n", nstreams);
 }
 
 /** Return true if channel numbers not lined up */
