@@ -16,6 +16,7 @@
 #define defaultSinkComp   cfg.DefaultSinkComp
 #define defaultFilterComp cfg.DefaultFilterComp
 #define defaultOrphanComp cfg.DefaultOrphanComp
+#define defaultChannelType cfg.DefaultChannelType
 #define defaultBufferSize cfg.DefaultBufferSize
 #define defaultLibrary	  cfg.DefaultLibrary
 #define includePath	  cfg.IncludePath
@@ -44,6 +45,7 @@ struct cfg_ {
 	char *IncludePath;		/**<colon separated list of paths to search for INCLUDEd files */		
 	// Not implemented char *DefaultIPtype;		/**< Type of data in the stream */
 	char *HTMLdir;			/**<Directory for html tooltips in network graph*/
+	char *DefaultChannelType;   /** interface{} OR typeT */
 } ;	
 
 #define SetV(S) if (strcmp(key,(#S))==0) { cfg.S = val; }

@@ -4,7 +4,8 @@ import config "github.com/zpatrick/go-config"
 import "sync"
 import "fmt"
 
-type ipT struct { /* Information Packet type */
+// IpT is a common IP default type 
+type IpT struct { /* Information Packet type */
 	P string /* Process Name  */
 	S string /* modulepath/component */
 	I int    /* Port number */
@@ -25,7 +26,7 @@ func pkgConfig() *config.Config {
 
 func send(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
 	defer wg2.Done()
-	var ip ipT
+	var ip IpT
 	ip.I = nport
 	ip.P = arg[0]
 	ci <- ip

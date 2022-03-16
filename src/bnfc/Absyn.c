@@ -522,6 +522,20 @@ TypeDef make_Typedefa(Symvalu p1)
     tmp->u.typedefa_.symvalu_ = p1;
     return tmp;
 }
+/********************   Typedefb    ********************/
+TypeDef make_Typedefb(Symvalu p1, Symvalu p2)
+{
+    TypeDef tmp = (TypeDef) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating Typedefb!\n");
+        exit(1);
+    }
+    tmp->kind = is_Typedefb;
+    tmp->u.typedefb_.symvalu_1 = p1;
+    tmp->u.typedefb_.symvalu_2 = p2;
+    return tmp;
+}
 /********************   Typedefnull    ********************/
 TypeDef make_Typedefnull()
 {

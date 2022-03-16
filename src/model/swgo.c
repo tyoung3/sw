@@ -187,12 +187,13 @@ static int assign_channel(int ch, Stream f)
 /** For each stream; assign the channel to source and sink ports.  Must be done after expansion is complete*/ 
 static void assignChannels(Model m)
 {  
-    int ch = m->nstreams - 1;
+    int nstreams;
+    int ch;
     Stream f = m->stream;
 
-    /* if (ch<1) { 
-		ch=1;
-    } */
+    nstreams = m->nstreams + m->nStructStreams + 
+        m->nIntStreams + m->nStringStreams;
+    ch = nstreams - 1;
 
     while (f) {
 	switch (f->type) {
@@ -305,6 +306,7 @@ static void showND(Model m)
 {
     Stream f;
     int nparts, ncycles;			/* Number of partitions */
+    int nstreams;           /* Total nbr streams of all types */
 
     //* Generate commented Reconstructed Network Definition */
     printf
@@ -312,32 +314,35 @@ static void showND(Model m)
     f = m->stream;
     assignChannels(m);
 
-    while (f) {
+  while (f) {
+    char *ftype;
+    if(f->iptype == NULL || f->iptype[0] == 0) 
+        ftype=defaultChannelType;
+    else
+        ftype=f->iptype;    
 	switch (f->type) {
 		case IS_SUB:
 			break;
 		case IS_STRUCT:
-	    		showSink(f->sink, f->sink_id);
-	    		showSource(IS_STRUCT,f->source, f->source_id, 
-	    		    f->bufsz, f->iptype);
-	    		break;    
 		case IS_NET:
 	    		showSink(f->sink, f->sink_id);
-	    		showSource(IS_NET,f->source, f->source_id, 
-	    		    f->bufsz, f->iptype);
-			break;
+	    		showSource(f->type,f->source, f->source_id, 
+	    		    f->bufsz, ftype);
+	    		break;    
 		case IS_ORPHAN:
 			ShowOrphan(f->source);
 	} 
 	f = f->next;
-    }
+  }
 
     nparts=ComputeNpartitions(m);
 
-    ncycles=m->nstreams - m->nprocs + nparts;  
+    nstreams=m->nstreams + m->nStructStreams + 
+        m->nIntStreams + m->nStringStreams;
+    ncycles= nstreams - m->nprocs + nparts;  
     printf("%d stream%s, %d processes, %d component%s, %d partition%s, %d cycle%s.\n*/\n",
-		m->nstreams, Plural(m->nstreams), 
-		 m->nprocs,
+		nstreams, Plural(nstreams), 
+		m->nprocs,
 		m->ncomponents, Plural(m->ncomponents),
 		nparts, Plural(nparts), 
 		ncycles, Plural(ncycles));
@@ -355,11 +360,16 @@ static void getSha(char *s) {
 /** Generate Prefix code */
 void genPrefix(Model m)
 {
-    int nstreams = m->nstreams;
+    int nstreams = m->nstreams + m->nStructStreams+m->nIntStreams + m->nStringStreams;
     int bfrtbl[m->nstreams + 10];
     int i;
     char bfr[maxbfsz]; 
     Stream f;
+    char *channelType="interface{}";
+    
+    if(m->nStructStreams > 0) {
+        channelType=defaultChannelType;
+    }
 
     P(package main);
     printf("\n/*\n                  ");
@@ -385,7 +395,7 @@ void genPrefix(Model m)
     P(func main() {
 	);
     PE(} Fixes indent);
-    printf("	var cs []chan interface{}\n	");
+    printf("	var cs []chan %s\n	",channelType);
     P(var wg sync.WaitGroup);
     printf("\n");
 
@@ -399,10 +409,11 @@ void genPrefix(Model m)
     // f = m->stream;
     while (i < nstreams) {
 	if (bfrtbl[i] > 0) {
-	    printf("cs = append(cs,make(chan interface{},%i))\n",
-		   bfrtbl[i]);
+	    printf("cs = append(cs,make(chan %s,%i))\n",
+		   channelType,bfrtbl[i]);
 	} else {
-	    printf("cs = append(cs,make(chan interface{}))\n");
+	    printf("cs = append(cs,make(chan %s))\n",
+	       channelType);
 	}
 	i++;
     }
@@ -428,21 +439,22 @@ static int needaSlice(Port pt)
 }
 
 	/** Generate a slice of channels for this process */
-static void makeChSlice(Process p, int nstreams)
+static void makeChSlice(Process p, int nstreams, char *channelType)
 {
     char *name;
     Port pt;
 
     name = p->name;
-    printf("\n\tvar _cs%s []chan interface{}\n", name);
+    printf("\n\tvar _cs%s []chan %s\n", name, channelType);
     printf("\tfor i:=0; i<%i; i++ {\n\t\t", nstreams);
-    printf("_cs%s=append(_cs%s, make(chan interface{},2))", name, name);
+    printf("_cs%s=append(_cs%s, make(chan %s,2))",
+         name, name, channelType);
     printf("\n\t}\n");
 
     pt = p->port;
     do {
-	printf("\t_cs%s[%i] = cs[%i]\n", name, pt->id, pt->channel);
-	pt = pt->next;
+	    printf("\t_cs%s[%i] = cs[%i]\n", name, pt->id, pt->channel);
+	    pt = pt->next;
     } while (pt != p->port);
 }
 
@@ -482,7 +494,7 @@ static void genLaunch1(Process p)
 }
 
 /** Generate startup code */
-static void genLaunches(Process p)
+static void genLaunches(Process p, char *channelType)
 {
     int ch;			/* Assigned channel */
     int nstreams;
@@ -493,7 +505,7 @@ static void genLaunches(Process p)
 	nstreams = p->nportsIn + p->nportsOut;
 	if (nstreams > 1) {
 	    if (needaSlice(p->port)) {
-		makeChSlice(p, nstreams);
+		makeChSlice(p, nstreams, channelType);
 		genLaunch1(p);
 		printf("_cs%s[0:%i])\n", p->name, nstreams);
 	    } else {
@@ -521,11 +533,16 @@ static void genLaunches(Process p)
 void genGo(Model model)
 {
     Process p;
+    char *channelType;
 
-
+    if (model->nStructStreams > 0) 
+        channelType="sw.IpT";
+    else 
+        channelType="interface{}";
+            
     genPrefix(model);		/* Generate Prefix code */
     p = model->proc;		/* Get first process    */
-    genLaunches(p);		/* Expand processes     */
+    genLaunches(p,channelType);		/* Expand processes     */
     genSuffix();		/* Generate Suffix code */
 }
 
@@ -540,17 +557,27 @@ void genND(Model mod)
 
     f = mod->stream;
     while (f) {
+      char *ftype;
+      char dash;
+      if( f->type==IS_STRUCT ) 
+            dash='='; 
+      else 
+            dash='-';   
+      if(f->iptype == NULL || f->iptype[0] == 0) 
+            ftype=defaultChannelType;
+      else  
+            ftype=f->iptype;              
       if( f->type==IS_NET || f->type==IS_STRUCT) {
 		if (f->sink->port->id) {
-	    		printf("(%s)%d<%s-%d(%s); \n", f->sink->name,
+	    		printf("(%s)%d<%s%c%d(%s); \n", f->sink->name,
 		   		f->sink->port->id,
-		   		f->iptype,
+		   		ftype, dash,
 		   		f->source->port->id,
 		   		f->source->name);
 		} else {
-	    		printf(" (%s)%d<%s-(%s); \n", f->sink->name,
+	    		printf(" (%s)%d<%s%c(%s); \n", f->sink->name,
 		   		f->source->port->id, 
-		   		f->iptype, f->source->name);
+		   		ftype, dash, f->source->name);
 		}
       }  else  {
 	 if( f->type==IS_ORPHAN ) {

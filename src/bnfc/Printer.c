@@ -621,6 +621,15 @@ void ppTypeDef(TypeDef p, int _i_)
     if (_i_ > 0) renderC(_R_PAREN);
     break;
 
+  case is_Typedefb:
+    if (_i_ > 0) renderC(_L_PAREN);
+    ppSymvalu(p->u.typedefb_.symvalu_1, 0);
+    renderC('.');
+    ppSymvalu(p->u.typedefb_.symvalu_2, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
   case is_Typedefnull:
     if (_i_ > 0) renderC(_L_PAREN);
 
@@ -2180,6 +2189,20 @@ void shTypeDef(TypeDef p)
     bufAppendC(' ');
 
     shSymvalu(p->u.typedefa_.symvalu_);
+
+    bufAppendC(')');
+
+    break;
+  case is_Typedefb:
+    bufAppendC('(');
+
+    bufAppendS("Typedefb");
+
+    bufAppendC(' ');
+
+    shSymvalu(p->u.typedefb_.symvalu_1);
+  bufAppendC(' ');
+    shSymvalu(p->u.typedefb_.symvalu_2);
 
     bufAppendC(')');
 
