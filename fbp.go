@@ -78,9 +78,6 @@ func Launch(
 		arg []string,
 		cs []chan interface{}),
 	cs []chan interface{}) {
-	/*if len(arg) < 1 {
-		os.exit(2)
-	} */
 	wg.Add(1)
 	go f(wg, arg, cs)
 	/* DO NOT put code here.  It will most likely not run.*/
