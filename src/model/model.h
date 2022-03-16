@@ -117,7 +117,7 @@ typedef struct Stream_ {
 	Port  SinkPort;		/**<Sink port*/    
 	int source_id; 		/**<Souce port number*/
 	int sink_id; 		/**<Sink port number*/
-	int bufsz; 		/**<Buffersize */
+	int bufsz; 		    /**<Buffersize */
 	streamType  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN* or IS_STRUCT or IS_IFACE*/
 	char *iptype;    	/**< Type of data being sent -- the information packet type*/
 	struct Stream_ *next;	/**<Pointer to next Stream*/
@@ -136,12 +136,15 @@ typedef struct Subnetm_ *Subnetm;   /**<Pointer to Subnet structure */
 /** Model structure */
 typedef struct Model_ {
 	int       nstreams;	/**< Number of Streams in this network.*/	
+	int       nStructStreams;   
+	int       nIntStreams;
+	int       nStringStreams;
 	int       ncomponents;	/**< Number of unique components in the network.*/
 	int       nprocs; 	/**< number of processes 	*/
 	Stream    stream;	/**< pointer to first stream	*/
 	Subnetm   subnetm;     	/**< Pointer to first subnet 	*/
 	Process   proc;		/**< Pointer to First Process 	*/
-        Component comp;	        /**< Pointer to first Conponent */
+    Component comp;	        /**< Pointer to first Conponent */
 	char     *name;		/**< Model Name 		*/
 	int	  level;	/**< Subnet depth		*/
 	char	 *filename;	/**< Filename or STDIN		*/

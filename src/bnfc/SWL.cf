@@ -1,17 +1,17 @@
 --  SWL.cf  
 
-{- Copyright (C) 2019,2020,2021 Thomas W. Young, streamwork@twyoung.com
-The StreamWork network definition language, SW, this file(SW.cf) and its derivitives are
-the intellectual property of Thomas W. Young and may not be reproduced or copies
-in any form for any purpose without permission.   Permission is granted for the 
+{- Copyright (C) 2019,2020,2021,2022 Thomas W. Young, streamwork@twyoung.com
+The StreamWork network definition language, SWL, this file(SWL.cf) and its derivitives are
+the intellectual property of Thomas W. Young and may not be reproduced or copied
+in any form for any purpose without permission.   Permission is granted here for the 
 sole use of rebuilding the Streamwork program, sw,  for personal, non-commercial purposes.
 
 -}
 
 
---               StreamWork prototype network definition language
+--    StreamWork network definition language
 
-entrypoints		Valide, ValidSW, ValidConfig    ; 
+entrypoints Valide, ValidSW, ValidConfig; 
 
 CFGvalid.		Valide 		::= ValidConfig;	
 SWvalid.	 	Valide 		::= ValidSW  ;
@@ -34,7 +34,7 @@ Sneth.			Subnet 		::= Hermt    	;
 Snets.			Subnet 		::= DataFlow	;
 Snetin.			Subnet 		::= ExtPortIn  	;
 Snetout.		Subnet 		::= ExtPortOut  ;
-terminator	    	Subnet  ";" ;
+terminator	    Subnet  ";" ;
 
 Extin.			ExtPortIn  	::=	Proc Prt Larrow Tab	;
 ExtinR.			ExtPortIn  	::=	Tab      Rarrow Prt Proc;
@@ -61,7 +61,8 @@ Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		;
 Arrowsl.		LSarrow	 	::=  "<" TypeDef Buffsize "=" 		;
 Arrowsr.		RSarrow	 	::=  "=" TypeDef Buffsize ">" 		; 
 
-Typedefa.		TypeDef		::=  Symvalu 	 			;
+Typedefa.		TypeDef		::=  Symvalu 	 		;
+Typedefb.       TypeDef     ::=  Symvalu "." Symvalu;
 Typedefnull.	TypeDef		::=  ""					;
 Typdefl.        TypeDef     ::=  TypeDef "," TypeDef;  
 
@@ -77,14 +78,8 @@ Symvaluu.		Symvalu		::= "_"				;
 Processx.		Proc		::= "(" Symvalu  Comp [Argument] Attributes ")" 	;
 Processy.		Proc		::= "(" Symvalu                  Attributes ")" 	;
 
---Attribe.        Attributes  ::=  AttrT  "{" [Attr] "}"  ;
 Attribe.        Attributes  ::=  "[" [Attr] "]"; 
 Attribs.        Attributes  ::=  "";  
-
---Aa1.             AttrT       ::=  "ATTR";
---Aa2.             AttrT       ::=  "attr";
---Aa3.             AttrT       ::=  "ATTRIBUTES";
---Aa4.             AttrT       ::=  "attributes";
 
 Attrs.          Attr        ::=  Symval "=" Stringval   ;
 Attrn.          Attr        ::=  Symval "=" Numval      ;
@@ -134,40 +129,38 @@ Inc2.			Include		::= "INCLUDE"		;
 Prefu.			Prefix		::= "PREFIX"		;
 Prefl.			Prefix		::= "prefix"		;
 
-token   Numvar	  '%' letter  ( letter | digit  )*	;		
-token	Stringvar '$' letter  ( letter | digit  )*	;	
-token	Envar 	  '$' '_' letter  ( letter | digit  )*	;   	-- Environment variable
-token	Symvar    '&' letter  ( letter | digit | '_' )* ;  
-token   SubId	  '^' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
-token   Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
-token   ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Legal remote package import identifier 
--- token   AttrT  ("ATTR") ; 
+token           Numvar	  '%' letter  ( letter | digit  )*	;		
+token	        Stringvar '$' letter  ( letter | digit  )*	;	
+token	        Envar 	  '$' '_' letter  ( letter | digit  )*	;   	-- Environment variable
+token	        Symvar    '&' letter  ( letter | digit | '_' )* ;  
+token           SubId	  '^' letter  ( letter | digit | '_' )* ; 	-- Subnet identifier  
+token           Id	      letter  ( letter | digit | '_' )* ;       -- Legal Symbol Value
+token           ValidImport '{' ( letter | digit | '_' | '.' | '/' )* '}'  ;       -- Legal remote package import identifier 
 	 
-----------------------  StreamWork YAML Configuration Interpreter  ----------------------
+------------  StreamWork YAML Configuration Interpreter  --------------
 
 Validcfg.	 	ValidConfig ::= "StreamWork:" [Entry] ;
 Validcfgd.		ValidConfig ::= "---" "StreamWork:" "{"  [Centry]	 "}"   ;
 
-CfgcEntrya.		Centry	 ::= KeyVal		;
-CfgcEntryb.		Centry	 ::= KeyName		;
--- CfgBlock.		Centry	 ::= KeyName "{" [Centry] "}"	;
+CfgcEntrya.		Centry	 ::= KeyVal;
+CfgcEntryb.		Centry	 ::= KeyName;
 terminator	   	Centry   "," ; 
 
-CfgEntrya.		Entry	 ::= KeyVal		;
-CfgEntryb.		Entry	 ::= KeyName		;
+CfgEntrya.		Entry	 ::= KeyVal;
+CfgEntryb.		Entry	 ::= KeyName;
 terminator	   	Entry   "" ; 
 
-CfgKeyvalint.		KeyVal	 ::= KeyName  Integer 	;
-CfgKeyvalstr.		KeyVal	 ::= KeyName  String 	;
-CfgKeyDate.		KeyVal   ::= KeyName  Date    	; 
+CfgKeyvalint.	KeyVal	 ::= KeyName  Integer;
+CfgKeyvalstr.	KeyVal	 ::= KeyName  String;
+CfgKeyDate.		KeyVal   ::= KeyName  Date; 
 
 KeynameS.		KeyName  ::= Symval ":"		; 
 KeynameM.		KeyName  ::= ModPath Symval ":" ;
 
 
-token   Date	    (digit digit digit digit)  ('-' digit digit )* 'T'  ( ':' | digit | '-' )* ;       -- Legal Date
+token           Date	    (digit digit digit digit)  ('-' digit digit )* 'T'  ( ':' | digit | '-' )* ;       -- Legal Date
 
 comment "#";
 comment "{#" "#}";	
-----------------------   End of Current Language Definition   ----------------------
+------------   End of SWL.cf Language Definition   ---------------
 

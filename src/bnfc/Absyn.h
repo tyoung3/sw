@@ -328,15 +328,17 @@ RSarrow make_Arrowsr(TypeDef p0, Buffsize p1);
 struct TypeDef_
 {
 
-  enum { is_Typedefa, is_Typedefnull, is_Typdefl } kind;
+  enum { is_Typedefa, is_Typedefb, is_Typedefnull, is_Typdefl } kind;
   union
   {
     struct { Symvalu symvalu_; } typedefa_;
+    struct { Symvalu symvalu_1, symvalu_2; } typedefb_;
     struct { TypeDef typedef_1, typedef_2; } typdefl_;
   } u;
 };
 
 TypeDef make_Typedefa(Symvalu p0);
+TypeDef make_Typedefb(Symvalu p0, Symvalu p1);
 TypeDef make_Typedefnull(void);
 TypeDef make_Typdefl(TypeDef p0, TypeDef p1);
 

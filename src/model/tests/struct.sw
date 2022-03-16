@@ -1,7 +1,5 @@
-{# (A)=bT 7>1(B);
-(A)-cT>(C);
-(B b)0<cT=1(C);
-#}
-(D Gen)=aT>(E Pass)=bT>(F Print);
-(X)=>(Y);
-(U)<=(T);
+(D a/Gen)   =int>      1(E b/Pass)0   =bp.TesT>    (F b/Print);
+(X)         =>          (Y);
+(U)         <string=    (T);
+
+(P)         -a.Type,b.type,c.type>          (Q);

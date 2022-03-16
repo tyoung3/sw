@@ -366,6 +366,11 @@ void visitTypeDef(TypeDef p)
     /* Code for Typedefa Goes Here */
     visitSymvalu(p->u.typedefa_.symvalu_);
     break;
+  case is_Typedefb:
+    /* Code for Typedefb Goes Here */
+    visitSymvalu(p->u.typedefb_.symvalu_1);
+    visitSymvalu(p->u.typedefb_.symvalu_2);
+    break;
   case is_Typedefnull:
     /* Code for Typedefnull Goes Here */
     break;

@@ -164,7 +164,7 @@ MakeModel (Stream f)
       FAIL (MakeModel, "Out of memory when allocating Process!\n");
     }
 
-  m->nstreams = 0;
+  m->nstreams = m->nStructStreams = m->nIntStreams = m->nStringStreams = 0;
   m->ncomponents = 0;
   m->nprocs = 0;
   m->level = 0;
@@ -451,6 +451,8 @@ MakeStream (streamType stype, Process src, Process snk, int bs, Model m,
   switch (stype)
     {
     case IS_STRUCT:
+      m->nstreams--;
+      m->nStructStreams++;
     case IS_NET:
       m->nstreams++;
       __attribute__((fallthrough));
@@ -609,10 +611,17 @@ visitSymvalu (Symvalu p)
 String
 visitTypeDef (TypeDef p)
 {
+  char bfr[BUFFSIZE+1];
   switch (p->kind)
     {
     case is_Typedefa:
       return visitSymvalu (p->u.typedefa_.symvalu_);
+  case is_Typedefb:
+      snprintf(bfr,BUFFSIZE,"%s.%s", 
+        visitSymvalu(p->u.typedefb_.symvalu_1),
+        visitSymvalu(p->u.typedefb_.symvalu_2)
+      );
+      return strndup(bfr,BUFFSIZE);
     case is_Typedefnull:
       return ""; 
     case is_Typdefl:
@@ -621,7 +630,7 @@ visitTypeDef (TypeDef p)
     break;
 
     default:
-      badkind (TypgDef);
+      badkind (TypeDef);
     }
 }
 
@@ -703,20 +712,13 @@ SetSource (Process p)
 
 int visitLSarrow(LSarrow p)
 {
-  switch(p->kind)
-  {
-  case is_Arrowsl:
-    // iptype=visitTypeDef(p->u.arrowsl_.typedef_);
+    iptype_save=visitTypeDef(p->u.arrowsl_.typedef_);
     return visitBuffsize(p->u.arrowsl_.buffsize_);
-
-  default:
-    badkind("LSarrow");
-  }
 }
 
 int visitRSarrow(RSarrow p)
 {
-    // visitTypeDef(p->u.arrowsr_.typedef_);
+    iptype_save=visitTypeDef(p->u.arrowsr_.typedef_);
     return(visitBuffsize(p->u.arrowsr_.buffsize_));
 }
 
@@ -815,7 +817,7 @@ visitdataflow (DataFlow _p_)
         );          
     
     case is_Streamlsy:
-    return df(IS_STRUCT,
+      return df(IS_STRUCT,
         visitLSarrow(_p_->u.streamlsy_.lsarrow_),
         visitProc(_p_->u.streamlsy_.proc_),
         visitDataFlow(_p_->u.streamlsy_.dataflow_)->sink,
