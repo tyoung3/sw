@@ -559,9 +559,11 @@ cat << EOF.split.sw | ./sw >/dev/null && echo ok 38 - split.sw || echo not ok 38
 EOF.split.sw
 
 cat << EOF.struct.sw | ./sw >/dev/null && echo ok 39 - struct.sw || echo not ok 39 -  struct.sw
-(D a/Gen)     =int>      1(E b/Pass)0   -b.TestT>    (F b/Print);
+(D a/Gen)   =int>      1(E b/Pass)0   =bp.TesT>    (F b/Print);
 (X)         =>          (Y);
 (U)         <string=    (T);
+
+(P)         -a.Type,b.type,c.type>          (Q);
 EOF.struct.sw
 
 cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 40 - subnet1.sw || echo not ok 40 -  subnet1.sw
