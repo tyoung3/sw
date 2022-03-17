@@ -12,6 +12,8 @@
 #include "model.h"
 #include "sw.h"
 
+#define MAX_BUF 100
+
 /** Print string.*/
 #define P(s) printf("%s\n",(#s));	
 #define PE(s) {};  			        /**<Print empty string */
@@ -399,7 +401,6 @@ void genPrefix(Model m)
     P(func main() {
 	);
     PE(} Fixes indent);
-    // printf("	var cs []chan %s\n	",channelType);
     P(var wg sync.WaitGroup);
     printf("\n");
 
@@ -421,7 +422,7 @@ void genPrefix(Model m)
         }}
         f->iptype=ftype;
         f->streamNum=nstream;
-	    printf("cs%d := make(chan %s,%i)\t//%s.%d->%s.%d\n",
+	    printf("_cs%d := make(chan %s,%i)\t//%s.%d->%s.%d\n",
 		    nstream++,ftype,f->bufsz,           // bfrtbl[i],
 		    f->source->name,f->SourcePort->id, 
 		    f->sink->name,f->SinkPort->id);
@@ -503,38 +504,51 @@ static void genLaunch1(Process p)
 	    printf(",\"%s\"", p->arg[i]);
 	    i++;
 	}
-	printf("},"); 
+	printf("}"); 
     }
     
     //printf("},\t%9s.%s, ", stripPath(p->comp->path), p->comp->name);
 
 }
 
+#define BSIZE 1000
 /** Generate startup code */
 static void genLaunches(Process p, char *channelType)
 {
-    int ch;			/* Assigned channel */
-    int nstreams;
-    int ch0;			/* initial channel index */
-
+    int ch;			    /* Assigned channel                 */
+    int nstreams;       /* Streams/process                  */
+    int ch0;			/* initial channel index            */
+    int nslc=0;         /* Number of channel slice arguments*/
+	char bfr[BSIZE+1];     /* Collect channel slice arguments  */
+    char slarg[BSIZE+1]; /* Slice argument */
+    
 #ifdef typedChannels
     while (p!=NULL) {
-        int nproc;
-        nproc++;
+        char *lastType, *ftype;
         Port pt;
 	    nstreams = p->nportsIn + p->nportsOut;
-	    printf( "\nvar cp%d []chan interface{}\n", nproc);
 	    pt = p->port;
+	    lastType="";
+	    bfr[0]=0;
 	    while(pt) {
-            printf("cp%d=append(cp%d,cs%d)\n",
-                nproc,nproc,
+	        ftype=pt->stream->iptype;
+	        if( strncmp(lastType,ftype,MAX_BUF) !=0 ) {
+                nslc++;
+    	        printf( "\nvar _cp%d []chan %s\n", 
+	               nslc, ftype);
+	            snprintf(slarg,BSIZE,",_cp%d", nslc);   
+	            strncat(bfr, slarg, BSIZE);    
+	            lastType=ftype;   
+	        }    
+            printf("_cp%d=append(_cp%d,_cs%d)\n",
+                nslc,nslc,
                 pt->stream->streamNum);
             pt=pt->next;  
             if(pt==p->port) 
                 break;  
         } 
         genLaunch1(p);
-        printf("cp%d)",nproc);
+        printf("%s)",bfr);
         printf(" // %s\n",p->name);     
         p=p->next;
     }
@@ -549,16 +563,16 @@ static void genLaunches(Process p, char *channelType)
 	    } else {
 		genLaunch1(p);
 		ch0 = p->port->channel;
-		printf("cs[%i:%i])\n", ch0, ch0 + nstreams);
+		printf("_cs[%i:%i])\n", ch0, ch0 + nstreams);
 	    }
 	} else {
 	    if (nstreams > 0) {
 		ch = p->port->channel;
 		genLaunch1(p);
-		printf("cs[%i:%i])\n", ch, ch + 1);
+		printf("_cs[%i:%i])\n", ch, ch + 1);
 	    } else {
 		genLaunch1(p);
-		printf("cs[0:1])\n");
+		printf("_cs[0:1])\n");
 	    }
 	}
 	p = p->next;
