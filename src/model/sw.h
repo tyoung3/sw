@@ -23,7 +23,7 @@ char *strndup (const char *s, size_t n);
 typedef char* String;
 #endif
 
-#define STDPACKAGE "sw"
+#define STDPACKAGE "DoNotGenerateImportForThis"
 char *strncat(char *dest, const char *src, size_t n);
 
 char *mystrncat(char *d, char *s, size_t n);

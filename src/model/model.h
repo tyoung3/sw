@@ -121,6 +121,7 @@ typedef struct Stream_ {
 	streamType  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN* or IS_STRUCT or IS_IFACE*/
 	char *iptype;    	/**< Type of data being sent -- the information packet type*/
 	struct Stream_ *next;	/**<Pointer to next Stream*/
+	int streamNum;      /** Stream serial number */
 } Stream_;
 typedef struct Stream_ *Stream;  /**<Pointer to stream */
 

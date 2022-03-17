@@ -1,25 +1,26 @@
 /** @file swgo.c 
-		  Greate a Go program from the network model	
+		  Greate a main Go program from the network model	
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h>  // getcwd
 
 #include "swsym.h"
 #include "model.h"
 #include "sw.h"
-#include <unistd.h>  // getcwd
 
-#include <assert.h> 
-
-
+#define MAX_BUF 100
 
 /** Print string.*/
 #define P(s) printf("%s\n",(#s));	
-#define PE(s) {};  			/**<Print empty string */
+#define PE(s) {};  			        /**<Print empty string */
 #define C(s) printf("%s",(#s));		/**<Print defined string*/
+
+#define typedChannels               /**<Channels can by typed
+If not set, all channels are interfaces*/
 
 /**Get timestamp*/
 static String Timestamp()
@@ -86,7 +87,9 @@ static void genPaths(Model m)
 
     // P(import "fmt");
     P(import "sync");
+#ifndef typedChannels    
     printf("import %s \"github.com/tyoung3/sw\"\n", STDPACKAGE);
+#endif
 
     p = m->proc;
     while (p) {
@@ -366,10 +369,13 @@ void genPrefix(Model m)
     char bfr[maxbfsz]; 
     Stream f;
     char *channelType="interface{}";
-    
+    int nstream=0;
+
+#ifdef typedChannels    
     if(m->nStructStreams > 0) {
         channelType=defaultChannelType;
     }
+#endif
 
     P(package main);
     printf("\n/*\n                  ");
@@ -395,29 +401,35 @@ void genPrefix(Model m)
     P(func main() {
 	);
     PE(} Fixes indent);
-    printf("	var cs []chan %s\n	",channelType);
     P(var wg sync.WaitGroup);
     printf("\n");
 
     f = m->stream;
     i = 0;
     while (f) {
-	bfrtbl[nstreams - i++ - 1] = f->bufsz;
-	f = f->next;
+      if(f->type != IS_ORPHAN) {
+	  bfrtbl[nstreams - i++ - 1] = f->bufsz;
+      if(defaultChannelType[0]=='_') 
+        defaultChannelType="interface{}";
+        char *ftype=defaultChannelType;
+        if(f->iptype==NULL || f->iptype[0]==0) {
+          ftype="interface{}";
+        } else {
+        if(f->iptype[0]=='_') {
+            ftype=defaultChannelType;  
+        } else {
+          ftype=f->iptype;
+        }}
+        f->iptype=ftype;
+        f->streamNum=nstream;
+	    printf("_cs%d := make(chan %s,%i)\t//%s.%d->%s.%d\n",
+		    nstream++,ftype,f->bufsz,           // bfrtbl[i],
+		    f->source->name,f->SourcePort->id, 
+		    f->sink->name,f->SinkPort->id);
+	   }  // End if not orphan 	    
+	    f=f->next;
     }
-    i = 0;
-    // f = m->stream;
-    while (i < nstreams) {
-	if (bfrtbl[i] > 0) {
-	    printf("cs = append(cs,make(chan %s,%i))\n",
-		   channelType,bfrtbl[i]);
-	} else {
-	    printf("cs = append(cs,make(chan %s))\n",
-	       channelType);
-	}
-	i++;
-    }
-    printf("\n");
+    printf("\n\twg.Add(%d)\n", nstreams);
 }
 
 /** Return true if channel numbers not lined up */
@@ -479,7 +491,12 @@ char *stripPath( char *s1 ) {
 static void genLaunch1(Process p)
 {
     int i = 1;
+    
+#ifdef   typedChannels
+    printf( "go\t%s.%s(&wg,",stripPath(p->comp->path),p->comp->name );
+#else  
     printf( STDPACKAGE ".Launch(&wg,");
+#endif
     printf("[]string{\"%s\"", p->name);
 
     if (p->arg) {
@@ -487,20 +504,55 @@ static void genLaunch1(Process p)
 	    printf(",\"%s\"", p->arg[i]);
 	    i++;
 	}
+	printf("}"); 
     }
     
-    printf("},\t%9s.%s, ", stripPath(p->comp->path), p->comp->name);
+    //printf("},\t%9s.%s, ", stripPath(p->comp->path), p->comp->name);
 
 }
 
+#define BSIZE 1000
 /** Generate startup code */
 static void genLaunches(Process p, char *channelType)
 {
-    int ch;			/* Assigned channel */
-    int nstreams;
-    int ch0;			/* initial channel index */
-
-
+    int ch;			    /* Assigned channel                 */
+    int nstreams;       /* Streams/process                  */
+    int ch0;			/* initial channel index            */
+    int nslc=0;         /* Number of channel slice arguments*/
+	char bfr[BSIZE+1];     /* Collect channel slice arguments  */
+    char slarg[BSIZE+1]; /* Slice argument */
+    
+#ifdef typedChannels
+    while (p!=NULL) {
+        char *lastType, *ftype;
+        Port pt;
+	    nstreams = p->nportsIn + p->nportsOut;
+	    pt = p->port;
+	    lastType="";
+	    bfr[0]=0;
+	    while(pt) {
+	        ftype=pt->stream->iptype;
+	        if( strncmp(lastType,ftype,MAX_BUF) !=0 ) {
+                nslc++;
+    	        printf( "\nvar _cp%d []chan %s\n", 
+	               nslc, ftype);
+	            snprintf(slarg,BSIZE,",_cp%d", nslc);   
+	            strncat(bfr, slarg, BSIZE);    
+	            lastType=ftype;   
+	        }    
+            printf("_cp%d=append(_cp%d,_cs%d)\n",
+                nslc,nslc,
+                pt->stream->streamNum);
+            pt=pt->next;  
+            if(pt==p->port) 
+                break;  
+        } 
+        genLaunch1(p);
+        printf("%s)",bfr);
+        printf(" // %s\n",p->name);     
+        p=p->next;
+    }
+#else
     while (p) {
 	nstreams = p->nportsIn + p->nportsOut;
 	if (nstreams > 1) {
@@ -511,21 +563,21 @@ static void genLaunches(Process p, char *channelType)
 	    } else {
 		genLaunch1(p);
 		ch0 = p->port->channel;
-		printf("cs[%i:%i])\n", ch0, ch0 + nstreams);
+		printf("_cs[%i:%i])\n", ch0, ch0 + nstreams);
 	    }
 	} else {
 	    if (nstreams > 0) {
 		ch = p->port->channel;
 		genLaunch1(p);
-		printf("cs[%i:%i])\n", ch, ch + 1);
+		printf("_cs[%i:%i])\n", ch, ch + 1);
 	    } else {
 		genLaunch1(p);
-		printf("cs[0:1])\n");
+		printf("_cs[0:1])\n");
 	    }
 	}
 	p = p->next;
     }
-
+#endif
     printf("\n");
 }
 
