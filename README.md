@@ -16,7 +16,7 @@ All files in this repo are included in this license.
 
 
 
-SW-0.22.0 - STREAMWORK
+SW-0.22.1 - STREAMWORK
 ======================
 ![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
@@ -225,10 +225,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   
 ### Installation   
   * cd to any convenient workspace (/usr/local/src for example).
-  * Download the latest sw-0.22.0.tar.gz file 
+  * Download the latest sw-0.22.1.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-0.22.0.tar.gz' to extract source files
-  * cd  sw-0.22.0
+  * Run 'tar -xzf .../sw-0.22.1.tar.gz' to extract source files
+  * cd  sw-0.22.1
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -284,11 +284,18 @@ Linux scripts and Go modules, are separately versioned.
 
 #### Stream types and component arguments
 Stream channels can be any Go language type: int, string, struct, 
-or interface.  '_' is shorthand for a channel interface type.   
-Components with multiple ports of varying types, should group 
+or interface.  '_' is shorthand for an interface channel type.   
+Components with channels of varying types, should group 
 types to simplify their entry points. 
  
 Autojoin and autosplit work only with interface types.
+
+While StreamWork packages a number of components, none of them
+are required.  It is quite possible to define a network with no 
+dependencies (other than Go packages) at all.  
+The only requirement for a component is 
+an entry point with two or more parameters: wait group, argument string 
+slice, and as many channel slices as there are channel types. 
 
 #### Variables
 SWL accepts string($NAME), environment string($_NAME), symbol(&NAME),  and numeric(%NAME) variables.  See SWL.pdf for acceptable usage.
