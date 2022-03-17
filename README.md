@@ -163,7 +163,7 @@ produces:
 
 ```
 Hello World
-```
+```type
 
 A process is defined by its process name, its component identifier, component arguments,
 and process attributes; all surrounded by parens.   
@@ -172,7 +172,7 @@ Process names are not apparent to Go and so need not follow Go naming
 rules, just the StreamWork conventions. 
 
 A component identifier consists of its import module/package identifier, 
-a slash, '/', and the component name.  Go component names need to be capitalized.
+a slash, '/', and the component name.  Go component names need to be capitalized.type
 If  the path is omitted,  a configuration default path is assumed.  
 If the component name is also omitted, configuration default component names
 are assumed for sink, source, and filter(has both inputs and outputs) processes.
@@ -183,7 +183,7 @@ Stream directors consist of ```<```, an optional, comma-separated list of type i
 an optional buffersize integer, and ```-```. Example: ```<100-```
 The reverse (Ex: `-myDataType,yourType 100>`) is also valid.
  
-Information packets(IPs) are designed as nil(empty) interfaces.  The
+Information packets(IPs) are designed as nitypel(empty) interfaces.  The
 data type is determined by the sending component.  It is possible for 
 properly coded sink components to handle multiple data types.
 A type mis-match will be reported by incompatible receiving 
@@ -269,7 +269,7 @@ Foo Bar-7
   * bin/sw.sh c;      # Runs make check in .../sw/src
   * bin/sw.sh bw;     # Builds Windows/sw.exe.  Requires mingw.  Run make distclean first.
 
-## StreamWork Language(SWL or SWIRL) Notes
+## StreamWork Language(SWL) Notes
 
 SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
@@ -278,13 +278,26 @@ See the bnf StreamWork language description file, SWL.pdf.
 SWL has few reserved words,  making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
 will be made to ensure that all currently valid SWL statements will remain valid.  Should 
-this prove impossible,  the minor version will be incremented, i.e. to v0.16.0 or greater.
+this prove impossible,  the minor version will be incremented.
 Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for network definition files, **_sw_**, and published Go modules only.  
 Linux scripts and Go modules, are separately versioned.  
+
+#### Stream types and component arguments
+Stream channels can be any Go language type: int, string, struct, 
+or interface.  '_' is shorthand for a channel interface type.   
+Components with multiple ports of varying types, should group 
+types to simplify their entry points. 
+ 
+Autojoin and autosplit work only with interface types.
 
 #### Variables
 SWL accepts string($NAME), environment string($_NAME), symbol(&NAME),  and numeric(%NAME) variables.  See SWL.pdf for acceptable usage.
 
+StreamWork uses the following environment variables:
+  * $BROWSER -- WWW browser 
+  * $GOPATH  -- Go language path
+  * $DEBUG   -- 'Y' will cause some messages to print.
+    
 #### Semi-colon commentary
 Statements in SWL, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
@@ -531,7 +544,7 @@ BUGS:
 Stream directors like => and <= are accepted, but treated the same
 as -> and <-, except for appearing differently in graphs.  
 The meaning is reserved for future use, which could 
-break existing NDs.
+break existing networks.
 	 
 Home Page
 ---------
@@ -596,7 +609,7 @@ Home Page
   
 ### 0.22.0
   * Go code generation revamped
-  * Typed channels partly implemented, possibly breaking NDs
+  * Typed channels partly implemented, possibly breaking networks
     with types specified in a director. 
       
   
