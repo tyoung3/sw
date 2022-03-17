@@ -10,4 +10,4 @@
 (R)3-int>3(S);
 (R)2-sw.IpT>2(S);
 (R)1-sw.IpT>1(S);
-(R)0-sw.IpT>0(S);
+(R)0-[100]int>0(S);

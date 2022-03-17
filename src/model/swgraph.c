@@ -12,9 +12,9 @@
 #include <unistd.h>
 
 
-/** @todo Declutter option
+/** @todo Declutter graph option 
     @todo Config file color palette option
-    @toeo Config file .dot parameters
+    @todo Config file .dot parameters
 */
 
 #define P(s) printf("%s\n",(#s));	/**<Print String*/

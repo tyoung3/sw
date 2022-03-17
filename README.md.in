@@ -16,12 +16,11 @@ All files in this repo are included in this license.
 
 
 
-SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ - STREAMWORK
-======================
+# SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ - STREAMWORK
+ 
 ![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
-StreamWork
-==========
+# StreamWork
          
    Flow based program(FBP) Go language framework and code generator.
          
@@ -29,7 +28,41 @@ StreamWork
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Description
+
+# Table of contents
+ * [Description](#description)
+ * [Synopsis](#synopsis)
+ * [Return code](#returncode)
+ * [**_TestSWL_** program](#testswl) 
+ * [Network Definition](#networkdefinition)
+   * [Network Definition Files](#networkfiles)
+ * [QuickStart on Linux](#quickstart) 
+    * [Requirements](#requirements)  
+    * [Installation](#installation)   
+    * [Post Install](#postinstall) 
+    * [Foo Bar test](#foobartest)
+  * [Building on Linux](#buildingonlinux)
+  * [StreamWork Language(SWL) Notes](#swlnotes)
+      * [Stream types and component arguments](#streamtypes)
+      * [Variables](#variables)
+      * [Semi-colon commentary](#semicolons)
+      * [Left Arrow comments](#leftarrow)
+    * [Collate/Merge Example](#collatemerge)
+  * [Bash Scripts](#bashscripts)
+    * [Hello World](#helloworld)   
+    * [**_swgo_** script](#swgo)
+    * [**_swgraph_** Script](#swgraph)
+    * [**_gofbp_ script**](#gofbpscript)
+      * [gofbp Example](#gofbpexample)
+        * [LOADBAL.SW](#loadbal)
+    * [Generate a project](#generateaproject)
+      * [**_sw.sh_** Synopsis](#synopsis)
+  * [BUGS](#bugs)
+  * [Home Page](#homepage)    
+  * [Release Notes](#releasenotes)
+  * [Author](#author)
+  
+## Description<a name="description"/>
 
 StreamWork is a simple system for building complex programs. 
 
@@ -43,7 +76,46 @@ then generates a main Go program.
 
 Options allow you to produce an abstract syntax tree, a GraphViz dot file,  or a goFBP main prgram instead.
 
-## Network Definition 
+
+### Synopsis<a name="synopsis"/>
+
+**_sw_** [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]
+
+**_sw_** -v
+
+**_sw_** --help 
+
+If SW_FILE is omitted, **_sw_**  will read from stdin.
+
+```	 
+		MODE= 
+			0-GOMODE		. Generate a main SW Go program[DEFAULT].
+			1-ASTMODE		. Display the Abstract Syntax Tree 
+			2-GENTREE		. Display the Linearized tree
+			3-GRAPHMODE		. Generate Graphviz .dot file code
+			4-JAVAFBP		. Incomplete and untested. Looking for help.
+			5-PROJECT		. Generate **_swgen.sh_** code for a project tree.
+			7-CMODE			. Incomplete and untested. Looking for help.
+			8-GENGOFBP      . Generate main go code for J. P. Morrison's gofbp. 
+```
+
+## Return code<a name="returncode"/>
+**_sw_** returns SUCCESS unless it encounters an error, in which case **_sw_** returns FAILURE.
+See package documention for component return codes. 
+
+## **_TestSWL_** program<a name="testswl"/> 
+**_TestSWL_** syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
+### synopsis<a name="testswlsynopsis"/>
+
+```usage: Call with one of the following argument combinations:
+	--help		Display this help message.
+	(no arguments)	Parse stdin verbosely.
+	(files)		Parse content of files verbosely.
+	-s (files)	Silent mode. Parse content of files silently.
+```
+
+## Network Definition <a name="networkdefinition"/>
+
 A StreamWork network definition describes a program as a  list of data streams.
 Each data stream consists of a source process, a director, and a sink process. 
 The network definition is a compact text-based representation of a data flow diagram. 
@@ -72,45 +144,7 @@ On option, **_sw_** will read, parse and interpret a network definition file the
     OR
  * a linearized tree (a network definition reconstruction).   
 
-### Synopsis
-
-**_sw_** [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]
-
-**_sw_** -v
-
-**_sw_** --help 
-
-If SW_FILE is omitted, **_sw_**  will read from stdin.
-
-```	 
-		MODE= 
-			0-GOMODE		. Generate a main SW Go program[DEFAULT].
-			1-ASTMODE		. Display the Abstract Syntax Tree 
-			2-GENTREE		. Display the Linearized tree
-			3-GRAPHMODE		. Generate Graphviz .dot file code
-			4-JAVAFBP		. Incomplete and untested. Looking for help.
-			5-PROJECT		. Generate **_swgen.sh_** code for a project tree.
-			7-CMODE			. Incomplete and untested. Looking for help.
-			8-GENGOFBP      . Generate main go code for J. P. Morrison's gofbp. 
-```
-
-## Return code
-**_sw_** returns SUCCESS unless it encounters an error, in which case **_sw_** returns FAILURE.
-See package documention for component return codes. 
-
-## **_TestSWL_** program 
-**_TestSWL_** syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
-### synopsis
-
-```usage: Call with one of the following argument combinations:
-	--help		Display this help message.
-	(no arguments)	Parse stdin verbosely.
-	(files)		Parse content of files verbosely.
-	-s (files)	Silent mode. Parse content of files silently.
-```
-
-
-## Network Definition Files
+### Network Definition Files<a name="networkfiles"/>
 
 A network definition file (in the SWL language[see below]) consists of a list of 
 streams(aka dataflows); and may also contain subnet definitions, 
@@ -163,7 +197,7 @@ produces:
 
 ```
 Hello World
-```type
+``` 
 
 A process is defined by its process name, its component identifier, component arguments,
 and process attributes; all surrounded by parens.   
@@ -214,16 +248,16 @@ Comments and critiques are welcome.    Contributors are encouraged.
 Please do not submit code before contacting the project.  Contact by 
 e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to posting a request on Github.     
 
-## QuickStart on Linux 
+## QuickStart on Linux<a name="quickstart"/> 
   
-### Requirements  
+### Requirements<a name="requirements"/>  
   * Gcc, etc.
   * Graphviz should be installed, but installation may proceed
     without it.
   * The ...github/tyoung3/StreamWork backend is no longer required.  
   * **_sw_** is written in C. 
   
-### Installation   
+### Installation<a name="installation"/>   
   * cd to any convenient workspace (/usr/local/src for example).
   * Download the latest sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
@@ -233,9 +267,9 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
 	  
-### Post Install 
+### Post Install<a name="postinstall"/>
    
-#### Foo Bar test
+#### Foo Bar test<a name="foobartest"/>
 
   mkdir /tmp/x/	 
   * **_echo_** "(Foo) <- (Bar);" | **_sw_** > /tmp/x/fb.go 
@@ -260,7 +294,7 @@ Foo Bar-7
 ```
 
 
-## Building on Linux
+## Building on Linux<a name="buildingonlinux"/>
 
   * Install autotools, ctags, libyaml-dev, bnfc, bison, and flex 
   * cd to your project workspace (like /usr/local/src )
@@ -269,7 +303,7 @@ Foo Bar-7
   * bin/sw.sh c;      # Runs make check in .../sw/src
   * bin/sw.sh bw;     # Builds Windows/sw.exe.  Requires mingw.  Run make distclean first.
 
-## StreamWork Language(SWL) Notes
+## StreamWork Language(SWL) Notes<a name="swlnotes"/>
 
 SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
@@ -282,7 +316,7 @@ this prove impossible,  the minor version will be incremented.
 Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for network definition files, **_sw_**, and published Go modules only.  
 Linux scripts and Go modules, are separately versioned.  
 
-#### Stream types and component arguments
+#### Stream types and component arguments<a name="streamtypes"/>
 Stream channels can be any Go language type: int, string, struct, 
 or interface.  '_' is shorthand for an interface channel type.   
 Components with channels of varying types, should group 
@@ -297,7 +331,7 @@ The only requirement for a component is
 an entry point with two or more parameters: wait group, argument string 
 slice, and as many channel slices as there are channel types. 
 
-#### Variables
+#### Variables<a name="varaibles"/>
 SWL accepts string($NAME), environment string($_NAME), symbol(&NAME),  and numeric(%NAME) variables.  See SWL.pdf for acceptable usage.
 
 StreamWork uses the following environment variables:
@@ -305,7 +339,7 @@ StreamWork uses the following environment variables:
   * $GOPATH  -- Go language path
   * $DEBUG   -- 'Y' will cause some messages to print.
     
-#### Semi-colon commentary
+#### Semi-colon commentary<a name="semicolons"/>
 Statements in SWL, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
 they tell the reader (and the SWL interpreter) when
@@ -314,13 +348,12 @@ Imagine trying to read a book without any periods (or initial capitals).
 Additionally, without semi-colons line breaks become part of the language 
 definition, leading to awkward, confusing syntax rules.  
 
-#### Left Arrow comments
+#### Left Arrow comments<a name="leftarrow"/>
 The, ```<-```,  token is employed in order to be consistent with its 
 usage in the Go language.  The ```->``` token is also available:
 "(A) -> (B)1 <- (C);"  is valid SWL.   
 
-### Collate/Merge Example
----------------------
+### Collate/Merge Example<a name="collatemerge"/>
 
 Run the following (in Linux):
 
@@ -340,8 +373,8 @@ Match0 Int: 23
 
 ``` 
 
-Hello World
------------
+## Hello World<a name="helloworld"/>
+
 
 ```
 echo "(HELLO)->(WORLD);" |sw > /tmp/hello.go
@@ -367,8 +400,8 @@ produces
 an image of the collate 
 network.  
 
-## Bash Scripts
-### **_swgo_** script
+## Bash Scripts<a name="bashscripts"/>
+### **_swgo_** script<a name="swgo"/>
 The bash script, **_swgo_**, will generate and run a GO program from a network definition:
 
 ```
@@ -426,7 +459,7 @@ Hello World-5
 Hello World-6
 ```
 
-### **_swgraph_** Script
+### **_swgraph_** Script<a name="swgraph"/>
 
 Another bash script, **_swgraph_**, will display a graphic image of a network definition:
    
@@ -450,14 +483,14 @@ are not guaranteed to remain unchanged in future sw versions.
 
 The resulting image is an annotated Data Flow Diagram.
 
-### **_gofbp_ script** 
+### **_gofbp_ script**<a name="gofbpscript"/> 
 **_gofbp_** produces and runs a gofbp program 
 (see [github.com/jpaulm/gofbp](https://github.com/jpaulm/gofbp)  )
 from a StreamWork net definition file.
 
-#### gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)
+#### gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)<a name="gofbpexample"/>
 
-##### Given: LOADBAL.SW
+##### Given: LOADBAL.SW<a name="loadbal"/>
 
 ```
 $core = "github.com/jpaulm/gofbp/core";
@@ -487,7 +520,7 @@ Input to DelayedReceiver: Receiver0 > IP - # 5
 Input to DelayedReceiver: Receiver0 > IP - # 9
 ```
 
-### Generate a project
+### Generate a project<a name="generateaproject"/>
 **_swproject_** .../nds/postage.sw
 produces the following source tree:
 
@@ -519,7 +552,7 @@ then produces this graph
 ![postage.svg](http://sw.twyoung.com/images/postage.svg)
 vets the code, and finally runs it.
 
-#### **_sw.sh_** Synopsis
+#### **_sw.sh_** Synopsis<a name="sw.sh"/>
 
 ```
 sw.sh-1.0.1 USAGE: 
@@ -543,8 +576,8 @@ sw.sh-1.0.1 USAGE:
 		--help	. Display this help
 ```		
 
-BUGS:
------
+## BUGS:<a name="bugs"/>
+
 
 **_sw.Gen_** fails unless all three arguments are present.
 
@@ -553,11 +586,10 @@ as -> and <-, except for appearing differently in graphs.
 The meaning is reserved for future use, which could 
 break existing networks.
 	 
-Home Page
----------
+## Home Page<a name="homepage"/>
 
 (https://sw.twyoung.com)
-## Release Notes
+## Release Notes<a name="releasnotes"/>
 
 ### 0.18.0
   * Reorganized repo tree structure 
@@ -620,7 +652,7 @@ Home Page
     with types specified in a director. 
       
   
-## Author
+## Author<a name="author"/>
 
     Tom Young, streamwork@twyoung.com
     

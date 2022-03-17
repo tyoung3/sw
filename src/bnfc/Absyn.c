@@ -548,6 +548,20 @@ TypeDef make_Typedefnull()
     tmp->kind = is_Typedefnull;
     return tmp;
 }
+/********************   TypedefArray    ********************/
+TypeDef make_TypedefArray(Numval p1, TypeDef p2)
+{
+    TypeDef tmp = (TypeDef) malloc(sizeof(*tmp));
+    if (!tmp)
+    {
+        fprintf(stderr, "Error: out of memory when allocating TypedefArray!\n");
+        exit(1);
+    }
+    tmp->kind = is_TypedefArray;
+    tmp->u.typedefarray_.numval_ = p1;
+    tmp->u.typedefarray_.typedef_ = p2;
+    return tmp;
+}
 /********************   Typdefl    ********************/
 TypeDef make_Typdefl(TypeDef p1, TypeDef p2)
 {
