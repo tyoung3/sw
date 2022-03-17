@@ -4,10 +4,10 @@ dnl     https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install
 dnl     https://www.gnu.org/software/automake/manual/automake.html#Declaring-Custom-Test-Drivers
 dnl   https://fasterthanli.me/articles/cross-compilation-notes
 dnl Process this file with autoconf
-AC_INIT([sw], [0.22.1], [sw@twyoung.com])  # VERSION for releasing, not in sw
+AC_INIT([sw], [0.23.0], [sw@twyoung.com])  # VERSION for releasing, not in sw
 AC_SUBST(SW_MAJOR, ["0"])
-AC_SUBST(SW_MINOR, ["22"])
-AC_SUBST(SW_LEVEL, ["1"])     # Patch level 
+AC_SUBST(SW_MINOR, ["23"])
+AC_SUBST(SW_LEVEL, ["0"])     # Patch level 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
