@@ -636,6 +636,16 @@ void ppTypeDef(TypeDef p, int _i_)
     if (_i_ > 0) renderC(_R_PAREN);
     break;
 
+  case is_TypedefArray:
+    if (_i_ > 0) renderC(_L_PAREN);
+    renderC('[');
+    ppNumval(p->u.typedefarray_.numval_, 0);
+    renderC(']');
+    ppTypeDef(p->u.typedefarray_.typedef_, 0);
+
+    if (_i_ > 0) renderC(_R_PAREN);
+    break;
+
   case is_Typdefl:
     if (_i_ > 0) renderC(_L_PAREN);
     ppTypeDef(p->u.typdefl_.typedef_1, 0);
@@ -2213,6 +2223,20 @@ void shTypeDef(TypeDef p)
 
 
 
+
+    break;
+  case is_TypedefArray:
+    bufAppendC('(');
+
+    bufAppendS("TypedefArray");
+
+    bufAppendC(' ');
+
+    shNumval(p->u.typedefarray_.numval_);
+  bufAppendC(' ');
+    shTypeDef(p->u.typedefarray_.typedef_);
+
+    bufAppendC(')');
 
     break;
   case is_Typdefl:

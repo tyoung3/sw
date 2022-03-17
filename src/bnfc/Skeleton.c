@@ -374,6 +374,11 @@ void visitTypeDef(TypeDef p)
   case is_Typedefnull:
     /* Code for Typedefnull Goes Here */
     break;
+  case is_TypedefArray:
+    /* Code for TypedefArray Goes Here */
+    visitNumval(p->u.typedefarray_.numval_);
+    visitTypeDef(p->u.typedefarray_.typedef_);
+    break;
   case is_Typdefl:
     /* Code for Typdefl Goes Here */
     visitTypeDef(p->u.typdefl_.typedef_1);

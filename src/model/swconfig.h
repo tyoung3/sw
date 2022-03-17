@@ -12,6 +12,7 @@
 
 #define htmldir		  cfg.HTMLdir
 #define defaultPath 	  cfg.DefaultPath
+#define defaultTypePath   cfg.DefaultTypePath
 #define defaultSourceComp cfg.DefaultSourceComp
 #define defaultSinkComp   cfg.DefaultSinkComp
 #define defaultFilterComp cfg.DefaultFilterComp
@@ -36,7 +37,8 @@ struct cfg_ {
 	int   MaxDepth;			/**<Maximum subnet depth*/
 	int   Tablesize;		/**<Symbol table size*/
 	int   DefaultBufferSize;	/**<Default buffer size */
-	char *DefaultPath;		/**<Default module path*/
+	char *DefaultPath;		    /**<Default package path*/
+	char *DefaultTypePath;		/**<Default type path(package)*/
 	char *DefaultSourceComp;	/**<Default source component*/
 	char *DefaultSinkComp;		/**<Default sink component*/
 	char *DefaultFilterComp;	/**<Default filter component*/

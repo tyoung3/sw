@@ -608,14 +608,50 @@ visitSymvalu (Symvalu p)
     }
 }
 
+static int builtinType(char *t) {
+      char c=t[0];
+      if(c >= 'a' && c <= 'z') 
+        return 1;
+      return 0;  
+
+/*        
+      char *b[] = {
+            "int", "int8",   int16",  "int32",  "int64",  
+                  "uint8", "uint16", "uint32", "uint64",  
+            "float", "float32", "float64", "complex64", "complex128",
+             "", "", 
+            NULL};
+      int i=0;
+      
+      do {
+            if( strncmp(t,b[i],100) == 0 ) 
+                return 1;
+            i++;
+      } while ( b[i] != NULL ); 
+      
+      return 0;
+*/        
+}
+
 String
 visitTypeDef (TypeDef p)
 {
   char bfr[BUFFSIZE+1];
+  char *t;  // Channel type 
   switch (p->kind)
     {
-    case is_Typedefa:
-      return visitSymvalu (p->u.typedefa_.symvalu_);
+  case is_TypedefArray:
+    /* Code for TypedefArray Goes Here */
+    snprintf(bfr,BUFFSIZE,"[%d]%s",
+                visitNumval(p->u.typedefarray_.numval_),
+                visitTypeDef(p->u.typedefarray_.typedef_)
+            );
+    return strndup(bfr,BUFFSIZE);
+  case is_Typedefa:
+      t=visitSymvalu (p->u.typedefa_.symvalu_);
+      if( builtinType(t) ) return t;
+      snprintf(bfr,BUFFSIZE,"%s.%s",defaultTypePath,t);
+      return strndup(bfr,BUFFSIZE);
   case is_Typedefb:
       snprintf(bfr,BUFFSIZE,"%s.%s", 
         visitSymvalu(p->u.typedefb_.symvalu_1),
@@ -625,8 +661,8 @@ visitTypeDef (TypeDef p)
     case is_Typedefnull:
       return ""; 
     case is_Typdefl:
-        visitTypeDef(p->u.typdefl_.typedef_1);
-        visitTypeDef(p->u.typdefl_.typedef_2);
+        return visitTypeDef(p->u.typdefl_.typedef_1);
+        // ?? visitTypeDef(p->u.typdefl_.typedef_2);
     break;
 
     default:

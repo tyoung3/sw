@@ -1,7 +1,9 @@
 # Flow Based Programming Comments             
-11/8/2021
+11/8/2021, 3/17/2022
 
-## 'Classical' FBP versus StreamWork (v0.14.2)
+##  StreamWork (v0.22.1) and 'Classical FBP'
+
+We believe StreamWork is consistent with 'Classical Flow Based Programming'. 
 
 ### Wikipedia Definition of FBP
 
@@ -19,12 +21,12 @@ So, to summarize the Wikipedia definition, FBP is charactarized by:
    * Named Ports
 
 Wikipedia does not mention concurrency -- in error, we maintain.  
-Wilipedia also does not mention data ownership or back pressure and other features 
-such as bracketed IPs.  StreamWork does not implement data ownership and defined
+Wikipedia also does not mention data ownership or back pressure and other features 
+such as bracketed IPs.  StreamWork does not directly implement data ownership and defined
 lifetimes, back pressure, or bracketed IPs.  There is no apparent reason why these features could not 
 be implemented within the components.   
 
-We claim here that StreamWork more than meets all the Wikipedia criteria and therefore 
+We claim here that StreamWork meets all the Wikipedia criteria and therefore 
 StreamWork implements 'classical' FBP.  Note that StreamWork is highly concurrent and also 
 provides for subnet definition and expansion. 
 

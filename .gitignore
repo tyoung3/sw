@@ -55,3 +55,4 @@ swr
 swr.go
 pill.go
 pill_string.go
+src/bnfc/Makefile.bnfc

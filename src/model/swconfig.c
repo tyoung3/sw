@@ -39,6 +39,7 @@ static void CfgInt(String key, int val) {
 
 static void CfgString(String key, String val)  {
 	SetS(DefaultPath);
+	SetS(DefaultTypePath);
 	SetS(DefaultSourceComp);
 	SetS(DefaultSinkComp);
 	SetS(DefaultFilterComp);

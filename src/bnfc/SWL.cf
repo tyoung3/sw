@@ -63,7 +63,8 @@ Arrowsr.		RSarrow	 	::=  "=" TypeDef Buffsize ">" 		;
 
 Typedefa.		TypeDef		::=  Symvalu 	 		;
 Typedefb.       TypeDef     ::=  Symvalu "." Symvalu;
-Typedefnull.	TypeDef		::=  ""					;
+Typedefnull.	TypeDef		::=  "";
+TypedefArray.   TypeDef     ::=  "[" Numval "]" TypeDef;
 Typdefl.        TypeDef     ::=  TypeDef "," TypeDef;  
 
 Bufszi.			Buffsize 	::= Numval ;

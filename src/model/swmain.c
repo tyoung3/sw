@@ -21,8 +21,6 @@ char fbfr[BUFFSIZE + 1]; /**<File name buffer.*/
 
 char *version = { "0.15.0" };
 
-			    /**<sw version >   @todo Fix this!*/
-
 String configfile = { "sw.cfg" };		/**<SW configuration file> */
 
 static MODE mode = GOMODE;			    /** Outut mode*/
