@@ -18,7 +18,7 @@ import (
 )
 
 /**  send: Write data from stdout or stderr to channel 1 or 2, respectively, one line at a time.*/
-func Send(stdoutStderr *io.ReadCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
+func send(stdoutStderr *io.ReadCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 
 	defer wg2.Done()
 	defer close(*ci)
@@ -35,7 +35,7 @@ func Send(stdoutStderr *io.ReadCloser, ci *chan interface{}, wg2 *sync.WaitGroup
 }
 
 /** recv:  Write data from channel 0 to stdin(pipe). */
-func Recv(stdin *io.WriteCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
+func recv(stdin *io.WriteCloser, ci *chan interface{}, wg2 *sync.WaitGroup) {
 
 	defer (*stdin).Close()
 	defer wg2.Done()
@@ -84,9 +84,9 @@ func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(3)
 
-	go Recv(&stdin, &cs[0], &wg2)
-	go Send(&stdout, &cs[1], &wg2)
-	go Send(&stderr, &cs[2], &wg2)
+	go recv(&stdin,  &cs[0], &wg2)
+	go send(&stdout, &cs[1], &wg2)
+	go send(&stderr, &cs[2], &wg2)
 
 	if err := cmd.Start(); err != nil {
 		panic(err)
