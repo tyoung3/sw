@@ -429,7 +429,7 @@ void genPrefix(Model m)
 	   }  // End if not orphan 	    
 	    f=f->next;
     }
-    printf("\n\twg.Add(%d)\n", nstreams);
+    printf("\n\twg.Add(%d)\n", m->nprocs);
 }
 
 /** Return true if channel numbers not lined up */
