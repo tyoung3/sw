@@ -3,11 +3,11 @@
   These @todoS are sw general, not swproject specific: 
   High Priority:
   
-    @todo default channel type path.  
+    @todo env variable to pass return code?
     @todo create document tree to model component html file hierarchy
-    @todo web server library 
-    @todo string/line channel type library
-    @todo math channel type library [w/plotting -- geogebra?]
+    @todo web server component library 
+    @todo string/line channel type component library
+    @todo math channel type component library [w/plotting -- geogebra?]
     @todo automate github search for components
     @todo use $PATH and/or $GOPATH to find .sw files
     @todo Update project generation
@@ -52,6 +52,7 @@
  	          
  DONE: 
 	
+    @done default channel type path.  
     @done README TOC
 	@done Synopsis to README.md.in
 	@done Document environment variable usage.  DEBUG/USER/HOME

@@ -1,4 +1,4 @@
-package sw
+package cfg
 
 import config "github.com/zpatrick/go-config"
 import "sync"
