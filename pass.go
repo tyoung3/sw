@@ -14,7 +14,7 @@ import (
 	str "strconv"
 	"sync"
 	"time"
-	"fmt"
+	_ "fmt"
 )
 
 /** Send all IPs received.  Delay time Poison distributed. */
@@ -27,7 +27,7 @@ func loop(cs []chan interface{}, delay int) {
 		ip, ok := <-cs[0]
 		if ok == true && ip != nil {
 		    period := time.Duration(-float64(delay)*math.Log(r.Float64())) * time.Millisecond
-		    fmt.Println("period=",period);
+		    // fmt.Println("period=",period);
 			time.Sleep(period)
 			cs[1] <- ip
 		} else {
