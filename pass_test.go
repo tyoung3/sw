@@ -14,7 +14,7 @@ func TestSkel_Pass(t *testing.T) {
 	var cs []chan interface{}
 	var wg sync.WaitGroup
 
-	arg := []string{"TestSkel_Pass"}
+	arg := []string{"TestSkel_Pass", "1000"}
 
 	// fmt.Println(arg[0])
 	for i := 0; i < 1+1; i++ {
@@ -23,13 +23,15 @@ func TestSkel_Pass(t *testing.T) {
 
 	wg.Add(2)
 	go func() {
-		cs[0] <- 5
-		//fmt.Println("TestSkel: Done sending");
+		defer close(cs[0])
+		defer wg.Done()
+		cs[0] <- 1
 		ip, _ := <-cs[1]
 		fmt.Println("TestSkel_Pass/IP:", ip)
+		cs[0] <- 2
+		//fmt.Println("TestSkel: Done sending");
+		ip, _  = <-cs[1]
 		fmt.Println("TestSkel_Pass Ended")
-		close(cs[0])
-		wg.Done()
 		return
 	}()
 

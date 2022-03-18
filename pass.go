@@ -5,7 +5,7 @@ package sw
      1  input  port
      1 output port
 
-Purpose delay dataflow by a configurable interval of time.  Forward all input in arrival sequence to output.
+Purpose delay dataflow by a Poison distributed, average configurable interval of time in milliseconds.  Forward all input in arrival sequence to output.
 */
 
 import (
@@ -14,6 +14,7 @@ import (
 	str "strconv"
 	"sync"
 	"time"
+	"fmt"
 )
 
 /** Send all IPs received.  Delay time Poison distributed. */
@@ -25,7 +26,9 @@ func loop(cs []chan interface{}, delay int) {
 	for {
 		ip, ok := <-cs[0]
 		if ok == true && ip != nil {
-			time.Sleep(time.Duration(-float64(delay)*math.Log(r.Float64())) * time.Millisecond)
+		    period := time.Duration(-float64(delay)*math.Log(r.Float64())) * time.Millisecond
+		    fmt.Println("period=",period);
+			time.Sleep(period)
 			cs[1] <- ip
 		} else {
 			close(cs[1])
@@ -36,11 +39,11 @@ func loop(cs []chan interface{}, delay int) {
 
 /*Pass delays input from chanell 0 for arg[1] milliseconds, then sends it out on channel 1.  */
 func Pass(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
-	// var delay int=1;  // Delay for one second.
+	var delay int=1;  // Delay for one second.
 
 	defer wg.Done()
-	cfg := pkgConfig()
-	delay, _ := cfg.IntOr("delay", 1000) /* Mean milliseconds delay; Poison distributed */
+	// cfg := pkgConfig()
+	// delay, _ := cfg.IntOr("delay", 1000) /* Mean milliseconds delay; Poison distributed */
 	if len(arg) > 1 {
 		delay, _ = str.Atoi(arg[1])
 	}

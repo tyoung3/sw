@@ -16,7 +16,7 @@ All files in this repo are included in this license.
 
 
 
-# SW-0.24.0 - STREAMWORK
+# SW-0.26.0 - STREAMWORK
  
 ![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
@@ -259,10 +259,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   
 ### Installation<a name="installation"/>   
   * cd to any convenient workspace (/usr/local/src for example).
-  * Download the latest sw-0.24.0.tar.gz file 
+  * Download the latest sw-0.26.0.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-0.24.0.tar.gz' to extract source files
-  * cd  sw-0.24.0
+  * Run 'tar -xzf .../sw-0.26.0.tar.gz' to extract source files
+  * cd  sw-0.26.0
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
