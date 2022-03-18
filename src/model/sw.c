@@ -610,6 +610,7 @@ visitSymvalu (Symvalu p)
 
 static int builtinType(char *t) {
       char c=t[0];
+      if(c=='_') return 1;  // Short for interface{} 
       if(c >= 'a' && c <= 'z') 
         return 1;
       return 0;  

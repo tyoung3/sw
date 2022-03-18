@@ -1,4 +1,4 @@
-package sw
+package cfg
 
 import "testing"
 import "fmt"
