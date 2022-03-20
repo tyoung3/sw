@@ -3,6 +3,9 @@
   These @todoS are sw general, not swproject specific: 
   High Priority:
   
+    @todo swgrapgh levels.
+    @todo Fix defaultTypePath missing in config file.
+        @todo fix null type path problem.
     @todo env variable to pass return code?
     @todo create document tree to model component html file hierarchy
     @todo web server component library 

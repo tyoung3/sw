@@ -325,7 +325,7 @@ genLinks (Model m)
 	    {
 #ifdef SHOW_PORTS
 	      printf
-		("\"%s\":%i -> \"%s\":%i [color=%s,fontcolor=%s, label=\"%i %s\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+		("\"%s\":%i -> \"%s\":%i [color=%s,fontcolor=%s, label=\"%i +%s\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
 		src->name, f->source_id, snk->name, f->sink_id,  edgeColor,sourceColor,  channel, f->iptype, f->sink_id, f->source_id,
 		   f->bufsz);
 #else
@@ -336,8 +336,10 @@ genLinks (Model m)
 #endif
 	    }  // End if bfsz
 	    break;
+	  IS_SUB:
+	    break;  
 	  default:
-	      showPorts (f, src, snk, channel);
+	      // showPorts (f, src, snk, channel);
 	}			// End switch on type            
     f = f->next; 		// Get next stream
   }				// End while
