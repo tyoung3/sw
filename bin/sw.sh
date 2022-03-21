@@ -174,10 +174,14 @@ case $1 in
 	cl) ShowCheck;;
 	dbuild) shift ; BuildDocker $*;;
 	d)shift; RunDocker $*;;
-	doc)cd ../; shift; doxygen docs/Doxyfile&&Browse ./docs/doxy/html/index.html;;
+	doc)cd ../; shift;
+	    (doxygen docsx/Doxyfile&&Browse ./docsx/doxy/html/index.html) &
+	    mkdocs build 
+	    ;;
     ex)shift; cd example; make;; 
 	j) GenSVG;;
 	jl) ../bin/swlocusts j & ;;	#Display locusts map;
+	
 	p)  echo $*; shift
 		nd=$1 
 		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
@@ -192,6 +196,10 @@ case $1 in
 	    $BROWSER https://sw.twyoung.com 
 	   ;;
 	s) shift; Shell $*;;
+	smkd|sm|smk)shift; cd ../; mkdocs serve -a localhost:8001 &
+	    sleep 2
+	    $BROWSER localhost:8001 &
+	    ;;
 	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0 &;;
 	*) cat << EOF 
@@ -212,6 +220,7 @@ sw.sh-$version USAGE:
 		rc		. Build and run Collate program 
 		rl		. Run locusts program
 		s		. Enter SW shell.  'e' to exit the shell. 
+		sm      . Serve makedocs at localhost:8001
 		v		. Display this script version
 		x		. Edit this script
 		--help	. Display this help

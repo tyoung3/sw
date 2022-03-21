@@ -4,10 +4,10 @@ dnl     https://thoughtbot.com/blog/the-magic-behind-configure-make-make-install
 dnl     https://www.gnu.org/software/automake/manual/automake.html#Declaring-Custom-Test-Drivers
 dnl   https://fasterthanli.me/articles/cross-compilation-notes
 dnl Process this file with autoconf
-AC_INIT([sw], [0.26.6], [sw@twyoung.com])  # VERSION for releasing, not in sw
+AC_INIT([sw], [0.26.7], [sw@twyoung.com])  # VERSION for releasing, not in sw
 AC_SUBST(SW_MAJOR, ["0"])
 AC_SUBST(SW_MINOR, ["26"])
-AC_SUBST(SW_LEVEL, ["6"])     # Patch level 
+AC_SUBST(SW_LEVEL, ["7"])     # Patch level 
 AC_CONFIG_AUX_DIR([build-aux])
 AC_REQUIRE_AUX_FILE([tap-driver.sh])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
@@ -32,6 +32,6 @@ AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T  
 AC_TYPE_UINT8_T
 AC_TYPE_INT32_T
-AC_CONFIG_FILES([Makefile src/Makefile src/bnfc/Makefile  src/model/Makefile README.md docs/Doxyfile SECURITY.md])
+AC_CONFIG_FILES([Makefile src/Makefile src/bnfc/Makefile  src/model/Makefile README.md docsx/Doxyfile SECURITY.md])
 AC_OUTPUT
 
