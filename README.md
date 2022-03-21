@@ -651,6 +651,8 @@ break existing networks.
   * Typed channels partly implemented, possibly breaking networks
     with types specified in a director. 
       
+### 0.26.6
+  * Fixed double arrow graph error      
   
 ## Author<a name="author"/>
 
