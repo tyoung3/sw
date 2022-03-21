@@ -16,7 +16,7 @@ All files in this repo are included in this license.
 
 
 
-# SW-0.26.7 - STREAMWORK
+# SW-0.26.8 - STREAMWORK
  
 ![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
@@ -259,10 +259,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   
 ### Installation<a name="installation"/>   
   * cd to any convenient workspace (/usr/local/src for example).
-  * Download the latest sw-0.26.7.tar.gz file 
+  * Download the latest sw-0.26.8.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-0.26.7.tar.gz' to extract source files
-  * cd  sw-0.26.7
+  * Run 'tar -xzf .../sw-0.26.8.tar.gz' to extract source files
+  * cd  sw-0.26.8
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -658,6 +658,9 @@ break existing networks.
   * Introduced mkdocs
   * Attempt to fix go.in yaml  Dependabot alert
   * Fix build error in swgraph.c
+  
+### 0.26.8
+  * Removed 'default:' error from swgraph.c  
   
 ## Author<a name="author"/>
 

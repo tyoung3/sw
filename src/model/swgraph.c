@@ -334,15 +334,14 @@ genLinks (Model m)
   
   f = m->stream;
   while (f) {
-        arrowhead="normal"; style="solid";
+    arrowhead="normal"; style="solid";
     switch (f->type) {
-    case IS_STRUCT:
-        arrowhead="diamond"; style="tapered";
-    case IS_NET:
-      SetIsNet(f, arrowhead, style);
-	case IS_SUB:
+      case IS_STRUCT:
+          arrowhead="diamond"; style="tapered";
+      case IS_NET:
+          SetIsNet(f, arrowhead, style);
+	  case IS_SUB:
 	    break;  
-	default:
 	      // showPorts (f, src, snk, channel);
 	}			// End switch on type            
     f = f->next; 		// Get next stream

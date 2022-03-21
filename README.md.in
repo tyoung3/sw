@@ -659,6 +659,9 @@ break existing networks.
   * Attempt to fix go.in yaml  Dependabot alert
   * Fix build error in swgraph.c
   
+### 0.26.8
+  * Removed 'default:' error from swgraph.c  
+  
 ## Author<a name="author"/>
 
     Tom Young, streamwork@twyoung.com
