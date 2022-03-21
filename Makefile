@@ -97,7 +97,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/src/model/config.h
-CONFIG_CLEAN_FILES = README.md docs/Doxyfile SECURITY.md
+CONFIG_CLEAN_FILES = README.md docsx/Doxyfile SECURITY.md
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -186,7 +186,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/README.md.in \
 	$(top_srcdir)/build-aux/install-sh \
 	$(top_srcdir)/build-aux/missing \
 	$(top_srcdir)/build-aux/tap-driver.sh \
-	$(top_srcdir)/docs/Doxyfile.in README.md build-aux/compile \
+	$(top_srcdir)/docsx/Doxyfile.in README.md build-aux/compile \
 	build-aux/depcomp build-aux/install-sh build-aux/missing
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
@@ -278,18 +278,18 @@ OBJEXT = o
 PACKAGE = sw
 PACKAGE_BUGREPORT = sw@twyoung.com
 PACKAGE_NAME = sw
-PACKAGE_STRING = sw 0.26.6
+PACKAGE_STRING = sw 0.26.7
 PACKAGE_TARNAME = sw
 PACKAGE_URL = 
-PACKAGE_VERSION = 0.26.6
+PACKAGE_VERSION = 0.26.7
 PATH_SEPARATOR = :
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = 
-SW_LEVEL = 6
+SW_LEVEL = 7
 SW_MAJOR = 0
 SW_MINOR = 26
-VERSION = 0.26.6
+VERSION = 0.26.7
 abs_builddir = /usr/local/src/sw
 abs_srcdir = /usr/local/src/sw
 abs_top_builddir = /usr/local/src/sw
@@ -375,7 +375,7 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 $(am__aclocal_m4_deps):
 README.md: $(top_builddir)/config.status $(srcdir)/README.md.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-docs/Doxyfile: $(top_builddir)/config.status $(top_srcdir)/docs/Doxyfile.in
+docsx/Doxyfile: $(top_builddir)/config.status $(top_srcdir)/docsx/Doxyfile.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 SECURITY.md: $(top_builddir)/config.status $(srcdir)/SECURITY.md.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@

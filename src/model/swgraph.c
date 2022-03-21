@@ -283,29 +283,17 @@ static char *addDot(char *n) {
 	return strdup(s);
 }
 
-static void
-genLinks (Model m)
-{				// [label="C Miss"];
-  Stream f;
-  Process src, snk;
-  char *srcPortName;
-  char *snkPortName;         
-  int channel = 7;
+static void SetIsNet( Stream f, char *arrowhead, char *style)  {
+  Process src, snk; 
   char *edgeColor = "purple";
-  char *sourceColor = "pink";
-  char *arrowhead="normal"; 
-  char *style="solid";  //dashed", "dotted", "solid", "invis" "bold"     "tapered" 
+  char *sourceColor = "pink"; 
+  int channel = 7;
+  char *srcPortName;
+  char *snkPortName;    
   
-  f = m->stream;
-  while (f) {
-        arrowhead="normal"; style="solid";
-    switch (f->type) {
-    case IS_STRUCT:
-        arrowhead="diamond"; style="tapered";
-    case IS_NET:
-	  edgeColor = "black";
-	  src = f->source;
+	  src = f->source;    
 	  snk = f->sink;
+	  edgeColor = "black";
 	  sourceColor=fcolors[getPathColor(src->comp->path)];
 	  channel = findChannel (src->port, f->source_id);
 	  if(f->bufsz > 1) {
@@ -335,10 +323,26 @@ genLinks (Model m)
 		   f->bufsz,arrowhead,style);
 #endif
 	    }  // End if bfsz
-	    break;
-	  IS_SUB:
+}	    
+
+static void
+genLinks (Model m)
+{				// [label="C Miss"];
+  char *arrowhead="normal"; 
+  char *style="solid";  //dashed", "dotted", "solid", "invis" "bold"     "tapered" 
+  Stream f;    
+  
+  f = m->stream;
+  while (f) {
+        arrowhead="normal"; style="solid";
+    switch (f->type) {
+    case IS_STRUCT:
+        arrowhead="diamond"; style="tapered";
+    case IS_NET:
+      SetIsNet(f, arrowhead, style);
+	case IS_SUB:
 	    break;  
-	  default:
+	default:
 	      // showPorts (f, src, snk, channel);
 	}			// End switch on type            
     f = f->next; 		// Get next stream

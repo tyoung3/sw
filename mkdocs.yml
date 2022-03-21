@@ -1,0 +1,8 @@
+site_name: StreamWork
+nav:
+  - Home: index.md
+  - Readme: rdm.md
+  - License: license.md
+  - About: about.md
+       
+theme: readthedocs
