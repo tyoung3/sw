@@ -65,19 +65,19 @@ Typedefa.		TypeDef		::=  Symvalu 	 		;
 Typedefb.       TypeDef     ::=  Symvalu "." Symvalu;
 Typedefnull.	TypeDef		::=  "";
 TypedefArray.   TypeDef     ::=  "[" Numval "]" TypeDef;
-Typdefl.        TypeDef     ::=  TypeDef "," TypeDef;  
+Typdefl.        TypeDef     ::=  TypeDef    "," TypeDef;  
 
 Bufszi.			Buffsize 	::= Numval ;
-Bufsze.			Buffsize 	::=; 
+Bufsze.			Buffsize 	::=        ; 
 
-Hermtx.			Hermt		::=   Symvalu  Comp [Argument]  ;
-Hermty.			Hermt		::=   Symvalu  [Argument]       ;
+Hermtx.			Hermt		::=   Symvalu Comp [Argument] Attributes ;
+Hermty.			Hermt		::=   Symvalu      [Argument] Attributes ;
 
 Symvaluv.		Symvalu 	::= Symval			;
 Symvaluu.		Symvalu		::= "_"				; 
 
 Processx.		Proc		::= "(" Symvalu  Comp [Argument] Attributes ")" 	;
-Processy.		Proc		::= "(" Symvalu                  Attributes ")" 	;
+Processy.		Proc		::= "(" Symvalu       [Argument] Attributes ")" 	;
 
 Attribe.        Attributes  ::=  "[" [Attr] "]"; 
 Attribs.        Attributes  ::=  "";  

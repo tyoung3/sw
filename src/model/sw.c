@@ -173,6 +173,7 @@ MakeModel (Stream f)
   m->subnetm = NULL;
   m->comp = NULL;
   m->name = "SW";
+  m->maxexpands = -1; /* Allow unlimited subnet expansion to start */
   return m;
 
 }
@@ -1507,9 +1508,11 @@ Expand2 (Model m, Process p, Stream s)
   src = MakeProcess (m, srcname, s->source->comp, 
     MakeArg (NULL, NULL), NULL);
   src->arg = s->source->arg;
+  src->attr = s->source->attr;
   snk = MakeProcess (m, snkname, s->sink->comp, 
     MakeArg (NULL, NULL), NULL);
-  snk->arg = s->sink->arg;
+  snk->arg  = s->sink->arg;
+  snk->attr = s->sink->attr;
   psrc = MakePort (s->source_id, s->source->port->name);
   psnk = MakePort (s->sink_id, s->sink->port->name);
   linkPort (src, psrc);
@@ -1565,7 +1568,7 @@ findAmatchingPort (Model m, Process p, Extport ep)
       if (!p2)
 	{
 	  p2 = MakeProcess (m, srcname, ep->source->comp, 
-	  ep->source->arg, NULL);
+	  ep->source->arg, ep->source->attr);
 	}
 
       pt = MakePort (ep->source_id, ep->name);
@@ -1577,7 +1580,7 @@ findAmatchingPort (Model m, Process p, Extport ep)
       if (!p2)
 	{
 	  p2 = MakeProcess (m, snkname, ep->sink->comp, 
-	    ep->sink->arg,NULL);
+	    ep->sink->arg,ep->sink->attr);
 	}
       pt = MakePort (ep->sink_id, ep->name);
     }
@@ -1632,7 +1635,7 @@ Expand3 (Model m, Process p, Extport ep)
 		  pnew = MakeProcess (m,
 				      srcname, ep->source->comp,
 				      ep->source->arg,
-				      NULL);
+				      ep->source->attr);
 		  s->source = pnew;
 		  if (ep->bufsz > s->bufsz)
 		    s->bufsz = ep->bufsz;
@@ -1675,7 +1678,7 @@ Expand3 (Model m, Process p, Extport ep)
 		  snkname = makeName (p->name, fixName (ep->sink->name));
 		  pnew =
 		    MakeProcess (m, snkname, ep->sink->comp, 
-		        ep->sink->arg,NULL);
+		        ep->sink->arg,ep->sink->attr);
 		  s->sink = pnew;
 		  if (ep->bufsz > s->bufsz)
 		    s->bufsz = ep->bufsz;
@@ -1783,19 +1786,22 @@ expandSubnets (Model m)
   Process p, pp, ps;
   int more;			/** 1=could be more subnets  	*/
   int level = 0;		/** subnet level 	 	*/
+  int nexpands = 0;     /** number of expanded subnets */  
 
   do
     {
       p = m->proc;
       pp = NULL;
       more = 0;
-      while (p)
+            /* Allow limit on graph expansion. */
+      while (p && ( m->maxexpands<0 || nexpands < m->maxexpands)  )
 	{
 	  if (p->comp)
 	    {
 	      if (p->comp->path[0] == '_')
 		{		/* Is a subnet */
 		  more = 1;
+		  nexpands++; 
 		  m->nprocs--;
 		  ps = p;
 		  if (pp)	// delink p from process chain.     

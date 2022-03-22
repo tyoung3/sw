@@ -3,6 +3,7 @@
   These @todoS are sw general, not swproject specific: 
   High Priority:
   
+    @todo localization 
     @todo fix sw.twyoung.com
     @todo component docs to README
     @todo swgrapgh levels.
