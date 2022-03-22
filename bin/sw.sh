@@ -176,6 +176,7 @@ case $1 in
 	d)shift; RunDocker $*;;
 	doc)cd ../; shift;
 	    (doxygen docsx/Doxyfile&&Browse ./docsx/doxy/html/index.html) &
+	    killall mkdocs
 	    mkdocs build 
 	    ;;
     ex)shift; cd example; make;; 

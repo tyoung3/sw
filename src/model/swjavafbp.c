@@ -3,6 +3,8 @@
   These @todoS are sw general, not swproject specific: 
   High Priority:
   
+    @todo fix sw.twyoung.com
+    @todo component docs to README
     @todo swgrapgh levels.
     @todo Fix defaultTypePath missing in config file.
         @todo fix null type path problem.

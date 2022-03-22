@@ -1,3 +1,5 @@
+# STREAMWORK -- SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ 
+
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +17,10 @@ limitations under the License.
 All files in this repo are included in this license.
 
 
-
-# SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ - STREAMWORK
  
 ![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
-# StreamWork
+## StreamWork
          
    Flow based program(FBP) Go language framework and code generator.
          
@@ -28,10 +28,9 @@ All files in this repo are included in this license.
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-
-# Table of contents
+## Table of contents
  * [Description](#description)
- * [Synopsis](#synopsis)
+   * [Synopsis](#synopsis)
  * [Return code](#returncode)
  * [**_TestSWL_** program](#testswl) 
  * [Network Definition](#networkdefinition)
@@ -107,7 +106,8 @@ See package documention for component return codes.
 **_TestSWL_** syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.
 ### synopsis<a name="testswlsynopsis"/>
 
-```usage: Call with one of the following argument combinations:
+```
+    usage: Call with one of the following argument combinations:
 	--help		Display this help message.
 	(no arguments)	Parse stdin verbosely.
 	(files)		Parse content of files verbosely.
@@ -158,7 +158,7 @@ A stream definition looks something like:
 
 ```
 (a C "ARG..." ) -ipType> (b D);
-#    or [reversing direction and using default component names]
+     or [reversing direction and using default component names]
 (E)IN <- OUT.1(F)0 <- (G); 
 ```
 
@@ -307,7 +307,7 @@ Foo Bar-7
 
 SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. 
 
-See the bnf StreamWork language description file, SWL.pdf. 
+See the bnfc StreamWork language description file, SWL.pdf. 
 
 SWL has few reserved words,  making it somewhat natural language
 agnostic.  There is no guarantee this condition will continue, however, every effort 
@@ -464,7 +464,7 @@ Hello World-6
 Another bash script, **_swgraph_**, will display a graphic image of a network definition:
    
 ```
-#   .../nds/mvc.sw
+    .../nds/mvc.sw
 (m Model)1      -change>         (v View);
 (c)2            -update>        1(v);
 (v)2            -event>          (c Control); 
