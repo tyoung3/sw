@@ -660,7 +660,10 @@ break existing networks.
   * Fix build error in swgraph.c
   
 ### 0.26.8
-  * Removed 'default:' error from swgraph.c  
+  * Removed 'default:' error from swgraph.c 
+  
+## 0.26.9
+  * Fixed bug with subnet attributes   
   
 ## Author<a name="author"/>
 

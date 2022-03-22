@@ -147,8 +147,9 @@ typedef struct Model_ {
 	Process   proc;		/**< Pointer to First Process 	*/
     Component comp;	        /**< Pointer to first Conponent */
 	char     *name;		/**< Model Name 		*/
-	int	  level;	/**< Subnet depth		*/
-	char	 *filename;	/**< Filename or STDIN		*/
+	int	      level;	    /**< Subnet depth		*/	
+    int       maxexpands;/**< maximum value of nexpands.-1 is no limit. */
+	char    *filename;	/**< Filename or STDIN		*/
 } Model_;
 typedef struct Model_ *Model;	/**<Pointer to Model */
 
