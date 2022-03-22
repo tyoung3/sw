@@ -1,6 +1,7 @@
 site_name: StreamWork
 nav:
   - Home: index.md
+  - SwHome: swhome.md
   - Readme: rdm.md
   - Github: github.md
   - License: license.md
