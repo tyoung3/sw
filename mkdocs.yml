@@ -9,5 +9,7 @@ nav:
   - Mkdocs: mkdocs.md
   - License: license.md
   - About: about.md
+  - SW/Components: components.md 
+       - Swutility: components/swutility.md
        
 theme: readthedocs

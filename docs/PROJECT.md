@@ -27,7 +27,7 @@ Build and run the executable.
 
 Install go 
 
-Install sw at $HOME/go/src/github.com/tyoung3/sw 
+Install sw: go get github.com/tyoung3/sw 
 
 Change sw.cfg to fit your environment. 
 Run sw.sh c go build and make sw (if necessary).
