@@ -1,11 +1,26 @@
-# Welcome to StreamWork 
+# StreamWork Home Page
 
-## Project layout
-    site_name: StreamWork
-    nav:
-      - Home: index.md
-      - Readme: rdm.md
-      - License: license.md
-      - About: about.md
-       
-    theme: readthedocs
+[Github project](http:github.com/tyoung3/sw)
+
+Please note that the project 
+[StreamWork Front End](http:github.com/tyoung3/streamwork) has been merged 
+into sw and is now deprecated.
+
+[README](https://github.com/tyoung3/sw#readme)
+
+  * [Flow Based Programming Commentary](../FBP)
+  * [Docker](../DOCKER) 
+  * [Project](../PROJECT)
+  
+## References:
+
+### Flow Based Programming
+  
+  * [Other FBP Projects SpreadSheet](https://fbp.twyoung.com/)
+  * [J Paul Morrison](https://jpaulm.github.io/fbp/)
+  * [Flow Based Programming (Wiki)](https://en.wikipedia.org/wiki/Flow-based_programming)
+
+### Miscellaneous
+
+  * [Semantic Versioning](https://semver.org/)  
+  * [Github Markdown](https://guides.github.com/features/mastering-markdown/)

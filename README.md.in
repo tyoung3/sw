@@ -4,9 +4,9 @@ Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
-You may obtain a copy of the License at
+You may obtain a copy of the License  at
 
-http://www.apache.org/licenses/LICENSE-2.0
+[Apache License](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,7 @@ limitations under the License.
 
 All files in this repo are included in this license.
 
-
+<!-- https://phrase.com/blog/posts/internationalization-i18n-go/ -->
  
 ![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
@@ -28,7 +28,7 @@ All files in this repo are included in this license.
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Table of contents
+## Contents
  * [Description](#description)
    * [Synopsis](#synopsis)
  * [Return code](#returncode)

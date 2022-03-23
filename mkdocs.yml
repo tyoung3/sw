@@ -1,11 +1,13 @@
 site_name: StreamWork
 nav:
   - Home: index.md
-  - SwHome: swhome.md
   - Readme: rdm.md
+  - Project: PROJECT.md
+  - FBP:    FBP.md
   - Github: github.md
-  - License: license.md
+  - Docker: DOCKER.md
   - Mkdocs: mkdocs.md
+  - License: license.md
   - About: about.md
        
 theme: readthedocs

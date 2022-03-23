@@ -13,5 +13,7 @@ require (
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/stretchr/testify v1.7.1 // indirect
 	github.com/urfave/cli v1.22.5 // indirect
+	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

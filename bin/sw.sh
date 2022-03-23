@@ -221,7 +221,7 @@ sw.sh-$version USAGE:
 		rc		. Build and run Collate program 
 		rl		. Run locusts program
 		s		. Enter SW shell.  'e' to exit the shell. 
-		sm      . Serve makedocs at localhost:8001
+		sm		. Serve makedocs at localhost:8001
 		v		. Display this script version
 		x		. Edit this script
 		--help	. Display this help
