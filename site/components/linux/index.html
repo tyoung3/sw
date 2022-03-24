@@ -9,15 +9,15 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Swutility - StreamWork</title>
+  <title>Linux - StreamWork</title>
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Swutility";
-    var mkdocs_page_input_path = "components/swutility.md";
+    var mkdocs_page_name = "Linux";
+    var mkdocs_page_input_path = "components/linux.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -71,9 +71,9 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../sw/">SwBase</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Swutility</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../swutility/">Swutility</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../linux/">Linux</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Linux</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../config/">Config</a>
                     </li>
@@ -116,7 +116,7 @@
         
       
     
-    <li>Swutility</li>
+    <li>Linux</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -127,23 +127,15 @@
           <div role="main">
             <div class="section">
               
-                <p>package swutility // import "github.com/tyoung3/sw/swutility"</p>
-<p>Package swutility provides merge and collate StreamWork components.</p>
+                <p>package linux // import "github.com/tyoung3/sw/linux"</p>
+<p>Package linux provides *Nix specific functionality for StreamWork Golang
+components.</p>
 <p>FUNCTIONS</p>
-<p>func Collate(wg *sync.WaitGroup,
-    arg []string,
-    cs []chan interface{})
-    Collate compares IPs from two channels(0,1). Matching IPs are sent to
-    channels 2 and 3, while mismatches from (0,1) are sent to (4,5)
-    respectively.</p>
-<p>func Merge(wg *sync.WaitGroup,
-    arg []string,
-    cs []chan interface{})
-    Merge compares input from channels 1 and 2 sending the lowest data to
-    channel 0.</p>
-<p>func MergeInt(wg *sync.WaitGroup, cs ...chan interface{})
-    MergeInt sends all input from channels cs[1:n] to channel cs[0] in order of
-    arrival.</p>
+<p>func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{})
+    Wrap launches the specified linux executable and separate goroutines to a)
+    forward all text lines from channel 0(cs[0]) to the executable's stdin pipe;
+    b) forward text lines from the stdout pipe to channel 1; and c) forward text
+    lines from stderr to channel 2.</p>
               
             </div>
           </div>
@@ -151,10 +143,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../linux/" class="btn btn-neutral float-right" title="Linux">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../config/" class="btn btn-neutral float-right" title="Config">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../sw/" class="btn btn-neutral" title="SwBase"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../swutility/" class="btn btn-neutral" title="Swutility"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -180,10 +172,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../sw/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../swutility/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../linux/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../config/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

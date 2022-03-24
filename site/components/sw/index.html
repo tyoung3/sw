@@ -9,15 +9,15 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Swutility - StreamWork</title>
+  <title>SwBase - StreamWork</title>
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Swutility";
-    var mkdocs_page_input_path = "components/swutility.md";
+    var mkdocs_page_name = "SwBase";
+    var mkdocs_page_input_path = "components/sw.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -69,9 +69,9 @@
                 <ul class="current">
                     <li class="toctree-l1"><a class="reference internal" href="../">Component Comments</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../sw/">SwBase</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">SwBase</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Swutility</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../swutility/">Swutility</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../linux/">Linux</a>
                     </li>
@@ -116,7 +116,7 @@
         
       
     
-    <li>Swutility</li>
+    <li>SwBase</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -127,23 +127,55 @@
           <div role="main">
             <div class="section">
               
-                <p>package swutility // import "github.com/tyoung3/sw/swutility"</p>
-<p>Package swutility provides merge and collate StreamWork components.</p>
+                <p>package sw // import "github.com/tyoung3/sw"</p>
+<p>Package sw contains the basic FBP engine to launch a network of Streamwork
+Go components.</p>
+<p>The program 'sw' can create a main/Go program(cmd) from a Streamwork network
+definition.</p>
+<p>The generated cmd uses this package to launch the components specified in
+the network definition. This package also contains basic Streamwork
+components: Gen, Pass, Print, etc. Other sw/... components are:
+swutility/Collate,Merge and linux/Wrap</p>
+<p>Sw components have a very simple interface. There are no required import
+statements and just one exported function, with the Component name, is
+required.</p>
 <p>FUNCTIONS</p>
-<p>func Collate(wg *sync.WaitGroup,
+<p>func Gen(wg *sync.WaitGroup, arg []string, cs []chan interface{})
+    Gen sends 'nbr' integers, beginning with 'start', incremented by 'inc';
+    argcuments 1, 2, and 3 respectively over port 0.</p>
+<pre><code>#####Examples
+
+        (Gen will send:
+        1 2 3 4 5 6 7
+
+        (Gen "-i" "9" "2" "3") will send:
+    2 5 8 11 14 17 20 23 26
+
+        (Gen "-i" "3" "17") will send:
+    17 18 19
+
+        (Gen "-i" "4" "-2" "-1") will send:
+    -2 -3 -4 -5
+</code></pre>
+<p>func Gens(wg *sync.WaitGroup, arg []string, cs []chan interface{})
+    Gens sends arg[1], arg[2] long strings to channel cs[0] (out1)</p>
+<pre><code>     Strings consist of the process name
+    and seq. no; i.e. G3-1, G3-2, etc.
+
+    BUG cannot set length, yet.
+</code></pre>
+<p>func Join(wg1 *sync.WaitGroup, arg []string, cs []chan interface{})
+    Join sends all input from channels [1:n] to channel [0], port 0.</p>
+<p>func Pass(wg *sync.WaitGroup, arg []string, cs []chan interface{})
+    Pass delays input from chanell 0 for arg[1] milliseconds, then sends it out
+    on channel 1.</p>
+<p>func Print(wg *sync.WaitGroup,
     arg []string,
     cs []chan interface{})
-    Collate compares IPs from two channels(0,1). Matching IPs are sent to
-    channels 2 and 3, while mismatches from (0,1) are sent to (4,5)
-    respectively.</p>
-<p>func Merge(wg *sync.WaitGroup,
-    arg []string,
-    cs []chan interface{})
-    Merge compares input from channels 1 and 2 sending the lowest data to
-    channel 0.</p>
-<p>func MergeInt(wg *sync.WaitGroup, cs ...chan interface{})
-    MergeInt sends all input from channels cs[1:n] to channel cs[0] in order of
-    arrival.</p>
+    Print prints integers and strings received from port 0, prefixed with the
+    process identifier(arg[0]) string,</p>
+<p>func Split(wg *sync.WaitGroup, arg []string, cs []chan interface{})
+    Split copies all input from port 0, to all active ports 1,..N</p>
               
             </div>
           </div>
@@ -151,10 +183,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../linux/" class="btn btn-neutral float-right" title="Linux">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../swutility/" class="btn btn-neutral float-right" title="Swutility">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../sw/" class="btn btn-neutral" title="SwBase"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../" class="btn btn-neutral" title="Component Comments"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -180,10 +212,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../sw/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../linux/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../swutility/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

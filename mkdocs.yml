@@ -2,14 +2,20 @@ site_name: StreamWork
 nav:
   - Home: index.md
   - Readme: rdm.md
-  - Project: PROJECT.md
   - FBP:    FBP.md
+  - Project: PROJECT.md
   - Github: github.md
-  - Docker: DOCKER.md
-  - Mkdocs: mkdocs.md
-  - License: license.md
-  - About: about.md
-  - SW/Components: components.md 
-       - Swutility: components/swutility.md
+  - Components: 
+      - Component Comments: components.md
+      - SwBase: components/sw.md 
+      - Swutility: components/swutility.md
+      - Linux:   components/linux.md
+      - Config:  components/config.md
+      - Fileio:  components/fileio.md 
+  - Miscellaneous:    
+      - Docker: DOCKER.md
+      - License: license.md
+      - Mkdocs: mkdocs.md
+      - About: about.md
        
 theme: readthedocs

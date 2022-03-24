@@ -1,8 +1,7 @@
 # StreamWork Components
 
+
 All IPs in Streamwork Components are channel interfaces.  
-
-StreamWork packages are documented here with 'go doc'. 
-
+StreamWork component packages are documented here using 'go doc'. 
 
  
