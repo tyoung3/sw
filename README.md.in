@@ -22,7 +22,7 @@ All files in this repo are included in this license.
 
 ## StreamWork
          
-   Flow based program(FBP) Go language framework and code generator.
+   Go language code generator.
          
 [![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)

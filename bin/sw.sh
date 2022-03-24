@@ -197,8 +197,12 @@ case $1 in
 	    $BROWSER https://sw.twyoung.com 
 	   ;;
 	s) shift; Shell $*;;
-	smkd|sm|smk)shift; cd ../; mkdocs serve -a localhost:8001 &
-	    sleep 2
+	smkd|sm|smk)shift
+	    killall mkdocs
+	    cd ../
+	    mkdocs build
+	    mkdocs serve -a localhost:8001 &
+	    sleep 4
 	    $BROWSER localhost:8001 &
 	    ;;
 	v|version) echo sw.sh-v$version;;

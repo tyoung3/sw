@@ -2,20 +2,23 @@ site_name: StreamWork
 nav:
   - Home: index.md
   - Readme: rdm.md
-  - FBP:    FBP.md
-  - Project: PROJECT.md
-  - Github: github.md
-  - Components: 
+  - User Guide: 
       - Component Comments: components.md
       - SwBase: components/sw.md 
       - Swutility: components/swutility.md
       - Linux:   components/linux.md
       - Config:  components/config.md
       - Fileio:  components/fileio.md 
-  - Miscellaneous:    
+  - Developer Guide: 
+      - FBP:    FBP.md
+      - Project Generation: PROJECT.md
+      - Mkdocs: mkdocs.md   
+      - Github Project: github.md 
       - Docker: DOCKER.md
+  - About:    
       - License: license.md
-      - Mkdocs: mkdocs.md
       - About: about.md
-       
+
+copyright: Copyright &copy; 2022, Tom Young, streamwork@twyoung.com.
+
 theme: readthedocs
