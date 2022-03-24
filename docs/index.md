@@ -9,8 +9,8 @@ into sw and is now deprecated.
 [README](https://github.com/tyoung3/sw#readme)
 
   * [Flow Based Programming Commentary](../FBP)
-  * [Docker](../DOCKER) 
-  * [Project](../PROJECT)
+  * [Docker](DOCKER) 
+  * [Project](PROJECT)
   
 ## References:
 
