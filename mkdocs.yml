@@ -1,8 +1,9 @@
 site_name: StreamWork
 nav:
+  - Home: index.md
   - Readme: rdm.md
   - User Guide: 
-      - Component Comments: components.md
+      - Components: components.md
       - SwBase: components/sw.md 
       - Swutility: components/swutility.md
       - Linux:   components/linux.md

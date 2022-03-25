@@ -1,6 +1,10 @@
-# Flow Based Programming Comments             
-11/8/2021, 3/17/2022, 3/23/2022
+# Flow Based Programming  
 
+## Flow Based Programming References
+  * [J Paul Morrison](https://jpaulm.github.io/fbp/)
+  * [Other FBP Projects SpreadSheet](https://fbp.twyoung.com/)
+  * [Flow Based Programming (Wiki)](https://en.wikipedia.org/wiki/Flow-based_programming)
+  
 ##  StreamWork and 'Classical FBP'
 
 We believe StreamWork is consistent with 'Classical Flow Based Programming'. 
@@ -22,18 +26,18 @@ So to summarize, the Wikipedia definition of FBP is charactarized by:
    * Named Ports
 
 Wikipedia does not mention concurrency -- in error, we maintain.  
-Wikipedia also does not mention subnets, data ownership or 
-back pressure and other features such as bracketed IPs.  
-StreamWork does not directly implement data ownership and defined
-lifetimes, back pressure, or bracketed IPs.  
-There is no apparent reason why these features could not 
-be implemented within the components.   
+Wikipedia also does not mention subnets, data ownership,
+back pressure, data ownership, or bracketed IPs.  
+StreamWork does not directly implement these features,
+but there is no obvious reason why these features could not 
+be implemented within the components. 
+
+StreamWork considers subnets to be an essential design tool, allowing 
+unlimited numbers of subnets and components and a ridiculously large(100) number of subnet levels.  Note that 
+StreamWork is highly concurrent and allows for high degrees of parallelism.   
 
 We claim here that StreamWork meets all the Wikipedia criteria 
-and therefore StreamWork implements 'classical' FBP.  Note that 
-StreamWork is highly concurrent and also provides for subnet 
-definition and expansion. 
-
+and therefore StreamWork implements 'classical' FBP.  
 StreamWork, however, does not directly incorporate IP defined 
 lifetimes or require specific create/copy/destroy
 operations.  In StreamWork, IPs live only from the moment of sending to
@@ -44,7 +48,8 @@ for utmost security, zero sized buffers and encryption are recommended
 for sensitive data, like passwords.
 
 Component behavior can be controlled via arguments, environment
-variables,  in-stream commands and ordinary IPs.
+variables,  in-stream commands, ordinary IPs, and signals.
+
 StreamWork does not distinguish between IIPs (initialization information 
 packets) and ordinary IPs and therefore does not require any special 
 processin or notation for IIPs within the network definition language.    
