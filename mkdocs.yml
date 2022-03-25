@@ -1,6 +1,5 @@
 site_name: StreamWork
 nav:
-  - Home: index.md
   - Readme: rdm.md
   - User Guide: 
       - Component Comments: components.md
