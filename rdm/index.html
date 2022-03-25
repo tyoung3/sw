@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Readme - StreamWork</title>
+  <link rel="stylesheet" href="../css/theme.css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Readme";
+    var mkdocs_page_input_path = "rdm.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> StreamWork</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul class="current">
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Readme</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#streamwork">StreamWork</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contents">Contents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#description">Description</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#synopsis">Synopsis</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#return-code">Return code</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#testswl-program">TestSWL program</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#synopsis_1">synopsis</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#network-definition">Network Definition </a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#network-definition-files">Network Definition Files</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#quickstart-on-linux">QuickStart on Linux</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#installation">Installation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#post-install">Post Install</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#foo-bar-test">Foo Bar test</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#building-on-linux">Building on Linux</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#streamwork-languageswl-notes">StreamWork Language(SWL) Notes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#stream-types-and-component-arguments">Stream types and component arguments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#variables">Variables</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#semi-colon-commentary">Semi-colon commentary</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#left-arrow-comments">Left Arrow comments</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#collatemerge-example">Collate/Merge Example</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#hello-world">Hello World</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bash-scripts">Bash Scripts</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#swgo-script">swgo script</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#swgraph-script">swgraph Script</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#gofbp-script">gofbp script</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#gofbp-example-from-swsrcmodeltestsgofbploadbalsw">gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generate-a-project">Generate a project</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#swsh-synopsis">sw.sh Synopsis</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bugs">BUGS:</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#home-page">Home Page</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#release-notes">Release Notes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#0180">0.18.0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0184">0.18.4</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0185">0.18.5</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0186">0.18.6</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0187">0.18.7</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0188">0.18.8</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0189">0.18.9</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0190">0.19.0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0201">0.20.1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0206">0.20.6</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0207">0.20.7</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0208">0.20.8</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#02010">0.20.10</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0210">0.21.0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0211">0.21.1</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0220">0.22.0</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0266">0.26.6</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0267">0.26.7</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#0268">0.26.8</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#0269">0.26.9</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
+    </li>
+    </ul>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">User Guide</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/">Component Comments</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/sw/">SwBase</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/swutility/">Swutility</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/linux/">Linux</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/config/">Config</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/fileio/">Fileio</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Developer Guide</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../FBP/">FBP</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../PROJECT/">Project Generation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">Mkdocs</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../github/">Github Project</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../DOCKER/">Docker</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">About</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
+                    </li>
+                </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">StreamWork</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Readme</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="streamwork-sw-0269">STREAMWORK -- SW-0.26.9</h1>
+<p>Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com </p>
+<p>Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file or its derivitaves except in compliance with the License.
+You may obtain a copy of the License  at</p>
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License</a></p>
+<p>Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</p>
+<p>All files in this repo are included in this license.</p>
+<!-- https://phrase.com/blog/posts/internationalization-i18n-go/ -->
+
+<p><img alt="StreamWork Logo" src="http://sw.twyoung.com/images/StreamWork.svg" /></p>
+<h2 id="streamwork">StreamWork</h2>
+<p>Flow based program(FBP) Go language framework and code generator.</p>
+<p><a href="https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml"><img alt="CodeQL" src="https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg" /></a>
+<a href="https://goreportcard.com/report/github.com/tyoung3/sw"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/tyoung3/sw" /></a>
+<a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" /></a></p>
+<h2 id="contents">Contents</h2>
+<ul>
+<li><a href="#description">Description</a></li>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#returncode">Return code</a></li>
+<li><a href="#testswl"><strong><em>TestSWL</em></strong> program</a> </li>
+<li><a href="#networkdefinition">Network Definition</a></li>
+<li><a href="#networkfiles">Network Definition Files</a></li>
+<li><a href="#quickstart">QuickStart on Linux</a> <ul>
+<li><a href="#requirements">Requirements</a>  </li>
+<li><a href="#installation">Installation</a>   </li>
+<li><a href="#postinstall">Post Install</a> </li>
+<li><a href="#foobartest">Foo Bar test</a></li>
+</ul>
+</li>
+<li><a href="#buildingonlinux">Building on Linux</a></li>
+<li><a href="#swlnotes">StreamWork Language(SWL) Notes</a><ul>
+<li><a href="#streamtypes">Stream types and component arguments</a></li>
+<li><a href="#variables">Variables</a></li>
+<li><a href="#semicolons">Semi-colon commentary</a></li>
+<li><a href="#leftarrow">Left Arrow comments</a></li>
+<li><a href="#collatemerge">Collate/Merge Example</a></li>
+</ul>
+</li>
+<li><a href="#bashscripts">Bash Scripts</a><ul>
+<li><a href="#helloworld">Hello World</a>   </li>
+<li><a href="#swgo"><strong><em>swgo</em></strong> script</a></li>
+<li><a href="#swgraph"><strong><em>swgraph</em></strong> Script</a></li>
+<li><a href="#gofbpscript"><strong><em>gofbp</em> script</strong></a></li>
+<li><a href="#gofbpexample">gofbp Example</a><ul>
+<li><a href="#loadbal">LOADBAL.SW</a></li>
+</ul>
+</li>
+<li><a href="#generateaproject">Generate a project</a></li>
+<li><a href="#synopsis"><strong><em>sw.sh</em></strong> Synopsis</a></li>
+</ul>
+</li>
+<li><a href="#bugs">BUGS</a></li>
+<li><a href="#homepage">Home Page</a>    </li>
+<li><a href="#releasenotes">Release Notes</a></li>
+<li><a href="#author">Author</a></li>
+</ul>
+<h2 id="description">Description<a name="description"/></h2>
+<p>StreamWork is a simple system for building complex programs. </p>
+<p>StreamWork can generate and test a complete Golang project from a simple
+text file. It can also create a nice graph showing the components and 
+their connections.</p>
+<p>By default, StreamWork reads, parses, and analyzes; a simple 
+SWL language StreamWork network definition(ND) file,<br />
+then generates a main Go program.</p>
+<p>Options allow you to produce an abstract syntax tree, a GraphViz dot file,  or a goFBP main prgram instead.</p>
+<h3 id="synopsis">Synopsis<a name="synopsis"/></h3>
+<p><strong><em>sw</em></strong> [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]</p>
+<p><strong><em>sw</em></strong> -v</p>
+<p><strong><em>sw</em></strong> --help </p>
+<p>If SW_FILE is omitted, <strong><em>sw</em></strong>  will read from stdin.</p>
+<pre><code>        MODE= 
+            0-GOMODE        . Generate a main SW Go program[DEFAULT].
+            1-ASTMODE       . Display the Abstract Syntax Tree 
+            2-GENTREE       . Display the Linearized tree
+            3-GRAPHMODE     . Generate Graphviz .dot file code
+            4-JAVAFBP       . Incomplete and untested. Looking for help.
+            5-PROJECT       . Generate **_swgen.sh_** code for a project tree.
+            7-CMODE         . Incomplete and untested. Looking for help.
+            8-GENGOFBP      . Generate main go code for J. P. Morrison's gofbp. 
+</code></pre>
+<h2 id="return-code">Return code<a name="returncode"/></h2>
+<p><strong><em>sw</em></strong> returns SUCCESS unless it encounters an error, in which case <strong><em>sw</em></strong> returns FAILURE.
+See package documention for component return codes. </p>
+<h2 id="testswl-program"><strong><em>TestSWL</em></strong> program<a name="testswl"/></h2>
+<p><strong><em>TestSWL</em></strong> syntax checks stdin or a SteamWork network definition file or a SteamWork configuration file.</p>
+<h3 id="synopsis_1">synopsis<a name="testswlsynopsis"/></h3>
+<pre><code>    usage: Call with one of the following argument combinations:
+    --help      Display this help message.
+    (no arguments)  Parse stdin verbosely.
+    (files)     Parse content of files verbosely.
+    -s (files)  Silent mode. Parse content of files silently.
+</code></pre>
+<h2 id="network-definition">Network Definition <a name="networkdefinition"/></h2>
+<p>A StreamWork network definition describes a program as a  list of data streams.
+Each data stream consists of a source process, a director, and a sink process. 
+The network definition is a compact text-based representation of a data flow diagram. </p>
+<p>StreamWork is concerned primarily with Go language FBP programs,
+however, the network definition described here is language agnostic.  It is quite possible 
+to generate corresponding code in other languages from a StreamWork ND.         </p>
+<p>The script, <strong><em>swgo</em></strong>, reads and executes an ND employing <strong><em>sw</em></strong> to properly launch and connect the processes.  By default, <strong><em>sw</em></strong> generates 
+and builds a single main Go program which:<br />
+  * imports sw compatible component package(s) as specified in the network definition,<br />
+  * launches a goroutine for each process,<br />
+  * connects these processes via Golang interface channels, and 
+  * waits for all processes to finish.<br />
+  * StreamWork has no other interaction with the component processes, which do not call on StreamWork functions
+    in any way. </p>
+<p>On option, <strong><em>sw</em></strong> will read, parse and interpret a network definition file then  create either a:</p>
+<ul>
+<li>a StreamWork Go main program,</li>
+<li>a gofbp      Go main program (see github.com/jpaulm/gofbp), </li>
+<li>a GraphViz   .dot file(script,( <strong><em>swgraph</em></strong> will create and display a graph(s) directly)</li>
+<li>a bash script, (<strong><em>swproject</em></strong> generates a complete GO language project tree and 
+     tests it)</li>
+<li>an abstract syntax tree (a reverse polish notation rendition of the essential language components), 
+    OR</li>
+<li>a linearized tree (a network definition reconstruction).   </li>
+</ul>
+<h3 id="network-definition-files">Network Definition Files<a name="networkfiles"/></h3>
+<p>A network definition file (in the SWL language[see below]) consists of a list of 
+streams(aka dataflows); and may also contain subnet definitions, 
+INCLUDE and PREFIX statements, and comments.  </p>
+<p>INCLUDEd files are also network definitions which may in turn contain
+INCLUDE statements.  Exceeding 100 levels of includes will 
+cause program termination.</p>
+<p>A stream definition looks something like:</p>
+<pre><code>(a C &quot;ARG...&quot; ) -ipType&gt; (b D);
+     or [reversing direction and using default component names]
+(E)IN &lt;- OUT.1(F)0 &lt;- (G); 
+</code></pre>
+<p><img alt="Figure 1" src="http://sw.twyoung.com/images/fig1.svg" />
+and consists of a list of streams.  Each stream consists of 
+a source process, a stream director, a sink process and a terminating semicolon(;).   Each process consists of</p>
+<ul>
+<li>a processname</li>
+<li>optional component identifier </li>
+<li>optional string arguments, and </li>
+<li>optional process attributes [surrounded by brackets].  Attributes
+    consist  of KEY=STRING|NUMBER statements, used mainly to enhance
+    graphic images.</li>
+</ul>
+<p>all surrounded by parens, and followed and/or preceded by optional 
+port identifiers consisting of a port number preceded by an optional port name and period(.).  Omitted port identifiers default to zero(0).</p>
+<p>The stream director points from the source process to the sink process.  A director may 
+include a type identifier and/or a stream buffer size: e.g. "<type_A 10-"  or "-type_B 2>".  If not included, buffer size defaults to zero.</p>
+<p>Example with anonymous process names and default components:</p>
+<pre><code>  (_) -int 3&gt; (_); #[integer stream with buffersize of three]; 
+</code></pre>
+<p><img alt="Figure 2" src="http://sw.twyoung.com/images/fig2.svg" />
+In this example, the default components [as specified in a config file, send their process names to the channel or to stdout: </p>
+<pre><code>    (Hello) &lt;- (World); 
+</code></pre>
+<p>produces:</p>
+<pre><code>Hello World
+</code></pre>
+<p>A process is defined by its process name, its component identifier, component arguments,
+and process attributes; all surrounded by parens. <br />
+The component identifier, arguments, and attributes will default if omitted. 
+Process names are not apparent to Go and so need not follow Go naming 
+rules, just the StreamWork conventions. </p>
+<p>A component identifier consists of its import module/package identifier, 
+a slash, '/', and the component name.  Go component names need to be capitalized.type
+If  the path is omitted,  a configuration default path is assumed.<br />
+If the component name is also omitted, configuration default component names
+are assumed for sink, source, and filter(has both inputs and outputs) processes.
+Subnet components are identified by <code>'</code> prefixing its identifier, as in
+(A ^SubnetName) ...</p>
+<p>Stream directors consist of <code>&lt;</code>, an optional, comma-separated list of type identifiers,
+an optional buffersize integer, and <code>-</code>. Example: <code>&lt;100-</code>
+The reverse (Ex: <code>-myDataType,yourType 100&gt;</code>) is also valid.</p>
+<p>Information packets(IPs) are designed as nitypel(empty) interfaces.  The
+data type is determined by the sending component.  It is possible for 
+properly coded sink components to handle multiple data types.
+A type mis-match will be reported by incompatible receiving 
+components.  Components can be coded to handle any
+type(including user-defined types and structures). 
+Some components (sw.Print, for instance) can process strings and integers; 
+some just a single type; on each receiving port.   </p>
+<p><strong><em>sw</em></strong> versions beginning with v1.0.0 are backward compatible within the same major 
+version(currently v0).  There is no such guarantee with v0.N.N versions, but we will
+increase the minor version in such cases.  The master github branch may have many commits without creating a new version.  </p>
+<p><strong><em>sw</em></strong> builds a network model in memory, then optionally generates
+either </p>
+<ul>
+<li>an abstract syntax tree, </li>
+<li>a linearized tree(a network definition reconstruction), </li>
+<li>a GraphViz .dot file, </li>
+<li>input to <strong><em>swproject</em></strong> to build a complete working project tree, </li>
+<li>or Go source code from the network model.</li>
+<li>or Go main source code for JFM's gofbp. </li>
+</ul>
+<p>C and other languages could also be generated, but this has not been implemented.
+JavaFBP is also possible.   </p>
+<p>Comments and critiques are welcome.    Contributors are encouraged.  </p>
+<p>Please do not submit code before contacting the project.  Contact by 
+e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to posting a request on Github.     </p>
+<h2 id="quickstart-on-linux">QuickStart on Linux<a name="quickstart"/></h2>
+<h3 id="requirements">Requirements<a name="requirements"/></h3>
+<ul>
+<li>Gcc, etc.</li>
+<li>Graphviz should be installed, but installation may proceed
+    without it.</li>
+<li>The ...github/tyoung3/StreamWork backend is no longer required.  </li>
+<li><strong><em>sw</em></strong> is written in C. </li>
+</ul>
+<h3 id="installation">Installation<a name="installation"/></h3>
+<ul>
+<li>cd to any convenient workspace (/usr/local/src for example).</li>
+<li>Download the latest sw-0.26.9.tar.gz file 
+      from https://github.com/tyoung3/sw/build</li>
+<li>Run 'tar -xzf .../sw-0.26.9.tar.gz' to extract source files</li>
+<li>cd  sw-0.26.9</li>
+<li>Run ./configure &amp;&amp; make check</li>
+<li>Run sudo make install.<br />
+<strong><em>sw</em></strong> and associated scripts will be installed in /usr/local/bin</li>
+</ul>
+<h3 id="post-install">Post Install<a name="postinstall"/></h3>
+<h4 id="foo-bar-test">Foo Bar test<a name="foobartest"/></h4>
+<p>mkdir /tmp/x/<br />
+  * <strong><em>echo</em></strong> "(Foo) &lt;- (Bar);" | <strong><em>sw</em></strong> &gt; /tmp/x/fb.go </p>
+<p><strong><em>cd</em></strong> /tmp/x/
+  <strong><em>go</em></strong> mod tidy </p>
+<ul>
+<li>Run: <strong><em>go</em></strong> run /tmp/fb.go</li>
+</ul>
+<p>This is what the <strong><em>swgo</em></strong> script does: 
+  try  <strong><em>swgo</em></strong> .../nds/fb.sw  </p>
+<pre><code>OUTPUT: 
+
+Foo Bar-1
+Foo Bar-2
+Foo Bar-3
+Foo Bar-4
+Foo Bar-5
+Foo Bar-6
+Foo Bar-7
+</code></pre>
+<h2 id="building-on-linux">Building on Linux<a name="buildingonlinux"/></h2>
+<ul>
+<li>Install autotools, ctags, libyaml-dev, bnfc, bison, and flex </li>
+<li>cd to your project workspace (like /usr/local/src )</li>
+<li>git clone https://github.com/tyoung3/sw.git</li>
+<li>bin/sw.sh build;  # Runs autotools including .../sw/bin/configure. </li>
+<li>bin/sw.sh c;      # Runs make check in .../sw/src</li>
+<li>bin/sw.sh bw;     # Builds Windows/sw.exe.  Requires mingw.  Run make distclean first.</li>
+</ul>
+<h2 id="streamwork-languageswl-notes">StreamWork Language(SWL) Notes<a name="swlnotes"/></h2>
+<p>SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. </p>
+<p>See the bnfc StreamWork language description file, SWL.pdf. </p>
+<p>SWL has few reserved words,  making it somewhat natural language
+agnostic.  There is no guarantee this condition will continue, however, every effort 
+will be made to ensure that all currently valid SWL statements will remain valid.  Should 
+this prove impossible,  the minor version will be incremented.
+Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for network definition files, <strong><em>sw</em></strong>, and published Go modules only.<br />
+Linux scripts and Go modules, are separately versioned.  </p>
+<h4 id="stream-types-and-component-arguments">Stream types and component arguments<a name="streamtypes"/></h4>
+<p>Stream channels can be any Go language type: int, string, struct, 
+or interface.  '_' is shorthand for an interface channel type. <br />
+Components with channels of varying types, should group 
+types to simplify their entry points. </p>
+<p>Autojoin and autosplit work only with interface types.</p>
+<p>While StreamWork packages a number of components, none of them
+are required.  It is quite possible to define a network with no 
+dependencies (other than Go packages) at all.<br />
+The only requirement for a component is 
+an entry point with two or more parameters: wait group, argument string 
+slice, and as many channel slices as there are channel types. </p>
+<h4 id="variables">Variables<a name="varaibles"/></h4>
+<p>SWL accepts string($NAME), environment string($_NAME), symbol(&amp;NAME),  and numeric(%NAME) variables.  See SWL.pdf for acceptable usage.</p>
+<p>StreamWork uses the following environment variables:
+  * $BROWSER -- WWW browser 
+  * $GOPATH  -- Go language path
+  * $DEBUG   -- 'Y' will cause some messages to print.</p>
+<h4 id="semi-colon-commentary">Semi-colon commentary<a name="semicolons"/></h4>
+<p>Statements in SWL, are terminated with a semi-colon.  Semi-colons in code are like 
+periods at the end of English statements -- 
+they tell the reader (and the SWL interpreter) when
+you have reached the end of a statement; making reading the statements easier. 
+Imagine trying to read a book without any periods (or initial capitals). 
+Additionally, without semi-colons line breaks become part of the language 
+definition, leading to awkward, confusing syntax rules.  </p>
+<h4 id="left-arrow-comments">Left Arrow comments<a name="leftarrow"/></h4>
+<p>The, <code>&lt;-</code>,  token is employed in order to be consistent with its 
+usage in the Go language.  The <code>-&gt;</code> token is also available:
+"(A) -&gt; (B)1 &lt;- (C);"  is valid SWL.   </p>
+<h3 id="collatemerge-example">Collate/Merge Example<a name="collatemerge"/></h3>
+<p>Run the following (in Linux):</p>
+<pre><code>    mkdir /tmp/collate
+    sw &lt;  sw/nds/collate.sw   &gt; /tmp/collate.go
+    go run /tmp/collate.go |grep Match0  
+
+to produce: 
+
+Match0 Int: 5
+Match0 Int: 7
+Match0 Int: 9
+Match0 Int: 11
+Match0 Int: 17
+Match0 Int: 23
+
+</code></pre>
+<h2 id="hello-world">Hello World<a name="helloworld"/></h2>
+<pre><code>echo &quot;(HELLO)-&gt;(WORLD);&quot; |sw &gt; /tmp/hello.go
+go run  /tmp/hello.go 
+Produces:
+WORLD HELLO-1
+WORLD HELLO-2
+WORLD HELLO-3
+WORLD HELLO-4
+WORLD HELLO-5
+WORLD HELLO-6
+WORLD HELLO-7
+</code></pre>
+<pre><code>    sw -m 3 &lt;  sw/nds/collate.sw | dot -Tsvg &gt; /tmp/collate.svg
+</code></pre>
+<p>produces </p>
+<p><img alt="/tmp/collate.svg" src="http://sw.twyoung.com/images/collate.svg" />
+an image of the collate 
+network.  </p>
+<h2 id="bash-scripts">Bash Scripts<a name="bashscripts"/></h2>
+<h3 id="swgo-script"><strong><em>swgo</em></strong> script<a name="swgo"/></h3>
+<p>The bash script, <strong><em>swgo</em></strong>, will generate and run a GO program from a network definition:</p>
+<pre><code>  .../nds/hw.sw
+(Hello) &lt;string- (World);
+</code></pre>
+<p><strong><em>swgo</em></strong> .../nds/hw
+produces:</p>
+<pre><code>
+package main
+
+/*
+                  StreamWork Go code. 
+    Generated by sw/swgo.c-0.22.0 Wed Mar 16 14:48:30 2022
+    from Network file: /usr/local/src/sw/src/nds/hw.sw
+    Configuration file: /usr/local/src/sw/src/nds/sw.cfg
+            ***  Expanded Network Definition  ***
+(Hello sw.Print )       &lt;_- 0(World sw.Gens);   
+1 stream, 2 processes, 2 components, 1 partition, 0 cycles.
+*/
+
+import &quot;sync&quot;
+import &quot;github.com/tyoung3/sw&quot;
+
+
+func main() {
+var wg sync.WaitGroup
+
+cs0 := make(chan interface{},0) //World.0-&gt;Hello.0
+
+    wg.Add(1)
+
+var cp1 []chan interface{}
+cp1=append(cp1,cs0)
+go  sw.Gens(&amp;wg,[]string{&quot;World&quot;},cp1) // World
+
+var cp2 []chan interface{}
+cp2=append(cp2,cs0)
+go  sw.Print(&amp;wg,[]string{&quot;Hello&quot;},cp2) // Hello
+
+wg.Wait()
+}
+
+
+Which in turn produces:
+
+Hello World-1
+Hello World-2
+Hello World-3
+Hello World-4
+Hello World-5
+Hello World-6
+</code></pre>
+<h3 id="swgraph-script"><strong><em>swgraph</em></strong> Script<a name="swgraph"/></h3>
+<p>Another bash script, <strong><em>swgraph</em></strong>, will display a graphic image of a network definition:</p>
+<pre><code>    .../nds/mvc.sw
+(m Model)1      -change&gt;         (v View);
+(c)2            -update&gt;        1(v);
+(v)2            -event&gt;          (c Control); 
+(c)1            -request&gt;       (m);
+</code></pre>
+<p><strong><em>swgraph</em></strong> .../nds/mvc
+produces: </p>
+<p><img alt="Model/View/Control image" src="http://sw.twyoung.com/images/mvc.jpg" />
+for instance.
+Processes are colored such that all components in the same package have the same color.
+Not shown here, unfortunately, are the tooltips and html references.  Arrows are colored according to stream buffersize: 0 - black; 1-green; 2 or more - orange.   Coloring rules 
+are not guaranteed to remain unchanged in future sw versions. 
+<strong>WARNING:</strong> buffersize is related to deadlock potential in cyclic networks.</p>
+<p>The resulting image is an annotated Data Flow Diagram.</p>
+<h3 id="gofbp-script"><strong><em>gofbp</em> script</strong><a name="gofbpscript"/></h3>
+<p><strong><em>gofbp</em></strong> produces and runs a gofbp program 
+(see <a href="https://github.com/jpaulm/gofbp">github.com/jpaulm/gofbp</a>  )
+from a StreamWork net definition file.</p>
+<h4 id="gofbp-example-from-swsrcmodeltestsgofbploadbalsw">gofbp Example (from sw/src/model/tests/gofbp/loadbal.sw)<a name="gofbpexample"/></h4>
+<h5 id="given-loadbalsw">Given: LOADBAL.SW<a name="loadbal"/></h5>
+<pre><code>$core = &quot;github.com/jpaulm/gofbp/core&quot;;
+$trtn = &quot;github.com/jpaulm/gofbp/components/testrtn&quot;;
+(Sender $trtn/Sender &quot;10 COUNT=10&quot;)OUT  -load&gt; IN.0(LoadBalance $trtn/LoadBalance );
+(LoadBalance)OUT.1 -load&gt; IN(Receiver0 $trtn/DelayedReceiver);
+(LoadBalance)OUT.2 -load&gt; IN(Receiver1 $trtn/Receiver);
+(LoadBalance)OUT.3 -load&gt; IN(Receiver2 $trtn/Receiver);
+</code></pre>
+<p><code>gofbp -b loadbal</code></p>
+<p>produces </p>
+
+<p><img alt="a graphic image of loadbal.sw" src="http://sw.twyoung.com/images/loadbal.svg" />
+and (on console)</p>
+<pre><code>Input to Receiver: Receiver1 &gt; IP - # 1
+Input to Receiver: Receiver1 &gt; IP - # 4
+Input to Receiver: Receiver1 &gt; IP - # 6
+Input to Receiver: Receiver1 &gt; IP - # 8
+Input to Receiver: Receiver2 &gt; IP - # 0
+Input to Receiver: Receiver2 &gt; IP - # 3
+Input to Receiver: Receiver2 &gt; IP - # 7
+Input to DelayedReceiver: Receiver0 &gt; IP - # 2
+Input to DelayedReceiver: Receiver0 &gt; IP - # 5
+Input to DelayedReceiver: Receiver0 &gt; IP - # 9
+</code></pre>
+<h3 id="generate-a-project">Generate a project<a name="generateaproject"/></h3>
+<p><strong><em>swproject</em></strong> .../nds/postage.sw
+produces the following source tree:</p>
+<pre><code>postage
+├── addr
+│   ├── GetDest.go
+│   └── GetDest_test.go
+├── ComputePostage.go
+├── ComputePostage_test.go
+├── config.go
+├── getr
+│   ├── Rates.go
+│   └── Rates_test.go
+├── go.mod
+├── go.sum
+├── internal
+│   ├── gen_swproject
+│   ├── postage.go
+│   ├── postage.sw
+│   └── sw.cfg
+├── postage.yaml
+├── PrintLabel.go
+└── PrintLabel_test.go
+
+</code></pre>
+<p>then produces this graph 
+<img alt="postage.svg" src="http://sw.twyoung.com/images/postage.svg" />
+vets the code, and finally runs it.</p>
+<h4 id="swsh-synopsis"><strong><em>sw.sh</em></strong> Synopsis<a name="sw.sh"/></h4>
+<pre><code>sw.sh-1.0.1 USAGE: 
+        b|build     . Build project with Autotools.
+        c       . Make check
+        cl          . Show release check list. 
+        d  [OPTs]   . Switch to docker container. 
+        e       . Exit SW shell.
+        d build [OPTs]  . Build SWdemo docker container. 
+        doc     . Run and browse Doxygen 
+        j       . Graph collate.sw with swgraph
+        jl      . Generate and view locusts.png 
+        p  [NAME..] . Generate project(s) named NAME... 
+        poc     . Build and run Proof of Concept 
+        rm      . View README in /opt/google/chrome/chrome 
+        rc      . Build and run Collate program 
+        rl      . Run locusts program
+        s       . Enter SW shell.  'e' to exit the shell. 
+        v       . Display this script version
+        x       . Edit this script
+        --help  . Display this help
+</code></pre>
+<h2 id="bugs">BUGS:<a name="bugs"/></h2>
+<p><strong><em>sw.Gen</em></strong> fails unless all three arguments are present.</p>
+<p>Stream directors like =&gt; and &lt;= are accepted, but treated the same
+as -&gt; and &lt;-, except for appearing differently in graphs.<br />
+The meaning is reserved for future use, which could 
+break existing networks.</p>
+<h2 id="home-page">Home Page<a name="homepage"/></h2>
+<p>(https://sw.twyoung.com)</p>
+<h2 id="release-notes">Release Notes<a name="releasnotes"/></h2>
+<h3 id="0180">0.18.0</h3>
+<ul>
+<li>Reorganized repo tree structure </li>
+<li>Renamed package swbase to sw and moved code to repo root</li>
+<li>Changed package swutility to import package sw</li>
+</ul>
+<h3 id="0184">0.18.4</h3>
+<ul>
+<li>Fixes for restructure problems</li>
+<li>Fixes to bash scripts </li>
+<li>Fixes to githup builds   </li>
+</ul>
+<h3 id="0185">0.18.5</h3>
+<ul>
+<li>More fixes</li>
+<li>Moved .../sw/c to .../sw/src</li>
+</ul>
+<h3 id="0186">0.18.6</h3>
+<ul>
+<li>Created gofbp script  </li>
+<li>Added sw/testrtn package</li>
+</ul>
+<h3 id="0187">0.18.7</h3>
+<ul>
+<li>Moved build process to project tree root</li>
+</ul>
+<h3 id="0188">0.18.8</h3>
+<ul>
+<li>Fixed count in swbal.sw</li>
+</ul>
+<h3 id="0189">0.18.9</h3>
+<ul>
+<li>Fix testrtn/Sender</li>
+</ul>
+<h3 id="0190">0.19.0</h3>
+<ul>
+<li>Many fixes to <strong><em>swproject</em></strong> script     </li>
+</ul>
+<h3 id="0201">0.20.1</h3>
+<ul>
+<li>Fix swgraph file search    </li>
+</ul>
+<h3 id="0206">0.20.6</h3>
+<ul>
+<li>Incorporate component attributes in SWL for future graphing enhancements.</li>
+<li>Fix fan logic when connection is missing. </li>
+</ul>
+<h3 id="0207">0.20.7</h3>
+<ul>
+<li>Improve gofbp script</li>
+<li>Update README</li>
+</ul>
+<h3 id="0208">0.20.8</h3>
+<ul>
+<li>Created fileio package with GetFile and PutFile and FileT </li>
+</ul>
+<h3 id="02010">0.20.10</h3>
+<ul>
+<li>Provide process attributes.  </li>
+</ul>
+<h3 id="0210">0.21.0</h3>
+<ul>
+<li>Can generate projects with or without YAML configuration. </li>
+<li>Fixes to Wrap function.  </li>
+</ul>
+<h3 id="0211">0.21.1</h3>
+<ul>
+<li>README updates  </li>
+<li>Updated SWL.pdf</li>
+</ul>
+<h3 id="0220">0.22.0</h3>
+<ul>
+<li>Go code generation revamped</li>
+<li>Typed channels partly implemented, possibly breaking networks
+    with types specified in a director. </li>
+</ul>
+<h3 id="0266">0.26.6</h3>
+<ul>
+<li>Fixed double arrow graph error      </li>
+</ul>
+<h3 id="0267">0.26.7</h3>
+<ul>
+<li>Introduced mkdocs</li>
+<li>Attempt to fix go.in yaml  Dependabot alert</li>
+<li>Fix build error in swgraph.c</li>
+</ul>
+<h3 id="0268">0.26.8</h3>
+<ul>
+<li>Removed 'default:' error from swgraph.c </li>
+</ul>
+<h2 id="0269">0.26.9</h2>
+<ul>
+<li>Fixed bug with subnet attributes   </li>
+</ul>
+<h2 id="author">Author<a name="author"/></h2>
+<pre><code>Tom Young, streamwork@twyoung.com
+
+with thanks to J. Paul Morrison, Phillip W. Young, Sam Watkins, 
+the contributors to flow-based-programming@googlegroups.com, 
+and to the developers/maintainers of Go, gcc, Linux/Ubuntu, 
+BNFC, git, GraphViz, Github and others.
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../components/" class="btn btn-neutral float-right" title="Component Comments">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+      <p>Copyright &copy; 2022, Tom Young, streamwork@twyoung.com.</p>
+    
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../components/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
