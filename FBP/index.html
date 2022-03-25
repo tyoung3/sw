@@ -10,9 +10,11 @@
   
   <link rel="shortcut icon" href="../img/favicon.ico">
   <title>FBP - StreamWork</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
   <link rel="stylesheet" href="../css/theme.css" />
   <link rel="stylesheet" href="../css/theme_extra.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
   
   <script>
     // Current page data
@@ -23,9 +25,8 @@
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
-  
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -39,19 +40,23 @@
         <a href=".." class="icon icon-home"> StreamWork</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                    </li>
+                </ul>
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../rdm/">Readme</a>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">User Guide</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../components/">Component Comments</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/">Components</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../components/sw/">SwBase</a>
                     </li>
@@ -68,6 +73,8 @@
                 <ul class="current">
                     <li class="toctree-l1 current"><a class="reference internal current" href="./">FBP</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#flow-based-programming-references">Flow Based Programming References</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#streamwork-and-classical-fbp">StreamWork and 'Classical FBP'</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#wikipedia-definition-of-fbp">Wikipedia Definition of FBP</a>
@@ -135,11 +142,17 @@
   
   <hr/>
 </div>
+
           <div role="main">
             <div class="section">
               
-                <h1 id="flow-based-programming-comments">Flow Based Programming Comments</h1>
-<p>11/8/2021, 3/17/2022, 3/23/2022</p>
+                <h1 id="flow-based-programming">Flow Based Programming</h1>
+<h2 id="flow-based-programming-references">Flow Based Programming References</h2>
+<ul>
+<li><a href="https://jpaulm.github.io/fbp/">J Paul Morrison</a></li>
+<li><a href="https://fbp.twyoung.com/">Other FBP Projects SpreadSheet</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Flow-based_programming">Flow Based Programming (Wiki)</a></li>
+</ul>
 <h2 id="streamwork-and-classical-fbp">StreamWork and 'Classical FBP'</h2>
 <p>We believe StreamWork is consistent with 'Classical Flow Based Programming'. </p>
 <h3 id="wikipedia-definition-of-fbp">Wikipedia Definition of FBP</h3>
@@ -158,17 +171,17 @@
 <li>Named Ports</li>
 </ul>
 <p>Wikipedia does not mention concurrency -- in error, we maintain.<br />
-Wikipedia also does not mention subnets, data ownership or 
-back pressure and other features such as bracketed IPs.<br />
-StreamWork does not directly implement data ownership and defined
-lifetimes, back pressure, or bracketed IPs.<br />
-There is no apparent reason why these features could not 
-be implemented within the components.   </p>
+Wikipedia also does not mention subnets, data ownership,
+back pressure, data ownership, or bracketed IPs.<br />
+StreamWork does not directly implement these features,
+but there is no obvious reason why these features could not 
+be implemented within the components. </p>
+<p>StreamWork considers subnets to be an essential design tool, allowing 
+unlimited numbers of subnets and components and a ridiculously large(100) number of subnet levels.  Note that 
+StreamWork is highly concurrent and allows for high degrees of parallelism.   </p>
 <p>We claim here that StreamWork meets all the Wikipedia criteria 
-and therefore StreamWork implements 'classical' FBP.  Note that 
-StreamWork is highly concurrent and also provides for subnet 
-definition and expansion. </p>
-<p>StreamWork, however, does not directly incorporate IP defined 
+and therefore StreamWork implements 'classical' FBP.<br />
+StreamWork, however, does not directly incorporate IP defined 
 lifetimes or require specific create/copy/destroy
 operations.  In StreamWork, IPs live only from the moment of sending to
 the GO channel by the source process until received by the sink process. 
@@ -177,8 +190,8 @@ closed channels to be reaccessed, so
 for utmost security, zero sized buffers and encryption are recommended 
 for sensitive data, like passwords.</p>
 <p>Component behavior can be controlled via arguments, environment
-variables,  in-stream commands and ordinary IPs.
-StreamWork does not distinguish between IIPs (initialization information 
+variables,  in-stream commands, ordinary IPs, and signals.</p>
+<p>StreamWork does not distinguish between IIPs (initialization information 
 packets) and ordinary IPs and therefore does not require any special 
 processin or notation for IIPs within the network definition language.    </p>
 <h2 id="fbp-tenets-httpsjpaulmgithubiofbp"><a href="https://jpaulm.github.io/fbp">FBP tenets https://jpaulm.github.io/fbp</a></h2>
@@ -314,17 +327,18 @@ simplify and tailor the functional API rules into a more standard API informatio
   </div>
 
   <div class="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      
-      
-        <span><a href="../components/fileio/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      
-      
-        <span style="margin-left: 15px"><a href="../PROJECT/" style="color: #fcfcfc">Next &raquo;</a></span>
-      
-    </span>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../components/fileio/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../PROJECT/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
 </div>
     <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
     <script src="../js/theme.js" defer></script>
       <script src="../search/main.js" defer></script>
     <script defer>
