@@ -10,11 +10,9 @@
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
   <title>SwBase - StreamWork</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
-
   <link rel="stylesheet" href="../../css/theme.css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
@@ -25,8 +23,9 @@
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
   <script src="../../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
+  
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -40,7 +39,7 @@
         <a href="../.." class="icon icon-home"> StreamWork</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -68,10 +67,12 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../fileio/">Fileio</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../SWL.pdf">SW Language Labeled BNF(pdf)</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Developer Guide</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../../FBP/">FBP</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../../design/">Design Guidelines</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../PROJECT/">Project Generation</a>
                     </li>
@@ -81,9 +82,13 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../DOCKER/">Docker</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../../APIs/">API Comments</a>
+                    </li>
                 </ul>
                 <p class="caption"><span class="caption-text">About</span></p>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../../FBP/">FBP</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../license/">License</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
@@ -122,22 +127,21 @@
   
   <hr/>
 </div>
-
           <div role="main">
             <div class="section">
               
                 <p>package sw // import "github.com/tyoung3/sw"</p>
-<p>Package sw contains the basic FBP engine to launch a network of Streamwork
-Go components.</p>
+<p>Package sw contains a number of basic, standard StreamWork components.</p>
 <p>The program 'sw' can create a main/Go program(cmd) from a Streamwork network
 definition.</p>
-<p>The generated cmd uses this package to launch the components specified in
-the network definition. This package also contains basic Streamwork
-components: Gen, Pass, Print, etc. Other sw/... components are:
-swutility/Collate,Merge and linux/Wrap</p>
-<p>Sw components have a very simple interface. There are no required import
-statements and just one exported function, with the Component name, is
-required.</p>
+<p>The generated cmd launches the component processes specified in the network
+definition as separate go routines.</p>
+<p>This package contains basic Streamwork components: Split, Join, Gen, Pass,
+Print, etc. Other .../sw/ packages are: config, swutility, and linux.</p>
+<p>Sw components have a simple interface. There is no complex API; there are no
+StreamWork required import statements. Just the exported function is
+required. This makes it easy to create your own components. The bash script,
+<strong><em>swproject</em></strong> generates an entire project tree from a network definition</p>
 <p>FUNCTIONS</p>
 <p>func Gen(wg *sync.WaitGroup, arg []string, cs []chan interface{})
     Gen sends 'nbr' integers, beginning with 'start', incremented by 'inc';
@@ -195,7 +199,7 @@ required.</p>
   <div role="contentinfo">
     <!-- Copyright etc -->
     
-      <p>Copyright &copy; 2022, Tom Young, streamwork@twyoung.com.</p>
+      <p>Copyright &copy; 2021, 2022, Tom Young, streamwork@twyoung.com.</p>
     
   </div>
 
@@ -210,18 +214,17 @@ required.</p>
   </div>
 
   <div class="rst-versions" role="note" aria-label="versions">
-  <span class="rst-current-version" data-toggle="rst-current-version">
-    
-    
-      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
-    
-    
-      <span><a href="../swutility/" style="color: #fcfcfc">Next &raquo;</a></span>
-    
-  </span>
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../swutility/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
 </div>
     <script>var base_url = '../..';</script>
-    <script src="../../js/theme_extra.js" defer></script>
     <script src="../../js/theme.js" defer></script>
       <script src="../../search/main.js" defer></script>
     <script defer>

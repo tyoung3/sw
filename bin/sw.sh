@@ -203,7 +203,7 @@ case $1 in
 	    mkdocs build
 	    mkdocs serve -a localhost:8001 &
 	    sleep 4
-	    $BROWSER localhost:8001 &
+	    # $BROWSER localhost:8001 &
 	    ;;
 	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0 &;;

@@ -9,16 +9,19 @@ nav:
       - Linux:   components/linux.md
       - Config:  components/config.md
       - Fileio:  components/fileio.md 
+      - SW Language Labeled BNF(pdf): SWL.pdf
   - Developer Guide: 
-      - FBP:    FBP.md
+      - Design Guidelines: design.md
       - Project Generation: PROJECT.md
       - Mkdocs: mkdocs.md   
       - Github Project: github.md 
       - Docker: DOCKER.md
-  - About:    
+      - API Comments: APIs.md
+  - About: 
+      - FBP:    FBP.md   
       - License: license.md
       - About: about.md
 
-copyright: Copyright &copy; 2022, Tom Young, streamwork@twyoung.com.
+copyright: Copyright &copy; 2021, 2022, Tom Young, streamwork@twyoung.com.
 
 theme: readthedocs
