@@ -14,11 +14,11 @@
     all processes to continue in DEBUG mode.   	  
   * Simple interfaces
     * Avoid global variables.  Ensure components are re-entrant.  
-      Internal state data should be contained in IPs. 
   	* Limit each channel to one type of data.  Pass a structure, 
-  	  not multiple data elements.  
-  	  Pass structures or handles, not pointers.  Any data tree can 
-  	  be passed in abstract syntax form. 
+  	  instead of multiple data elements.  
+  	  Pass structures or handles, rather than pointers.  
+  	  A data tree can be passed in abstract syntax form, then
+  	  reconstructed on receipt. 
   	* Strive for less than four channels per component, 
   	  splitting into multiple components if necessary.   
   	  Exception:  same IP type on multiple channels.     
@@ -26,7 +26,7 @@
  	* Use simple URI rules [URI Rules](https://dzone.com/articles/7-rules-for-rest-api-uri-design-1)
   * Don't buffer unnecessarily.   Zero-length buffers minimize latency.
   * Security and synchronization
- 	* Alway defer synchronizing waits to help prevent deadlock 
+ 	* Always defer synchronizing waits to help prevent deadlock 
  	  and zombies.
     * Avoid threats  (see [Go security practices](https://blog.sqreen.com/top-6-security-best-practices-for-go/) )
   	* Validate input entries
@@ -34,7 +34,7 @@
   	* Prevent SQL injections
   	* Encrypt sensitive data
   	* Use HTTPS, not http
-  	* Use logs and error messages carefully, being sure to avoid leaking sensitive data.
+  	* Use logs and error messages carefully, being sure to avoid leaking sensitive data. (5,000 secrets/day are leaked to GitHub, it has been claimed.)
   * Document at the component, subnet, and package levels.   
   * Test at the component and package levels. 
 
@@ -42,11 +42,13 @@
 
 StreamWork: 
 
-  * does not process IPs; it merely creates and assigns channels to the sending and receiving components;
+  * does not complicate debugging with subnet logic.  Subnets are purely
+    design aids.
+  * does not process IPs; it merely creates a channel for every stream, assigning the channels to the sending and receiving components;
   * has a number of rules for automatically connecting ports according to their names and modes(sink or source)<!-- ?? show rules -->;  
   * implements a text based, context free, program language agnostic, network definition language, SWL;
-  * produces pure GO code with no dependencies other than those required by the components themselves; 
-   (The generated code, and supplied components, should run on any platform GO supports;)  
+  * produces pure Go code with no dependencies other than those required by the components themselves; 
+   (The generated code, should run on any platform Go supports. Non-standard components may contain OS dependent code, however.)  
   * Component behavior can be controlled via arguments, environment
 variables, in-stream commands, ordinary IPs, and signals. 
   * Each process runs as an independent Go routine.  Components are free

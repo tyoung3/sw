@@ -20,6 +20,7 @@ nav:
   - About: 
       - FBP:    FBP.md   
       - License: license.md
+      - Security: SECURITY.md
       - About: about.md
 
 copyright: Copyright &copy; 2021, 2022, Tom Young, streamwork@twyoung.com.
