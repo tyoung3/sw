@@ -9,15 +9,15 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Mkdocs - StreamWork</title>
+  <title>API Comments - StreamWork</title>
   <link rel="stylesheet" href="../css/theme.css" />
   <link rel="stylesheet" href="../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Mkdocs";
-    var mkdocs_page_input_path = "mkdocs.md";
+    var mkdocs_page_name = "API Comments";
+    var mkdocs_page_input_path = "APIs.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -76,19 +76,19 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../PROJECT/">Project Generation</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Mkdocs</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#project-layout">Project layout</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">Mkdocs</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../github/">Github Project</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../DOCKER/">Docker</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../APIs/">API Comments</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">API Comments</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#apis">APIs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#api-refenences">API Refenences</a>
+    </li>
+    </ul>
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">About</span></p>
@@ -127,7 +127,7 @@
         
       
     
-    <li>Mkdocs</li>
+    <li>API Comments</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -138,21 +138,37 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
+                <h1 id="api-comments">API Comments</h1>
+<h2 id="apis">APIs</h2>
+<p>APIs are typically implemented via function calls, as stated in 
+<a href="https://www.altexsoft.com/blog/engineering/what-is-api-definition-types-specifications-documentation/">altexsoft</a>
+.<br />
+We suggest most APIs would be better implemented by FBP.   </p>
 <ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
+<li><a href="https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/the-seven-make-or-break-api-challenges-cios-need-to-address#">Seven API challenges</a></li>
+<li><a href="https://thenewstack.io/the-exploding-endpoint-problem-why-everything-must-become-an-api/">Everything an API</a></li>
 </ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
-</code></pre>
+<p>The discovery, access, interface, and format of APIs are not standardized leading to fragmentation of programming languages, frameworks and developer consumption models such as containers and serverless as a way to deal with complexity. </p>
+<p>An existing functional API can be incorporated into a FBP component which interacts via one or more structures.   The component can thus 
+simplify and tailor the functional API rules into a more standard API information packet.  When several, diverse functional APIs are required to carry out a particular operation, it may be possible to subnet the whole thing into one FBP process with a standard interface.  </p>
+<p>Functional APIs, particulary web-based APIs with their inherent delays, would benefit immediately from FBP's inherent concurrency.    </p>
+<h2 id="api-refenences">API Refenences</h2>
+<ul>
+<li><a href="htps://api2cart.com/business/6-difficulties-api-integration-way-avoid/">API2Cart</a></li>
+<li><a href="http://sigdoc.acm.org/cdq/how-developers-use-api-documentation-an-observation-study/">How developers use</a></li>
+<li><a href="http://www.cs.cmu.edu/~cscaffid/old/papers/pr_20060601_api.pdf">CMU paper</a></li>
+<li><a href="https://www.cs.mcgill.ca/~martin/papers/software2009a.pdf">Martin papers</a></li>
+<li><a href="https://link.springer.com/content/pdf/10.1007%2F978-3-642-34347-6_10.pdf">Springer PDF</a></li>
+<li><a href="https://arxiv.org/pdf/1705.06586.pdf">arxif PDF</a></li>
+<li><a href="https://www.testingxperts.com/blog/Top-4-Challenges-of-API-Testing-and-How-to-Overcome-Them">API Challenges</a></li>
+<li>
+<p><a href="https://www.healthit.gov/topic/patient-access-to-medical-records/learning-module-apis-and-health-data-sharing">Patient Access</a></p>
+</li>
+<li>
+<p><a href="https://stackoverflow.blog/2020/11/23/the-macro-problem-with-microservices/">Microservices problem</a></p>
+</li>
+<li><a href="https://github.com/temporalio/temporal">Temporal Project</a></li>
+</ul>
               
             </div>
           </div>
@@ -160,10 +176,10 @@ docs/
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../github/" class="btn btn-neutral float-right" title="Github Project">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../FBP/" class="btn btn-neutral float-right" title="FBP">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../PROJECT/" class="btn btn-neutral" title="Project Generation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../DOCKER/" class="btn btn-neutral" title="Docker"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -191,10 +207,10 @@ docs/
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../PROJECT/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../DOCKER/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../github/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../FBP/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

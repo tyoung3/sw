@@ -9,15 +9,15 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Mkdocs - StreamWork</title>
+  <title>Security - StreamWork</title>
   <link rel="stylesheet" href="../css/theme.css" />
   <link rel="stylesheet" href="../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Mkdocs";
-    var mkdocs_page_input_path = "mkdocs.md";
+    var mkdocs_page_name = "Security";
+    var mkdocs_page_input_path = "SECURITY.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -71,18 +71,12 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">Developer Guide</span></p>
-                <ul class="current">
+                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../design/">Design Guidelines</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../PROJECT/">Project Generation</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Mkdocs</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#project-layout">Project layout</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">Mkdocs</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../github/">Github Project</a>
                     </li>
@@ -92,12 +86,18 @@
                     </li>
                 </ul>
                 <p class="caption"><span class="caption-text">About</span></p>
-                <ul>
+                <ul class="current">
                     <li class="toctree-l1"><a class="reference internal" href="../FBP/">FBP</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../SECURITY/">Security</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Security</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#supported-versions">Supported Versions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#reporting-a-vulnerability">Reporting a Vulnerability</a>
+    </li>
+    </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
                     </li>
@@ -123,11 +123,11 @@
     
       
         
-          <li>Developer Guide &raquo;</li>
+          <li>About &raquo;</li>
         
       
     
-    <li>Mkdocs</li>
+    <li>Security</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -138,21 +138,33 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
-<ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
-</ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
-</code></pre>
+                <h1 id="security-policy">Security Policy</h1>
+<h2 id="supported-versions">Supported Versions</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Supported</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.26.9</td>
+<td>:white_check_mark:</td>
+</tr>
+<tr>
+<td>&lt; 1.0.0</td>
+<td>:x:</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reporting-a-vulnerability">Reporting a Vulnerability</h2>
+<p>E-mail streamwork_security@twyoung.com to report a vulnerability.</p>
+<p>Please do not expect acknowlegement or e-mail responses of any kind.
+Watch the github repo for appropriate updates.   </p>
+<p>There are currently no known security problems.  We greatly 
+appreciate your help in keeping things that way.<br />
+Let us know in your e-mail if you wish to be publicly acknowledged, or not. </p>
               
             </div>
           </div>
@@ -160,10 +172,10 @@ docs/
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../github/" class="btn btn-neutral float-right" title="Github Project">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../PROJECT/" class="btn btn-neutral" title="Project Generation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../license/" class="btn btn-neutral" title="License"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -191,10 +203,10 @@ docs/
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../PROJECT/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../license/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../github/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

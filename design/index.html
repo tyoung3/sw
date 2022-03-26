@@ -9,15 +9,15 @@
   
   
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Mkdocs - StreamWork</title>
+  <title>Design Guidelines - StreamWork</title>
   <link rel="stylesheet" href="../css/theme.css" />
   <link rel="stylesheet" href="../css/theme_extra.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Mkdocs";
-    var mkdocs_page_input_path = "mkdocs.md";
+    var mkdocs_page_name = "Design Guidelines";
+    var mkdocs_page_input_path = "design.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -72,17 +72,17 @@
                 </ul>
                 <p class="caption"><span class="caption-text">Developer Guide</span></p>
                 <ul class="current">
-                    <li class="toctree-l1"><a class="reference internal" href="../design/">Design Guidelines</a>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Design Guidelines</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#go-design-guidelines">GO Design Guidelines</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#streamwork-features">StreamWork Features</a>
+    </li>
+    </ul>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../PROJECT/">Project Generation</a>
                     </li>
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Mkdocs</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#commands">Commands</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#project-layout">Project layout</a>
-    </li>
-    </ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">Mkdocs</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../github/">Github Project</a>
                     </li>
@@ -127,7 +127,7 @@
         
       
     
-    <li>Mkdocs</li>
+    <li>Design Guidelines</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -138,21 +138,65 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="welcome-to-mkdocs">Welcome to MkDocs</h1>
-<p>For full documentation visit <a href="https://www.mkdocs.org">mkdocs.org</a>.</p>
-<h2 id="commands">Commands</h2>
+                <h1 id="streamwork-design-guidelines">StreamWork Design Guidelines</h1>
+<h2 id="go-design-guidelines">GO Design Guidelines</h2>
 <ul>
-<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
-<li><code>mkdocs serve</code> - Start the live-reloading docs server.</li>
-<li><code>mkdocs build</code> - Build the documentation site.</li>
-<li><code>mkdocs -h</code> - Print help message and exit.</li>
+<li>Separate concerns<ul>
+<li>GUI, business logic, DB,  etc. should not be intermixed. </li>
+<li>Try to make the business logic clear to the business experts and easily modifiable.<br />
+  Use decision tables, graphs, etc.</li>
 </ul>
-<h2 id="project-layout">Project layout</h2>
-<pre><code>mkdocs.yml    # The configuration file.
-docs/
-    index.md  # The documentation homepage.
-    ...       # Other markdown pages, images and other files.
-</code></pre>
+</li>
+<li>Do not avoid the GO init() function.  The init() function in all
+    processes will execute, in parallel, prior to any main function.
+    For instance, one process could set the DEBUG variable on within 
+    its init() function, causing
+    all processes to continue in DEBUG mode.      </li>
+<li>Simple interfaces<ul>
+<li>Avoid global variables.  Ensure components are re-entrant.  </li>
+<li>Limit each channel to one type of data.  Pass a structure, 
+  instead of multiple data elements.<br />
+  Pass structures or handles, rather than pointers.<br />
+  A data tree can be passed in abstract syntax form, then
+  reconstructed on receipt. </li>
+<li>Strive for less than four channels per component, 
+  splitting into multiple components if necessary. <br />
+  Exception:  same IP type on multiple channels.     </li>
+<li>Don't over simplify and create too many fine-grained processes.</li>
+<li>Use simple URI rules <a href="https://dzone.com/articles/7-rules-for-rest-api-uri-design-1">URI Rules</a></li>
+</ul>
+</li>
+<li>Don't buffer unnecessarily.   Zero-length buffers minimize latency.</li>
+<li>Security and synchronization<ul>
+<li>Always defer synchronizing waits to help prevent deadlock 
+  and zombies.</li>
+<li>Avoid threats  (see <a href="https://blog.sqreen.com/top-6-security-best-practices-for-go/">Go security practices</a> )</li>
+<li>Validate input entries</li>
+<li>Use HTML templates to help avoid cross site script(CSS) attacks</li>
+<li>Prevent SQL injections</li>
+<li>Encrypt sensitive data</li>
+<li>Use HTTPS, not http</li>
+<li>Use logs and error messages carefully, being sure to avoid leaking sensitive data. (5,000 secrets/day are leaked to GitHub, it has been claimed.)</li>
+</ul>
+</li>
+<li>Document at the component, subnet, and package levels.   </li>
+<li>Test at the component and package levels. </li>
+</ul>
+<h2 id="streamwork-features">StreamWork Features</h2>
+<p>StreamWork: </p>
+<ul>
+<li>does not complicate debugging with subnet logic.  Subnets are purely
+    design aids.</li>
+<li>does not process IPs; it merely creates a channel for every stream, assigning the channels to the sending and receiving components;</li>
+<li>has a number of rules for automatically connecting ports according to their names and modes(sink or source)<!-- ?? show rules -->;  </li>
+<li>implements a text based, context free, program language agnostic, network definition language, SWL;</li>
+<li>produces pure Go code with no dependencies other than those required by the components themselves; 
+   (The generated code, should run on any platform Go supports. Non-standard components may contain OS dependent code, however.)  </li>
+<li>Component behavior can be controlled via arguments, environment
+variables, in-stream commands, ordinary IPs, and signals. </li>
+<li>Each process runs as an independent Go routine.  Components are free
+    to launch and synchonize Go routines of their own. </li>
+</ul>
               
             </div>
           </div>
@@ -160,10 +204,10 @@ docs/
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../github/" class="btn btn-neutral float-right" title="Github Project">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../PROJECT/" class="btn btn-neutral float-right" title="Project Generation">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../PROJECT/" class="btn btn-neutral" title="Project Generation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../SWL.pdf" class="btn btn-neutral" title="SW Language Labeled BNF(pdf)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -191,10 +235,10 @@ docs/
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../PROJECT/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../SWL.pdf" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../github/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../PROJECT/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
