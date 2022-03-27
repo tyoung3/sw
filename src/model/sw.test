@@ -721,9 +721,27 @@ INCLUDE "inc.isw";
 
 FAIL.inc.sw
 
-cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 52 - FAILOK/subnet2.sw || echo ok 52 - FAILOK/subnet2.sw
-{#Subnets M and N
+cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 52 - FAILOK/recurse.sw || echo ok 52 - FAILOK/recurse.sw
+{# RECURSE.sw 
+ 
 
+#}
+
+
+^S { 
+(C)->(D);
+};
+
+^R {
+(A ^R) -> (B ^S);
+};
+
+(E ^R) -> (F f);
+FAIL.recurse.sw
+
+cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 53 - FAILOK/subnet2.sw || echo ok 53 - FAILOK/subnet2.sw
+{#Subnets M and N
+	FAIL: SW/msg: Expand3A: Type Mismatch for (YS2) -type_K2>  and ((null)) -type_M>
 #}
 
 ^M { 
@@ -749,8 +767,11 @@ cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 52 - FAILOK/subnet2.sw |
 (T) 	<4- (U);
 FAIL.subnet2.sw
 
-cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 53 - FAILOK/subnet3.sw || echo ok 53 - FAILOK/subnet3.sw
-
+cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 54 - FAILOK/subnet3.sw || echo ok 54 - FAILOK/subnet3.sw
+{#  SUBNET3.sw
+ FAIL: SW/msg: createStream: Type Mismatch for (Eb) -type_A>  and (Eb) -type_N2>
+#}
+  
 ######################################################### 
 ^M5 {
 Eb	<type_A 14-	0(B);
@@ -812,7 +833,7 @@ A	<type_C 13 -	0(A);
 #}
 FAIL.subnet3.sw
 
-cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 54 - FAILOK/tee.sw || echo ok 54 - FAILOK/tee.sw
+cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 55 - FAILOK/tee.sw || echo ok 55 - FAILOK/tee.sw
 #!/usr/local/bin/swgraph
 
 # TEE.SW: derived from swedit.sw adding tee function to record trafic.
@@ -864,4 +885,4 @@ _ ^model;
 _ ^view; 
 _ ^control;
 FAIL.tee.sw
-echo  1..54 # Number of tests to be executed.
+echo  1..55 # Number of tests to be executed.

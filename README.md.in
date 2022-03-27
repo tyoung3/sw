@@ -663,7 +663,11 @@ break existing networks.
   * Removed 'default:' error from swgraph.c 
   
 ## 0.26.9
-  * Fixed bug with subnet attributes   
+  * Fixed bug with subnet attributes  
+  
+## 0.26.10
+  * Fixed maximum subnet level checking
+  * Introducted mkdocs web site docs   
   
 ## Author<a name="author"/>
 

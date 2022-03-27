@@ -1,4 +1,7 @@
-
+{#  SUBNET3.sw
+ FAIL: SW/msg: createStream: Type Mismatch for (Eb) -type_A>  and (Eb) -type_N2>
+#}
+  
 ######################################################### 
 ^M5 {
 Eb	<type_A 14-	0(B);

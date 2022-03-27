@@ -1,5 +1,5 @@
 {#Subnets M and N
-
+	FAIL: SW/msg: Expand3A: Type Mismatch for (YS2) -type_K2>  and ((null)) -type_M>
 #}
 
 ^M { 

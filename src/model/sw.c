@@ -1502,7 +1502,7 @@ Expand2 (Model m, Process p, Stream s)
   Port psrc, psnk;
   Stream ns;			/* New Stream */
   stype = IS_NET;
-
+  CheckDepth(p->depth);
   srcname = makeName (p->name, s->source->name);
   snkname = makeName (p->name, s->sink->name);
   src = MakeProcess (m, srcname, s->source->comp, 
@@ -1618,6 +1618,7 @@ Expand3 (Model m, Process p, Extport ep)
   char *srcname;
   char *snkname;
 
+  CheckDepth(p->depth);
   if (ep->type == SOURCE)
     {
       pt = p->port;		/** Find matching sink port  */

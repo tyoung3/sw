@@ -3,10 +3,8 @@
   These @todoS are sw general, not swproject specific: 
   High Priority:
   
-    @todo localization  
-    @todo fix sw.twyoung.com
-    @todo component docs to README
-    @todo swgrapgh levels.
+    @done localization  mkdocs first
+    @done swgrapgh levels.
     @todo Fix defaultTypePath missing in config file.
         @todo fix null type path problem.
     @todo env variable to pass return code?
@@ -58,6 +56,8 @@
  	          
  DONE: 
 	
+    @todo component docs to README
+    @done fix sw.twyoung.com
     @done default channel type path.  
     @done README TOC
 	@done Synopsis to README.md.in
