@@ -6,7 +6,7 @@ nav:
       - Components: components.md
       - SwBase: components/sw.md 
       - Swutility: components/swutility.md
-      - Linux:   components/linux.md
+      - Linux:   components/os.md
       - Config:  components/config.md
       - Fileio:  components/fileio.md 
       - SW Language Labeled BNF(pdf): SWL.pdf

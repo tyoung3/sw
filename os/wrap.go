@@ -1,5 +1,5 @@
-/*Package linux provides *Nix specific functionality for StreamWork Golang components. */
-package linux
+/*Package sw/os provides Operating System specific functionality for StreamWork Golang components. */
+package os
 
 /*  Generated StreamWork component, Wrap,
     by sw.sh on Mon May 17 11:33:16 AM EDT 2021

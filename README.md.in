@@ -670,7 +670,11 @@ break existing networks.
   * Introducted mkdocs web site docs
   
 ## 0.26.11
-  * Changed type mismatches from FAILing to WARNING.     
+  * Changed type mismatches from FAILing to WARNING.   
+  
+## 0.27.0 
+  * Changed package name from sw/linux to sw/os
+  * Added sw/os/Debug function    
   
 ## Author<a name="author"/>
 

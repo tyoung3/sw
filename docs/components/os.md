@@ -1,9 +1,12 @@
-package linux // import "github.com/tyoung3/sw/linux"
+package os // import "github.com/tyoung3/sw/os"
 
-Package linux provides *Nix specific functionality for StreamWork Golang
-components.
+Package sw/os provides Operating System specific functionality for
+StreamWork Golang components.
 
 FUNCTIONS
+
+func Debug(s string)
+    Debug prints string, s, in yellow, if debugging mode is set ( DEBUG="Y").
 
 func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{})
     Wrap launches the specified linux executable and separate goroutines to a)

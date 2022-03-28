@@ -1,4 +1,4 @@
-# STREAMWORK -- SW-0.26.11 
+# STREAMWORK -- SW-0.27.0 
 
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
 
@@ -259,10 +259,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   
 ### Installation<a name="installation"/>   
   * cd to any convenient workspace (/usr/local/src for example).
-  * Download the latest sw-0.26.11.tar.gz file 
+  * Download the latest sw-0.27.0.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-0.26.11.tar.gz' to extract source files
-  * cd  sw-0.26.11
+  * Run 'tar -xzf .../sw-0.27.0.tar.gz' to extract source files
+  * cd  sw-0.27.0
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -670,7 +670,11 @@ break existing networks.
   * Introducted mkdocs web site docs
   
 ## 0.26.11
-  * Changed type mismatches from FAILing to WARNING.     
+  * Changed type mismatches from FAILing to WARNING.   
+  
+## 0.27.0 
+  * Changed package name from sw/linux to sw/os
+  * Added sw/os/Debug function    
   
 ## Author<a name="author"/>
 
