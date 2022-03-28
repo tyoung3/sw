@@ -17,7 +17,7 @@
   <script>
     // Current page data
     var mkdocs_page_name = "Linux";
-    var mkdocs_page_input_path = "components/linux.md";
+    var mkdocs_page_input_path = "components/os.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -132,10 +132,12 @@
           <div role="main">
             <div class="section">
               
-                <p>package linux // import "github.com/tyoung3/sw/linux"</p>
-<p>Package linux provides *Nix specific functionality for StreamWork Golang
-components.</p>
+                <p>package os // import "github.com/tyoung3/sw/os"</p>
+<p>Package sw/os provides Operating System specific functionality for
+StreamWork Golang components.</p>
 <p>FUNCTIONS</p>
+<p>func Debug(s string)
+    Debug prints string, s, in yellow, if debugging mode is set ( DEBUG="Y").</p>
 <p>func Wrap(wg *sync.WaitGroup, arg []string, cs []chan interface{})
     Wrap launches the specified linux executable and separate goroutines to a)
     forward all text lines from channel 0(cs[0]) to the executable's stdin pipe;
