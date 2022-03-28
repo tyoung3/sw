@@ -1486,10 +1486,10 @@ checkIPtype (char *msg, char *srcType, char *snkType, char *srcName,
 
   if (!typeOK (srcType, snkType))
     {
-      snprintf (fbfr, BUFFSIZE,
-		"%s: Type Mismatch for (%s) -%s>  and (%s) -%s>\n",
+      fprintf (stderr,
+		"WARNING/%s: Type Mismatch for (%s) -%s>  and (%s) -%s>\n",
 		msg, srcName, srcType, snkName, snkType);
-      FAIL (msg, fbfr);
+      //FAIL (msg, fbfr);
     }
 }
 

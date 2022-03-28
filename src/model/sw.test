@@ -600,146 +600,7 @@ cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 40 - subnet1.sw || echo not o
 (T) 	<4- (U);
 EOF.subnet1.sw
 
-cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 41 - subnet4.sw || echo not ok 41 -  subnet4.sw
-# Recursive subnet -- experimental.  Causes segfault.
-
-
-^s2 {
-  0 -> (D);
-};
-
-^s {
-  0 -> a.0(C ^s2);      # Changing ^s to ^s2 works. 
-};
-
-(A Gen) -> a.0(B ^s);
-EOF.subnet4.sw
-
-cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 42 - subnet5.sw || echo not ok 42 -  subnet5.sw
-# Buggy
-
-^j {
-(J x)IN.0 	<1- 	0;
-AOUT    	<2- OUT.1(J);
-};
-
-(A ^j)IN.0	<4-   OUT.0(Y);
-(C c)CIN.0  <8-  AOUT.1(A);
-
-
-(A2 ^j)IN.0	<4-   OUT.0(Y2);
-(C2 c)CIN.0  <8-  AOUT.1(A2);
-EOF.subnet5.sw
-
-cat << EOF.tag.sw | ./sw >/dev/null && echo ok 43 - tag.sw || echo not ok 43 -  tag.sw
-^a {
-(Hello Print1)0 <- 0;
-};
-
-^b {
-0     <- (_);
-};
-
-(_ ^a)0 <- 0(World ^b);
-EOF.tag.sw
-
-cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 44 - tooltip.sw || echo not ok 44 -  tooltip.sw
-
-^top {
-(IP [fillcolor="orange", tooltip="tip", fontcolor="red", 
-  URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"]) -> (OP [tooltip="top", fillcolor="green", fontcolor="violet",color="green", URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"] );
-};
-
-T ^top;
-EOF.tooltip.sw
-
-cat << EOF.var.sw | ./sw >/dev/null && echo ok 45 - var.sw || echo not ok 45 -  var.sw
-#$AA="AA)(\n"; 
-&BBB = BBB;
-
-(&BBB) <- (y Y $AA);
-EOF.var.sw
-
-cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 46 - FAILOK/ac.sw || echo ok 46 - FAILOK/ac.sw
-{#
-      AE1.sw
-      
-      This file contains only syntax errors.
-      I.e. every statement will fail to parse successfully.
-#}
-
-(X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b/c "abc" FailOKHere); 
-(X b/c)2 <- "ab"; 
-"File" <- 0(X b/c); 
-(X in/b/c)2 <- 3(D); 
-(E Comp_bc@2)2 <- 8(D);
-(3)2 <- 8(D);
-(F 8)2 <- 8(D);
-(A strings.Print1)0 <- a(B strings/Gen1); 
-(F)2 <- 7(D) <- 8(E);
-(A strings/Print1)0 <- a(B strings/Gen1); 
-(E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
-(C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
-FAIL.ac.sw
-
-cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 47 - FAILOK/e3.sw || echo ok 47 - FAILOK/e3.sw
-# Missmatched port names:  
-
-(F A)MATCH  <- MISS(G b);
-FAIL.e3.sw
-
-cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 48 - FAILOK/e4.sw || echo ok 48 - FAILOK/e4.sw
-# Missmatched port 
-
-(H A)0  <- 0(I b);
-(H)1  <- 1(I);
-(H)2.BAR  <- 2.FOO(I);
-(H)3  <- 3(I);
-FAIL.e4.sw
-
-cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/e5.sw || echo ok 49 - FAILOK/e5.sw
-# (K) port error
-
-(K)   <-  OUT(J);
-(J)IN <-  (K);
-FAIL.e5.sw
-
-cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 50 - FAILOK/fail_include.sw || echo ok 50 - FAILOK/fail_include.sw
-INCLUDE "fail_include.sw";
-FAIL.fail_include.sw
-
-cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 51 - FAILOK/inc.sw || echo ok 51 - FAILOK/inc.sw
-#include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
-
-INCLUDE "inc.isw"; 
-
-(X ^N)0 <- 0(Y ^M);
-(X ^N)1 <- 1(Y ^M);
-(X ^N)2 <- 2(Y ^M);
-
-#include "../model/tests/inc3.isw"; 
-
-FAIL.inc.sw
-
-cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 52 - FAILOK/recurse.sw || echo ok 52 - FAILOK/recurse.sw
-{# RECURSE.sw 
- 
-
-#}
-
-
-^S { 
-(C)->(D);
-};
-
-^R {
-(A ^R) -> (B ^S);
-};
-
-(E ^R) -> (F f);
-FAIL.recurse.sw
-
-cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 53 - FAILOK/subnet2.sw || echo ok 53 - FAILOK/subnet2.sw
+cat << EOF.subnet2.sw | ./sw >/dev/null && echo ok 41 - subnet2.sw || echo not ok 41 -  subnet2.sw
 {#Subnets M and N
 	FAIL: SW/msg: Expand3A: Type Mismatch for (YS2) -type_K2>  and ((null)) -type_M>
 #}
@@ -765,9 +626,9 @@ cat << FAIL.subnet2.sw | ./sw >/dev/null && echo not ok 53 - FAILOK/subnet2.sw |
 (X ^N)2 <type_M 3- 2(Y ^M);
 
 (T) 	<4- (U);
-FAIL.subnet2.sw
+EOF.subnet2.sw
 
-cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 54 - FAILOK/subnet3.sw || echo ok 54 - FAILOK/subnet3.sw
+cat << EOF.subnet3.sw | ./sw >/dev/null && echo ok 42 - subnet3.sw || echo not ok 42 -  subnet3.sw
 {#  SUBNET3.sw
  FAIL: SW/msg: createStream: Type Mismatch for (Eb) -type_A>  and (Eb) -type_N2>
 #}
@@ -831,7 +692,146 @@ A	<type_C 13 -	0(A);
 
 #########################################################
 #}
-FAIL.subnet3.sw
+EOF.subnet3.sw
+
+cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 43 - subnet4.sw || echo not ok 43 -  subnet4.sw
+# Recursive subnet -- experimental.  Causes segfault.
+
+
+^s2 {
+  0 -> (D);
+};
+
+^s {
+  0 -> a.0(C ^s2);      # Changing ^s to ^s2 works. 
+};
+
+(A Gen) -> a.0(B ^s);
+EOF.subnet4.sw
+
+cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 44 - subnet5.sw || echo not ok 44 -  subnet5.sw
+# Buggy
+
+^j {
+(J x)IN.0 	<1- 	0;
+AOUT    	<2- OUT.1(J);
+};
+
+(A ^j)IN.0	<4-   OUT.0(Y);
+(C c)CIN.0  <8-  AOUT.1(A);
+
+
+(A2 ^j)IN.0	<4-   OUT.0(Y2);
+(C2 c)CIN.0  <8-  AOUT.1(A2);
+EOF.subnet5.sw
+
+cat << EOF.tag.sw | ./sw >/dev/null && echo ok 45 - tag.sw || echo not ok 45 -  tag.sw
+^a {
+(Hello Print1)0 <- 0;
+};
+
+^b {
+0     <- (_);
+};
+
+(_ ^a)0 <- 0(World ^b);
+EOF.tag.sw
+
+cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 46 - tooltip.sw || echo not ok 46 -  tooltip.sw
+
+^top {
+(IP [fillcolor="orange", tooltip="tip", fontcolor="red", 
+  URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"]) -> (OP [tooltip="top", fillcolor="green", fontcolor="violet",color="green", URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"] );
+};
+
+T ^top;
+EOF.tooltip.sw
+
+cat << EOF.var.sw | ./sw >/dev/null && echo ok 47 - var.sw || echo not ok 47 -  var.sw
+#$AA="AA)(\n"; 
+&BBB = BBB;
+
+(&BBB) <- (y Y $AA);
+EOF.var.sw
+
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 48 - FAILOK/ac.sw || echo ok 48 - FAILOK/ac.sw
+{#
+      AE1.sw
+      
+      This file contains only syntax errors.
+      I.e. every statement will fail to parse successfully.
+#}
+
+(X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b/c "abc" FailOKHere); 
+(X b/c)2 <- "ab"; 
+"File" <- 0(X b/c); 
+(X in/b/c)2 <- 3(D); 
+(E Comp_bc@2)2 <- 8(D);
+(3)2 <- 8(D);
+(F 8)2 <- 8(D);
+(A strings.Print1)0 <- a(B strings/Gen1); 
+(F)2 <- 7(D) <- 8(E);
+(A strings/Print1)0 <- a(B strings/Gen1); 
+(E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
+(C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
+FAIL.ac.sw
+
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/e3.sw || echo ok 49 - FAILOK/e3.sw
+# Missmatched port names:  
+
+(F A)MATCH  <- MISS(G b);
+FAIL.e3.sw
+
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 50 - FAILOK/e4.sw || echo ok 50 - FAILOK/e4.sw
+# Missmatched port 
+
+(H A)0  <- 0(I b);
+(H)1  <- 1(I);
+(H)2.BAR  <- 2.FOO(I);
+(H)3  <- 3(I);
+FAIL.e4.sw
+
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 51 - FAILOK/e5.sw || echo ok 51 - FAILOK/e5.sw
+# (K) port error
+
+(K)   <-  OUT(J);
+(J)IN <-  (K);
+FAIL.e5.sw
+
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 52 - FAILOK/fail_include.sw || echo ok 52 - FAILOK/fail_include.sw
+INCLUDE "fail_include.sw";
+FAIL.fail_include.sw
+
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 53 - FAILOK/inc.sw || echo ok 53 - FAILOK/inc.sw
+#include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
+
+INCLUDE "inc.isw"; 
+
+(X ^N)0 <- 0(Y ^M);
+(X ^N)1 <- 1(Y ^M);
+(X ^N)2 <- 2(Y ^M);
+
+#include "../model/tests/inc3.isw"; 
+
+FAIL.inc.sw
+
+cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 54 - FAILOK/recurse.sw || echo ok 54 - FAILOK/recurse.sw
+{# RECURSE.sw 
+ 
+
+#}
+
+
+^S { 
+(C)->(D);
+};
+
+^R {
+(A ^R) -> (B ^S);
+};
+
+(E ^R) -> (F f);
+FAIL.recurse.sw
 
 cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 55 - FAILOK/tee.sw || echo ok 55 - FAILOK/tee.sw
 #!/usr/local/bin/swgraph

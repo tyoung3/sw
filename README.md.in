@@ -667,7 +667,10 @@ break existing networks.
   
 ## 0.26.10
   * Fixed maximum subnet level checking
-  * Introducted mkdocs web site docs   
+  * Introducted mkdocs web site docs
+  
+## 0.26.11
+  * Changed type mismatches from FAILing to WARNING.     
   
 ## Author<a name="author"/>
 

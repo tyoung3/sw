@@ -409,7 +409,7 @@ void genPrefix(Model m)
     while (f) {
       if(f->type != IS_ORPHAN) {
 	  bfrtbl[nstreams - i++ - 1] = f->bufsz;
-      if(defaultChannelType[0]=='_') 
+      if(defaultChannelType == NULL || defaultChannelType[0]=='_') 
         defaultChannelType="interface{}";
         char *ftype=defaultChannelType;
         if(f->iptype==NULL || f->iptype[0]==0) {
