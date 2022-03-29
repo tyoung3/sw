@@ -3,8 +3,17 @@
   These @todoS are sw general, not swproject specific: 
   High Priority:
   
-    @done localization  mkdocs first
-    @done swgrapgh levels.
+    
+    @todo swgrapgh levels.
+    @todo Update project generation
+    	@todo Set DEBUG=Y and add Debug(Notice) 
+        @todo Generate channel type definitions and stringify
+	    @todo Send multiple(N option) IPs in go tests.
+        @todo clean code
+        @todo remove dead code
+        @todo use templates
+	    @todo eliminate unneeded go mod tidy commands
+	    @todo If .github, do not generate project@done localization  mkdocs first
     @todo Fix defaultTypePath missing in config file.
         @todo fix null type path problem.
     @todo env variable to pass return code?
@@ -14,14 +23,6 @@
     @todo math channel type component library [w/plotting -- geogebra?]
     @todo automate github search for components
     @todo use $PATH and/or $GOPATH to find .sw files
-    @todo Update project generation
-        @todo Generate channel type definitions and stringify
-	    @todo Send multiple(N option) IPs in go tests.
-        @todo clean code
-        @todo remove dead code
-        @todo use templates
-	    @todo eliminate unneeded go mod tidy commands
-	    @todo If .github, do not generate project
         
     @todo Generate drawFBP format
         @todo Convert drawFBP format to SWL format
