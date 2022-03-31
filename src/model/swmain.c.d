@@ -28,6 +28,8 @@ char *fname = { "stdin" };		/**<Input file name or Standard input.> */
 
 ValidSW pValidSW(FILE * inp);  /**<True if valid input> */
 
+int maxlevel=100; 	       /* Maximum subnet levels to graph */
+
 //CCIDE_INLINE_CODE:
 
 char *FixVersion()
@@ -262,7 +264,8 @@ static void Usage()
 {
 	fprintf(stderr,
 		"\nUsage:\tsw [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]\n");
-	fprintf(stderr, "\tsw -v\n");
+	fprintf(stderr, "\tsw -v		, Show Versionj\n");
+	fprintf(stderr, "\tsw -l NLEVEL		, Number subnet levels to be graphed.\n");
 	fprintf(stderr, "\tsw --help\n");
 	fprintf(stderr,
 		"\n\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE|8-GENGOFBP,}\n");
@@ -313,28 +316,30 @@ static int BadArg(int argc, char **argv)
     
     while (i < argc) {
 /*DECISION_TABLE:*/
-/*   Y  -  -  -  -  -  -  -  -  N  -  - | strncmp(argv[i], "-yaml", 30) == 0*/
-/*   -  -  -  -  -  -  -  -  Y  N  -  - | strncmp(argv[i], "--help",7) == 0 */
-/*   -  -  -  -  -  -  Y  Y  -  N  -  - | strncmp(argv[i], "-cfg", 6) == 0  */
-/*   -  -  -  Y  Y  -  -  -  -  N  -  - | strncmp(argv[i], "-d", 30) == 0	*/
-/*   -  Y  Y  -  -  -  -  -  -  N  -  - | strncmp(argv[i], "-m", 30) == 0	*/
-/*   -  -  -  -  -  Y  -  -  -  N  -  - | strncmp(argv[i], "-v", 4) == 0 	*/
-/*   -  N  Y  N  Y  -  N  Y  -  -  -  - | i >= argc - 1 			*/
-/*   -  -  -  -  -  -  -  -  -  -  Y  N | i < argc 				*/
-/*  ____________________________________|      */
-/*   X  -  -  -  -  -  -  -  -  -  -  - | yamlOption=argv[++i];	*/
-/*   -  X  -  -  -  -  -  -  -  -  -  - | mode = atoi(argv[++i]);	*/
-/*   -  -  -  X  -  -  -  -  -  -  -  - | defaultPath = argv[++i];	*/
-/*   -  -  -  -  X  X  -  -  -  -  -  - | printf("StreamWork/sw-%s\n", version);*/
-/*   -  -  -  -  -  -  X  -  -  -  -  - | configfile = argv[++i];*/
-/*   -  -  -  -  -  -  -  -  X  -  -  - | Usage();*/
-/*   -  -  -  -  -  -  -  -  -  X  -  - | fname = argv[i];*/
-/*   -  -  -  -  -  -  -  -  -  X  -  - | input = openFile(fname);*/
-/*   -  -  -  -  -  -  -  -  -  X  -  - | CheckInput(input);*/
-/*   -  -  -  -  -  -  -  -  -  -  X  - | fprintf(stderr,"CONFIG/WARNING/BadArg:%s\n",argv[i]); */
-/*   X  X  -  X  -  -  -  -  -  X  X  - | i++; 		*/
-/*   -  -  -  -  -  X  -  -  X  -  -  X | exit(EXIT_SUCCESS);*/
-/*   -  -  X  -  X  -  X  X  X  -  -  - | exit(EXIT_FAILURE);;*/
+/*   Y  -  -  -  -  -  -  -  -  -  -  - | strncmp(argv[i], "-yaml", 30) == 0	*/
+/*   -  -  -  -  -  -  -  -  Y  -  -  - | strncmp(argv[i], "--help",7) == 0	*/
+/*   -  -  -  -  -  -  Y  Y  -  -  -  - | strncmp(argv[i], "-cfg", 6) == 0	*/
+/*   -  -  -  Y  Y  -  -  -  -  -  -  - | strncmp(argv[i], "-d", 30) == 0	*/
+/*   -  Y  Y  -  -  -  -  -  -  -  -  - | strncmp(argv[i], "-m", 30) == 0	*/
+/*   -  -  -  -  -  Y  -  -  -  -  -  - | strncmp(argv[i], "-v", 4) == 0 	*/
+/*   -  -  -  -  -  -  -  -  -  -  Y  Y | strncmp(argv[i], "-l", 4) == 0 	*/
+/*   -  -  Y  -  Y  -  -  Y  -  -  -  Y | i >= argc - 1 			*/
+/*  ____________________________________|      					*/
+/*   X  -  -  -  -  -  -  -  -  -  -  - | yamlOption=argv[++i];			*/
+/*   -  X  -  -  -  -  -  -  -  -  -  - | mode = atoi(argv[++i]);		*/
+/*   -  -  -  X  -  -  -  -  -  -  -  - | defaultPath = argv[++i];		*/
+/*   -  -  -  -  -  X  -  -  -  -  -  - | printf("StreamWork/sw-%s\n", version);*/
+/*   -  -  -  -  -  -  X  -  -  -  -  - | configfile = argv[++i];			*/
+/*   -  -  -  -  -  -  -  -  X  -  -  - | Usage();				*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | fname = argv[i];			*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | input = openFile(fname);		*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | CheckInput(input);			*/
+/*   -  -  -  -  -  -  -  -  -  -  X  - | maxlevel=atoi(argv[++i]);		*/
+/*   -  -  X  -  X  -  -  X  -  -  -  X | fprintf(stderr,"CONFIG/WARNING/BadArg:%s\n",argv[i]); */
+/*   X  X  -  X  -  -  X  -  -  -  X  - | i++; 			*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | return 0;		*/
+/*   -  -  X  -  X  -  -  X  -  -  -  X | return 1;             */
+/*   -  -  -  -  -  X  -  -  X  -  -  - | exit(EXIT_SUCCESS);	*/
 /*END_TABLE:*/
 /*GENERATED_CODE: FOR TABLE_1.*/
 /*	12 Rules, 8 conditions, and 12 actions.*/
@@ -394,7 +399,7 @@ static int BadArg(int argc, char **argv)
    } 	  /* End While */
 
 	
-	return 0;
+	return 0;  /* Assume STDIN */
 }
 
 ValidSW IncludeFile(char *fname)

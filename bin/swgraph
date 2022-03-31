@@ -16,7 +16,7 @@ dirlist="
 "
 
 Debug() {
-	[ "$DEBUG" == "y" ]  	\
+	[ "$DEBUG" == "Y" ]  	\
 	&&echo SWGRAPH/DEBUG: $* 
 }
 
@@ -79,7 +79,7 @@ Usage(){
 EOF
 }
 
-
+Debug Case
 case $# in 
 	0)Usage;;
 	*)Run $*;;

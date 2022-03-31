@@ -732,7 +732,30 @@ AOUT    	<2- OUT.1(J);
 (C2 c)CIN.0  <8-  AOUT.1(A2);
 EOF.subnet5.sw
 
-cat << EOF.tag.sw | ./sw >/dev/null && echo ok 46 - tag.sw || echo not ok 46 -  tag.sw
+cat << EOF.subnetn.sw | ./sw >/dev/null && echo ok 46 - subnetn.sw || echo not ok 46 -  subnetn.sw
+# Recursive subnet -- experimental.  Causes segfault.
+
+
+
+^s3 {
+  0 -> (E);
+  (C3)->(Level3);
+};
+
+^s2 {
+  0 -> (D ^s3);
+  (C2)->(Level2);
+};
+
+^s1 {
+  0 -> a.0(S2 ^s2);  
+  (C1)->(Level1);    
+};
+
+(A Gen) -> a.0(B ^s1);
+EOF.subnetn.sw
+
+cat << EOF.tag.sw | ./sw >/dev/null && echo ok 47 - tag.sw || echo not ok 47 -  tag.sw
 ^a {
 (Hello Print1)0 <- 0;
 };
@@ -744,7 +767,7 @@ cat << EOF.tag.sw | ./sw >/dev/null && echo ok 46 - tag.sw || echo not ok 46 -  
 (_ ^a)0 <- 0(World ^b);
 EOF.tag.sw
 
-cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 47 - tooltip.sw || echo not ok 47 -  tooltip.sw
+cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 48 - tooltip.sw || echo not ok 48 -  tooltip.sw
 
 ^top {
 (IP [fillcolor="orange", tooltip="tip", fontcolor="red", 
@@ -754,14 +777,14 @@ cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 47 - tooltip.sw || echo not o
 T ^top;
 EOF.tooltip.sw
 
-cat << EOF.var.sw | ./sw >/dev/null && echo ok 48 - var.sw || echo not ok 48 -  var.sw
+cat << EOF.var.sw | ./sw >/dev/null && echo ok 49 - var.sw || echo not ok 49 -  var.sw
 #$AA="AA)(\n"; 
 &BBB = BBB;
 
 (&BBB) <- (y Y $AA);
 EOF.var.sw
 
-cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/ac.sw || echo ok 49 - FAILOK/ac.sw
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 50 - FAILOK/ac.sw || echo ok 50 - FAILOK/ac.sw
 {#
       AE1.sw
       
@@ -783,13 +806,13 @@ cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 49 - FAILOK/ac.sw || echo ok 
 (C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
 FAIL.ac.sw
 
-cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 50 - FAILOK/e3.sw || echo ok 50 - FAILOK/e3.sw
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 51 - FAILOK/e3.sw || echo ok 51 - FAILOK/e3.sw
 # Missmatched port names:  
 
 (F A)MATCH  <- MISS(G b);
 FAIL.e3.sw
 
-cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 51 - FAILOK/e4.sw || echo ok 51 - FAILOK/e4.sw
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 52 - FAILOK/e4.sw || echo ok 52 - FAILOK/e4.sw
 # Missmatched port 
 
 (H A)0  <- 0(I b);
@@ -798,18 +821,18 @@ cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 51 - FAILOK/e4.sw || echo ok 
 (H)3  <- 3(I);
 FAIL.e4.sw
 
-cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 52 - FAILOK/e5.sw || echo ok 52 - FAILOK/e5.sw
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 53 - FAILOK/e5.sw || echo ok 53 - FAILOK/e5.sw
 # (K) port error
 
 (K)   <-  OUT(J);
 (J)IN <-  (K);
 FAIL.e5.sw
 
-cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 53 - FAILOK/fail_include.sw || echo ok 53 - FAILOK/fail_include.sw
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 54 - FAILOK/fail_include.sw || echo ok 54 - FAILOK/fail_include.sw
 INCLUDE "fail_include.sw";
 FAIL.fail_include.sw
 
-cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 54 - FAILOK/inc.sw || echo ok 54 - FAILOK/inc.sw
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 55 - FAILOK/inc.sw || echo ok 55 - FAILOK/inc.sw
 #include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
 
 INCLUDE "inc.isw"; 
@@ -822,7 +845,7 @@ INCLUDE "inc.isw";
 
 FAIL.inc.sw
 
-cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 55 - FAILOK/recurse.sw || echo ok 55 - FAILOK/recurse.sw
+cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 56 - FAILOK/recurse.sw || echo ok 56 - FAILOK/recurse.sw
 {# RECURSE.sw 
  
 
@@ -840,7 +863,7 @@ cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 55 - FAILOK/recurse.sw |
 (E ^R) -> (F f);
 FAIL.recurse.sw
 
-cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 56 - FAILOK/tee.sw || echo ok 56 - FAILOK/tee.sw
+cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 57 - FAILOK/tee.sw || echo ok 57 - FAILOK/tee.sw
 #!/usr/local/bin/swgraph
 
 # TEE.SW: derived from swedit.sw adding tee function to record trafic.
@@ -892,4 +915,4 @@ _ ^model;
 _ ^view; 
 _ ^control;
 FAIL.tee.sw
-echo  1..56 # Number of tests to be executed.
+echo  1..57 # Number of tests to be executed.

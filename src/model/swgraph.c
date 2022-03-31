@@ -11,7 +11,7 @@
 #include "swconfig.h"       
 #include <unistd.h>
 
-#define MAX_LEVELS 10000    // Maximum subnet depth.  Will become execute option 
+#define MAX_LEVELS maxlevel    // Maximum subnet depth.  Will become execute option 
 
 /** @todo Declutter graph option 
     @todo Config file color palette option

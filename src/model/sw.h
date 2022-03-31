@@ -82,6 +82,7 @@ void genC(Model model);
 extern char *fname;
 #undef strncat
 #define strncat(X,Y,Z) mystrncat(X,Y,Z)  
+extern int maxlevel;
 extern String configfile;
 extern struct cfg_ cfg;
 extern char fbfr[]; 	

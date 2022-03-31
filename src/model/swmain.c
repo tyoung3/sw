@@ -28,6 +28,8 @@ char *fname = { "stdin" };		/**<Input file name or Standard input.> */
 
 ValidSW pValidSW(FILE * inp);  /**<True if valid input> */
 
+int maxlevel=100; 	       /* Maximum subnet levels to graph */
+
 //CCIDE_INLINE_CODE:
 /*GENERATED_CODE: */
 #ifndef __CCIDE_INLINE_C
@@ -306,7 +308,8 @@ static void Usage()
 {
 	fprintf(stderr,
 		"\nUsage:\tsw [-m MODE] [-cfg CONFIGURATION_FILE] [-d DEFAULT_PATH] [ SW_FILE ]\n");
-	fprintf(stderr, "\tsw -v\n");
+	fprintf(stderr, "\tsw -v		, Show Versionj\n");
+	fprintf(stderr, "\tsw -l NLEVEL		, Number subnet levels to be graphed.\n");
 	fprintf(stderr, "\tsw --help\n");
 	fprintf(stderr,
 		"\n\tMODE={0-GOMODE|1-ASTMODE|2-GENTREE|3-GRAPHMODE|4-JAVAFBP|5-PROJECT|7-CMODE|8-GENGOFBP,}\n");
@@ -357,97 +360,99 @@ static int BadArg(int argc, char **argv)
     
     while (i < argc) {
 /*DECISION_TABLE:*/
-/*   Y  -  -  -  -  -  -  -  -  N  -  - | strncmp(argv[i], "-yaml", 30) == 0*/
-/*   -  -  -  -  -  -  -  -  Y  N  -  - | strncmp(argv[i], "--help",7) == 0 */
-/*   -  -  -  -  -  -  Y  Y  -  N  -  - | strncmp(argv[i], "-cfg", 6) == 0  */
-/*   -  -  -  Y  Y  -  -  -  -  N  -  - | strncmp(argv[i], "-d", 30) == 0	*/
-/*   -  Y  Y  -  -  -  -  -  -  N  -  - | strncmp(argv[i], "-m", 30) == 0	*/
-/*   -  -  -  -  -  Y  -  -  -  N  -  - | strncmp(argv[i], "-v", 4) == 0 	*/
-/*   -  N  Y  N  Y  -  N  Y  -  -  -  - | i >= argc - 1 			*/
-/*ERROR:  '=' probably should be '==' in condition stub 7 */
+/*   Y  -  -  -  -  -  -  -  -  -  -  - | strncmp(argv[i], "-yaml", 30) == 0	*/
+/*   -  -  -  -  -  -  -  -  Y  -  -  - | strncmp(argv[i], "--help",7) == 0	*/
+/*   -  -  -  -  -  -  Y  Y  -  -  -  - | strncmp(argv[i], "-cfg", 6) == 0	*/
+/*   -  -  -  Y  Y  -  -  -  -  -  -  - | strncmp(argv[i], "-d", 30) == 0	*/
+/*   -  Y  Y  -  -  -  -  -  -  -  -  - | strncmp(argv[i], "-m", 30) == 0	*/
+/*   -  -  -  -  -  Y  -  -  -  -  -  - | strncmp(argv[i], "-v", 4) == 0 	*/
+/*   -  -  -  -  -  -  -  -  -  -  Y  Y | strncmp(argv[i], "-l", 4) == 0 	*/
+/*   -  -  Y  -  Y  -  -  Y  -  -  -  Y | i >= argc - 1 			*/
+/*ERROR:  '=' probably should be '==' in condition stub 8 */
 
-/*   -  -  -  -  -  -  -  -  -  -  Y  N | i < argc 				*/
-/*  ____________________________________|      */
-/*   X  -  -  -  -  -  -  -  -  -  -  - | yamlOption=argv[++i];	*/
-/*   -  X  -  -  -  -  -  -  -  -  -  - | mode = atoi(argv[++i]);	*/
-/*   -  -  -  X  -  -  -  -  -  -  -  - | defaultPath = argv[++i];	*/
-/*   -  -  -  -  X  X  -  -  -  -  -  - | printf("StreamWork/sw-%s\n", version);*/
-/*   -  -  -  -  -  -  X  -  -  -  -  - | configfile = argv[++i];*/
-/*   -  -  -  -  -  -  -  -  X  -  -  - | Usage();*/
-/*   -  -  -  -  -  -  -  -  -  X  -  - | fname = argv[i];*/
-/*   -  -  -  -  -  -  -  -  -  X  -  - | input = openFile(fname);*/
-/*   -  -  -  -  -  -  -  -  -  X  -  - | CheckInput(input);*/
-/*   -  -  -  -  -  -  -  -  -  -  X  - | fprintf(stderr,"CONFIG/WARNING/BadArg:%s\n",argv[i]); */
-/*   X  X  -  X  -  -  -  -  -  X  X  - | i++; 		*/
-/*   -  -  -  -  -  X  -  -  X  -  -  X | exit(EXIT_SUCCESS);*/
-/*   -  -  X  -  X  -  X  X  X  -  -  - | exit(EXIT_FAILURE);;*/
+/*  ____________________________________|      					*/
+/*   X  -  -  -  -  -  -  -  -  -  -  - | yamlOption=argv[++i];			*/
+/*   -  X  -  -  -  -  -  -  -  -  -  - | mode = atoi(argv[++i]);		*/
+/*   -  -  -  X  -  -  -  -  -  -  -  - | defaultPath = argv[++i];		*/
+/*   -  -  -  -  -  X  -  -  -  -  -  - | printf("StreamWork/sw-%s\n", version);*/
+/*   -  -  -  -  -  -  X  -  -  -  -  - | configfile = argv[++i];			*/
+/*   -  -  -  -  -  -  -  -  X  -  -  - | Usage();				*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | fname = argv[i];			*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | input = openFile(fname);		*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | CheckInput(input);			*/
+/*   -  -  -  -  -  -  -  -  -  -  X  - | maxlevel=atoi(argv[++i]);		*/
+/*   -  -  X  -  X  -  -  X  -  -  -  X | fprintf(stderr,"CONFIG/WARNING/BadArg:%s\n",argv[i]); */
+/*   X  X  -  X  -  -  X  -  -  -  X  - | i++; 			*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | return 0;		*/
+/*   -  -  X  -  X  -  -  X  -  -  -  X | return 1;             */
+/*   -  -  -  -  -  X  -  -  X  -  -  - | exit(EXIT_SUCCESS);	*/
 /*END_TABLE:*/
 /*GENERATED_CODE: FOR TABLE_1.*/
-/*	12 Rules, 8 conditions, and 13 actions.*/
-/*	Table 1 rule order = 10 7 8 4 5 2 3 1 9 6 11 12 */
- {	unsigned long CCIDE_table1_yes[12]={   0UL,   4UL,  68UL,   8UL,  72UL,  16UL,  80UL,   1UL,   2UL,  32UL, 128UL,   0UL};
-	unsigned long CCIDE_table1_no[12]= {  63UL,  64UL,   0UL,  64UL,   0UL,  64UL,   0UL,   0UL,   0UL,   0UL,   0UL, 128UL};
+/*	12 Rules, 8 conditions, and 15 actions.*/
+/*	Table 1 rule order = 8 5 3 12 1 9 7 4 2 6 11 10 */
+ {	unsigned long CCIDE_table1_yes[12]={ 132UL, 136UL, 144UL, 192UL,   1UL,   2UL,   4UL,   8UL,  16UL,  32UL,  64UL,   0UL};
 
 
-	switch(CCIDEFindRule(12,
+	switch(CCIDEFindRuleYes(12,
 		  (strncmp(argv[i], "-yaml", 30) == 0)
 		| (strncmp(argv[i], "--help",7) == 0)<<1
 		| (strncmp(argv[i], "-cfg", 6) == 0)<<2
 		| (strncmp(argv[i], "-d", 30) == 0)<<3
 		| (strncmp(argv[i], "-m", 30) == 0)<<4
 		| (strncmp(argv[i], "-v", 4) == 0)<<5
-		| (i >= argc - 1)<<6
-		| (i < argc)<<7
-		  ,CCIDE_table1_yes, CCIDE_table1_no)) {
-	case  8:	/*	Rule  9 */
+		| (strncmp(argv[i], "-l", 4) == 0)<<6
+		| (i >= argc - 1)<<7
+		  ,CCIDE_table1_yes)) {
+	case  5:	/*	Rule  9 */
 	    Usage();
 	    exit(EXIT_SUCCESS);
-	    goto CCIDE_case1_6;
-	case  1:	/*	Rule  7 */
-	    configfile = argv[++i];
-	    goto CCIDE_case1_6;
-	case  4:	/*	Rule  5 */
-	    printf("StreamWork/sw-%s\n", version);
-	case  2:	/*	Rule  8 */
-	CCIDE_case1_6: case  6:	/*	Rule  3 */
-	    exit(EXIT_FAILURE);;
 	    break;
 	case  9:	/*	Rule  6 */
 	    printf("StreamWork/sw-%s\n", version);
-	case 11:	/*	Rule 12 */
 	    exit(EXIT_SUCCESS);
 	    break;
-	case 10:	/*	Rule 11 */
+	case  0:	/*	Rule  8 */
+	case  1:	/*	Rule  5 */
+	case  2:	/*	Rule  3 */
+	case  3:	/*	Rule 12 */
 	    fprintf(stderr,"CONFIG/WARNING/BadArg:%s\n",argv[i]);
-	    i++;
+	    return 1;
 	    break;
-	case  0:	/*	Rule 10 */
+	case 11:	/*	Rule 10 */
 	    fname = argv[i];
 	    input = openFile(fname);
 	    CheckInput(input);
+	    return 0;
+	    break;
+	case 10:	/*	Rule 11 */
+	    maxlevel=atoi(argv[++i]);
 	    i++;
 	    break;
-	case  3:	/*	Rule  4 */
+	case  6:	/*	Rule  7 */
+	    configfile = argv[++i];
+	    i++;
+	    break;
+	case  7:	/*	Rule  4 */
 	    defaultPath = argv[++i];
 	    i++;
 	    break;
-	case  5:	/*	Rule  2 */
+	case  8:	/*	Rule  2 */
 	    mode = atoi(argv[++i]);
 	    i++;
 	    break;
-	case  7:	/*	Rule  1 */
+	case  4:	/*	Rule  1 */
 	    yamlOption=argv[++i];
 	    i++;
 	    break;
 	} /* End Switch*/
 }
-/*END_GENERATED_CODE: FOR TABLE_1, by ccide-0.6.6-1 Tue 29 Mar 2022 07:29:12 PM EDT */
+/*END_GENERATED_CODE: FOR TABLE_1, by ccide-0.6.6-1 Wed 30 Mar 2022 03:20:21 PM EDT */
 
 
    } 	  /* End While */
 
 	
-	return 0;
+	return 0;  /* Assume STDIN */
 }
 
 ValidSW IncludeFile(char *fname)
