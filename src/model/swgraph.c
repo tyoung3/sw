@@ -326,6 +326,15 @@ static void SetIsNet( Stream f, char *arrowhead, char *style)  {
 	    }  // End if bfsz
 }	    
 
+static int NotTooDeep(Stream f) {
+
+	if(f->source->depth > MAX_LEVELS) 
+		return 0;
+	if(f->sink->depth   > MAX_LEVELS) 
+		return 0;
+	return 1;	
+}
+
 static void
 genLinks (Model m)
 {				// [label="C Miss"];
@@ -336,7 +345,8 @@ genLinks (Model m)
   f = m->stream;
   while (f) {
     arrowhead="normal"; style="solid";
-    switch (f->type) {
+    if (NotTooDeep(f)) {
+     switch (f->type) {
       case IS_STRUCT:
           arrowhead="diamond"; style="tapered";
       case IS_NET:
@@ -344,9 +354,10 @@ genLinks (Model m)
 	  case IS_SUB:
 	    break;  
 	      // showPorts (f, src, snk, channel);
-	}			// End switch on type            
-    f = f->next; 		// Get next stream
-  }				// End while
+    }			// End switch on type 
+   }           			// Endif 
+   f = f->next; 		// Get next stream
+  }				// End while more streams
 }
 
 

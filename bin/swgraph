@@ -8,7 +8,8 @@ Die () {
 	exit 1
 }
 
-version=v0.1.0
+version=v0.2.0
+nlevel=100
 
 dirlist="
     .
@@ -16,8 +17,10 @@ dirlist="
 "
 
 Debug() {
-	[ "$DEBUG" == "Y" ]  	\
-	&&echo SWGRAPH/DEBUG: $* 
+	[ "$DEBUG" == "Y" ]  		\
+	&&printf "\u001b[33m" 		\
+	&&echo "SWGRAPH/DEBUG: $*"	\
+	&&printf "\u001b[00m"  
 }
 
 swdir=./model
@@ -46,15 +49,17 @@ searchFile() {
 }
 
 GenRun() {
-	Debug GenRun  $file $*
+	Debug GenRun  $file $* nlevel=$nlevel
 	swfile=$file
 	[ -f $file ] || searchFile  
 	base=`basename $file .sw`
 	
 	if [ -f $swfile ]; then
-		Debug Got $swfile 
-		$SW -m 3 $swfile > /tmp/${base}.dot || Die Cannot build /tmp/${base}.dot file 
-		dot -Tsvg /tmp/${base}.dot > /tmp/${base}.svg || Die Cannot convert /tmp/${base}.dot file to .svg
+		Debug Got $swfile  
+		$SW -m 3 -l $nlevel $swfile > /tmp/${base}.dot \
+			|| Die Cannot build /tmp/${base}.dot file 
+		dot -Tsvg /tmp/${base}.dot > /tmp/${base}.svg \
+			|| Die Cannot convert /tmp/${base}.dot file to .svg
 		Debug Built /tmp/${base}.dot and /tmp/${base}.svg
 		$BROWSER $opts /tmp/${base}.svg 2>&1  >/dev/null	&
 	else 
@@ -68,20 +73,19 @@ Run() {
 	done 
 }
 
-
 Usage(){
 	cat <<- EOF
 	
 	swgraph-$version Usage:
  	swgraph [SW_file...]   . Generate .svg file(s) and browse them with $BROWSER.
- 	swgraph				   . Show this usage
+ 	swgraph	l|L NLEVEL	. NLEVEL is Maximum subnet levels.
+ 	swgraph	?|--help	. Show this usage. 
 		
 EOF
 }
 
-Debug Case
-case $# in 
-	0)Usage;;
+case $1 in 
+	l|L)nlevel=$2; shift 2; Run $*;;
+	?|/?|--help)Usage;;	
 	*)Run $*;;
-	
 esac	
