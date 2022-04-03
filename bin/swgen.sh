@@ -554,9 +554,9 @@ EOF
         	Debug `pwd` name: $name $inps $outps
         	[ -f ${name}.go ]       || GenYamlGo     $inps $outps
         	[ -f ${name}_test.go ]  || GenYamlTestGo $inps $outps
-        Debug GenYamlSkel/Generate go.mod at $src/$mdl
-        [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init ${modpath}/$module && popd) 
-        go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
+        #Debug GenYamlSkel/Generate go.mod at $src/$mdl
+        # [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init ${modpath}/$module && popd) 
+        # go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
     popd        
 }
    
@@ -618,9 +618,9 @@ GenSkel() {
         	Debug GenSkel/subdir2: `pwd` name: $name $inps $outps
         	[ -f ${name}.go ]       || GenGo     $inps $outps
         	[ -f ${name}_test.go ]  || GenTestGo $inps $outps
-        Debug GenSkel/subdir3: Generate go.mod at $src/$mdl
-        [ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init ${modpath}/$module && popd) 
-        go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
+        #Debug GenSkel/subdir3: Generate go.mod at $src/$mdl
+        #[ -f $src/$module/go.mod ] || (pushd $src/$module && go mod init ${modpath}/$module && popd) 
+        #go test -v ./...; # && $EDITOR ${name}_test.go ${name}.go
     popd        
 }
 
