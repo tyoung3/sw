@@ -225,7 +225,7 @@ GenGo() {
     import (
         $fmt
         "sync"
-        ${NULLIT}"github.com/$USER/$module"
+        // ${NULLIT}"github.com/$USER/$module"
     )
              
 		// $name is @todo undocumented
