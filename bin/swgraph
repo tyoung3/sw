@@ -49,14 +49,14 @@ searchFile() {
 }
 
 GenRun() {
-	Debug GenRun  $file $* nlevel=$nlevel
+	Debug GenRun  $file $* nlevel=$nlevel cfg=$cfg
 	swfile=$file
 	[ -f $file ] || searchFile  
 	base=`basename $file .sw`
 	
 	if [ -f $swfile ]; then
 		Debug Got $swfile  
-		$SW -m 3 -l $nlevel $swfile > /tmp/${base}.dot \
+		$SW $cfg -m 3 -l $nlevel $swfile > /tmp/${base}.dot \
 			|| Die Cannot build /tmp/${base}.dot file 
 		dot -Tsvg /tmp/${base}.dot > /tmp/${base}.svg \
 			|| Die Cannot convert /tmp/${base}.dot file to .svg
@@ -77,7 +77,7 @@ Usage(){
 	cat <<- EOF
 	
 	swgraph-$version Usage:
- 	swgraph [SW_file...]   . Generate .svg file(s) and browse them with $BROWSER.
+ 	swgraph [-cfg CONFIG_FILE] [SW_file...] . Generate .svg file(s) and browse them with $BROWSER.
  	swgraph	l|L NLEVEL	. NLEVEL is Maximum subnet levels.
  	swgraph	?|--help	. Show this usage. 
 		
@@ -86,6 +86,7 @@ EOF
 
 case $1 in 
 	l|L)nlevel=$2; shift 2; Run $*;;
+	-cfg)cfg="-cfg $2";shift 2;Run $*;;
 	?|/?|--help)Usage;;	
 	*)Run $*;;
 esac	

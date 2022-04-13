@@ -146,7 +146,6 @@ void genProject(Model m) {
 	int inp=0;	// Number of input ports 	
 	int outp=0;	// Number of output ports
 	char *module; 	// Go Module (and executable name)  
-	char amp=' ';   // Ampersand (or not);
 	char **args;  // Process arguments
 	int i=0;
 	
@@ -164,8 +163,7 @@ void genProject(Model m) {
 				i=0;	
 				while( args[i] !=NULL  ) 	
 				 	printf(" %s", args[i++]);		  
-				printf("%c\n", amp );
-				amp='&'; 
+				printf("\n" );
 		  	}	
 		}	
 		c=c->next;

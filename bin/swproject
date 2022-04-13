@@ -90,8 +90,11 @@ GenGo() {
 	 module=$p
 	 Debug GenGo:  $*  module=$module yaml=$yamlq  pgm=$pgm
 	 $SW -m 5 -yaml $yamlq ${p}.sw > ./gen.sh
-	 chmod a+x ./gen.sh				 
+	 chmod a+x ./gen.sh
+	 echo "package $module" > pkgTypes.go			 
 	 ./gen.sh
+	 # sed -e "s/$module//"  pkgTypes.go.s >  pkgTypes.go
+	 # mv  pkgTypes.go.s pkgTypes.go
 }    
 
 Genp1() {
@@ -109,22 +112,22 @@ Genp1() {
 	icfg=$cfg
 	[ -f $sw ] || Die Genp1: Cannot locate $sw 
 	shift 3
-	[ -f $dir/$p/.git ] && Die Found .git in source directory -- FAILED 
+	[ -f $dir/$p/.git ] && Die Found .giGenpt in source directory -- FAILED 
 	echo; # Display $0/GenP1: Generating  go module $p  from $sw
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
-	[ -d $dir/$p ] || mkdir $dir/$p || Die Cannot mkdir $dir/$p
+	[ -d $dir/$p/internal ] || mkdir -p $dir/$p/internal || Die Cannot mkdir $dir/$p/internal
+	cp $cfg $dir/$p/internal/sw.cfg || Die Cannot copy $cfg
+	cp  $sw $dir/$p/internal/${p}.sw || Die Cannot copy $sw  
 }
 
 Genp4() {
 	      
 	   pushd internal || Die Cannot pushd internal	
 	         [ -f ${p}.go ] && mv ${p}.go ${p}.go.bak
-	   	 [ -f ${p}.sw ] && mv ${p}.sw ${p}.sw.bak  
-	   	 cp  $sw ${p}.sw || Die Cannot copy $sw ${p}.sw
+	   	 # [ -f ${p}.sw ] && mv ${p}.sw ${p}.sw.bak  
 	   	 Debug Genp4: internal run sw -cfg $cfg `pwd`/${p}.sw	 
 	   	 ( [ -f $cfg ]  || GenCFG )  				\
-	   	 && sw -cfg $cfg ${p}.sw > ${p}.go			\
-	   	 && cp $cfg ./sw.cfg					\
+	   	 && sw -cfg sw.cfg ${p}.sw > ${p}.go			\
 	   	 && GenGo $* 						\
 	   	 && go mod tidy						\
 	   	 && swgraph ${p}.sw &

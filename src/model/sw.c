@@ -651,9 +651,10 @@ visitTypeDef (TypeDef p)
     return strndup(bfr,BUFFSIZE);
   case is_Typedefa:
       t=visitSymvalu (p->u.typedefa_.symvalu_);
-      if( builtinType(t) ) return t;
-      snprintf(bfr,BUFFSIZE,"%s.%s",defaultTypePath,t);
-      return strndup(bfr,BUFFSIZE);
+      // if( builtinType(t) ) return t;
+      // snprintf(bfr,BUFFSIZE,"%s.%s",defaultTypePath,t);
+      // return strndup(bfr,BUFFSIZE);
+      return t; 
   case is_Typedefb:
       snprintf(bfr,BUFFSIZE,"%s.%s", 
         visitSymvalu(p->u.typedefb_.symvalu_1),

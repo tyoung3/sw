@@ -368,8 +368,6 @@ static int BadArg(int argc, char **argv)
 /*   -  -  -  -  -  Y  -  -  -  -  -  - | strncmp(argv[i], "-v", 4) == 0 	*/
 /*   -  -  -  -  -  -  -  -  -  -  Y  Y | strncmp(argv[i], "-l", 4) == 0 	*/
 /*   -  -  Y  -  Y  -  -  Y  -  -  -  Y | i >= argc - 1 			*/
-/*ERROR:  '=' probably should be '==' in condition stub 8 */
-
 /*  ____________________________________|      					*/
 /*   X  -  -  -  -  -  -  -  -  -  -  - | yamlOption=argv[++i];			*/
 /*   -  X  -  -  -  -  -  -  -  -  -  - | mode = atoi(argv[++i]);		*/
