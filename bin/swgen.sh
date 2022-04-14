@@ -8,7 +8,7 @@ init() {
     #pgm=swgen_none.sh
     fmt=""
     pgm=$(basename "$0")
-    version="0.2.1"
+    version="0.3.1"
     # HTML=fbpgo.html
     export modpath="$GOPATH/src"
 
@@ -63,15 +63,15 @@ EOF
 }
 
 GenInP1() {
-	cat <<- EOF >> ${name}.go 
+	cat <<- EOF >> "${name}".go 
 	$routine ${pfx}Recv(cs[$inp], &_wg2, arg, $inp)
 EOF
 
 }
  
 GenOutP() {      
-         if [ $outp -eq 1 ]; then 
-                cat << EOFX >> ${name}.go       
+         if [ "$outp" -eq 1 ]; then 
+                cat << EOFX >> "${name}".go       
                 
 	 // $name: outp=$outp; inp=$inp; po=$po
                         cs[$inp] <- $inp
@@ -80,7 +80,7 @@ EOFX
          else   
                 
                 msg="$pkg/$name $((po-1))"
-                cat << EOFX >> ${name}.go
+                cat << EOFX >> "${name}".go
                 
                 i := $po-1
                 
@@ -150,43 +150,69 @@ genPkgYAML() {
 }      
    
 makeChnlTypes() {   
-    Debug makeChanlTypes types = ${types[*]}
+    Debug makeChanlTypes types = ${types[*]} directs = ${directs[*]}
     chnlTypes=""
     dn=0
     
     nt=${#types[*]} ; # Number of array elements
     
     while [ $dn -lt $nt ]; do
-	    	chnlTypes="$chnlTypes, _ch$dn chan ${types[$dn]}"
+    		chan="chan<-"
+    	  if [ ${directs[$dn]} == "I" ]; then 
+    	  		chan="<-chan"
+	    	fi
+	    	chnlTypes="$chnlTypes, _ch$dn $chan ${types[$dn]}"
 	    	dn=$(($dn+1))
     done
 	    	
-}   
-genTypeCalls(){	 	     
-	 	 		 nt=${#types[*]}  
-	 	 		 ct=0	
-	 	 		  
-	 	 		 while [ $ct -lt $nt ]; do
-	 	 		   cn=$ct
-	 	 		   if [ ${directs[$ct]} == "I" ]; then 
+} 
+
+makeRecvFunc() {
 	 	 		 		cat <<- EOF >> $name.go
-	 	 		 		go func() { 
-	 	 		 		  var _ip$cn ${types[$ct]}
-	 	 		 			_ip$cn._Recv (_ch$cn,&_wg2,)
-	 	 		 		}()
+	 	 		 		// Recv receives and prints $typ IPs
+	 	 		 		go func() {
+	 	 		 		defer _wg2.Done()
+	 	 		 		for {
+	 	 		 			ip, ok := <- _ch$ct
+	 	 		 			if ok != true {
+	 	 		 			return 
+	 	 		 		}		   
+	 	 		 		fmt.Println( arg[0],  "received:", ip)
+	 	 		 }
+	}()		
 	 	 		 			
 EOF
-	 	 		   else   
+}
+
+makeSendFunc() {
 	 	 		 		cat <<- EOF >> $name.go
-	 	 		 		var _ip$cn ${types[$ct]}
-	 	 		 		go  func() {
-	 	 		 			  _ip$cn._Send(_ch$cn,&_wg2)
-	 	 		 	  }()
+// Send emits  WeighT IP(s)
+	go func() {
+	 	defer close(_ch$ct)
+	 	defer _wg2.Done()
+	  ip  :=  $typ{arg[0],"$typ",271828}
+ 		_ch$ct   <- ip 
+	  ip   =  $typ{arg[0],"pi",314159}
+ 		_ch$ct   <- ip 
+	 
+	}()
 	 	 		 		  
 EOF
-	 	 		  fi
-	 	 		  ct=$(($ct+1))
-	 	 		 done
+}
+  
+genTypeCalls() {	 	     
+	nt=${#types[*]}  
+	ct=0	
+	 	 		  
+	while [ $ct -lt $nt ]; do
+	 	 		   cn=$ct
+	 	 		   if [ ${directs[$ct]} == "I" ]; then 	
+	 	 		      makeRecvFunc
+	 	 		   else   
+	 	 		   	  makeSendFunc
+	 	 		   fi
+	 	 		   ct=$(($ct+1))
+  done
 }	 
 	 		 
 genGoCalls() {		
@@ -249,9 +275,9 @@ EOFNP
 	 else 
 	 	routine="go"
 	 fi 
-	 	
+	 	       
 	 genGoCalls
-              
+	 
    if [ $nports -gt 0 ]; then 
         	 cat <<- EOF >> ${name}.go 
 		 _wg2.Wait() 
@@ -278,13 +304,13 @@ EOFX
 
 makeSend() {
 		  cat <<- EOF >> ${name}_test.go
-	 
-		  go func() {   
-          var ip $ct                 
-          defer wg.Done()
-          ip.Id="ID"
-          ip._Send(cs$cn,&wg)
-        }()
+		  
+		  go func() {                 
+          defer wg.Done()              
+          defer close(cs$cn)
+          ip := $ct{"${name}_test", "$ct", 1}   
+          cs$cn <- ip
+      }()
 
 EOF
 }
@@ -292,12 +318,16 @@ EOF
 makeRecv() {
 		  cat <<- EOF >> ${name}_test.go
 	 
-		  go func() {   
-          var ip $ct                 
-          defer wg.Done()
-          ip.Id="ID"
-          ip._Recv(cs$cn,&wg)
-        }()
+		  go func() {                  
+		    defer wg.Done()
+		    for {
+		     	ip, ok := <- cs$cn
+		    	if ok != true {
+		    	 	return
+		    	}
+		      fmt.Println("${name}_test", "received:", ip)
+		    }	
+		  }()
 
 EOF
 }
@@ -325,10 +355,11 @@ makeTestChannels() {
 	cn=0
 	for ct in ${types[*]}; do
 		channels="$channels, cs$cn "
-		echo "var cs$cn chan $ct" >> ${name}_test.go
+		echo "cs$cn := make(chan $ct)" >> ${name}_test.go
 	  cn=$(($cn+1))
 	done 
 	
+  echo "wg.Add($nports)" >>  ${name}_test.go
 	makeGoFuncs  
 	
 }
@@ -352,7 +383,7 @@ func TestSkel_${name}(t *testing.T) {
         var cs  []chan interface{}
         var wg  sync.WaitGroup
         
-        arg := []string{"TestSkel_${name}"}
+        arg := []string{"${name}"}
         
         fmt.Println(arg[0])
 EOFY
@@ -370,7 +401,6 @@ EOFY
  				
          cat << EOFY >> ${name}_test.go
         
-        wg.Add(2) 
         go func() { 
 EOFY
 
@@ -501,34 +531,7 @@ func (_ip $typ) String() string {
 	_bfr := fmt.Sprintf("{%s:%s:%d}", _ip.Id, _ip.Key, _ip.Value) 
 	return _bfr
 }
-
-// Send emits one $typ IP
-func (_ip $typ) _Send( 
-	_ci chan $typ, 
-	_wg2 *sync.WaitGroup, 
-	) {
- 	
- 		defer _wg2.Done()
- 		Debug("$typ _Sending IP")
- 		_ci   <- _ip
-}
-
-// Recv receives and prints,  $typ IPs
-func (_ip $typ) _Recv( 
-	_ci chan $typ, 
-	_wg2 *sync.WaitGroup, 
-	) {
- 	
- 	defer _wg2.Done()
- 	Debug("$typ _Recv")
- 	for {
- 		_ip, ok := <- _ci
- 		if ok != true {
- 				return 
- 		}		   
- 		fmt.Println(  "Recv $typ/received:", _ip)
- 	}
-}			
+		
 EOF
 		   
 		 fi
@@ -621,17 +624,17 @@ $genTypes"
   
 SetTypesArgs() {
 	Debug SetTypesArgs $*
-        typesx=""
-        directsx=""
+  typesx=""
+  directsx=""
 	inps=0; outps=0
 	nt=0
-	while [ ! -z $1 ]; do
+	while  [ ! -z $1 ]  ; do
 		if [ "$1" == "-i" ]; then 
 			directs[$nt]="I";	
 			shift 1
 			typesx="${typesx}$1 "
 			inps=$(($inps+1))
-		else if [ "$1" == "-o" ]; then
+		elif [ "$1" == "-o" ]; then
 			directs[$nt]="O";	
 			shift 1
 			typesx="${typesx}$1 "
@@ -640,7 +643,6 @@ SetTypesArgs() {
 			args=($*)
 			shift $#	
 		fi 
-		fi
 		nt=$(($nt+1)) 	    
 		shift 1
 	done
@@ -812,7 +814,7 @@ GenSkel() {
         	makePkg2
         	Debug GenSkel/subdir2: `pwd` name: $name $inps $outps
         	[ -f ${name}.go ]       || GenGo     $inps $outps
-        	[ -f ${name}_test.go ]  || GenTestGo $inps $outps
+        	[ -f "${name}_test".go ]  || GenTestGo "$inps" "$outps"
     popd        
 }
 
@@ -822,9 +824,9 @@ CheckOut() {
 }
 
 case $1 in  
-        gs|skel)shift;GenSkel $*;;
-        v)      echo $pgm-v$version;;
-        x)  $EDITOR ${pgm}  &;;
+        gs|skel)shift;GenSkel "$@";;
+        v)      echo "$pgm-v$version";;
+        x)  $EDITOR "${pgm}"  &;;
         *)  cat <<- EOFX
         
         $0-v$version USAGE:  
