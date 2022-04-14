@@ -359,7 +359,7 @@ makeTestChannels() {
 	  cn=$(($cn+1))
 	done 
 	
-  echo "wg.Add($nports)" >>  ${name}_test.go
+  echo "wg.Add($(($nports+1)) )" >>  ${name}_test.go
 	makeGoFuncs  
 	
 }
