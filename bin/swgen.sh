@@ -276,6 +276,47 @@ GenTestOutP() {
 EOFX
 }
 
+makeSend() {
+		  cat <<- EOF >> ${name}_test.go
+	 
+		  go func() {   
+          var ip $ct                 
+          defer wg.Done()
+          ip.Id="ID"
+          ip._Send(cs$cn,&wg)
+        }()
+
+EOF
+}
+
+makeRecv() {
+		  cat <<- EOF >> ${name}_test.go
+	 
+		  go func() {   
+          var ip $ct                 
+          defer wg.Done()
+          ip.Id="ID"
+          ip._Recv(cs$cn,&wg)
+        }()
+
+EOF
+}
+
+# Create Send/Recv test msg functions:
+makeGoFuncs() {
+  Debug makeGoFuncs ${types[*]}
+	cn=0
+	for ct in ${types[*]}; do
+	  Debug MGF ct=$ct
+	  if [ ${directs[$cn]} == "I" ]; then
+		  makeSend
+		else
+			makeRecv  
+    fi  
+    cn=$(($cn+1))
+  done
+}
+
 # Create list of  channels in $channels 
 makeTestChannels() {
 	
@@ -283,10 +324,12 @@ makeTestChannels() {
 	channels=""
 	cn=0
 	for ct in ${types[*]}; do
-		channels="$channels, _cs$cn "
-		echo "var _cs$cn chan $ct" >> ${name}_test.go
+		channels="$channels, cs$cn "
+		echo "var cs$cn chan $ct" >> ${name}_test.go
 	  cn=$(($cn+1))
 	done 
+	
+	makeGoFuncs  
 	
 }
 
@@ -324,6 +367,7 @@ EOFY
         fi
         
  				makeTestChannels;  
+ 				
          cat << EOFY >> ${name}_test.go
         
         wg.Add(2) 
@@ -380,7 +424,7 @@ GenYamlGo() {
     version := \"v0.0.0\"
     
     fmt.Println(title, 
-                \"${cyan}gRunning7\", 
+                \"${cyan}Running\", 
                 arg[0],\"-\",  
                 \"$name\",
                 version, 
@@ -453,8 +497,8 @@ type $typ struct {
 }
 
 // Stringer stringifies $typ structures for functions like fmt.Println
-func (_ip $typ) Stringer() string {
-	_bfr := fmt.Sprintf("%s:%s:%d", _ip.Id, _ip.Key, _ip.Value) 
+func (_ip $typ) String() string {
+	_bfr := fmt.Sprintf("{%s:%s:%d}", _ip.Id, _ip.Key, _ip.Value) 
 	return _bfr
 }
 
@@ -465,6 +509,7 @@ func (_ip $typ) _Send(
 	) {
  	
  		defer _wg2.Done()
+ 		Debug("$typ _Sending IP")
  		_ci   <- _ip
 }
 
@@ -475,6 +520,7 @@ func (_ip $typ) _Recv(
 	) {
  	
  	defer _wg2.Done()
+ 	Debug("$typ _Recv")
  	for {
  		_ip, ok := <- _ci
  		if ok != true {
