@@ -91,7 +91,7 @@ GenGo() {
 	 Debug GenGo:  $*  module=$module yaml=$yamlq  pgm=$pgm
 	 $SW -m 5 -yaml $yamlq ${p}.sw > ./gen.sh
 	 chmod a+x ./gen.sh
-	 echo "package $module" > pkgTypes.go			 
+	 # echo "package $module" > pkgTypes.go			 
 	 ./gen.sh
 	 # sed -e "s/$module//"  pkgTypes.go.s >  pkgTypes.go
 	 # mv  pkgTypes.go.s pkgTypes.go
