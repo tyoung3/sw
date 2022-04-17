@@ -131,11 +131,15 @@ static void printTypes(Model m, Component c) {
 	Port pt;
 	char io;
 	
+	
 	p=findProcForComp(m,c);
 	pt=p->port;
 	do {
+	  char *typ="_";
 		io=setIO(c,pt);
-		printf(" -%c %s", io, pt->stream->iptype);
+		if( pt->stream->iptype != NULL && pt->stream->iptype[0] != 0)
+			typ=pt->stream->iptype;
+		printf(" -%c %s", io, typ);
 		pt=pt->next;
 	} while(pt!=p->port); 
 }

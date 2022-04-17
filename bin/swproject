@@ -146,7 +146,7 @@ Genp2() {
 	   || Die "${red}$self: Create project from $sw: FAILED.$reset"	\
 	   && go mod tidy						\
 	   && go fmt  ./...						\
-	   && go test ./...						\
+	   && go test -coverporfile c.out					\
 	   && go run internal/${p}.go					\
 	   && echo -e "${green}$self: ${p}.go Succeeded. $reset" 	\
 	   || Die "${red}$self:  ${p}.go FAILED.$reset"		
