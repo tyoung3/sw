@@ -7,4 +7,4 @@ $mod="postage";
 (Weight $mod/GetWeight "10" "oz")	-WeighT 2> 	 2(cp);
 (From   $mod/GetLoc "New York")		-> 					 0(cp);
 (To     $mod/GetLoc "LA" )				-_> 			   1(cp);
-(cp)4					        			      -PostageT> 	 (print PrintLabel);
+(cp)4					        			      -PostageT> 	 (print $mod/PrintLabel);
