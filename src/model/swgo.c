@@ -365,7 +365,7 @@ static void getSha(char *s) {
 char *fixModule(Model m, char *ftype) {
 		char bfr[MAX_BUF]; 
 		
-		sprintf(bfr,"%s.", ftype);
+		sprintf(bfr,"%s.", m->name);
 		
 		if(strncmp(ftype,"interface{}",30) == 0)  
 			return "";
@@ -438,7 +438,7 @@ void genPrefix(Model m)
         f->streamNum=nstream;
         module=fixModule(m, ftype);
 	      printf("_cs%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
-		    nstream++, module, ftype,f->bufsz,           // bfrtbl[i],
+		    nstream++, module, ftype,f->bufsz,            
 		    f->source->name,f->SourcePort->id, 
 		    f->sink->name,f->SinkPort->id);
 	   }  // End if not orphan 	    
