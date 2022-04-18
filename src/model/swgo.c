@@ -534,18 +534,19 @@ static void genLaunches(Process p, char *channelType)
     while (p!=NULL) {
         char *lastType, *ftype;
         Port pt;
-	      nstreams = p->nportsIn + p->nportsOut;
+	      //nstreams = p->nportsIn + p->nportsOut;
 	      pt = p->port;
 	      lastType="";
 	      bfr[0]=0;
-	    
         genLaunch1(p);
         
-        do {
-	        snprintf(bfr2,BSIZE,",_ch%d",pt->stream->streamNum);
-	        strncat(bfr,bfr2,BSIZE);
-  	      pt=pt->next;
-        } while(pt!=p->port);
+        if(pt!=NULL) {
+        	do {
+	        	snprintf(bfr2,BSIZE,",_ch%d",pt->stream->streamNum);
+	        	strncat(bfr,bfr2,BSIZE);
+  	      	pt=pt->next;
+        	} while(pt!=p->port);
+        }
          
         printf("%s)\n",bfr);    
         p=p->next;
