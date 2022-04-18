@@ -24,8 +24,15 @@
   	  Exception:  same IP type on multiple channels.     
   	* Don't over simplify and create too many fine-grained processes.
  	* Use simple URI rules [URI Rules](https://dzone.com/articles/7-rules-for-rest-api-uri-design-1)
-  * Don't buffer unnecessarily.   Zero-length buffers minimize latency.
+  * Don't buffer unnecessarily.   Zero-length buffers are a bit more secure and minimize latency.  
+  	 In come cases, particularly in cyclic networks, however, non-zero buffers may be 
+  	 necessary to prevent deadlock.  Non-zero buffers may also speed processing sometimes. 
+  	 Note that Go uses ring buffers, implying that IPs can be received even when the buffer 
+  	 is not full.  Buffers can be useful when input arrives erratically.  
+  	  
+  	 
   * Security and synchronization
+  
  	* Always defer synchronizing waits to help prevent deadlock 
  	  and zombies.
     * Avoid threats  (see [Go security practices](https://blog.sqreen.com/top-6-security-best-practices-for-go/) )

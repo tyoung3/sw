@@ -104,14 +104,54 @@ int isaSwPkg(char *pkg) {
 	return 0;   
 }
 
+static Process findProcForComp(Model m,Component c) {
+	Stream s;
+	
+	s=m->stream; 
+	while(s) {
+		if(c == s->source->comp) 
+			return s->source; 
+		if(c == s->sink->comp) 
+			return s->sink; 
+		s=s->next;
+	}
+	FAIL(findProcForComp, "Cannot find process");
+}
+
+static char setIO(Component c, Port pt) {
+
+	if(pt->stream->source->comp == c) 
+		return 'o';
+	return 'i';	
+}
+
+// print  -i type1 -o type 2 ...
+static void printTypes(Model m, Component c) {
+	Process p;
+	Port pt;
+	char io;
+	
+	
+	p=findProcForComp(m,c);
+	pt=p->port;
+	do {
+	  char *typ="_";
+		io=setIO(c,pt);
+		if( pt->stream->iptype != NULL && pt->stream->iptype[0] != 0)
+			typ=pt->stream->iptype;
+		printf(" -%c %s", io, typ);
+		pt=pt->next;
+	} while(pt!=p->port); 
+}
+
 /** Generate a project from the network model. */
 void genProject(Model m) {
 	Component c;
 	int inp=0;	// Number of input ports 	
 	int outp=0;	// Number of output ports
 	char *module; 	// Go Module (and executable name)  
-	char amp=' ';   // Ampersand (or not);
 	char **args;  // Process arguments
+	int i=0;
 	
 	c=m->comp;
 	module=getPrefix(m->name);   // Strip off suffix: .sw
@@ -121,13 +161,13 @@ void genProject(Model m) {
 		args=getArgs(m, c);  
 		if((c->path[0] != '{') & (c->path[0] != '/')) {
 			if(!isaSwPkg(c->path))  {			 
-				printf("swgen.sh gs %s %s %s %d %d %s",
-					module ,c->path, getConfType(c->path), inp, outp, c->name);
-					int i=0;
+				printf("swgen.sh gs %s %s %s %s",
+					module ,c->path, getConfType(c->path), c->name);
+				printTypes(m,c);
+				i=0;	
 				while( args[i] !=NULL  ) 	
 				 	printf(" %s", args[i++]);		  
-				printf("%c\n", amp );
-				amp='&'; 
+				printf("\n" );
 		  	}	
 		}	
 		c=c->next;

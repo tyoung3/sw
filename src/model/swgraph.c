@@ -11,6 +11,7 @@
 #include "swconfig.h"       
 #include <unistd.h>
 
+#define MAX_LEVELS maxlevel    // Maximum subnet depth.  Will become execute option 
 
 /** @todo Declutter graph option 
     @todo Config file color palette option
@@ -325,6 +326,15 @@ static void SetIsNet( Stream f, char *arrowhead, char *style)  {
 	    }  // End if bfsz
 }	    
 
+static int NotTooDeep(Stream f) {
+
+	if(f->source->depth > MAX_LEVELS) 
+		return 0;
+	if(f->sink->depth   > MAX_LEVELS) 
+		return 0;
+	return 1;	
+}
+
 static void
 genLinks (Model m)
 {				// [label="C Miss"];
@@ -335,7 +345,8 @@ genLinks (Model m)
   f = m->stream;
   while (f) {
     arrowhead="normal"; style="solid";
-    switch (f->type) {
+    if (NotTooDeep(f)) {
+     switch (f->type) {
       case IS_STRUCT:
           arrowhead="diamond"; style="tapered";
       case IS_NET:
@@ -343,19 +354,14 @@ genLinks (Model m)
 	  case IS_SUB:
 	    break;  
 	      // showPorts (f, src, snk, channel);
-	}			// End switch on type            
-    f = f->next; 		// Get next stream
-  }				// End while
+    }			// End switch on type 
+   }           			// Endif 
+   f = f->next; 		// Get next stream
+  }				// End while more streams
 }
 
 
-static void
-genProcs (Process p)
-{
-
-  while (p)
-    {
-      if (p->kind == IS_NET || p->kind == IS_STRUCT)
+static void graphNS(Process p)       		
 	{
 	  printf ("#(%s %s.%s) %d ports\n",
 		  p->name,
@@ -379,16 +385,28 @@ genProcs (Process p)
 #endif	  
 	  printf (" }");
 	  endProc ();
-	}
-      else if (p->kind == IS_ORPHAN)
-	{
+}	
+
+static void graphOrphan(Process p)       		{
 	  printf ("#(%s %s.%s) %d ports\n",
 		  p->name,
 		  p->comp->path, p->comp->name, p->nportsIn + p->nportsOut);
 	  genProc1(p, "taos_");
 	  printf (" }");
-	  endProc ();
-	}			// End if IS_NET      
+	  endProc ();  
+}	
+
+static void
+genProcs (Process p) {
+
+  while (p)
+    {
+     if(p->depth <= MAX_LEVELS ) {
+      if (p->kind == IS_NET || p->kind == IS_STRUCT)
+      		graphNS(p);
+      else if (p->kind == IS_ORPHAN)
+      		graphOrphan(p);   
+     }  		
       p = p->next;
     }
 

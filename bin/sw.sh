@@ -185,9 +185,9 @@ case $1 in
 	
 	p)  echo $*; shift
 		nd=$1 
-		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
+		[ -z $1 ] && export nd="postage.sw"  ; # Get good sw.cfg
 		shift
-		swproject g  $nd $*  ;;
+		swproject $*  ../*/model/tests/$nd  ;;
 	poc) RunPoC;;
 	rc) RunCollate;;
 	rl) ../bin/swlocusts r ;;

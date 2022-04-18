@@ -36,48 +36,46 @@ Run sw.sh c go build and make sw (if necessary).
 
 ## Example
 
-sw.sh p project/test/X Y Z
+swproject -yaml YAML -cfg ./src/nds/postage.cfg */mod*/t*s/postage.sw
 
 
 ### OUTPUT: 
 
-Generated module at $GOPATH/mod with packages and 
-component stubs for all components referenced in the network definition file(X.SW file).
+Generated module at /usr/local/src/ with packages and 
+component stubs for all components referenced in the network definition file(postage.sw file).
 ```
-X
-│   ├── sw.tmpl
-│   ├── X
-│   ├── X.go
-│   └── X.sw
-├── X.yaml
-├── Y
-│   ├── Comp1.go
-│   ├── Comp1_test.go
-│   ├── Comp2.go
-│   ├── Comp2_test.go
-│   ├── Comp3.go
-│   └── Comp3_test.go
-└── Z
-    ├── Comp1.go
-    ├── Comp1_test.go
-    ├── Comp2.go
-    ├── Comp2_test.go
-    ├── Comp3.go
-    └── Comp3_test.go
+postage
+├── addr
+│   ├── GetLoc.go
+│   └── GetLoc_test.go
+├── ComputePostage.go
+├── ComputePostage_test.go
+├── config.go
+├── getr
+│   ├── GetWeight.go
+│   ├── GetWeight_test.go
+│   ├── Rates.go
+│   └── Rates_test.go
+├── go.mod
+├── go.sum
+├── internal
+│   ├── gen.sh
+│   ├── pkgTypes.go
+│   ├── postage.go
+│   ├── postage.sw
+│   └── sw.cfg
+├── pkgTypes.go
+├── postage.yaml
+├── PrintLabel.go
+└── PrintLabel_test.go
 
 ```
-Executable program at X/X (package main) 
+Executable program: .../postage/internal/postage.go (package main) 
 
 
 #### EXECUTABLE OUTPUT:
 ```
-Module:X Pkg:Z Running C - Comp3 v0.0.0 bs = 1 seqno:  1234 
-Module:X Pkg:Y Running A - Comp1 v0.0.0 bs = 1 seqno:  1234 
-C chan: 1 IP: 38
-Module:X Pkg:Z Running B - Comp2 v0.0.0 bs = 1 seqno:  1234 
-B chan: 0 IP: 37
-C chan: 0 IP: 1
-
+BUGGY: Work in progress
 ```
 
 ## Environment Variables

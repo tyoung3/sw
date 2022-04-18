@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  
+  <link rel="canonical" href="https://sw.twyoung.com/rdm/">
   <link rel="shortcut icon" href="../img/favicon.ico">
   <title>Readme - StreamWork</title>
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,7 +18,7 @@
     // Current page data
     var mkdocs_page_name = "Readme";
     var mkdocs_page_input_path = "rdm.md";
-    var mkdocs_page_url = null;
+    var mkdocs_page_url = "/rdm/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
@@ -46,7 +46,7 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
                 <ul>
-                    <li class="toctree-l1"><a class="" href="../index.md">Home</a>
+                    <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                     </li>
                 </ul>
                 <ul class="current">
@@ -180,6 +180,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#02611">0.26.11</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#0270">0.27.0</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
     </li>
     </ul>
@@ -193,7 +195,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../components/swutility/">Swutility</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../components/os/">Linux</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/os/">Os</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../components/config/">Config</a>
                     </li>
@@ -260,7 +262,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="streamwork-sw-02611">STREAMWORK -- SW-0.26.11</h1>
+                <h1 id="streamwork-sw-0271">STREAMWORK -- SW-0.27.1</h1>
 <p>Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com </p>
 <p>Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
@@ -474,10 +476,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
 <h3 id="installation">Installation<a name="installation"/></h3>
 <ul>
 <li>cd to any convenient workspace (/usr/local/src for example).</li>
-<li>Download the latest sw-0.26.11.tar.gz file 
+<li>Download the latest sw-0.27.1.tar.gz file 
       from https://github.com/tyoung3/sw/build</li>
-<li>Run 'tar -xzf .../sw-0.26.11.tar.gz' to extract source files</li>
-<li>cd  sw-0.26.11</li>
+<li>Run 'tar -xzf .../sw-0.27.1.tar.gz' to extract source files</li>
+<li>cd  sw-0.27.1</li>
 <li>Run ./configure &amp;&amp; make check</li>
 <li>Run sudo make install.<br />
 <strong><em>sw</em></strong> and associated scripts will be installed in /usr/local/bin</li>
@@ -843,7 +845,12 @@ break existing networks.</p>
 </ul>
 <h2 id="02611">0.26.11</h2>
 <ul>
-<li>Changed type mismatches from FAILing to WARNING.     </li>
+<li>Changed type mismatches from FAILing to WARNING.   </li>
+</ul>
+<h2 id="0270">0.27.0</h2>
+<ul>
+<li>Changed package name from sw/linux to sw/os</li>
+<li>Added sw/os/Debug function    </li>
 </ul>
 <h2 id="author">Author<a name="author"/></h2>
 <pre><code>Tom Young, streamwork@twyoung.com
@@ -862,6 +869,8 @@ BNFC, git, GraphViz, Github and others.
       
         <a href="../components/" class="btn btn-neutral float-right" title="Components">Next <span class="icon icon-circle-arrow-right"></span></a>
       
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -888,6 +897,8 @@ BNFC, git, GraphViz, Github and others.
   <div class="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../components/" style="color: #fcfcfc">Next &raquo;</a></span>

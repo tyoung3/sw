@@ -1,4 +1,7 @@
 site_name: StreamWork
+site_url: https://sw.twyoung.com
+#repo_url: https://github.com/tyoung3/sw/docs
+#repo_name: GitHub
 nav:
   - Home: index.md
   - Readme: rdm.md
@@ -6,7 +9,7 @@ nav:
       - Components: components.md
       - SwBase: components/sw.md 
       - Swutility: components/swutility.md
-      - Linux:   components/os.md
+      - Os:   components/os.md
       - Config:  components/config.md
       - Fileio:  components/fileio.md 
       - SW Language Labeled BNF(pdf): SWL.pdf
