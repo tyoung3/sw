@@ -560,6 +560,7 @@ static void generateChannels(Process p, int nslice) {
 static int generateSlices(Process p, int nslice) {
 		Port pt;
 		int n = nslice;
+		char *ctype;
 		
 		pt = p->port;
 		
@@ -567,13 +568,18 @@ static int generateSlices(Process p, int nslice) {
 		  do {
 			  if(pt->next != p->port 
 				   && pt->stream->iptype == pt->next->stream->iptype) {
-				 	  	n++;
-				 	  	while( pt->next != p->port && 
-				 	  			 pt->stream->iptype == pt->next->stream->iptype) {
+				      printf("\nvar _cs%d []chan interface{}\n", n);
+				      ctype = pt->stream->iptype;
+				      do {
+				 	  			 printf("_cs%d = append(_cs%d,_ch%d)\n",
+				 	  			 		n,n,pt->stream->streamNum);		
 				 	  			 pt=pt->next;
-				 	  	}
+				 	  	} while( pt != p->port && 
+				 	  			 strncmp(pt->stream->iptype,ctype,MAX_BUF) == 0);
+				 	  	n++;
 				   }
-			  pt=pt->next;
+				if(pt != p->port)   
+			  		pt=pt->next;
 		  } while(pt != p->port);
 		}  
 		
@@ -583,13 +589,14 @@ static int generateSlices(Process p, int nslice) {
 /** Launch component goroutines. */
 static void genLaunches(Process p, char *channelType)
 {
-    int nslice=0;
+    int nslice=0, lastSlice=0;
     while (p!=NULL) {
         char *lastType, *ftype;
 	      lastType="";
-        genLaunchComp(p);
+	      lastSlice = nslice;
         nslice = generateSlices(p,nslice);
-        generateChannels(p,nslice);
+        genLaunchComp(p);
+        generateChannels(p,lastSlice);
         p=p->next;
     }
     printf("\n");
