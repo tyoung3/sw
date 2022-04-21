@@ -2,7 +2,7 @@ package swutility
 
 import (
 	"fmt"
-	sw "github.com/tyoung3/sw"
+	"github.com/tyoung3/sw"
 	"sync"
 	"testing"
 )
@@ -11,50 +11,54 @@ func TestCollate(t *testing.T) {
 	var cs []chan interface{}
 	var wg sync.WaitGroup
 
-	fmt.Println("TestCollate2:")
-	cs = append(cs, make(chan interface{}))
-	cs = append(cs, make(chan interface{}))
-	cs = append(cs, make(chan interface{}))
-	cs = append(cs, make(chan interface{}))
-	cs = append(cs, make(chan interface{}))
-	cs = append(cs, make(chan interface{}))
+	fmt.Println("TestCollate")
+	ch0 := make(chan interface{})
+	ch1 := make(chan interface{})
+	ch2 := make(chan interface{})
+	ch3 := make(chan interface{})
+	ch4 := make(chan interface{})
+	ch5 := make(chan interface{})
+	cs = append(cs, ch0)
+	cs = append(cs, ch1)
+	cs = append(cs, ch2)
+	cs = append(cs, ch3)
+	cs = append(cs, ch4)
+	cs = append(cs, ch5)
 
-	sw.Launch(&wg, []string{"Match0"}, sw.Print, cs[2:3])
-	sw.Launch(&wg, []string{"Match1"}, sw.Print, cs[3:4])
-	sw.Launch(&wg, []string{"Miss0"}, sw.Print, cs[4:5])
-	sw.Launch(&wg, []string{"Miss1"}, sw.Print, cs[5:6])
+	wg.Add(7)
+	
+	go sw.Print(&wg, []string{"Match0"}, ch2)
+	go sw.Print(&wg, []string{"Match1"}, ch3)
+	go sw.Print(&wg, []string{"Miss0"},  ch4)
+	go sw.Print(&wg, []string{"Miss1"},  ch5)
 
-	wg.Add(1)
 	go func() {
-		cs[1] <- 3
-		cs[1] <- 6
-		cs[1] <- 9
-		cs[1] <- 12
-		cs[1] <- 12
-		cs[1] <- 15
-		close(cs[1])
-		fmt.Println("End1")
-		wg.Done()
+		defer close(cs[1])
+		defer wg.Done()
+		ch1 <- 3
+		ch1 <- 6
+		ch1 <- 9
+		ch1 <- 12
+		ch1 <- 12
+		ch1 <- 15
 	}()
 
-	wg.Add(1)
 	go func() {
-		cs[0] <- 2
-		cs[0] <- 4
-		cs[0] <- 6
-		cs[0] <- 6
-		cs[0] <- 8
-		cs[0] <- 10
-		cs[0] <- 12
-		cs[0] <- 14
-		cs[0] <- 17
-		close(cs[0])
-		fmt.Println("End0")
-		wg.Done()
+		defer close(cs[0])
+		defer wg.Done()
+		ch0 <- 2
+		ch0 <- 4
+		ch0 <- 6
+		ch0 <- 6
+		ch0 <- 8
+		ch0 <- 10
+		ch0 <- 12
+		ch0 <- 14
+		ch0 <- 17
 	}()
 
-	//wg.Add(1)
-	go sw.Launch(&wg, []string{"Collate"}, Collate, cs[0:6])
+	go Collate (&wg, []string{"Collate"}, cs[0:6])
+  fmt.Println("TestCollate Waiting")
 	wg.Wait()
-
+  fmt.Println("TestCollate Ended")
 }

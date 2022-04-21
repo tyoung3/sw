@@ -5,13 +5,11 @@ import "fmt"
 import "sync"
 
 func TestPrint(t *testing.T) {
-	var cs []chan interface{}
 	var wg sync.WaitGroup
-	arg := []string{"TestPrint", "xx"}
+	arg := []string{"Print"}
 
 	fmt.Println("TestPrint")
-	cs = append(cs, make(chan interface{}))
-	c := cs[0]
+	c := make(chan interface{})
 
 	go func() {
 		c <- 7
@@ -21,7 +19,7 @@ func TestPrint(t *testing.T) {
 	}()
 
 	wg.Add(1)
-	go Print(&wg, arg, cs)
+	go Print(&wg, arg, c)
 	fmt.Println("TestPrint wait c ")
 	wg.Wait()
 	fmt.Println("TestPrint done.")

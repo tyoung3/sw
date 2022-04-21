@@ -505,7 +505,7 @@ char *stripPath( char *s1 ) {
 }
 
 /** print launch process code. */
-static void genLaunch1(Process p)
+static void genLaunchComp(Process p)
 {
     int i = 1;
     
@@ -522,33 +522,74 @@ static void genLaunch1(Process p)
 }
 
 #define BSIZE 5001
+/* Assign channels to a process
+ * Generate a slice when adjacent channels have the same type
+*/ 
+static void generateChannels(Process p, int nslice) {     
+        Port pt;  
+	  		char bfr[BSIZE+1];     /* Collect channels  */
+	  		char bfr2[BSIZE+1];   
+	     
+	      
+	      pt = p->port; 
+	      bfr[0]=0;  
+	      
+        while(pt != NULL) {
+            if(pt->next != p->port 
+          			&& pt->stream->iptype == pt->next->stream->iptype)
+          			{ 
+          			// create slices previously     	 
+	        	    snprintf(bfr2,BSIZE,",_cs%d",nslice++);
+	        	    strncat(bfr,bfr2,BSIZE);
+	        	    while(pt->stream->iptype == pt->next->stream->iptype
+	        	      && pt->next != p->port) {
+	        	    	pt=pt->next;
+	        	    }
+          	 } else { 
+	        	    snprintf(bfr2,BSIZE,",_ch%d",pt->stream->streamNum);
+	        	    strncat(bfr,bfr2,BSIZE);
+        	   } 
+  	      	 pt=pt->next;
+        	   if(pt == p->port)
+        	   		break;
+        }
+        
+        printf("%s)\n",bfr); 
+}  
+      
+static int generateSlices(Process p, int nslice) {
+		Port pt;
+		int n = nslice;
+		
+		pt = p->port;
+		
+		if(pt != NULL ) {
+		  do {
+			  if(pt->next != p->port 
+				   && pt->stream->iptype == pt->next->stream->iptype) {
+				 	  	n++;
+				 	  	while( pt->next != p->port && 
+				 	  			 pt->stream->iptype == pt->next->stream->iptype) {
+				 	  			 pt=pt->next;
+				 	  	}
+				   }
+			  pt=pt->next;
+		  } while(pt != p->port);
+		}  
+		
+		return n;
+}
+    
 /** Launch component goroutines. */
 static void genLaunches(Process p, char *channelType)
 {
-    int ch;			    /* Assigned channel                 */
-    int nstreams;       /* Streams/process                  */
-    int ch0;			/* initial channel index            */
-	  char bfr[BSIZE+1];     /* Collect channels  */
-	  char bfr2[BSIZE+1];     /* Collect channels  */
-    
+    int nslice=0;
     while (p!=NULL) {
         char *lastType, *ftype;
-        Port pt;
-	      //nstreams = p->nportsIn + p->nportsOut;
-	      pt = p->port;
 	      lastType="";
-	      bfr[0]=0;
-        genLaunch1(p);
-        
-        if(pt!=NULL) {
-        	do {
-	        	snprintf(bfr2,BSIZE,",_ch%d",pt->stream->streamNum);
-	        	strncat(bfr,bfr2,BSIZE);
-  	      	pt=pt->next;
-        	} while(pt!=p->port);
-        }
-         
-        printf("%s)\n",bfr);    
+        genLaunchComp(p);
+        nslice = generateSlices(p,nslice);
+        generateChannels(p,nslice);
         p=p->next;
     }
     printf("\n");
