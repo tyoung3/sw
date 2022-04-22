@@ -2,6 +2,7 @@ package swutility
 
 import "sync"
 import "reflect"
+//import "fmt"
 
 func get0(state *int, c chan interface{}) interface{} {
 
@@ -37,12 +38,14 @@ func match(cs []chan interface{}) {
 	ip1 := *new(interface{})
 
 	for {
+		// fmt.Println("Collate/state:",state)
 		switch state {
 		case 0, 2: /* get 0 and add 1 to state. If EOF, add 4 to state */
 			ip0 = get0(&state, cs[0])
 		case 1, 4: /* get 1 and state+=2. if EOF state=8 */
 			ip1 = get1(&state, cs[1])
 		case 3:
+		  //fmt.Println("ip0 ip1",ip0, ip1)
 			if ip0 == ip1 {
 				cs[2] <- ip0 //BUG: Does not match all =s from 0.
 				cs[3] <- ip1

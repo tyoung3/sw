@@ -124,7 +124,7 @@ StreamWork is concerned primarily with Go language FBP programs,
 however, the network definition described here is language agnostic.  It is quite possible 
 to generate corresponding code in other languages from a StreamWork ND.         
 
-The script, **_swgo_**, reads and executes an ND employing **_sw_** to properly launch and connect the processes.  By default, **_sw_** generates 
+The script, **_swgo_**, reads and executes a network definition employing **_sw_** to properly launch and connect the processes.  By default, **_sw_** generates 
 and builds a single main Go program which:  
   * imports sw compatible component package(s) as specified in the network definition,  
   * launches a goroutine for each process,  
@@ -639,7 +639,7 @@ break existing networks.
   * Provide process attributes.  
   
 ### 0.21.0 
-  * Can generate projects with or without YAML configuration. 
+  * Can generate projects with or without YAML configurationswpro. 
   * Fixes to Wrap function.  
   
 ### 0.21.1
@@ -657,7 +657,7 @@ break existing networks.
 ### 0.26.7
   * Introduced mkdocs
   * Attempt to fix go.in yaml  Dependabot alert
-  * Fix build error in swgraph.c
+  * Fix build error in swgraph.cswpro
   
 ### 0.26.8
   * Removed 'default:' error from swgraph.c 
