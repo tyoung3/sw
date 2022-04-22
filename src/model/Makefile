@@ -355,9 +355,9 @@ AM_TESTSUITE_SUMMARY_HEADER = ' for $(PACKAGE_STRING)'
 RECHECK_LOGS = $(TEST_LOGS)
 AM_RECURSIVE_TARGETS = check recheck
 TEST_SUITE_LOG = test-suite.log
-TEST_EXTENSIONS = .exe .test
+TEST_EXTENSIONS =  .test
 am__test_logs1 = $(TESTS:=.log)
-am__test_logs2 = $(am__test_logs1:.exe.log=.log)
+am__test_logs2 = $(am__test_logs1:.log=.log)
 TEST_LOGS = $(am__test_logs2:.test.log=.log)
 TEST_LOG_COMPILE = $(TEST_LOG_COMPILER) $(AM_TEST_LOG_FLAGS) \
 	$(TEST_LOG_FLAGS)
@@ -382,12 +382,12 @@ AUTOCONF = ${SHELL} '/usr/local/src/sw/build-aux/missing' autoconf
 AUTOHEADER = ${SHELL} '/usr/local/src/sw/build-aux/missing' autoheader
 AUTOMAKE = ${SHELL} '/usr/local/src/sw/build-aux/missing' automake-1.16
 AWK = mawk
-CC = x86_64-w64-mingw32-gcc
+CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g  $(AM_CFLAGS) -DMAJOR="${SW_MAJOR}" -DMINOR="${SW_MINOR}" -DSLEVEL="${SW_LEVEL}"
-CPP = x86_64-w64-mingw32-gcc -E
+CPP = gcc -E
 CPPFLAGS = 
-CXX = x86_64-w64-mingw32-g++
+CXX = g++
 CXXDEPMODE = depmode=gcc3
 CXXFLAGS = -g -O2
 CYGPATH_W = echo
@@ -397,7 +397,7 @@ ECHO_C =
 ECHO_N = -n
 ECHO_T = 
 EGREP = /usr/bin/grep -E
-EXEEXT = .exe
+EXEEXT = 
 GREP = /usr/bin/grep
 INSTALL = /usr/bin/install -c
 INSTALL_DATA = ${INSTALL} -m 644
@@ -406,11 +406,11 @@ INSTALL_SCRIPT = ${INSTALL}
 INSTALL_STRIP_PROGRAM = $(install_sh) -c -s
 LDFLAGS = 
 LEX = flex
-LEXLIB = 
+LEXLIB = -lfl
 LEX_OUTPUT_ROOT = lex.yy
-LIBOBJS =  ${LIBOBJDIR}lstat$U.o ${LIBOBJDIR}malloc$U.o ${LIBOBJDIR}realloc$U.o
+LIBOBJS = 
 LIBS = 
-LTLIBOBJS =  ${LIBOBJDIR}lstat$U.lo ${LIBOBJDIR}malloc$U.lo ${LIBOBJDIR}realloc$U.lo
+LTLIBOBJS = 
 MAKEINFO = ${SHELL} '/usr/local/src/sw/build-aux/missing' makeinfo
 MKDIR_P = /usr/bin/mkdir -p
 OBJEXT = o
@@ -424,7 +424,7 @@ PACKAGE_VERSION = 0.27.1
 PATH_SEPARATOR = :
 SET_MAKE = 
 SHELL = /bin/bash
-STRIP = x86_64-w64-mingw32-strip
+STRIP = 
 SW_LEVEL = 0
 SW_MAJOR = 0
 SW_MINOR = 28
@@ -433,8 +433,8 @@ abs_builddir = /usr/local/src/sw/src/model
 abs_srcdir = /usr/local/src/sw/src/model
 abs_top_builddir = /usr/local/src/sw
 abs_top_srcdir = /usr/local/src/sw
-ac_ct_CC = 
-ac_ct_CXX = 
+ac_ct_CC = gcc
+ac_ct_CXX = g++
 am__include = include
 am__leading_dot = .
 am__quote = 
@@ -448,7 +448,7 @@ datarootdir = ${prefix}/share
 docdir = ${datarootdir}/doc/${PACKAGE_TARNAME}
 dvidir = ${docdir}
 exec_prefix = ${prefix}
-host_alias = x86_64-w64-mingw32
+host_alias = 
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
@@ -822,13 +822,13 @@ recheck: all
 	--log-file $$b.log --trs-file $$b.trs \
 	$(am__common_driver_flags) $(AM_TEST_LOG_DRIVER_FLAGS) $(TEST_LOG_DRIVER_FLAGS) -- $(TEST_LOG_COMPILE) \
 	"$$tst" $(AM_TESTS_FD_REDIRECT)
-.test$(EXEEXT).log:
-	@p='$<'; \
-	$(am__set_b); \
-	$(am__check_pre) $(TEST_LOG_DRIVER) --test-name "$$f" \
-	--log-file $$b.log --trs-file $$b.trs \
-	$(am__common_driver_flags) $(AM_TEST_LOG_DRIVER_FLAGS) $(TEST_LOG_DRIVER_FLAGS) -- $(TEST_LOG_COMPILE) \
-	"$$tst" $(AM_TESTS_FD_REDIRECT)
+#.test$(EXEEXT).log:
+#	@p='$<'; \
+#	$(am__set_b); \
+#	$(am__check_pre) $(TEST_LOG_DRIVER) --test-name "$$f" \
+#	--log-file $$b.log --trs-file $$b.trs \
+#	$(am__common_driver_flags) $(AM_TEST_LOG_DRIVER_FLAGS) $(TEST_LOG_DRIVER_FLAGS) -- $(TEST_LOG_COMPILE) \
+#	"$$tst" $(AM_TESTS_FD_REDIRECT)
 
 distdir: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) distdir-am

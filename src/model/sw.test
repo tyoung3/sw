@@ -2,22 +2,1030 @@
 
 pgm=./sw
 
+cat << EOF.aaR.sw | ./sw >/dev/null && echo ok 1 - aaR.sw || echo not ok 1 -  aaR.sw
+#  DEFAULT_IMPORT_PATH  
+
+(B poc/Comp2)0 -> 0(A Comp1);
+(Hello) -> (World); 
+
+EOF.aaR.sw
+
+sw tests/aa.sw  && echo ok 2 - aa.sw || echo not ok 2 -  aa.sw
 
 
-cat << EOF.postage.sw | ./sw >/dev/null && echo ok 1 - postage.sw || echo not ok 1 -  postage.sw
+cat << EOF.ab.sw | ./sw >/dev/null && echo ok 3 - ab.sw || echo not ok 3 -  ab.sw
+{#
+    AB.sw
+
+#}
+
+(A strings/Print1)SLOT 	<- 0.TAB(B strings/Gen1 "1" "2" "3"  $_BROWSER ); 
+(C strings/Print1)IN 	<- OUT.0(D strings/Gen1 "2"); 
+(E strings/Print1 "S1" "S2" "S3")0.IN <- OUT.0(F strings/Gen1 "3" "7"); 
+
+(X1 a)0.SOCKET  <- PLUG.0(Y1 b); 
+(X2 a)0.SLOT    <- TAB.0(Y2 b);
+
+	 # This fails: (X3 a)TAB    <- TAB(Y3 b); 
+EOF.ab.sw
+
+cat << EOF.ad.sw | ./sw >/dev/null && echo ok 4 - ad.sw || echo not ok 4 -  ad.sw
+%bs = 7;
+(A3 a)0 <- 0(C3 b); 
+(A3 a)1 <%bs- 1(C3 b);
+(A3 a)2 <- 2(C3 b);
+EOF.ad.sw
+
+cat << EOF.ae2.sw | ./sw >/dev/null && echo ok 5 - ae2.sw || echo not ok 5 -  ae2.sw
+(A a)<- 0(B a)1 <-  (C a);
+(D a)<- 0(E a)1 <- 1(C a);
+(F a)<- 2(G a)1 <- 2(C a);
+
+(C a)3<-  (G a)3 <- 1(F a);
+(H a) <- 2(E a)3 <- 1(A a);
+
+EOF.ae2.sw
+
+cat << EOF.aef.sw | ./sw >/dev/null && echo ok 6 - aef.sw || echo not ok 6 -  aef.sw
+(D)IN.0 <- OUT.1(C)IN.0 <ip_t- OUT.1(B)IN.0 <- OUT.0(A);  
+
+ 
+EOF.aef.sw
+
+cat << EOF.ae.sw | ./sw >/dev/null && echo ok 7 - ae.sw || echo not ok 7 -  ae.sw
+
+
+(ae_D a)<- 3(ae_E a)0 <- 1(ae_C a);
+(ae_F a)<- 3(ae_G a) <-  2(ae_C a);
+
+(ae_C a) <- 2(ae_G a)1 <- 1(ae_F a);
+
+
+&A=ae_XA;
+(&A a)<- 1(ae_B a)0 <- 3(ae_C a);
+(ae_H a) <- 2(ae_E a)1 <- 1(&A a);
+
+EOF.ae.sw
+
+cat << EOF.aj2.sw | ./sw >/dev/null && echo ok 8 - aj2.sw || echo not ok 8 -  aj2.sw
+# AJ2.sw: AutoJoin 
+
+(M)  <- (A);
+(M)  <- (B);
+(M)  <- (C);
+(M)  <- (D);
+
+(N)  <- (E);
+(N)  <- (F);
+(N)  <- (G);
+(N)  <- (H);
+
+EOF.aj2.sw
+
+cat << EOF.aj.sw | ./sw >/dev/null && echo ok 9 - aj.sw || echo not ok 9 -  aj.sw
+# AJ.sw: AutoJoin 
+
+(N)  <- (A);
+(N)  <- (B);
+
+(P)  <- (C);
+(P)  <- (D);
+
+(Q)  <- (E);
+(Q)  <- (F);
+
+EOF.aj.sw
+
+cat << EOF.anon.sw | ./sw >/dev/null && echo ok 10 - anon.sw || echo not ok 10 -  anon.sw
+(_ A)  <-  (_ B);
+#(_ A)1 <- 1(_ B);
+  
+EOF.anon.sw
+
+cat << EOF.asj.sw | ./sw >/dev/null && echo ok 11 - asj.sw || echo not ok 11 -  asj.sw
+# ASJ.sw: Demo autoSplit and edge colors 
+
+(C) 	<sw_t 1- 	0(A);
+(B) 	<     3-     	0(A);
+(D)	<     2-	0(A);
+(E)	<     0- 	0(A);
+(F)	<   100- 	0(A);
+EOF.asj.sw
+
+cat << EOF.as.sw | ./sw >/dev/null && echo ok 12 - as.sw || echo not ok 12 -  as.sw
+# AS.sw: AutoSplit 
+
+(A)	 <- (Z);
+(B)  <- (Z);
+(C)  <- (Z);
+(D)  <- (Z);
+(E)  <- (Z);
+(F)  <- (Z);
+
+EOF.as.sw
+
+cat << EOF.autojoin.sw | ./sw >/dev/null && echo ok 13 - autojoin.sw || echo not ok 13 -  autojoin.sw
+# AutoJoin.sw: AutoJoin 
+
+^s {
+	(A)0 <-     (B);    
+	(A)0 <-     (C);     
+	(A)0 <foo- 1(D); 
+	(D)0 <bar- 0;    
+};
+
+(x ^s) <bar 2- (y);
+EOF.autojoin.sw
+
+./sw tests/collate.sw && echo ok 14 - collate.sw || echo not ok 14 -  collate.sw
+
+
+cat << EOF.d1.sw | ./sw >/dev/null && echo ok 15 - d1.sw || echo not ok 15 -  d1.sw
+(A) <- (B);
+EOF.d1.sw
+
+cat << EOF.e1.sw | ./sw >/dev/null && echo ok 16 - e1.sw || echo not ok 16 -  e1.sw
+# Merge Error:  chance to autogen merge flow
+
+(A a)0 <- (B b);
+(A)0  <- (C c);
+EOF.e1.sw
+
+cat << EOF.e2.sw | ./sw >/dev/null && echo ok 17 - e2.sw || echo not ok 17 -  e2.sw
+# Missing Component:  
+
+(D)0 <- (E b);
+
+EOF.e2.sw
+
+cat << EOF.env.sw | ./sw >/dev/null && echo ok 18 - env.sw || echo not ok 18 -  env.sw
+# ENV.sw
+
+(A env/Getenv)->(P sw/Print);
+(D)->(B sw/linux/Wrap "echo DEBUG=Y")1->(C env/Setenv);
+EOF.env.sw
+
+cat << EOF.ex1.sw | ./sw >/dev/null && echo ok 19 - ex1.sw || echo not ok 19 -  ex1.sw
+^a {  0<-(A); (A)1<-1; };  
+^b { (C)0<-0; };
+(X ^b) <type1,type2-  (Y ^a);
+(Y)1  <- (Z);
+EOF.ex1.sw
+
+cat << EOF.fb.sw | ./sw >/dev/null && echo ok 20 - fb.sw || echo not ok 20 -  fb.sw
+(Foo) <- (Bar);"
+EOF.fb.sw
+
+cat << EOF.fig1.sw | ./sw >/dev/null && echo ok 21 - fig1.sw || echo not ok 21 -  fig1.sw
+(a C "ARG..." ) -ipType> (b D);
+#    or [reversing direction and using default component names]
+(E)IN <- OUT.1(F)0 <- (G); 
+EOF.fig1.sw
+
+cat << EOF.fig2.sw | ./sw >/dev/null && echo ok 22 - fig2.sw || echo not ok 22 -  fig2.sw
+  (_) -int 3> (_); #[integer stream with buffersize of three]; 
+EOF.fig2.sw
+
+cat << EOF.h1.sw | ./sw >/dev/null && echo ok 23 - h1.sw || echo not ok 23 -  h1.sw
+
+
+
+^a {
+(AA)	<1- (A a);
+(A)1 	<2- (AA2);
+};
+
+^b {
+(BB2)	<3- (B b);
+(B)1 	<4-  (BB);
+};
+
+X ^a;
+Y ^b;
+Z ^a;
+
+(E)->(F);
+
+T "arg";
+EOF.h1.sw
+
+cat << EOF.h2.sw | ./sw >/dev/null && echo ok 24 - h2.sw || echo not ok 24 -  h2.sw
+
+^a {
+(A)-ip_t>(B);	
+};
+
+X ^a;
+EOF.h2.sw
+
+cat << EOF.hello.sw | ./sw >/dev/null && echo ok 25 - hello.sw || echo not ok 25 -  hello.sw
 #!/usr/local/bin/swgraph
 
-# POSTAGE.SW:  Postal rate Streamwork Network Definition Example
+#HELLO.SW: Hello World Streamwork Network Definition Example
 
-# $mod="postage";
-(Rates  $mod/Rates ".58" "oz" )		-RateT  3> 	 3(cp $mod/ComputePostage);
-(Weight $mod/GetWeight "10" "oz")	-WeighT 2> 	 2(cp);
-(From   $mod/GetLoc "New York")		-> 					 0(cp);
-(To     $mod/GetLoc "LA" )				-_> 			   1(cp);
-(cp)4					        			      -PostageT> 	 (print $mod/PrintLabel);
-EOF.postage.sw
+(Hello Print1)0 <int- 0(World Gen1 "3");
+
+{# Produces 
+Hello World-1
+Hello World-2
+Hello World-3
+#}
+EOF.hello.sw
+
+cat << EOF.hw.sw | ./sw >/dev/null && echo ok 26 - hw.sw || echo not ok 26 -  hw.sw
+#!/usr/local/bin/swgo
+
+#HW.SW: Streamwork Network Definition Example
+
+#!/usr/local/bin/swgo
+# Hello World Example
+(Hello) <- (World);
+
+{# Produces: 
+Hello World 
+#}
+EOF.hw.sw
+
+cat << EOF.java.sw | ./sw >/dev/null && echo ok 27 - java.sw || echo not ok 27 -  java.sw
+#JAVA/SW
+
+#	  JavaFBP Ex/
+
+# JavaFBP Poc: 
+
+# SUFFIX class;
+# INITIAL Read_Masters 		    "c:\\mastfile" SOURCE;
+# INITIAL Read_Details  		"c:\\detlfile" SOURCE;   
+# INITIAL Write_New_Masters  	"c:\\newmast"  DESTINATION; 
+# (Read_Masters Read)OUT 		 =>> IN,0(Collate Collate); 		// array port
+# (Read_Details Read)OUT 		 =>> IN,1(Collate); 
+# (Collate Proc)OUT 			 =>> IN(Process_Merged_Stream Proc);
+# (Process_Merged_Stream)OUTSE =>> IN(Summary_&_Errors Report);
+# (Process_Merged_Stream)OUTM  =>> IN(Write_New_Masters);
+
+#        Or equally:
+# (P)OUTSE       =>> IN(SE Report);
+# (P)OUTM        =>> IN(M  Write);
+# (R1 Read)OUT   =>> IN0(C Collate);
+# (C)OUT         =>> IN(P  Proc);
+# (R2 Read)OUT   =>> IN1(C);
+# "c:\\newmast"  =>>    (M);
+# "c:\\mastfile" =>>    (R1);
+# "c:\\detlfile" =>>    (R2);
+
+#      In Go: 
+(C Collate)0   <-  0(R1 Read);
+#(P)2    	  <-  1(C);
+(SE Report)0   <-  0(P Proc);
+#(M  Write)0    <-  1(P);
+#(C)2    	   <-  0(R2 Read);
+
+#(M)1  		   <-     "c:\\newmast";
+#(R1)1 		   <-     "c:\\mastfile";
+#(R2)1 		   <-     "c:\\detlfile";
+
+# connect(component("Read Masters",Read/class),  port("OUT"), 
+#	      component("Collate",    Collate/class),port("IN",0));  
+
+#    connect(component("Read Details",Read/class),port("OUT"),
+#      component("Collate"),port("IN",1));// array port  
+      
+#    connect(component("Collate"),port("OUT"),
+#      component("Process Merged Stream",Proc/class),port("IN"));  
+      
+#    connect(component("Process Merged Stream"),port("OUTM"),
+#      component("Write New Masters",Write/class),port("IN"));  
+      
+#    connect(component("Process Merged Stream"),port("OUTSE"),
+#      component("Summary & Errors",Report/class),port("IN"));
+      
+
+#    initialize(new FileReader("c:\\mastfile"),
+#      component("Read Masters"),
+#      port("SOURCE"));
+      
+#     initialize(new FileReader("c:\\detlfile"),
+#       component("Read Details"),
+#       port("SOURCE"));
+
+#     initialize(new FileWriter("c:\\newmast"),
+#       component("Write New Masters"),
+#       port("DESTINATION"));
+
+EOF.java.sw
+
+cat << EOF.jn.sw | ./sw >/dev/null && echo ok 28 - jn.sw || echo not ok 28 -  jn.sw
+(a A) -> (b B);
+(c C) -> (b);
+
+EOF.jn.sw
+
+cat << EOF.locusts.sw | ./sw >/dev/null && echo ok 29 - locusts.sw || echo not ok 29 -  locusts.sw
+#!/usr/local/bin/swgo
+
+# LOCUSTS.SW:  Streamwork Network Definition Example
+
+# Ref: https://www/cicadamania/com/where/html
+
+#   (Brood X Magicicada periodical cicadas[locusts]) appearing two years early in DC and Cincinnati 
+#   (Brood VIII Magicicada periodical cicadas[locusts]) predicted for Ohio and Pennsylvania 
+
+#          914 + 13*A = 2019 = 914 + 17*B  = 914 + 221*A/17   
+
+#              Partition I 
+# Broods IV and XIX in Missouri in 2019   ?
+(C  sw/swutility/Collate  )0 	  <- 0(IV_MO   Gen "108" "910" "17" );
+(C)1 	     	    		  <- 0(XIX_MO   Gen "140" "919" "13" );
+
+(MISSOURI_IV Print) <0- 2(C);
+(MO_XIX      Print) <0- 3(C);
+(MISS_IV     Print) <0- 4(C);
+(MISS_XIX    Print) <0- 5(C);
+
+#              Partition II 
+(C2 sw/swutility/Collate  )0 		 <- 0(X_WASH   Gen "108" "916" "17" );
+(C2)1 	     	          	 <- 0(XIX2_MO  Gen "140" "919" "13" );
+
+(WASH_X      Print) <- 2(C2);
+(MATCH_XIX_2 Print) <- 3(C2);
+(MISS_X      Print) <- 4(C2);
+(MISS_XIX_2  Print) <- 5(C2);
+  
+#              Partition III     Broods IV and XIX in Missouri in 2019 ?
+(C3 sw/swutility/Collate)0 	 		 <- 0(QQ        Gen "140" "914" "13" );
+(C3)1	 	 		 <- 0(VIII_OHIO Gen "108" "914" "17" );
+
+(OHIO_VIII Print) <- 2(C3);
+(MATCH_QQ  Print)  <- 3(C3);
+(MISS_VIII Print) <- 4(C3);
+(MISS_QQ   Print)  <- 5(C3);
+  
+# End of LOCUSTS.sw
+
+EOF.locusts.sw
+
+cat << EOF.lrR.sw | ./sw >/dev/null && echo ok 30 - lrR.sw || echo not ok 30 -  lrR.sw
+^w {
+(F F)1  -13> 0;
+(G G)1 -14> (F F);
+(H H)  -15> 0(G G);
+};
+
+
+^v {
+(E ^w)  -12>  0;
+};
+
+
+^u {
+(D ^v) -11> 0;
+};
+
+^a {
+1	-7> (Y);
+(V V)1   -8> 0;
+(W W)1  -9> (V);
+(X)	-10>  (W);
+};
+
+^b {
+(S S)1 	-3> 1;
+(T)2 	-4>  (S);
+(U ^u) 	-5> 1(T);
+0 	-6> 0(T T);
+};
+
+(a ^a "Aa")0 	-1> (b ^b);
+(b ^b)1 	-2>  1(a ^a);
+EOF.lrR.sw
+
+cat << EOF.lr.sw | ./sw >/dev/null && echo ok 31 - lr.sw || echo not ok 31 -  lr.sw
+^w {
+0  	<12- (F f);
+(F f)1  <13-   (G g);
+(G g)1  <14-   (H  h);
+};
+
+
+^v {
+0       <11- (E ^w);
+};
+
+
+^u {
+0       <10-   (D ^v);
+};
+
+^a {
+(Y)     <7- 1;
+0 		<2-  (V v);
+(V)1    <8- 1(W w);
+(W)     <9-  (X);
+};
+
+^b {
+1 	<3-  (S s);
+(S)1	<4-  2(T);
+(T)1 	<5-  (U ^u);
+(T t)0  <6-  0;
+};
+
+
+(b ^b)	<1-  0(a ^a "Aa");
+(a ^a)1 <2-  1(b ^b);
+EOF.lr.sw
+
+cat << EOF.manycolor.sw | ./sw >/dev/null && echo ok 32 - manycolor.sw || echo not ok 32 -  manycolor.sw
+
+(C)2 -> 2(g);
+(_  a/a) -> (B1 b/a)ba.1 -1> (C c/a)1 -2> (B2 b/a)1->(p a/P);
+(g)1 -> (_ h/a);
+(k c/K) -> (_ j/a)1-int>(m M)1->(n N)1->(q q/Q);
+
+(E e/a) -> (F f/a)1 -> (g c/g);
+EOF.manycolor.sw
+
+cat << EOF.merge.sw | ./sw >/dev/null && echo ok 33 - merge.sw || echo not ok 33 -  merge.sw
+#!/usr/local/bin/swgraph
+
+
+# merge.sw: Streamwork Network Definition Example
+ 
+(P  Print1) 		<-     2(M   poc/Collate "--merge"); 
+(M)0	    		<- 	(G1  poc/Gen1 "6000000"  "0" "2" );
+(M)IN.1			<- 	(G2  poc/Gen1 "4000000"  "0" "3" );
+
+# End of merge/sw
+
+EOF.merge.sw
+
+cat << EOF.module.sw | ./sw >/dev/null && echo ok 34 - module.sw || echo not ok 34 -  module.sw
+# Test module format for v0.12....
+
+(a)1		    			   -Filter_t 2>  (d    {github.twyoung3/sw/lrR/def}.Prt);
+(c  {github.com/tyoung3/sw/mod2/a/d/e/f}.C)      <Sink_t- 1(d);
+(a  {github.com/tyoung3/sw/lrR/def}.F) 	            -7>  (b    {github.com/tyoung3/streamwork/poc}.Print1 );
 
 
 
+EOF.module.sw
 
-echo  1..1 # Number of tests to be executed.
+cat << EOF.mvc.sw | ./sw >/dev/null && echo ok 35 - mvc.sw || echo not ok 35 -  mvc.sw
+#!/usr/local/bin/swgraph
+
+# MVC.SW:  Streamwork Network Definition Example
+ 
+(m  mdl/Model)1  	-change>  	 (v vw/View);
+(c)2  		-update> 	1(v);
+(v)2		-event 1>  	 (c ctl/Control); 
+(c)1		-request 2>       (m);
+
+EOF.mvc.sw
+
+cat << EOF.n1.sw | ./sw >/dev/null && echo ok 36 - n1.sw || echo not ok 36 -  n1.sw
+^a {
+0	<1- 1(a A);
+(a) 	<2- (AA2);
+};
+
+^b {
+(BB2)	<3- 1(b B);
+(b) 	<4-  0;
+};
+(Y ^b)<-(X ^a);
+
+T;
+
+(E)-6>(F);
+EOF.n1.sw
+
+cat << EOF.n2.sw | ./sw >/dev/null && echo ok 37 - n2.sw || echo not ok 37 -  n2.sw
+^a {  
+   (A)	<2- 0 ;
+    7 	<1- 1(A CO1);
+};  
+
+^b {  
+    0	<5- 1(B CO2);
+   (B)	<6- 7 ;
+};  
+
+Y ^b;
+X ^a; 
+EOF.n2.sw
+
+cat << EOF.n3.sw | ./sw >/dev/null && echo ok 38 - n3.sw || echo not ok 38 -  n3.sw
+^a {  
+   (A)	<- IN ;
+};  
+
+^b {  
+    OUT	<- (B);
+};  
+
+^ab {
+X ^a; Y ^b; 
+};
+
+T ^ab;
+EOF.n3.sw
+
+cat << EOF.n5.sw | ./sw >/dev/null && echo ok 39 - n5.sw || echo not ok 39 -  n5.sw
+^u {
+(U3 U3)  <1- BP2;
+(U  U1)	 <3- BP3;
+(U  U1)1 <5- BP4;
+};
+
+^v {
+BP2   	<4- 0(V V1);
+BP3	<2-  (V2 V2);
+BP4	<6- 0(V3 V3);
+};
+
+x ^v;
+z ^u;
+
+(A A)	<7- 1(A);
+EOF.n5.sw
+
+cat << EOF.part2.sw | ./sw >/dev/null && echo ok 40 - part2.sw || echo not ok 40 -  part2.sw
+# PART2.sw: 
+#			A network with two partitions
+
+(A1 std/C1  )0 <- 0(B1  std/G1);
+(A2 std/C1  )0 <- 0(B2  std/G1);
+EOF.part2.sw
+
+cat << EOF.pass.sw | ./sw >/dev/null && echo ok 41 - pass.sw || echo not ok 41 -  pass.sw
+(A)->(B sw/Pass)1->(C);
+EOF.pass.sw
+
+cat << EOF.path.sw | ./sw >/dev/null && echo ok 42 - path.sw || echo not ok 42 -  path.sw
+#PAthAlogiCAl flows:
+(A A/B)1 <- 3(B C/D);
+(A A/B)0 <- 5(B C/D);
+(B C/D)0 <- 2(A A/B);
+(B C/D)1 <- 2(D A/B);
+(C A/B)0 <- 4(B C/D);
+(C A/B)1 <- 6(B C/D);
+(D A/B)0 <- 2(B C/D);
+(D A/B)1 <- 7(B C/D);
+#}
+EOF.path.sw
+
+./sw tests/postage.sw   && echo ok 43 - postage.sw || echo not ok 43 -  postage.sw
+
+
+cat << EOF.prefix.sw | ./sw >/dev/null && echo ok 44 - prefix.sw || echo not ok 44 -  prefix.sw
+PREFIX "pfx_"; 
+
+(A) -> (B);
+EOF.prefix.sw
+
+cat << EOF.sisub.sw | ./sw >/dev/null && echo ok 45 - sisub.sw || echo not ok 45 -  sisub.sw
+^w {
+0      <15-  1(F F);
+(F F)  <13-  1(G G);
+(G G)  <14-   (H  H);
+};
+
+
+^v {
+0       <11-   (E ^w);
+};
+
+
+^u {
+0       <12-   (D ^v);
+};
+
+^a {
+(Y) 	<1- 0;
+1 	<2-  1(V V);
+(V)     <10- 1(W W);
+(W)     <3-  (X);
+};
+
+^b {
+1	<4-  1(S S);
+(S)0	<9-  2(T);
+(T)1 	<5-  (U ^u);
+(T T)0  <6-  0;
+};
+
+(b ^b)	<1- 1(a ^a);
+(a ^a)  <2-  1(b ^b);
+
+
+
+##########################   The rest is commentary   #############################
+#(_b_T def/T )0 		<7- 0(_a_V def/V);  #S/B/
+#(_a_Y def/Print1 )0 		<7- 0(_a_V     );	
+#(_b_T       )2 		<15- 0(_b_U_D_E_F def/F);
+#(_b_T       )2 		<15- 0(_b_U_D_E_F );  #S/B/	
+
+{#
+(_a_V def/V )1 		<10- 1(_a_W def/W);	
+(_a_W def/W )0 		<3- 0(_a_X def/Gen1);	
+(_b_U_D_E_F def/F )1 		<13- 0(_b_U_D_E_G def/G);	
+(_b_U_D_E_G def/G )1 		<14- 0(_b_U_D_E_H def/H);	
+(_b_S def/S )0 		<9- 1(_b_T def/T);	
+(_b_T def/T )2 		<15- 0(_b_U_D_E_F def/F);	
+((null) '/a )1 		<8- 1(_b_S def/S);	
+(_a_Y def/Print1 )0 		<7- 0(_a_V def/V);	
+#}
+
+EOF.sisub.sw
+
+cat << EOF.sn2.sw | ./sw >/dev/null && echo ok 46 - sn2.sw || echo not ok 46 -  sn2.sw
+{#Subnets M and N
+
+#}
+
+^M { 
+0     	<- 0(B);
+1	<- 0(C);
+2	<- 1(C);
+};
+
+^N {     
+(A) 	<- 0;
+(A)1 	<- 1; 
+(A)2 	<- 2; 
+};
+
+(X ^N)0 <- 0(Y ^M);
+(X ^N)1 <- 1(Y ^M);
+(X ^N)2 <- 2(Y ^M);
+
+EOF.sn2.sw
+
+cat << EOF.split.sw | ./sw >/dev/null && echo ok 47 - split.sw || echo not ok 47 -  split.sw
+(a) -foo>  (b)1 -bar> (d)1 <- (a); 
+(a) ->     (c);
+EOF.split.sw
+
+cat << EOF.StreamWork.sw | ./sw >/dev/null && echo ok 48 - StreamWork.sw || echo not ok 48 -  StreamWork.sw
+(sw sw/editor)-NetworkDefinition>(SW)2-main_go>(GoFBP g/run);
+(SW)1-dot>(DOT d/dot2svg)1-svg>(View d/image);
+(SW sw/sw)-main_go>(GO g/run);
+
+EOF.StreamWork.sw
+
+cat << EOF.struct.sw | ./sw >/dev/null && echo ok 49 - struct.sw || echo not ok 49 -  struct.sw
+(D sw/Gen "arg1" "arg2")   =>      1(E sw/Pass)0   =>    (F sw/Print);
+(X)         =>          (Y);
+(U)         <=    (T);
+
+(P)         ->          (Q);
+
+(R)6->6(S);
+(R)5->5(S);
+(R)4-int>4(S);
+(R)3-int>3(S);
+(R)2-sw.IpT>2(S);
+(R)1-sw.IpT>1(S);
+(R)0-[100]int>0(S);
+EOF.struct.sw
+
+cat << EOF.subnet1.sw | ./sw >/dev/null && echo ok 50 - subnet1.sw || echo not ok 50 -  subnet1.sw
+{#Subnets M and N
+
+#}
+
+^M { 
+0      	 <5-	1(B);
+1	 <6-    0(S3);
+2 	 <7- 	0(S2);
+(B)0	 <8- 	0(S1);
+};
+ 
+
+^N {    
+(A1)0	 <9- 0;  
+(A1)1 	<10- 1;
+(e E)0 	<11- 2; 
+};
+
+(X ^N)0 <1- 0(Y ^M);
+(X ^N)1 <2- 1(Y ^M);
+(X ^N)2 <3- 2(Y ^M);
+
+(T) 	<4- (U);
+EOF.subnet1.sw
+
+cat << EOF.subnet2.sw | ./sw >/dev/null && echo ok 51 - subnet2.sw || echo not ok 51 -  subnet2.sw
+{#Subnets M and N
+	FAIL: SW/msg: Expand3A: Type Mismatch for (YS2) -type_K2>  and ((null)) -type_M>
+#}
+
+^M { 
+(B)0	 <type_J 8- 		0(S1);
+0      	 <5-		1(B);
+1	 <6-    	0(S3);
+2 	 <type_K2 7- 	0(S2);
+#(t)     <13-   	3;
+};
+ 
+
+^N {   
+(A1)0	<9- 		0;  
+(A1)1 	<10- 		1;
+(e E)0	<type_K3 11- 	2; 
+#3      <12-  		(u); 
+};
+
+(X ^N)0 <type_L 1- 0(Y ^M);
+(X ^N)1 <string 2- 1(Y ^M);
+(X ^N)2 <type_M 3- 2(Y ^M);
+
+(T) 	<4- (U);
+EOF.subnet2.sw
+
+cat << EOF.subnet3.sw | ./sw >/dev/null && echo ok 52 - subnet3.sw || echo not ok 52 -  subnet3.sw
+{#  SUBNET3.sw
+ FAIL: SW/msg: createStream: Type Mismatch for (Eb) -type_A>  and (Eb) -type_N2>
+#}
+  
+######################################################### 
+^M5 {
+Eb	<type_A 14-	0(B);
+Ea	<type_B 15-	0(A); 
+};
+#####################   N_   ############################ 
+^N1 {    
+(C)0	<type_N1 2- 	Ea;  
+(D)0 	<type_N2 3- 	Eb;
+};
+
+#################################iptype_save=iptype_save=########################
+(X5 ^N1)0	<type_D- 0(Y5 ^M5);
+(X5)1 		<type_C- 1(Y5);
+
+#################   The End   ###########################
+
+{#
+
+###################   M Subnets iptype_save= #######################
+^M0 { 
+B	<4-		0(B);
+A	<5- 		0(A);
+#########################################################
+};
+#########################################################
+^M1 { 
+B	<type_C 6-	0(B);
+A	<7- 		0(A);
+};
+#########################################################
+^M2 { 
+#########################################################
+B	<type_B 8-	0(B); 
+A	<type_C 9-	0(A);iptype_save=
+};
+#########################################################
+^M3 { 
+B	<type_A 10-	0(B);
+A	<type_B 11-	0(A);
+};
+#########################################################
+#########################################################
+^M4 {  
+B	<type_A 12-	0(B);
+A	<type_C 13 -	0(A);
+};
+
+#}
+{#
+##################   X and Y   ##########################
+(X1 ^N1)0	<type_N1- 0(Y1 ^M0);
+(X1)1 		<type_N2- 1(Y1);
+#########################################################
+(X2 ^N1)0	<-	 0(Y2 ^M1);
+(X2)1 		<type_C- 1(Y2);
+
+#########################################################
+#}
+EOF.subnet3.sw
+
+cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 53 - subnet4.sw || echo not ok 53 -  subnet4.sw
+# Recursive subnet -- experimental.  Causes segfault.
+
+
+^s2 {
+  0 -> (D);
+};
+
+^s {
+  0 -> a.0(C ^s2);      # Changing ^s to ^s2 works. 
+};
+
+(A Gen) -> a.0(B ^s);
+EOF.subnet4.sw
+
+cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 54 - subnet5.sw || echo not ok 54 -  subnet5.sw
+# Buggy
+
+^j {
+(J x)IN.0 	<1- 	0;
+AOUT    	<2- OUT.1(J);
+};
+
+(A ^j)IN.0	<4-   OUT.0(Y);
+(C c)CIN.0  <8-  AOUT.1(A);
+
+
+(A2 ^j)IN.0	<4-   OUT.0(Y2);
+(C2 c)CIN.0  <8-  AOUT.1(A2);
+EOF.subnet5.sw
+
+cat << EOF.subnetn.sw | ./sw >/dev/null && echo ok 55 - subnetn.sw || echo not ok 55 -  subnetn.sw
+# Recursive subnet -- experimental.  Causes segfault.
+
+
+
+^s3 {
+  0 -> (E);
+  (C3)->(Level3);
+};
+
+^s2 {
+  0 -> (D ^s3);
+  (C2)->(Level2);
+};
+
+^s1 {
+  0 -> a.0(S2 ^s2);  
+  (C1)->(Level1);    
+};
+
+(A Gen) -> a.0(B ^s1);
+EOF.subnetn.sw
+
+cat << EOF.sw.sw | ./sw >/dev/null && echo ok 56 - sw.sw || echo not ok 56 -  sw.sw
+(SWL Net)0->(Streamwork Run);
+(SWL Net)1->(Graphic Image);
+EOF.sw.sw
+
+cat << EOF.tag.sw | ./sw >/dev/null && echo ok 57 - tag.sw || echo not ok 57 -  tag.sw
+^a {
+(Hello Print1)0 <- 0;
+};
+
+^b {
+0     <- (_);
+};
+
+(_ ^a)0 <- 0(World ^b);
+EOF.tag.sw
+
+cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 58 - tooltip.sw || echo not ok 58 -  tooltip.sw
+
+^top {
+(IP [fillcolor="orange", tooltip="tip", fontcolor="red", 
+  URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"]) -> (OP [tooltip="top", fillcolor="green", fontcolor="violet",color="green", URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"] );
+};
+
+T ^top;
+EOF.tooltip.sw
+
+cat << EOF.var.sw | ./sw >/dev/null && echo ok 59 - var.sw || echo not ok 59 -  var.sw
+#$AA="AA)(\n"; 
+&BBB = BBB;
+
+(&BBB) <- (y Y $AA);
+EOF.var.sw
+
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 60 - FAILOK/ac.sw || echo ok 60 - FAILOK/ac.sw
+{#
+      AE1.sw
+      
+      This file contains only syntax errors.
+      I.e. every statement will fail to parse successfully.
+#}
+
+(X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b/c "abc" FailOKHere); 
+(X b/c)2 <- "ab"; 
+"File" <- 0(X b/c); 
+(X in/b/c)2 <- 3(D); 
+(E Comp_bc@2)2 <- 8(D);
+(3)2 <- 8(D);
+(F 8)2 <- 8(D);
+(A strings.Print1)0 <- a(B strings/Gen1); 
+(F)2 <- 7(D) <- 8(E);
+(A strings/Print1)0 <- a(B strings/Gen1); 
+(E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
+(C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
+FAIL.ac.sw
+
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 61 - FAILOK/e3.sw || echo ok 61 - FAILOK/e3.sw
+# Missmatched port names:  
+
+(F A)MATCH  <- MISS(G b);
+FAIL.e3.sw
+
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 62 - FAILOK/e4.sw || echo ok 62 - FAILOK/e4.sw
+# Missmatched port 
+
+(H A)0  <- 0(I b);
+(H)1  <- 1(I);
+(H)2.BAR  <- 2.FOO(I);
+(H)3  <- 3(I);
+FAIL.e4.sw
+
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 63 - FAILOK/e5.sw || echo ok 63 - FAILOK/e5.sw
+# (K) port error
+
+(K)   <-  OUT(J);
+(J)IN <-  (K);
+FAIL.e5.sw
+
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 64 - FAILOK/fail_include.sw || echo ok 64 - FAILOK/fail_include.sw
+INCLUDE "fail_include.sw";
+FAIL.fail_include.sw
+
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 65 - FAILOK/inc.sw || echo ok 65 - FAILOK/inc.sw
+#include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
+
+INCLUDE "inc.isw"; 
+
+(X ^N)0 <- 0(Y ^M);
+(X ^N)1 <- 1(Y ^M);
+(X ^N)2 <- 2(Y ^M);
+
+#include "../model/tests/inc3.isw"; 
+
+FAIL.inc.sw
+
+cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 66 - FAILOK/recurse.sw || echo ok 66 - FAILOK/recurse.sw
+{# RECURSE.sw 
+ 
+
+#}
+
+
+^S { 
+(C)->(D);
+};
+
+^R {
+(A ^R) -> (B ^S);
+};
+
+(E ^R) -> (F f);
+FAIL.recurse.sw
+
+cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 67 - FAILOK/tee.sw || echo ok 67 - FAILOK/tee.sw
+#!/usr/local/bin/swgraph
+
+# TEE.SW: derived from swedit.sw adding tee function to record trafic.
+
+# SWEDIT is a visual editor for StreamWork networks.
+
+# https://github.com/zserge/lorca
+# https://github.com/zserge/webview
+
+{#
+Scenario_2: 
+    . Record View inputs for later playback 
+Scenario_3: 
+    . Record View outputs for later testing
+#}
+
+$E="swedit";
+$base="swedit";
+
+^tee {
+(T $E/Tee)1 -> OUT;
+IN -> 0(T); 
+};
+
+(M ^model)1.Change -> IN(T ^tee)OUT -> Change(V ^view);
+
+^model {
+(M $E/Model)1 -> Change;
+Request -> 0(M);
+(_ $base/Getfile) -Swl> 2(M);
+(M)3 -Swl> (_ $base/Putfile);
+};
+
+
+^view {
+(V $E/View)2 -> Event;
+Change -> 0(V);
+Update -> 1(V);
+};
+
+
+^control {
+(C $E/Control)2 -> Update;
+Event -> 0(C);
+(C)1 -> Request;
+};
+
+_ ^model;
+_ ^view; 
+_ ^control;
+FAIL.tee.sw
+echo  1..67 # Number of tests to be executed.
