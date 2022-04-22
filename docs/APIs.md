@@ -19,7 +19,7 @@ simplify and tailor the functional API rules into a more standard API informatio
 
 Functional APIs, particulary web-based APIs with their inherent delays, would benefit immediately from FBP's inherent concurrency.    
 
-## API Refenences
+## API References
 
   * [API2Cart](htps://api2cart.com/business/6-difficulties-api-integration-way-avoid/)
   * [How developers use](http://sigdoc.acm.org/cdq/how-developers-use-api-documentation-an-observation-study/)
