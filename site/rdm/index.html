@@ -262,7 +262,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="streamwork-sw-0271">STREAMWORK -- SW-0.27.1</h1>
+                <h1 id="streamwork-sw-0280">STREAMWORK -- SW-0.28.0</h1>
 <p>Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com </p>
 <p>Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
@@ -367,7 +367,7 @@ The network definition is a compact text-based representation of a data flow dia
 <p>StreamWork is concerned primarily with Go language FBP programs,
 however, the network definition described here is language agnostic.  It is quite possible 
 to generate corresponding code in other languages from a StreamWork ND.         </p>
-<p>The script, <strong><em>swgo</em></strong>, reads and executes an ND employing <strong><em>sw</em></strong> to properly launch and connect the processes.  By default, <strong><em>sw</em></strong> generates 
+<p>The script, <strong><em>swgo</em></strong>, reads and executes a network definition employing <strong><em>sw</em></strong> to properly launch and connect the processes.  By default, <strong><em>sw</em></strong> generates 
 and builds a single main Go program which:<br />
   * imports sw compatible component package(s) as specified in the network definition,<br />
   * launches a goroutine for each process,<br />
@@ -476,10 +476,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
 <h3 id="installation">Installation<a name="installation"/></h3>
 <ul>
 <li>cd to any convenient workspace (/usr/local/src for example).</li>
-<li>Download the latest sw-0.27.1.tar.gz file 
+<li>Download the latest sw-0.28.0.tar.gz file 
       from https://github.com/tyoung3/sw/build</li>
-<li>Run 'tar -xzf .../sw-0.27.1.tar.gz' to extract source files</li>
-<li>cd  sw-0.27.1</li>
+<li>Run 'tar -xzf .../sw-0.28.0.tar.gz' to extract source files</li>
+<li>cd  sw-0.28.0</li>
 <li>Run ./configure &amp;&amp; make check</li>
 <li>Run sudo make install.<br />
 <strong><em>sw</em></strong> and associated scripts will be installed in /usr/local/bin</li>
@@ -806,7 +806,7 @@ break existing networks.</p>
 </ul>
 <h3 id="0210">0.21.0</h3>
 <ul>
-<li>Can generate projects with or without YAML configuration. </li>
+<li>Can generate projects with or without YAML configurationswpro. </li>
 <li>Fixes to Wrap function.  </li>
 </ul>
 <h3 id="0211">0.21.1</h3>
@@ -828,7 +828,7 @@ break existing networks.</p>
 <ul>
 <li>Introduced mkdocs</li>
 <li>Attempt to fix go.in yaml  Dependabot alert</li>
-<li>Fix build error in swgraph.c</li>
+<li>Fix build error in swgraph.cswpro</li>
 </ul>
 <h3 id="0268">0.26.8</h3>
 <ul>
