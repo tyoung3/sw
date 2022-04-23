@@ -47,7 +47,7 @@ variables,  in-stream commands, ordinary IPs, and signals.
 
 StreamWork does not distinguish between IIPs (initialization information 
 packets) and ordinary IPs and therefore does not require any special 
-processin or notation for IIPs within the network definition language.    
+processing or notation for IIPs within the network definition language.    
 
 ## [FBP tenets https://jpaulm.github.io/fbp](https://jpaulm.github.io/fbp)
 

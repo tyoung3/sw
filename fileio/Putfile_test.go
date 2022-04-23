@@ -12,15 +12,12 @@ import "sync"
 // import swe "github.com/tyoung3/swedit"
 
 func TestSkel_Putfile(t *testing.T) {
-	var cs []chan interface{}
 	var wg sync.WaitGroup
 
 	arg := []string{"Test_Putfile"}
 
 	fmt.Println("\u001b[32m", arg[0], "\u001b[0m")
-	for i := 0; i < 0+1; i++ {
-		cs = append(cs, make(chan interface{}))
-	}
+  ch0 := make(chan interface{})
 
 	wg.Add(2)
 	go func() {
@@ -28,21 +25,21 @@ func TestSkel_Putfile(t *testing.T) {
 		var l FileT
 		l.L = -1
 		l.S = "/tmp/Putfile.txt"
-		cs[0] <- l
+		ch0 <- l
 		i := 1
 		for i < 5 {
 			l.L = i
 			l.S = "PF_"
-			cs[0] <- l
+			ch0 <- l
 			i++
 		}
 		l.L = -2
-		cs[0] <- l
+		ch0 <- l
 		return
 	}()
 
-	go Putfile(&wg, arg, cs)
+	go Putfile(&wg, arg, ch0)
 	wg.Wait()
-	close(cs[0])
+	close(ch0)
 	fmt.Println("\u001b[32mTest_Putfile Ended\u001b[0m")
 }

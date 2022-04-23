@@ -7,8 +7,6 @@ package fileio
 */
 
 import (
-	//"fmt"
-	// swe "github.com/tyoung3/swedit"
 	"sync"
 )
 
@@ -26,7 +24,7 @@ func sendSwl(ci chan interface{}, id string, line int) {
 }
 
 // Getfile is @todo undocumented
-func Getfile(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
+func Getfile(wg *sync.WaitGroup, arg []string, ch0 chan interface{}) {
 
 	defer wg.Done()
 	// cfg := swe.PkgConfig()
@@ -38,6 +36,6 @@ func Getfile(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(0)
 
-	sendSwl(cs[0], "SWL from Getfile", 1)
+	sendSwl(ch0, "SWL from Getfile", 1)
 	wg2.Wait()
 }
