@@ -392,6 +392,37 @@ makeTestChannels() {
 	
 }
 
+forEachInput() {			  
+                        # For each input port, receive one ip.
+         if [ $no -gt  0 ]; then
+                no=$(($no-1))
+                po=$(($no+$ni))
+                cat << EOFZ >> ${name}_test.go  
+ 
+                j := $po
+                $for j >= $ni $lb
+                        ip, ok := <- ${tchannelMap[j]}
+                        if ok != true {
+                                break
+                        }
+                        fmt.Println("chan:",j,"IP:",ip);
+                j--
+            $rb   
+              
+EOFZ
+         fi
+}  
+   
+forEachOutput() {      
+     if [ $ni -gt 0 ];  then
+        ni=$(($ni-1))
+                GenTestOutP
+     fi
+                    #    wg.Done()
+                    #    return
+       # }() 
+}
+
 GenTestGo() {   
          ni=$1
          no=$2
@@ -419,48 +450,18 @@ EOFY
         
  				makeTestChannels;  
  				
-         cat << EOFY >> ${name}_test.go
-        
-        go func() { 
-EOFY
-
-                        # For each input port, receive one ip.
-         if [ $no -gt  0 ]; then
-                no=$(($no-1))
-                po=$(($no+$ni))
-                cat << EOFZ >> ${name}_test.go  
- 
-                j := $po
-                $for j >= $ni $lb
-                        ip, ok := <- ${tchannelMap[j]}
-                        if ok != true {
-                                break
-                        }
-                        fmt.Println("chan:",j,"IP:",ip);
-                j--
-            $rb   
-              
-EOFZ
-         fi
-     
-     
-     if [ $ni -gt 0 ];  then
-        ni=$(($ni-1))
-                GenTestOutP
-         fi
+			 # forEachInput ?? remove
+       # forEachOutput ?? remove
          
-         cat << EOFY >> ${name}_test.go
-                        wg.Done()
-                        return
-        }() 
+     cat << EOFY >> ${name}_test.go
         
         go $name(&wg, arg $channels)
         wg.Wait() 
         
         fmt.Println("Test_${name} Ended")
-}             
+  }             
 EOFY
-        go fmt ${name}_test.go
+       go fmt ${name}_test.go
 }
 
 GenYamlGo() {
