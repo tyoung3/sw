@@ -164,11 +164,25 @@ makeCtype() {
    
 makeSlice() {
 		Debug makeSlice $dn $ncs
+		si=0;  #Slice index
 		chnlTypes="$chnlTypes, _cs$ncs []chan $ctype"	
-	  channelMap[$dn]="_cs$ncs[$dn]"
-	  channelMap[$((dn+1))]="_cs$ncs[$((dn+1))]"
+	  channelMap[$dn]="_cs$ncs[0]"
+	  tlast=${types[$dn]}
+	  dn=$(($dn+1)) 
+	  rem=$((nt-dn))
+	  t1=${types[$dn]}
+	  		
+	  Debug MS: rem=$rem t1=$t1	 tlast=$tlast	
+	  while [ $rem -gt 0 ] && [ "$t1" == "$tlast" ]; do
+	  		si=$((si+1))
+	  		channelMap[$dn]="_cs$ncs[$si]"
+	  		dn=$(($dn+1))
+	  	  t1=${types[$dn]}
+	  		rem=$((nt-dn))
+	  done
+	  
 	  ncs=$((ncs+1))	
-	  dn=$((dn+2))
+	  Debug makeSlice end,  dn=$dn  
 }   
 
 makeChnlTypes() {   
@@ -191,7 +205,7 @@ makeChnlTypes() {
 	    	t2="${types[$nexttypen]}"
 	    	Debug rem=$rem $t1/$t2  dn=$dn
 	    	makeCtype "${types[$dn]}"
-	    	if  [ $rem -gt 2 ] && [ "$t1" == "$t2" ]  ; then
+	    	if  [ $rem -gt 1 ] && [ "$t1" == "$t2" ]  ; then
 	    				 makeSlice
 	    	else 
 	    		chnlTypes="$chnlTypes, _ch$dn $chan $ctype"
@@ -204,7 +218,7 @@ makeChnlTypes() {
 
 makeRecvFunc() {
 	 	 		 		cat <<- EOF >> $name.go
-	 	 		 		// Receive and prints _ct$ct IPs
+	 	 		 
 	 	 		 		go func() {
 	 	 		 		defer _wg2.Done()
 	 	 		 		for {
@@ -222,14 +236,14 @@ EOF
 makeSendFunc() {
 	 					makeCtype $typ
 	 	 		 		cat <<- EOF >> $name.go
-// Send two WeighT IP(s)
+ 
 	go func() {
-	 	defer close(_ch$ct)
+	 	defer close(${channelMap[$ct]})
 	 	defer _wg2.Done()
 	  ip  :=  $iptype{arg[0],"$ctype",271828}
- 		_ch$ct   <- ip 
+ 		${channelMap[$ct]}   <- ip 
 	  ip   =  $iptype{arg[0],"pi",314159}
- 		_ch$ct   <- ip 
+ 		${channelMap[$ct]}   <- ip 
 	}()
 	 	 		 		  
 EOF
@@ -349,16 +363,28 @@ makeGoFuncs() {
 }
 
 makeTestSlice() {	    
-	  	Debug ncn=$ncn ncs=$ncs
-		  echo "ch$((cn+1)) := make(chan $ctype)" >> ${name}_test.go
+	  	Debug makeTestSlice: ncn=$ncn ncs=$ncs
+	  	si=0
 	  	echo "var cs$ncs []chan $ctype" >> ${name}_test.go
 	  	echo "cs$ncs=append(cs$ncs,ch$cn)" >> ${name}_test.go
-	  	echo "cs$ncs=append(cs$ncs,ch$((cn+1)))" >> ${name}_test.go
+	  	tchannelMap[$cn]="cs$ncs[0]"
 	  	channels="$channels, cs$ncs "
-	  	tchannelMap[$cn]="cs$ncs[$si]"
-	  	si=$((si+1)) 
-	  	tchannelMap[$((cn+1))]="cs$ncs[$si]" 
-	    cn=$(($cn+2))
+	  	lastType=${types[$cn]}
+	  			cn=$(($cn+1))
+	  		  t1=${types[$cn]}
+	  		  rem=$((ncn-cn))
+	  	
+	  	while [ $rem -gt 0 ] && [ $t1 == $lastType  ]; do  
+	  	    Debug MTS: cn=$cn t1=$t1 LT=$lastType 
+		  		echo "ch$cn := make(chan $ctype)"  >> ${name}_test.go
+	  		  echo "cs$ncs=append(cs$ncs,ch$cn)" >> ${name}_test.go
+	  		  si=$((si+1))
+	  		  tchannelMap[$cn]="cs$ncs[$si]"
+	  			cn=$(($cn+1))
+	  		  t1=${types[$cn]}
+	  		  rem=$((ncn-cn))
+	    done;
+	    
 	    ncs=$(($ncs+1))
 }	    
 
