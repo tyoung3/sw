@@ -57,14 +57,14 @@ EOF
 GenOutP1() {
 	Debug GenOutP1
 	cat <<- EOF >> "${name}.go" 
-	$routine ${pfx}Send(cs[$outp], &_wg2)
+	$routine ${pfx}Send(${tchannelMap[[$outp]]}, &_wg2)
 EOF
 
 }
 
 GenInP1() {
 	cat <<- EOF >> "${name}".go 
-	$routine ${pfx}Recv(cs[$inp], &_wg2, arg, $inp)
+	$routine ${pfx}Recv(${tchannelMap[$inp]}, &_wg2, arg, $inp)
 EOF
 
 }
@@ -85,8 +85,8 @@ EOFX
                 i := $po-1
                 
                 $for i >= $inp $lb
-                        cs[i] <- "$msg" 
-                        close(cs[i])
+                        ${tchannelMap[i]} <- "$msg" 
+                        close(${tchannelMap[i]})
                         i--
                 $rb
 
@@ -162,32 +162,67 @@ makeCtype() {
 	fi
 }
    
+makeSlice() {
+		Debug makeSlice $dn $ncs
+		si=0;  #Slice index
+		chnlTypes="$chnlTypes, _cs$ncs []chan $ctype"	
+	  channelMap[$dn]="_cs$ncs[0]"
+	  tlast=${types[$dn]}
+	  dn=$(($dn+1)) 
+	  rem=$((nt-dn))
+	  t1=${types[$dn]}
+	  		
+	  Debug MS: rem=$rem t1=$t1	 tlast=$tlast	
+	  while [ $rem -gt 0 ] && [ "$t1" == "$tlast" ]; do
+	  		si=$((si+1))
+	  		channelMap[$dn]="_cs$ncs[$si]"
+	  		dn=$(($dn+1))
+	  	  t1=${types[$dn]}
+	  		rem=$((nt-dn))
+	  done
+	  
+	  ncs=$((ncs+1))	
+	  Debug makeSlice end,  dn=$dn  
+}   
+
 makeChnlTypes() {   
-    Debug makeChanlTypes types = ${types[*]} directs = ${directs[*]}
+    Debug makeChanlTypes types = "${types[*]}" directs = "${directs[*]}"
     chnlTypes=""
     dn=0
+    ncs=0
+    
     
     nt=${#types[*]} ; # Number of array elements
     
     while [ $dn -lt $nt ]; do
     		chan="chan<-"
-    	  if [ ${directs[$dn]} == "I" ]; then 
+    	  if [ "${directs[$dn]}" == "I" ]; then 
     	  		chan="<-chan"
 	    	fi
+	    	rem=$((nt-dn))
+	    	nexttypen=$((dn+1))
+	    	t1="${types[$dn]}"
+	    	t2="${types[$nexttypen]}"
+	    	Debug rem=$rem $t1/$t2  dn=$dn
 	    	makeCtype "${types[$dn]}"
-	    	chnlTypes="$chnlTypes, _ch$dn $chan $ctype"
-	    	dn=$(($dn+1))
+	    	if  [ $rem -gt 1 ] && [ "$t1" == "$t2" ]  ; then
+	    				 makeSlice
+	    	else 
+	    		chnlTypes="$chnlTypes, _ch$dn $chan $ctype"
+	    		channelMap[$dn]="_ch$dn"
+	    		dn=$((dn+1))
+	      fi		
     done
 	    	
 } 
 
 makeRecvFunc() {
 	 	 		 		cat <<- EOF >> $name.go
-	 	 		 		// Receive and prints _ct$ct IPs
+	 	 		 
 	 	 		 		go func() {
 	 	 		 		defer _wg2.Done()
 	 	 		 		for {
-	 	 		 			ip, ok := <- _ch$ct
+	 	 		 			ip, ok := <- ${channelMap[$ct]}
 	 	 		 			if ok != true {
 	 	 		 			return 
 	 	 		 		}		   
@@ -201,14 +236,14 @@ EOF
 makeSendFunc() {
 	 					makeCtype $typ
 	 	 		 		cat <<- EOF >> $name.go
-// Send two WeighT IP(s)
+ 
 	go func() {
-	 	defer close(_ch$ct)
+	 	defer close(${channelMap[$ct]})
 	 	defer _wg2.Done()
 	  ip  :=  $iptype{arg[0],"$ctype",271828}
- 		_ch$ct   <- ip 
+ 		${channelMap[$ct]}   <- ip 
 	  ip   =  $iptype{arg[0],"pi",314159}
- 		_ch$ct   <- ip 
+ 		${channelMap[$ct]}   <- ip 
 	}()
 	 	 		 		  
 EOF
@@ -275,8 +310,8 @@ GenTestOutP() {
                 
                 i := $ni
                 $for i >= 0 $lb
-                        cs[i] <- i
-                        close(cs[i])
+                        ${tchannelMap[i]} <- i
+                        close(${tchannelMap[i]})
                         i--
                 $rb
 EOFX
@@ -287,9 +322,9 @@ makeSend() {
 		  
 		  go func() {                 
           defer wg.Done()              
-          defer close(cs$cn)
+          defer close(${tchannelMap[$cn]})
           ip := ${iptype}{"${name}_test", "$ct", 711}   
-          cs$cn <- ip
+          ${tchannelMap[$cn]} <- ip
       }()
 
 EOF
@@ -301,15 +336,13 @@ makeRecv() {
 		  go func() {                  
 		    defer wg.Done()
 		    for {
-		     	ip, ok := <- cs$cn
+		     	ip, ok := <- ${tchannelMap[$cn]}
 		    	if ok != true {
 		    	 	return
 		    	}
 		      fmt.Println("${name}_test", "received:", ip)
 		    }	
 		  }()
-EOF
-
 EOF
 }
 
@@ -329,22 +362,91 @@ makeGoFuncs() {
   done
 }
 
+makeTestSlice() {	    
+	  	Debug makeTestSlice: ncn=$ncn ncs=$ncs
+	  	si=0
+	  	echo "var cs$ncs []chan $ctype" >> ${name}_test.go
+	  	echo "cs$ncs=append(cs$ncs,ch$cn)" >> ${name}_test.go
+	  	tchannelMap[$cn]="cs$ncs[0]"
+	  	channels="$channels, cs$ncs "
+	  	lastType=${types[$cn]}
+	  			cn=$(($cn+1))
+	  		  t1=${types[$cn]}
+	  		  rem=$((ncn-cn))
+	  	
+	  	while [ $rem -gt 0 ] && [ $t1 == $lastType  ]; do  
+	  	    Debug MTS: cn=$cn t1=$t1 LT=$lastType 
+		  		echo "ch$cn := make(chan $ctype)"  >> ${name}_test.go
+	  		  echo "cs$ncs=append(cs$ncs,ch$cn)" >> ${name}_test.go
+	  		  si=$((si+1))
+	  		  tchannelMap[$cn]="cs$ncs[$si]"
+	  			cn=$(($cn+1))
+	  		  t1=${types[$cn]}
+	  		  rem=$((ncn-cn))
+	    done;
+	    
+	    ncs=$(($ncs+1))
+}	    
+
 # Create list of  channels in $channels 
 makeTestChannels() {
-	
+	Debug makeTestChannels
 	echo "" >> ${name}_test.go
 	channels=""
-	cn=0
-	for ct in ${types[*]}; do
+	cn=0;		  # Current channel number
+	ntcs=0;   # Number of slices
+	ncn=${#types[*]}; # Number of channels equals Number of types in cmd
+	ncs=0;		# Current slice number
+	while [ $cn -lt $ncn ]; do
+		ct=${types[$cn]}
 	  makeCtype $ct
-		channels="$channels, cs$cn "
-		echo "cs$cn := make(chan $ctype)" >> ${name}_test.go
-	  cn=$(($cn+1))
+	  t1=${types[$cn]}
+	  t2=${types[$((cn+1))]}
+		echo "ch$cn := make(chan $ctype)" >> ${name}_test.go
+    si=0;			# Slice index
+	  if [ $((ncn - cn)) -gt 1 ] && [ $t1 == $t2 ]; then
+	    makeTestSlice
+	  else
+			channels="$channels, ch$cn "
+			tchannelMap[$cn]="ch$cn" 
+	    cn=$(($cn+1))
+	  fi		
 	done 
 	
   echo "wg.Add($(($nports+1)) )" >>  ${name}_test.go
 	makeGoFuncs  
 	
+}
+
+forEachInput() {			  
+                        # For each input port, receive one ip.
+         if [ $no -gt  0 ]; then
+                no=$(($no-1))
+                po=$(($no+$ni))
+                cat << EOFZ >> ${name}_test.go  
+ 
+                j := $po
+                $for j >= $ni $lb
+                        ip, ok := <- ${tchannelMap[j]}
+                        if ok != true {
+                                break
+                        }
+                        fmt.Println("chan:",j,"IP:",ip);
+                j--
+            $rb   
+              
+EOFZ
+         fi
+}  
+   
+forEachOutput() {      
+     if [ $ni -gt 0 ];  then
+        ni=$(($ni-1))
+                GenTestOutP
+     fi
+                    #    wg.Done()
+                    #    return
+       # }() 
 }
 
 GenTestGo() {   
@@ -363,7 +465,6 @@ import "fmt"
 import "sync"
 
 func TestSkel_${name}(t *testing.T) {
-        var cs  []chan interface{}
         var wg  sync.WaitGroup
         
         arg := []string{"${name}"}
@@ -372,58 +473,21 @@ func TestSkel_${name}(t *testing.T) {
 EOFY
    
     nports=$(($no + $ni))
-    if [ $nports -gt 0 ]; then      
-                cat << EOFY >> ${name}_test.go  
-                $for i :=0; i < $no + $ni; i++ $lb
-                        cs = append(cs,make(chan interface{}))
-                $rb
-EOFY
-        fi
         
  				makeTestChannels;  
  				
-         cat << EOFY >> ${name}_test.go
-        
-        go func() { 
-EOFY
-
-                        # For each input port, receive one ip.
-         if [ $no -gt  0 ]; then
-                no=$(($no-1))
-                po=$(($no+$ni))
-                cat << EOFZ >> ${name}_test.go  
- 
-                j := $po
-                $for j >= $ni $lb
-                        ip, ok := <- cs[j]
-                        if ok != true {
-                                break
-                        }
-                        fmt.Println("chan:",j,"IP:",ip);
-                j--
-            $rb   
-              
-EOFZ
-         fi
-     
-     
-     if [ $ni -gt 0 ];  then
-        ni=$(($ni-1))
-                GenTestOutP
-         fi
+			 # forEachInput ?? remove
+       # forEachOutput ?? remove
          
-         cat << EOFY >> ${name}_test.go
-                        wg.Done()
-                        return
-        }() 
+     cat << EOFY >> ${name}_test.go
         
         go $name(&wg, arg $channels)
         wg.Wait() 
         
         fmt.Println("Test_${name} Ended")
-}             
+  }             
 EOFY
-        go fmt ${name}_test.go
+       go fmt ${name}_test.go
 }
 
 GenYamlGo() {

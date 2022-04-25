@@ -175,81 +175,52 @@ Build and run the executable. </p>
 <p>Change sw.cfg to fit your environment. 
 Run sw.sh c go build and make sw (if necessary).</p>
 <h2 id="example">Example</h2>
-<p>sw.sh p project/test/X Y Z</p>
+<p>swproject -yaml YAML  -cfg ./src/nds/postage.cfg ./src/model/tests/postage.sw</p>
 <h3 id="output">OUTPUT:</h3>
-<p>Generated module at $GOPATH/mod with packages and 
-component stubs for all components referenced in the network definition file(X.SW file).</p>
-<pre><code>X
-│   ├── sw.tmpl
-│   ├── X
-│   ├── X.go
-│   └── X.sw
-├── X.yaml
-├── Y
-│   ├── Comp1.go
-│   ├── Comp1_test.go
-│   ├── Comp2.go
-│   ├── Comp2_test.go
-│   ├── Comp3.go
-│   └── Comp3_test.go
-└── Z
-    ├── Comp1.go
-    ├── Comp1_test.go
-    ├── Comp2.go
-    ├── Comp2_test.go
-    ├── Comp3.go
-    └── Comp3_test.go
-
-</code></pre>
-<p>Executable program at X/X (package main) </p>
-<h4 id="executable-output">EXECUTABLE OUTPUT:</h4>
-<pre><code>Module:X Pkg:Z Running C - Comp3 v0.0.0 bs = 1 seqno:  1234 
-Module:X Pkg:Y Running A - Comp1 v0.0.0 bs = 1 seqno:  1234 
-C chan: 1 IP: 38
-Module:X Pkg:Z Running B - Comp2 v0.0.0 bs = 1 seqno:  1234 
-B chan: 0 IP: 37
-C chan: 0 IP: 1
-
-</code></pre>
-<h2 id="environment-variables">Environment Variables</h2>
-<p>DEBUG   y)issue yellow debug messages 
-    n) No debug messages.</p>
-<h3 id="add-a-componentpackage-to-a-module">Add a component/package to a module:</h3>
-<p>swgen.sh  gs MODULE PACKAGE CONFIG_TYPE INPORTS OUTPORTS COMPNAME [ARG VAL]...</p>
-<p>Ex.
-   swgen.sh gs X pkg_a YAML 2 3 a_Comp4 arg1 var1 </p>
-<pre><code>Output: 
-
-X
+<p>Generated module at /usr/local/src/ with packages and 
+component stubs for all components referenced in the network definition file(postage.sw file).</p>
+<pre><code>postage
+├── ComputePostage.go
+├── ComputePostage_test.go
 ├── config.go
+├── GetLoc.go
+├── GetLoc_test.go
+├── GetWeight.go
+├── GetWeight_test.go
 ├── go.mod
 ├── go.sum
 ├── internal
-│   ├── sw.cfg
-│   ├── sw.tmpl
-│   ├── X
-│   ├── X.go
-│   └── X.sw
-├── pkg_a
-│   ├── a_Comp4.go
-│   └── a_Comp4_test.go
-├── X.yaml
-├── Y
-│   ├── Comp1.go
-│   ├── Comp1_test.go
-│   ├── Comp2.go
-│   ├── Comp2_test.go
-│   ├── Comp3.go
-│   └── Comp3_test.go
-└── Z
-    ├── Comp1.go
-    ├── Comp1_test.go
-    ├── Comp2.go
-    ├── Comp2_test.go
-    ├── Comp3.go
-    └── Comp3_test.go
+│   ├── gen.sh
+│   ├── postage.go
+│   ├── postage.sw
+│   └── sw.cfg
+├── ipT.go
+├── PostageT.go
+├── postage.yaml
+├── PrintLabel.go
+├── PrintLabel_test.go
+├── Rates.go
+├── Rates_test.go
+├── RateT.go
+└── WeighT.go
+
+1 directory, 22 files
+
 </code></pre>
-<p>4 directories, 23 files</p>
+<p>Executable program: .../postage/internal/postage.go (package main) </p>
+<h4 id="executable-output">EXECUTABLE OUTPUT:</h4>
+<pre><code>BUGGY: Work in progress
+</code></pre>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>DEBUG   y)issue yellow debug messages 
+                n)No debug messages.</p>
+<h3 id="add-a-componentpackage-to-a-module">Add a component/package to a module:</h3>
+<p>swgen.sh  gs MODULE PACKAGE CONFIG_TYPE  COMPNAME [ARG VAL]... [PORT..]
+    PORT =  -i OR -O  TYPE
+  TYPE = valid Golang type or underscore(_). 
+  Underscore is short for interface{}</p>
+<p>Ex.
+   swgen.sh gs postage postage YAML ComputePostage -i _ -i _ -i WeighT -i RateT -o PostageT</p>
               
             </div>
           </div>

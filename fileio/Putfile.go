@@ -64,7 +64,7 @@ func getSwl(ci chan interface{}, wg2 *sync.WaitGroup, arg []string, nport int) {
 }
 
 // Putfile is @todo undocumented
-func Putfile(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
+func Putfile(wg *sync.WaitGroup, arg []string, ch0 chan interface{}) {
 
 	defer wg.Done()
 	//cfg := swe.PkgConfig()
@@ -76,6 +76,6 @@ func Putfile(wg *sync.WaitGroup, arg []string, cs []chan interface{}) {
 	var wg2 sync.WaitGroup
 	wg2.Add(1)
 
-	getSwl(cs[0], &wg2, arg, 0)
+	getSwl(ch0, &wg2, arg, 0)
 	wg2.Wait()
 }

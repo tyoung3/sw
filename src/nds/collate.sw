@@ -4,7 +4,7 @@
 
 # WARNING: Merge sends output on channel 0(Zero) contrary to convention(channel 1). 
 
-$tip = "You can specify your own attributes plus color, tooltip and other dot attributes.";  
+$tip = "sw.Print/Match0: You can specify your own attributes plus color, tooltip and other dot attributes.";  
 
 (C sw/swutility/Collate [size="large", fill="lightgreen"]) 
      <1-  (G0  Gen "12" "1" "2" );  

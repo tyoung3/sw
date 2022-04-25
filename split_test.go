@@ -18,13 +18,19 @@ func TestSplit2(t *testing.T) {
 	for i := 0; i < 4; i++ {
 		cs = append(cs, make(chan interface{}, 1024))
 	}
-
-	// wg1.Add(1)
-	go Launch(&wg1, []string{"S"}, Split, cs[0:4])
-	Launch(&wg1, []string{"Q", "3"}, Gens, cs[0:1])
-	Launch(&wg1, []string{"A2"}, Print, cs[1:2])
-	Launch(&wg1, []string{"A1"}, Print, cs[2:3])
-	Launch(&wg1, []string{"A3"}, Print, cs[3:4])
+   
+	cs0 := make(chan interface{})
+	cs1 := make(chan interface{})
+	cs2 := make(chan interface{})
+	cs3 := make(chan interface{})
+	
+	// wg1.Add(5)
+	
+	go Split(&wg1, []string{"S"}, cs[0:4])
+	go Gens(&wg1, []string{"Q", "3"}, cs0)
+	go Print(&wg1, []string{"A2"}, cs1)
+	go Print(&wg1, []string{"A1"}, cs2)
+	go Print(&wg1, []string{"A3"}, cs3)
 
 	wg1.Wait()
 

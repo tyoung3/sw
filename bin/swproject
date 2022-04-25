@@ -138,6 +138,8 @@ Genp4() {
 Genp2() {
 	   Debug Genp2 in directory: $dir/$p
 	   ( [ -d internal ] || mkdir internal )			\
+	   && ( [ -d testdata ]   			 \
+	   || ( mkdir testdata && echo "Go ignores testdata/" >testdata/README ) )			\
 	   && ( [ -f go.mod ]  						\
 	        || (go mod init $modpath$p; echo "replace $modpath$p => ./ " >> go.mod  ) \
 	      )	    									\

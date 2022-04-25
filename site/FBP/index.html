@@ -162,14 +162,15 @@
 <li>IPs with defined lifetimes</li>
 <li>Named Ports</li>
 </ul>
-<p>Wikipedia does not mention concurrency -- in error, we maintain.<br />
-Wikipedia also does not mention subnets, data ownership,
+<p>Wikipedia does not mention concurrency -- in error, we maintain. 
+The core concept of flow-based programming is that of concurrent processes
+communicating with each other asynchronously. </p>
+<p>Wikipedia also does not mention subnets, 
 back pressure, data ownership, or bracketed IPs.<br />
-StreamWork does not directly implement these features,
+StreamWork does not directly implement all these features,
 but there is no obvious reason why these features could not 
 be implemented within the components. </p>
-<p>StreamWork considers subnets to be an essential design tool, allowing 
-unlimited numbers of subnets and components and a ridiculously large(100) number of subnet levels.  Note that 
+<p>StreamWork considers subnets to be an essential design tool.  StreamWork allows unlimited numbers of subnets and components and a ridiculously large(100) number of subnet levels.  Note that 
 StreamWork is highly concurrent and allows for high degrees of parallelism.   </p>
 <p>We claim here that StreamWork meets all the Wikipedia criteria 
 and therefore StreamWork implements 'classical' FBP.<br />
@@ -185,7 +186,7 @@ for sensitive data, like passwords.</p>
 variables,  in-stream commands, ordinary IPs, and signals.</p>
 <p>StreamWork does not distinguish between IIPs (initialization information 
 packets) and ordinary IPs and therefore does not require any special 
-processin or notation for IIPs within the network definition language.    </p>
+processing or notation for IIPs within the network definition language.    </p>
 <h2 id="fbp-tenets-httpsjpaulmgithubiofbp"><a href="https://jpaulm.github.io/fbp">FBP tenets https://jpaulm.github.io/fbp</a></h2>
 <ol>
 <li>If work is boring, let a robot do it!
