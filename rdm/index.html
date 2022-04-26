@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  
+  <link rel="canonical" href="https://sw.twyoung.com/rdm/">
   <link rel="shortcut icon" href="../img/favicon.ico">
   <title>Readme - StreamWork</title>
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,7 +18,7 @@
     // Current page data
     var mkdocs_page_name = "Readme";
     var mkdocs_page_input_path = "rdm.md";
-    var mkdocs_page_url = null;
+    var mkdocs_page_url = "/rdm/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
@@ -98,7 +98,7 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#variables">Variables</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#semi-colon-commentary">Semi-colon commentary</a>
+    <li class="toctree-l3"><a class="reference internal" href="#semi-colons">Semi-colons</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#left-arrow-comments">Left Arrow comments</a>
     </li>
@@ -182,6 +182,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#0270">0.27.0</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#0280">0.28.0</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
     </li>
     </ul>
@@ -195,7 +197,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../components/swutility/">Swutility</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../components/os/">Linux</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/os/">Os</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../components/config/">Config</a>
                     </li>
@@ -262,7 +264,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="streamwork-sw-0270">STREAMWORK -- SW-0.27.0</h1>
+                <h1 id="streamwork-sw-0280">STREAMWORK -- SW-0.28.0</h1>
 <p>Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com </p>
 <p>Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
@@ -367,7 +369,7 @@ The network definition is a compact text-based representation of a data flow dia
 <p>StreamWork is concerned primarily with Go language FBP programs,
 however, the network definition described here is language agnostic.  It is quite possible 
 to generate corresponding code in other languages from a StreamWork ND.         </p>
-<p>The script, <strong><em>swgo</em></strong>, reads and executes an ND employing <strong><em>sw</em></strong> to properly launch and connect the processes.  By default, <strong><em>sw</em></strong> generates 
+<p>The script, <strong><em>swgo</em></strong>, reads and executes a network definition employing <strong><em>sw</em></strong> to properly launch and connect the processes.  By default, <strong><em>sw</em></strong> generates 
 and builds a single main Go program which:<br />
   * imports sw compatible component package(s) as specified in the network definition,<br />
   * launches a goroutine for each process,<br />
@@ -429,7 +431,7 @@ The component identifier, arguments, and attributes will default if omitted.
 Process names are not apparent to Go and so need not follow Go naming 
 rules, just the StreamWork conventions. </p>
 <p>A component identifier consists of its import module/package identifier, 
-a slash, '/', and the component name.  Go component names need to be capitalized.type
+a slash, '/', and the component name.  Go component names need to be capitalized.
 If  the path is omitted,  a configuration default path is assumed.<br />
 If the component name is also omitted, configuration default component names
 are assumed for sink, source, and filter(has both inputs and outputs) processes.
@@ -438,14 +440,14 @@ Subnet components are identified by <code>'</code> prefixing its identifier, as 
 <p>Stream directors consist of <code>&lt;</code>, an optional, comma-separated list of type identifiers,
 an optional buffersize integer, and <code>-</code>. Example: <code>&lt;100-</code>
 The reverse (Ex: <code>-myDataType,yourType 100&gt;</code>) is also valid.</p>
-<p>Information packets(IPs) are designed as nitypel(empty) interfaces.  The
+<p>Information packets(IPs) are designed as nil(empty) interfaces.  The
 data type is determined by the sending component.  It is possible for 
 properly coded sink components to handle multiple data types.
 A type mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
-type(including user-defined types and structures). 
-Some components (sw.Print, for instance) can process strings and integers; 
-some just a single type; on each receiving port.   </p>
+type, including user-defined types and structures. 
+Some components  can process strings and integers; 
+other components just a single type; on each receiving port.   </p>
 <p><strong><em>sw</em></strong> versions beginning with v1.0.0 are backward compatible within the same major 
 version(currently v0).  There is no such guarantee with v0.N.N versions, but we will
 increase the minor version in such cases.  The master github branch may have many commits without creating a new version.  </p>
@@ -460,7 +462,7 @@ either </p>
 <li>or Go main source code for JFM's gofbp. </li>
 </ul>
 <p>C and other languages could also be generated, but this has not been implemented.
-JavaFBP is also possible.   </p>
+JavaFBP is possible, for instance.   </p>
 <p>Comments and critiques are welcome.    Contributors are encouraged.  </p>
 <p>Please do not submit code before contacting the project.  Contact by 
 e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to posting a request on Github.     </p>
@@ -476,10 +478,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
 <h3 id="installation">Installation<a name="installation"/></h3>
 <ul>
 <li>cd to any convenient workspace (/usr/local/src for example).</li>
-<li>Download the latest sw-0.27.0.tar.gz file 
+<li>Download the latest sw-0.28.0.tar.gz file 
       from https://github.com/tyoung3/sw/build</li>
-<li>Run 'tar -xzf .../sw-0.27.0.tar.gz' to extract source files</li>
-<li>cd  sw-0.27.0</li>
+<li>Run 'tar -xzf .../sw-0.28.0.tar.gz' to extract source files</li>
+<li>cd  sw-0.28.0</li>
 <li>Run ./configure &amp;&amp; make check</li>
 <li>Run sudo make install.<br />
 <strong><em>sw</em></strong> and associated scripts will be installed in /usr/local/bin</li>
@@ -534,21 +536,22 @@ are required.  It is quite possible to define a network with no
 dependencies (other than Go packages) at all.<br />
 The only requirement for a component is 
 an entry point with two or more parameters: wait group, argument string 
-slice, and as many channel slices as there are channel types. </p>
+slice, and a channel for each port. </p>
 <h4 id="variables">Variables<a name="varaibles"/></h4>
 <p>SWL accepts string($NAME), environment string($_NAME), symbol(&amp;NAME),  and numeric(%NAME) variables.  See SWL.pdf for acceptable usage.</p>
 <p>StreamWork uses the following environment variables:
   * $BROWSER -- WWW browser 
   * $GOPATH  -- Go language path
   * $DEBUG   -- 'Y' will cause some messages to print.</p>
-<h4 id="semi-colon-commentary">Semi-colon commentary<a name="semicolons"/></h4>
+<h4 id="semi-colons">Semi-colons<a name="semicolons"/></h4>
 <p>Statements in SWL, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
 they tell the reader (and the SWL interpreter) when
-you have reached the end of a statement; making reading the statements easier. 
+you have reached the end of a statement. This makes reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
 Additionally, without semi-colons line breaks become part of the language 
-definition, leading to awkward, confusing syntax rules.  </p>
+definition, leading to awkward, confusing syntax rules; difficult for the
+reader to interpret.  </p>
 <h4 id="left-arrow-comments">Left Arrow comments<a name="leftarrow"/></h4>
 <p>The, <code>&lt;-</code>,  token is employed in order to be consistent with its 
 usage in the Go language.  The <code>-&gt;</code> token is also available:
@@ -687,33 +690,40 @@ Input to DelayedReceiver: Receiver0 &gt; IP - # 5
 Input to DelayedReceiver: Receiver0 &gt; IP - # 9
 </code></pre>
 <h3 id="generate-a-project">Generate a project<a name="generateaproject"/></h3>
-<p><strong><em>swproject</em></strong> .../nds/postage.sw
-produces the following source tree:</p>
+<p><strong><em>swproject</em></strong> -yaml YAML  -cfg ./src/nds/postage.cfg ./src/model/tests/postage.sw</p>
+<p>produces the following source tree:</p>
 <pre><code>postage
-├── addr
-│   ├── GetDest.go
-│   └── GetDest_test.go
 ├── ComputePostage.go
 ├── ComputePostage_test.go
 ├── config.go
-├── getr
-│   ├── Rates.go
-│   └── Rates_test.go
+├── GetLoc.go
+├── GetLoc_test.go
+├── GetWeight.go
+├── GetWeight_test.go
 ├── go.mod
 ├── go.sum
 ├── internal
-│   ├── gen_swproject
+│   ├── gen.sh
 │   ├── postage.go
 │   ├── postage.sw
 │   └── sw.cfg
+├── ipT.go
+├── PostageT.go
 ├── postage.yaml
 ├── PrintLabel.go
-└── PrintLabel_test.go
+├── PrintLabel_test.go
+├── Rates.go
+├── Rates_test.go
+├── RateT.go
+└── WeighT.go
+
+1 directory, 22 files
 
 </code></pre>
 <p>then produces this graph 
 <img alt="postage.svg" src="http://sw.twyoung.com/images/postage.svg" />
-vets the code, and finally runs it.</p>
+vets the code, and finally runs it.
+The result is a running program ready for your enhancements.</p>
 <h4 id="swsh-synopsis"><strong><em>sw.sh</em></strong> Synopsis<a name="sw.sh"/></h4>
 <pre><code>sw.sh-1.0.1 USAGE: 
         b|build     . Build project with Autotools.
@@ -806,7 +816,7 @@ break existing networks.</p>
 </ul>
 <h3 id="0210">0.21.0</h3>
 <ul>
-<li>Can generate projects with or without YAML configuration. </li>
+<li>Can generate projects with or without YAML configurationswpro. </li>
 <li>Fixes to Wrap function.  </li>
 </ul>
 <h3 id="0211">0.21.1</h3>
@@ -828,7 +838,7 @@ break existing networks.</p>
 <ul>
 <li>Introduced mkdocs</li>
 <li>Attempt to fix go.in yaml  Dependabot alert</li>
-<li>Fix build error in swgraph.c</li>
+<li>Fix build error in swgraph.cswpro</li>
 </ul>
 <h3 id="0268">0.26.8</h3>
 <ul>
@@ -850,7 +860,16 @@ break existing networks.</p>
 <h2 id="0270">0.27.0</h2>
 <ul>
 <li>Changed package name from sw/linux to sw/os</li>
-<li>Added sw/os/Debug function    </li>
+<li>Added sw/os/Debug function   </li>
+</ul>
+<h2 id="0280">0.28.0</h2>
+<ul>
+<li>Implemented typing of component channels. </li>
+<li>Defined underscore '_' as shorthand for 'interface{}' type.</li>
+<li>Changed component argument from interface slice to interface in SW components with a single port. </li>
+<li>For components with multiple ports; adjacent channels of the same <br />
+    type are combined into a channel slice.     </li>
+<li>Fixed numerous problems with swproject. </li>
 </ul>
 <h2 id="author">Author<a name="author"/></h2>
 <pre><code>Tom Young, streamwork@twyoung.com

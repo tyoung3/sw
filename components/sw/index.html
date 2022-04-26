@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  
+  <link rel="canonical" href="https://sw.twyoung.com/components/sw/">
   <link rel="shortcut icon" href="../../img/favicon.ico">
   <title>SwBase - StreamWork</title>
   <link rel="stylesheet" href="../../css/theme.css" />
@@ -18,7 +18,7 @@
     // Current page data
     var mkdocs_page_name = "SwBase";
     var mkdocs_page_input_path = "components/sw.md";
-    var mkdocs_page_url = null;
+    var mkdocs_page_url = "/components/sw/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js" defer></script>
@@ -61,7 +61,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../swutility/">Swutility</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../os/">Linux</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../os/">Os</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../config/">Config</a>
                     </li>
@@ -134,18 +134,18 @@
               
                 <p>package sw // import "github.com/tyoung3/sw"</p>
 <p>Package sw contains a number of basic, standard StreamWork components.</p>
-<p>The program 'sw' can create a main/Go program(cmd) from a Streamwork network
-definition.</p>
+<p>The program 'sw' can create a main/Go program(cmd) from 
+a Streamwork network definition.</p>
 <p>The generated cmd launches the component processes specified in the network
 definition as separate go routines.</p>
 <p>This package contains basic Streamwork components: Split, Join, Gen, Pass,
-Print, etc. Other .../sw/ packages are: config, swutility, and linux.</p>
+Print, etc. Other .../sw/ packages are: fileio, swutility, and os.</p>
 <p>Sw components have a simple interface. There is no complex API; there are no
 StreamWork required import statements. Just the exported function is
 required. This makes it easy to create your own components. The bash script,
 <strong><em>swproject</em></strong> generates an entire project tree from a network definition</p>
 <p>FUNCTIONS</p>
-<p>func Gen(wg *sync.WaitGroup, arg []string, cs []chan interface{})
+<p>func Gen(wg *sync.WaitGroup, arg []string, ch chan interface{})
     Gen sends 'nbr' integers, beginning with 'start', incremented by 'inc';
     argcuments 1, 2, and 3 respectively over port 0.</p>
 <pre><code>#####Examples
@@ -162,7 +162,7 @@ required. This makes it easy to create your own components. The bash script,
         (Gen "-i" "4" "-2" "-1") will send:
     -2 -3 -4 -5
 </code></pre>
-<p>func Gens(wg *sync.WaitGroup, arg []string, cs []chan interface{})
+<p>func Gens(wg *sync.WaitGroup, arg []string, ch chan interface{})
     Gens sends arg[1], arg[2] long strings to channel cs[0] (out1)</p>
 <pre><code>     Strings consist of the process name
     and seq. no; i.e. G3-1, G3-2, etc.
@@ -170,13 +170,13 @@ required. This makes it easy to create your own components. The bash script,
     BUG cannot set length, yet.
 </code></pre>
 <p>func Join(wg1 *sync.WaitGroup, arg []string, cs []chan interface{})
-    Join sends all input from channels [1:n] to channel [0], port 0.</p>
+    Join sends all input from channels [1:n] to channel [0] (port 0).</p>
 <p>func Pass(wg *sync.WaitGroup, arg []string, cs []chan interface{})
     Pass delays input from chanell 0 for arg[1] milliseconds, then sends it out
     on channel 1.</p>
 <p>func Print(wg *sync.WaitGroup,
     arg []string,
-    cs []chan interface{})
+    ch chan interface{})
     Print prints integers and strings received from port 0, prefixed with the
     process identifier(arg[0]) string,</p>
 <p>func Split(wg *sync.WaitGroup, arg []string, cs []chan interface{})

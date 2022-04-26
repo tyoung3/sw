@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  
+  <link rel="canonical" href="https://sw.twyoung.com/design/">
   <link rel="shortcut icon" href="../img/favicon.ico">
   <title>Design Guidelines - StreamWork</title>
   <link rel="stylesheet" href="../css/theme.css" />
@@ -18,7 +18,7 @@
     // Current page data
     var mkdocs_page_name = "Design Guidelines";
     var mkdocs_page_input_path = "design.md";
-    var mkdocs_page_url = null;
+    var mkdocs_page_url = "/design/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
@@ -61,7 +61,7 @@
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../components/swutility/">Swutility</a>
                     </li>
-                    <li class="toctree-l1"><a class="reference internal" href="../components/os/">Linux</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/os/">Os</a>
                     </li>
                     <li class="toctree-l1"><a class="reference internal" href="../components/config/">Config</a>
                     </li>
@@ -166,8 +166,16 @@
 <li>Use simple URI rules <a href="https://dzone.com/articles/7-rules-for-rest-api-uri-design-1">URI Rules</a></li>
 </ul>
 </li>
-<li>Don't buffer unnecessarily.   Zero-length buffers minimize latency.</li>
-<li>Security and synchronization<ul>
+<li>
+<p>Don't buffer unnecessarily.   Zero-length buffers are a bit more secure and minimize latency.<br />
+     In come cases, particularly in cyclic networks, however, non-zero buffers may be 
+     necessary to prevent deadlock.  Non-zero buffers may also speed processing sometimes. 
+     Note that Go uses ring buffers, implying that IPs can be received even when the buffer 
+     is not full.  Buffers can be useful when input arrives erratically.  </p>
+</li>
+<li>
+<p>Security and synchronization</p>
+<ul>
 <li>Always defer synchronizing waits to help prevent deadlock 
   and zombies.</li>
 <li>Avoid threats  (see <a href="https://blog.sqreen.com/top-6-security-best-practices-for-go/">Go security practices</a> )</li>
@@ -177,10 +185,10 @@
 <li>Encrypt sensitive data</li>
 <li>Use HTTPS, not http</li>
 <li>Use logs and error messages carefully, being sure to avoid leaking sensitive data. (5,000 secrets/day are leaked to GitHub, it has been claimed.)</li>
-</ul>
-</li>
 <li>Document at the component, subnet, and package levels.   </li>
 <li>Test at the component and package levels. </li>
+</ul>
+</li>
 </ul>
 <h2 id="streamwork-features">StreamWork Features</h2>
 <p>StreamWork: </p>
