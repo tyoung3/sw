@@ -152,6 +152,11 @@ static void showSink(Process p, int id)
 static void showSource(int kind, Process p, int id, int bfsz, char *iptype)
 {
     char dash='-';
+    
+    
+    if(iptype==NULL)
+    	 iptype="";
+    	 	
     switch (kind) {
         case IS_STRUCT:
             dash='=';
@@ -161,10 +166,10 @@ static void showSource(int kind, Process p, int id, int bfsz, char *iptype)
     }
     
     if (bfsz == defaultBufferSize) {
-	    printf("\t\t<%s%c\t%d(%s %s.%s",
+	    printf("\t<%s%c\t%d(%s %s.%s",
 	       iptype, dash, id, p->name, p->comp->path, p->comp->name);
     } else {
-	    printf("\t\t<%s %d%c\t", iptype, bfsz, dash);
+	    printf("\t<%s %d%c\t", iptype, bfsz, dash);
 	if (id > 0)
 	    printf("%d", id);
 	printf("(%s %s.%s", p->name, p->comp->path, p->comp->name);
