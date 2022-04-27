@@ -25,7 +25,7 @@
 		       }
 
 static char *savedPrefix = "";
-static char *iptype_save = "";	/* latest visited IP type */
+//static char *iptype_save = "";	/* latest visited IP type */
 static Process fl = NULL;		/** List of processes to free	*/
 
 /** Place to store latest visited source port. */
@@ -673,20 +673,40 @@ visitTypeDef (TypeDef p)
     }
 }
 
+typedef struct Arrow_ {
+	char *iptype;
+	int	 bs;
+} Arrow_;
+typedef struct Arrow_ *Arrow;
+
+static Arrow makeArrow(char *iptype, int bs) {
+	Arrow a;
+	
+	a=(Arrow) malloc(sizeof(Arrow_));
+	a->iptype=iptype;
+	a->bs=bs;
+	return a;
+}
+
 /** Get left arrow bufferize */
-Integer
-visitLarrow (Larrow _p_)
+static Arrow visitLarrow (Larrow _p_)
 {
-  iptype_save = visitTypeDef (_p_->u.arrowx_.typedef_);
-  return visitBuffsize (_p_->u.arrowx_.buffsize_);
+  return makeArrow(
+  	visitTypeDef (_p_->u.arrowx_.typedef_),
+  	visitBuffsize (_p_->u.arrowx_.buffsize_));
+  // iptype_save = visitTypeDef (_p_->u.arrowx_.typedef_);
+  //return visitBuffsize (_p_->u.arrowx_.buffsize_);
 }
 
 /** Get right arrow buffersize */
-Integer
-visitRarrow (Rarrow _p_)
+static Arrow visitRarrow (Rarrow _p_)
 {
-  iptype_save = visitTypeDef (_p_->u.arrowr_.typedef_);
-  return visitBuffsize (_p_->u.arrowr_.buffsize_);
+  return makeArrow(
+  	visitTypeDef (_p_->u.arrowr_.typedef_),
+  	visitBuffsize (_p_->u.arrowr_.buffsize_));
+  	
+  //iptype_save = visitTypeDef (_p_->u.arrowr_.typedef_);
+  //return visitBuffsize (_p_->u.arrowr_.buffsize_);
 }
 
 /** Add port,p to port list at P->port in order by port id*/
@@ -749,16 +769,16 @@ SetSource (Process p)
   p->nportsOut++;
 }
 
-int visitLSarrow(LSarrow p)
+static Arrow visitLSarrow(LSarrow p)
 {
-    iptype_save=visitTypeDef(p->u.arrowsl_.typedef_);
-    return visitBuffsize(p->u.arrowsl_.buffsize_);
+    return makeArrow(visitTypeDef(p->u.arrowsl_.typedef_),
+       visitBuffsize(p->u.arrowsl_.buffsize_));
 }
 
-int visitRSarrow(RSarrow p)
+static Arrow visitRSarrow(RSarrow p)
 {
-    iptype_save=visitTypeDef(p->u.arrowsr_.typedef_);
-    return(visitBuffsize(p->u.arrowsr_.buffsize_));
+    return makeArrow(visitTypeDef(p->u.arrowsr_.typedef_),
+    								 visitBuffsize(p->u.arrowsr_.buffsize_));
 }
 
 /** Set number of input ports in sink process */
@@ -771,7 +791,7 @@ SetSink (Process p)
 
 #define visitDataFlow visitdataflow
 
-Stream df(streamType stype, int bs, Process src, Process snk, 
+Stream df(streamType stype, Arrow a, Process src, Process snk, 
             Port src_pt, Port snk_pt) {
       Stream s;      
             
@@ -779,10 +799,10 @@ Stream df(streamType stype, int bs, Process src, Process snk,
       SetSink (snk);
       SetSource (src);
       linkPort (src, src_pt);
-      s =
-	MakeStream (stype, src, snk, bs, net_model, src_pt, snk_pt,
-		    iptype_save);
-      iptype_save = "";
+      s =	MakeStream (stype, src, snk, 
+      	a->bs, net_model, src_pt, snk_pt,
+		    a->iptype);
+      //iptype_save = "";
       s->SourcePort = src_pt;
       s->SinkPort = snk_pt;
       s->SourcePort->stream = s->SinkPort->stream = s;
@@ -880,7 +900,7 @@ visitdataflow (DataFlow _p_)
 static String saves = NULL;   /**<Save name ?? */
 /** Create an external port structure. */
 Extport
-MakeExtport (PortType type, Process p, Port prt, int bs, int id)
+MakeExtport (PortType type, Process p, Port prt, Arrow a, int id)
 {
   Extport ep;
 
@@ -907,8 +927,8 @@ MakeExtport (PortType type, Process p, Port prt, int bs, int id)
       SetSource (p);
     }
 
-  ep->bufsz = bs;
-  ep->iptype = NULL;
+  ep->bufsz = a->bs;
+  ep->iptype = a->iptype;
   ep->next = NULL;
   return ep;
 }
@@ -929,13 +949,14 @@ visitTab (Tab _p_)
     }
 }
 
-static void setIpType(Extport ep) {			
-      ep->iptype = strdup (iptype_save);
+
+//static void setIpType(Extport ep) {			
+//      ep->iptype = strdup (iptype_save);
       //if(ep->iptype[0]==0) {
 	    //  ep->iptype=ep->name;
       //}	      
-      iptype_save = "";
-}
+      //iptype_save = "";
+//}
 
 /** Get external input port */
 Extport
@@ -950,7 +971,7 @@ visitExtPortIn (ExtPortIn _p_)
 			visitPrt (_p_->u.extin_.prt_),
 			visitLarrow (_p_->u.extin_.larrow_),
 			visitTab (_p_->u.extin_.tab_));
-      setIpType(ep);
+      //setIpType(ep);
       return ep;
     case is_ExtinR:
       ep = MakeExtport (SINK,
@@ -958,7 +979,7 @@ visitExtPortIn (ExtPortIn _p_)
 			visitPrt (_p_->u.extinr_.prt_),
 			visitRarrow (_p_->u.extinr_.rarrow_),
 			visitTab (_p_->u.extinr_.tab_));
-      setIpType(ep);
+      //setIpType(ep);
       return ep;
     default:
       badkind (ExtPortIn);
@@ -979,7 +1000,7 @@ visitExtPortOut (ExtPortOut _p_)
 			visitPrt (_p_->u.extout_.prt_),
 			visitLarrow (_p_->u.extout_.larrow_),
 			visitTab (_p_->u.extout_.tab_));
-      setIpType(ep);
+      //setIpType(ep);
       return ep;
     case is_Extoutr:
       return MakeExtport (SOURCE,
@@ -987,7 +1008,7 @@ visitExtPortOut (ExtPortOut _p_)
 			  visitPrt (_p_->u.extoutr_.prt_),
 			  visitRarrow (_p_->u.extoutr_.rarrow_),
 			  visitTab (_p_->u.extoutr_.tab_));
-      setIpType(ep);
+      //setIpType(ep);
       return ep;
     default:
       badkind (ExtPortOut);
@@ -1586,8 +1607,8 @@ findAmatchingPort (Model m, Process p, Extport ep)
       pt = MakePort (ep->sink_id, ep->name);
     }
   p2->depth = p->depth + 1;
-  ep2 = MakeExtport (ep->type, p2, pt, ep->bufsz, -1);
-  ep2->iptype = ep->iptype;
+  ep2 = MakeExtport (ep->type, p2, pt, makeArrow(ep->iptype,ep->bufsz), -1);
+  // ep2->iptype = ep->iptype;
   ep2->next = extprtList;
   ep2->source_id = ep->source_id;
   ep2->sink_id = ep->sink_id;
