@@ -931,9 +931,9 @@ visitTab (Tab _p_)
 
 static void setIpType(Extport ep) {			
       ep->iptype = strdup (iptype_save);
-      if(ep->iptype[0]==0) {
-	      ep->iptype=ep->name;
-      }	      
+      //if(ep->iptype[0]==0) {
+	    //  ep->iptype=ep->name;
+      //}	      
       iptype_save = "";
 }
 
@@ -2216,7 +2216,7 @@ createStream (Model m, Extport ep, Extport ep2)
       pt = pt->next;
       if (pt == ep2->sink->port)
 	{
-	  FAIL (creatStream, "No matching external sink port");
+	  FAIL (createStream, "No matching external sink port");
 	}
     }
   snkpt = pt;
