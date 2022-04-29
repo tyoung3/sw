@@ -1,8 +1,7 @@
 {#
       AE1.sw
       
-      This file contains only syntax errors.
-      I.e. every statement will fail to parse successfully.
+      This file contains multiple syntax errors.
 #}
 
 (X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b/c "abc" FailOKHere); 
@@ -14,6 +13,6 @@
 (F 8)2 <- 8(D);
 (A strings.Print1)0 <- a(B strings/Gen1); 
 (F)2 <- 7(D) <- 8(E);
-(A strings/Print1)0 <- a(B strings/Gen1); 
-(E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
-(C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
+(A strings/Print1)0 <- a(B strings.Gen1); 
+(E strings/Print1)in1 <_E- 2(F strings/Gen1 "3" "7"); 
+(C strings/Print1)0 <a b- out1(D strings/Gen1 "2"); 

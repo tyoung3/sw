@@ -1,5 +1,6 @@
 /** @file sw.c
-    Create network model from parse tree 
+    Create StreamWork network model from parse tree 
+    Then call specified output function.
 
 */
 
@@ -704,9 +705,6 @@ static Arrow visitRarrow (Rarrow _p_)
   return makeArrow(
   	visitTypeDef (_p_->u.arrowr_.typedef_),
   	visitBuffsize (_p_->u.arrowr_.buffsize_));
-  	
-  //iptype_save = visitTypeDef (_p_->u.arrowr_.typedef_);
-  //return visitBuffsize (_p_->u.arrowr_.buffsize_);
 }
 
 /** Add port,p to port list at P->port in order by port id*/
@@ -1566,13 +1564,12 @@ copyPort (Port p0)
   return p1;
 }
 
+/**<Anchor for external port list */
+/**  List of unmatched external ports.*/
+static Extport extprtList = NULL;   
 
-static Extport extprtList = NULL;   /**<Anchor for external port list */
-/**  Add external port to list of unmatched external ports.
-     Match ports later
-*/
-static int
-findAmatchingPort (Model m, Process p, Extport ep)
+// Find a matching port for unmatched external port, ep.  
+static int findAmatchingPort (Model m, Extport extprtList, Process p, Extport ep)
 {
   Extport ep2 = NULL;
   Port pt;
@@ -1728,7 +1725,7 @@ Expand3 (Model m, Process p, Extport ep)
 	}
     }
 
-  findAmatchingPort (m, p, ep);
+  findAmatchingPort (m, extprtList, p, ep);
 
 }
 
@@ -1821,7 +1818,7 @@ expandSubnets (Model m)
 	{
 	  if (p->comp)
 	    {
-	      if (p->comp->path[0] == '_')
+	      if (p->comp->path[0] == '^')
 		{		/* Is a subnet */
 		  more = 1;
 		  nexpands++; 
@@ -2296,32 +2293,42 @@ Matched (Extport ep2)
   return 0;
 }
 
-/** match external ports: ep2 is sink port*/
-static int
-isaMatch (Extport ep2, Extport ep)
-{
+//Iptypes match if they are identical or if one or the other is not specified.
+static int matchIpType(char *t1, char *t2) {
+	if ( (t1==t2)										||			
+	   (  t1==NULL )  || (t2==NULL) ||
+     (  t1=="" )    || (t2=="") 	||
+  	 (  t1[0]==' ') ||  t2[0]==' ') 
+  		    return 1;
+  		
+  return 0;		
+}  		
 
-  if (Matched (ep2))   /** Create a new stream if external port is matched.*/
+/** match external ports: ep2 is sink port
+ * If ep has a name and/or iptype, they must match.
+ * It may be necessary to match ports in some logical sequence by
+ * ordering the external port list with more specifically defined ports first.
+**/
+static int isaMatch (Extport ep2, Extport ep){
+
+  if (Matched (ep2))   /** Create a new stream if external port is already matched.*/
     return 0;
 
-
-  if (ep->name)
-    {
-      if (ep2->source_id < 0)
-	{
-	  if (MatchName (ep->name, ep2->name))
-	    return 1;
-	}
+	if( !matchIpType(ep->iptype, ep2->iptype) )
+			return 0;
+			
+  if (ep->name) {
+      if( 
+      		(ep2->source_id < 0) 	
+      		&& MatchName(ep->name, ep2->name) ) 
+	    			return 1;
       return 0;
-    }
+   }
 
-
-  if (ep->sink_id == ep2->source_id)
-    return 1;
-
-  if (ep->name == NULL)
-    return 0;
-  return 0;
+   if ( (ep->sink_id == ep2->source_id) ) 
+    			return 1;
+   
+   return 0;
 }
 
 /** Create a new stream if external port is matched.*/
@@ -2393,7 +2400,7 @@ removeDeadStreams (Model m)
     {
       if (s->source->comp != NULL)
 	{
-	  if (s->source->comp->path[0] == '_')
+	  if (s->source->comp->path[0] == '^')
 	    {			/* if subnet, remove stream */
 	      if (s == m->stream)
 		{

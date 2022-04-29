@@ -382,6 +382,30 @@ char *fixModule(Model m, char *ftype) {
 		return strdup(bfr);	
 }
 
+static int lowerCase(char c) {
+		if( (c >= 'a') && (c <= 'z') )  
+				return 1;
+				
+	  return 0;			
+}
+
+// If in package, type must be capitalized.
+static int badType(char *t) {
+		char *t2=t;
+		char *t3=0;
+		
+		while(t2[0]!=0) {    /* find last period(.) */
+				if( t2[0]=='.')	
+					t3=t2;
+				t2++;	
+	  }
+	  				
+	  if( (t3!=0) && lowerCase(t3[1]) )  
+						return 1;
+						
+		return 0;
+}
+
 /** Generate Prefix code */
 void genPrefix(Model m)
 {
@@ -433,21 +457,27 @@ void genPrefix(Model m)
       if(defaultChannelType == NULL || defaultChannelType[0]=='_') 
         defaultChannelType="interface{}";
         char *ftype=defaultChannelType;
-        if(f->iptype==NULL || f->iptype[0]==0) {
+        if(    (f->iptype==NULL) 
+        		|| (f->iptype[0]==0) 
+        		|| (f->iptype[0]=='_') ){
           ftype="interface{}";
         } else {
-        if(f->iptype[0]=='_') {
-            ftype=defaultChannelType;  
-        } else {
           ftype=f->iptype;
-        }}
+        }
+        if(badType(ftype)) {
+        	FAIL(GenPrefix,"Bad Type");
+        }
         f->iptype=ftype;
         f->streamNum=nstream;
         module=fixModule(m, ftype);
-	      printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
-		    nstream++, module, ftype,f->bufsz,            
-		    f->source->name,f->SourcePort->id, 
-		    f->sink->name,f->SinkPort->id);
+	      //printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
+		    //				nstream++, module, ftype,f->bufsz,            
+		    //				f->source->name,f->SourcePort->id, 
+		    //				f->sink->name,f->SinkPort->id);
+	      printf("_ch%d := make(chan %s,%i)\t//%s.%d->%s.%d\n",
+		    				nstream++, ftype,f->bufsz,            
+		    				f->source->name,f->SourcePort->id, 
+		    				f->sink->name,f->SinkPort->id);
 	   }  // End if not orphan 	    
 	    f=f->next;
     }

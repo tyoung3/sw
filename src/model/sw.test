@@ -151,7 +151,7 @@ cat << EOF.collate.sw | ./sw >/dev/null && echo ok 14 - collate.sw || echo not o
 
 # WARNING: Merge sends output on channel 0(Zero) contrary to convention(channel 1). 
 
-\$tip = "sw.Print/Match0: You can specify your own attributes plus color, tooltip and other dot attributes.";  
+$tip = "sw.Print/Match0: You can specify your own attributes plus color, tooltip and other dot attributes.";  
 
 (C sw/swutility/Collate [size="large", fill="lightgreen"]) 
      <1-  (G0  Gen "12" "1" "2" );  
@@ -159,7 +159,7 @@ cat << EOF.collate.sw | ./sw >/dev/null && echo ok 14 - collate.sw || echo not o
 (M)2	    		<-  (G1  Gen "5"  "5" "1" );
 (M)IN.1		    	< 3-  (G2  Gen "8"  "2" "3" );
 
-(Match0 Print [fillcolor="lightgreen", tooltip=\$tip]) 	<- 2(C);
+(Match0 Print [fillcolor="lightgreen", tooltip=$tip]) 	<- 2(C);
 (Match1 Print [fillcolor="lightgreen", tooltip="match1"]) 	<- 3(C);
 (Miss0  Print [fillcolor="red", tooltip="MISS!!"])MISS 	<- 4.MISS(C);
 (Miss1  Print [tooltip="MISS!!", fillcolor="red"]) 	<- OUT.5(C);   
@@ -544,18 +544,28 @@ EOF.n2.sw
 
 cat << EOF.n3.sw | ./sw >/dev/null && echo ok 38 - n3.sw || echo not ok 38 -  n3.sw
 ^a {  
-   (A)	<- IN ;
+   (A)	<3- IN ;
 };  
 
 ^b {  
-    OUT	<- (B);
+    OUT	<2- (B);
+};  
+
+
+^c {  
+    OUT	<1- (B);
 };  
 
 ^ab {
 X ^a; Y ^b; 
 };
 
+^ac {
+X ^a; Y ^c; 
+};
+
 T ^ab;
+U ^ac;
 EOF.n3.sw
 
 cat << EOF.n5.sw | ./sw >/dev/null && echo ok 39 - n5.sw || echo not ok 39 -  n5.sw
@@ -607,12 +617,12 @@ cat << EOF.postage.sw | ./sw >/dev/null && echo ok 43 - postage.sw || echo not o
 
 # POSTAGE.SW:  Postal rate Streamwork Network Definition Example
 
-\$mod="postage";
-(Rates  \$mod/Rates ".58" "oz" )		-RateT  3> 	 3(cp \$mod/ComputePostage);
-(Weight \$mod/GetWeight "10" "oz")	-WeighT 2> 	 2(cp);
-(From   \$mod/GetLoc "New York")		-> 					 0(cp);
-(To     \$mod/GetLoc "LA" )				-_> 			   1(cp);
-(cp)4					        			      -PostageT> 	 (print \$mod/PrintLabel);
+$mod="postage";
+(Rates  $mod/Rates ".58" "oz" )		-RateT  3> 	 3(cp $mod/ComputePostage);
+(Weight $mod/GetWeight "10" "oz")	-WeighT 2> 	 2(cp);
+(From   $mod/GetLoc "New York")		-> 					 0(cp);
+(To     $mod/GetLoc "LA" )				-_> 			   1(cp);
+(cp)4					        			      -PostageT> 	 (print $mod/PrintLabel);
 EOF.postage.sw
 
 cat << EOF.prefix.sw | ./sw >/dev/null && echo ok 44 - prefix.sw || echo not ok 44 -  prefix.sw
@@ -781,7 +791,174 @@ cat << EOF.subnet2.sw | ./sw >/dev/null && echo ok 51 - subnet2.sw || echo not o
 (T) 	<4- (U);
 EOF.subnet2.sw
 
-cat << EOF.subnet3.sw | ./sw >/dev/null && echo ok 52 - subnet3.sw || echo not ok 52 -  subnet3.sw
+cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 52 - subnet4.sw || echo not ok 52 -  subnet4.sw
+# Recursive subnet -- experimental.  Causes segfault.
+
+
+^s2 {
+  0 -> (D);
+};
+
+^s {
+  0 -> a.0(C ^s2);      # Changing ^s to ^s2 works. 
+};
+
+(A Gen) -> a.0(B ^s);
+EOF.subnet4.sw
+
+cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 53 - subnet5.sw || echo not ok 53 -  subnet5.sw
+# Buggy
+
+^j {
+(J x)IN.0 	<1- 	0;
+AOUT    	<2- OUT.1(J);
+};
+
+(A ^j)IN.0	<4-   OUT.0(Y);
+(C c)CIN.0  <8-  AOUT.1(A);
+
+
+(A2 ^j)IN.0	<4-   OUT.0(Y2);
+(C2 c)CIN.0  <8-  AOUT.1(A2);
+EOF.subnet5.sw
+
+cat << EOF.subnetn.sw | ./sw >/dev/null && echo ok 54 - subnetn.sw || echo not ok 54 -  subnetn.sw
+# Recursive subnet -- experimental.  Causes segfault.
+
+
+
+^s3 {
+  0 -> (E);
+  (C3)->(Level3);
+};
+
+^s2 {
+  0 -> (D ^s3);
+  (C2)->(Level2);
+};
+
+^s1 {
+  0 -> a.0(S2 ^s2);  
+  (C1)->(Level1);    
+};
+
+(A Gen) -> a.0(B ^s1);
+EOF.subnetn.sw
+
+cat << EOF.sw.sw | ./sw >/dev/null && echo ok 55 - sw.sw || echo not ok 55 -  sw.sw
+(SWL Net)0->(Streamwork Run);
+(SWL Net)1->(Graphic Image);
+EOF.sw.sw
+
+cat << EOF.tag.sw | ./sw >/dev/null && echo ok 56 - tag.sw || echo not ok 56 -  tag.sw
+^a {
+(Hello Print1)0 <- 0;
+};
+
+^b {
+0     <- (_);
+};
+
+(_ ^a)0 <- 0(World ^b);
+EOF.tag.sw
+
+cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 57 - tooltip.sw || echo not ok 57 -  tooltip.sw
+
+^top {
+(IP [fillcolor="orange", tooltip="tip", fontcolor="red", 
+  URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"]) -> (OP [tooltip="top", fillcolor="green", fontcolor="violet",color="green", URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"] );
+};
+
+T ^top;
+EOF.tooltip.sw
+
+cat << EOF.var.sw | ./sw >/dev/null && echo ok 58 - var.sw || echo not ok 58 -  var.sw
+#$AA="AA)(\n"; 
+&BBB = BBB;
+
+(&BBB) <- (y Y $AA);
+EOF.var.sw
+
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 59 - FAILOK/ac.sw || echo ok 59 - FAILOK/ac.sw
+{#
+      AE1.sw
+      
+      This file contains only syntax errors.
+      I.e. every statement will fail to parse successfully.
+#}
+
+(X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b/c "abc" FailOKHere); 
+(X b/c)2 <- "ab"; 
+"File" <- 0(X b/c); 
+(X in/b/c)2 <- 3(D); 
+(E Comp_bc@2)2 <- 8(D);
+(3)2 <- 8(D);
+(F 8)2 <- 8(D);
+(A strings.Print1)0 <- a(B strings/Gen1); 
+(F)2 <- 7(D) <- 8(E);
+(A strings/Print1)0 <- a(B strings/Gen1); 
+(E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
+(C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
+FAIL.ac.sw
+
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 60 - FAILOK/e3.sw || echo ok 60 - FAILOK/e3.sw
+# Missmatched port names:  
+
+(F A)MATCH  <- MISS(G b);
+FAIL.e3.sw
+
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 61 - FAILOK/e4.sw || echo ok 61 - FAILOK/e4.sw
+# Missmatched port 
+
+(H A)0  <- 0(I b);
+(H)1  <- 1(I);
+(H)2.BAR  <- 2.FOO(I);
+(H)3  <- 3(I);
+FAIL.e4.sw
+
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 62 - FAILOK/e5.sw || echo ok 62 - FAILOK/e5.sw
+# (K) port error
+
+(K)   <-  OUT(J);
+(J)IN <-  (K);
+FAIL.e5.sw
+
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 63 - FAILOK/fail_include.sw || echo ok 63 - FAILOK/fail_include.sw
+INCLUDE "fail_include.sw";
+FAIL.fail_include.sw
+
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 64 - FAILOK/inc.sw || echo ok 64 - FAILOK/inc.sw
+#include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
+
+INCLUDE "inc.isw"; 
+
+(X ^N)0 <- 0(Y ^M);
+(X ^N)1 <- 1(Y ^M);
+(X ^N)2 <- 2(Y ^M);
+
+#include "../model/tests/inc3.isw"; 
+
+FAIL.inc.sw
+
+cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 65 - FAILOK/recurse.sw || echo ok 65 - FAILOK/recurse.sw
+{# RECURSE.sw 
+ 
+
+#}
+
+
+^S { 
+(C)->(D);
+};
+
+^R {
+(A ^R) -> (B ^S);
+};
+
+(E ^R) -> (F f);
+FAIL.recurse.sw
+
+cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 66 - FAILOK/subnet3.sw || echo ok 66 - FAILOK/subnet3.sw
 {#  SUBNET3.sw
  FAIL: SW/msg: createStream: Type Mismatch for (Eb) -type_A>  and (Eb) -type_N2>
 #}
@@ -845,174 +1022,7 @@ A	<type_C 13 -	0(A);
 
 #########################################################
 #}
-EOF.subnet3.sw
-
-cat << EOF.subnet4.sw | ./sw >/dev/null && echo ok 53 - subnet4.sw || echo not ok 53 -  subnet4.sw
-# Recursive subnet -- experimental.  Causes segfault.
-
-
-^s2 {
-  0 -> (D);
-};
-
-^s {
-  0 -> a.0(C ^s2);      # Changing ^s to ^s2 works. 
-};
-
-(A Gen) -> a.0(B ^s);
-EOF.subnet4.sw
-
-cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 54 - subnet5.sw || echo not ok 54 -  subnet5.sw
-# Buggy
-
-^j {
-(J x)IN.0 	<1- 	0;
-AOUT    	<2- OUT.1(J);
-};
-
-(A ^j)IN.0	<4-   OUT.0(Y);
-(C c)CIN.0  <8-  AOUT.1(A);
-
-
-(A2 ^j)IN.0	<4-   OUT.0(Y2);
-(C2 c)CIN.0  <8-  AOUT.1(A2);
-EOF.subnet5.sw
-
-cat << EOF.subnetn.sw | ./sw >/dev/null && echo ok 55 - subnetn.sw || echo not ok 55 -  subnetn.sw
-# Recursive subnet -- experimental.  Causes segfault.
-
-
-
-^s3 {
-  0 -> (E);
-  (C3)->(Level3);
-};
-
-^s2 {
-  0 -> (D ^s3);
-  (C2)->(Level2);
-};
-
-^s1 {
-  0 -> a.0(S2 ^s2);  
-  (C1)->(Level1);    
-};
-
-(A Gen) -> a.0(B ^s1);
-EOF.subnetn.sw
-
-cat << EOF.sw.sw | ./sw >/dev/null && echo ok 56 - sw.sw || echo not ok 56 -  sw.sw
-(SWL Net)0->(Streamwork Run);
-(SWL Net)1->(Graphic Image);
-EOF.sw.sw
-
-cat << EOF.tag.sw | ./sw >/dev/null && echo ok 57 - tag.sw || echo not ok 57 -  tag.sw
-^a {
-(Hello Print1)0 <- 0;
-};
-
-^b {
-0     <- (_);
-};
-
-(_ ^a)0 <- 0(World ^b);
-EOF.tag.sw
-
-cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 58 - tooltip.sw || echo not ok 58 -  tooltip.sw
-
-^top {
-(IP [fillcolor="orange", tooltip="tip", fontcolor="red", 
-  URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"]) -> (OP [tooltip="top", fillcolor="green", fontcolor="violet",color="green", URL="file:///usr/local/src/sw/src/model/tests/tooltip.sw"] );
-};
-
-T ^top;
-EOF.tooltip.sw
-
-cat << EOF.var.sw | ./sw >/dev/null && echo ok 59 - var.sw || echo not ok 59 -  var.sw
-#$AA="AA)(\n"; 
-&BBB = BBB;
-
-(&BBB) <- (y Y $AA);
-EOF.var.sw
-
-cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 60 - FAILOK/ac.sw || echo ok 60 - FAILOK/ac.sw
-{#
-      AE1.sw
-      
-      This file contains only syntax errors.
-      I.e. every statement will fail to parse successfully.
-#}
-
-(X "3" "7" "9" "adfjee29873*&^^")2 <- 0(X b/c "abc" FailOKHere); 
-(X b/c)2 <- "ab"; 
-"File" <- 0(X b/c); 
-(X in/b/c)2 <- 3(D); 
-(E Comp_bc@2)2 <- 8(D);
-(3)2 <- 8(D);
-(F 8)2 <- 8(D);
-(A strings.Print1)0 <- a(B strings/Gen1); 
-(F)2 <- 7(D) <- 8(E);
-(A strings/Print1)0 <- a(B strings/Gen1); 
-(E strings/Print1)in1 <- 2(F strings/Gen1 "3" "7"); 
-(C strings/Print1)0 <- out1(D strings/Gen1 "2"); 
-FAIL.ac.sw
-
-cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 61 - FAILOK/e3.sw || echo ok 61 - FAILOK/e3.sw
-# Missmatched port names:  
-
-(F A)MATCH  <- MISS(G b);
-FAIL.e3.sw
-
-cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 62 - FAILOK/e4.sw || echo ok 62 - FAILOK/e4.sw
-# Missmatched port 
-
-(H A)0  <- 0(I b);
-(H)1  <- 1(I);
-(H)2.BAR  <- 2.FOO(I);
-(H)3  <- 3(I);
-FAIL.e4.sw
-
-cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 63 - FAILOK/e5.sw || echo ok 63 - FAILOK/e5.sw
-# (K) port error
-
-(K)   <-  OUT(J);
-(J)IN <-  (K);
-FAIL.e5.sw
-
-cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 64 - FAILOK/fail_include.sw || echo ok 64 - FAILOK/fail_include.sw
-INCLUDE "fail_include.sw";
-FAIL.fail_include.sw
-
-cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 65 - FAILOK/inc.sw || echo ok 65 - FAILOK/inc.sw
-#include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
-
-INCLUDE "inc.isw"; 
-
-(X ^N)0 <- 0(Y ^M);
-(X ^N)1 <- 1(Y ^M);
-(X ^N)2 <- 2(Y ^M);
-
-#include "../model/tests/inc3.isw"; 
-
-FAIL.inc.sw
-
-cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 66 - FAILOK/recurse.sw || echo ok 66 - FAILOK/recurse.sw
-{# RECURSE.sw 
- 
-
-#}
-
-
-^S { 
-(C)->(D);
-};
-
-^R {
-(A ^R) -> (B ^S);
-};
-
-(E ^R) -> (F f);
-FAIL.recurse.sw
+FAIL.subnet3.sw
 
 cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 67 - FAILOK/tee.sw || echo ok 67 - FAILOK/tee.sw
 #!/usr/local/bin/swgraph
