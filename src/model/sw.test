@@ -26,7 +26,7 @@ cat << EOF.ab.sw | ./sw >/dev/null && echo ok 3 - ab.sw || echo not ok 3 -  ab.s
 
 #}
 
-(A strings/Print1)SLOT 	<- 0.TAB(B strings/Gen1 "1" "2" "3"  $_BROWSER ); 
+(A strings/Print1)SLOT 	<- 0.TAB(B strings/Gen1 "1" "2" "3"  \$_BROWSER ); 
 (C strings/Print1)IN 	<- OUT.0(D strings/Gen1 "2"); 
 (E strings/Print1 "S1" "S2" "S3")0.IN <- OUT.0(F strings/Gen1 "3" "7"); 
 
@@ -215,9 +215,6 @@ cat << EOF.fig2.sw | ./sw >/dev/null && echo ok 22 - fig2.sw || echo not ok 22 -
 EOF.fig2.sw
 
 cat << EOF.h1.sw | ./sw >/dev/null && echo ok 23 - h1.sw || echo not ok 23 -  h1.sw
-
-
-
 ^a {
 (AA)	<1- (A a);
 (A)1 	<2- (AA2);
@@ -232,7 +229,7 @@ X ^a;
 Y ^b;
 Z ^a;
 
-(E)->(F);
+(E)-5>(F);
 
 T "arg";
 EOF.h1.sw
@@ -529,13 +526,13 @@ EOF.n1.sw
 
 cat << EOF.n2.sw | ./sw >/dev/null && echo ok 37 - n2.sw || echo not ok 37 -  n2.sw
 ^a {  
-   (A)	<2- 0 ;
-    7 	<1- 1(A CO1);
+   (A)	<2- m1 ;
+    m2 	<1- 1(A CO1);
 };  
 
 ^b {  
-    0	<5- 1(B CO2);
-   (B)	<6- 7 ;
+    m1	<5- 1(B CO2);
+   (B)	<6- m2 ;
 };  
 
 Y ^b;
@@ -544,7 +541,7 @@ EOF.n2.sw
 
 cat << EOF.n3.sw | ./sw >/dev/null && echo ok 38 - n3.sw || echo not ok 38 -  n3.sw
 ^a {  
-   (A)	<3- IN ;
+   (A)	<1- IN ;
 };  
 
 ^b {  
@@ -553,7 +550,7 @@ cat << EOF.n3.sw | ./sw >/dev/null && echo ok 38 - n3.sw || echo not ok 38 -  n3
 
 
 ^c {  
-    OUT	<1- (B);
+    OUT	<3- (B);
 };  
 
 ^ab {
@@ -877,10 +874,10 @@ T ^top;
 EOF.tooltip.sw
 
 cat << EOF.var.sw | ./sw >/dev/null && echo ok 58 - var.sw || echo not ok 58 -  var.sw
-#$AA="AA)(\n"; 
+#\$AA="AA)(\n"; 
 &BBB = BBB;
 
-(&BBB) <- (y Y $AA);
+(&BBB) <- (y Y \$AA);
 EOF.var.sw
 
 cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 59 - FAILOK/ac.sw || echo ok 59 - FAILOK/ac.sw
@@ -1001,33 +998,33 @@ Scenario_3:
     . Record View outputs for later testing
 #}
 
-$E="swedit";
-$base="swedit";
+\$E="swedit";
+\$base="swedit";
 
 ^tee {
-(T $E/Tee)1 -> OUT;
+(T \$E/Tee)1 -> OUT;
 IN -> 0(T); 
 };
 
 (M ^model)1.Change -> IN(T ^tee)OUT -> Change(V ^view);
 
 ^model {
-(M $E/Model)1 -> Change;
+(M \$E/Model)1 -> Change;
 Request -> 0(M);
-(_ $base/Getfile) -Swl> 2(M);
-(M)3 -Swl> (_ $base/Putfile);
+(_ \$base/Getfile) -Swl> 2(M);
+(M)3 -Swl> (_ \$base/Putfile);
 };
 
 
 ^view {
-(V $E/View)2 -> Event;
+(V \$E/View)2 -> Event;
 Change -> 0(V);
 Update -> 1(V);
 };
 
 
 ^control {
-(C $E/Control)2 -> Update;
+(C \$E/Control)2 -> Update;
 Event -> 0(C);
 (C)1 -> Request;
 };

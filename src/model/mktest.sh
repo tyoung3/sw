@@ -14,13 +14,13 @@ EOF
 
 mkatest() {
 	echo "cat << EOF.$swt | ./sw >/dev/null && echo ok $nn - $cmt || echo not ok $nn -  $cmt"
-	cat  $swt 
+	cat  $swt | sed -e 's/\$/\\\$/g'
 	echo EOF.$swt
 }
 
 mkftest() {
 	echo "cat << FAIL.$swt | ./sw >/dev/null && echo not ok $nn - $cmt || echo ok $nn - $cmt"
-	cat  $swt 
+	cat  $swt | sed -e 's/\$/\\\$/g'
 	echo FAIL.$swt
 }
 
