@@ -328,9 +328,9 @@ static void SetIsNet( Stream f, char *arrowhead, char *style)  {
 
 static int NotTooDeep(Stream f) {
 
-	if(f->source->depth > MAX_LEVELS) 
+	if( f->source && f->source->depth > MAX_LEVELS) 
 		return 0;
-	if(f->sink->depth   > MAX_LEVELS) 
+	if(f->sink && f->sink->depth   > MAX_LEVELS) 
 		return 0;
 	return 1;	
 }

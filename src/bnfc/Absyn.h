@@ -332,14 +332,14 @@ struct TypeDef_
   union
   {
     struct { Symvalu symvalu_; } typedefa_;
-    struct { Symvalu symvalu_1, symvalu_2; } typedefb_;
+    struct { Symvalu symvalu_; TypeDef typedef_; } typedefb_;
     struct { Numval numval_; TypeDef typedef_; } typedefarray_;
     struct { TypeDef typedef_1, typedef_2; } typdefl_;
   } u;
 };
 
 TypeDef make_Typedefa(Symvalu p0);
-TypeDef make_Typedefb(Symvalu p0, Symvalu p1);
+TypeDef make_Typedefb(TypeDef p0, Symvalu p1);
 TypeDef make_Typedefnull(void);
 TypeDef make_TypedefArray(Numval p0, TypeDef p1);
 TypeDef make_Typdefl(TypeDef p0, TypeDef p1);
@@ -363,13 +363,13 @@ struct Hermt_
   enum { is_Hermtx, is_Hermty } kind;
   union
   {
-    struct { Comp comp_; ListArgument listargument_; Symvalu symvalu_; } hermtx_;
-    struct { ListArgument listargument_; Symvalu symvalu_; } hermty_;
+    struct { Attributes attributes_; Comp comp_; ListArgument listargument_; Symvalu symvalu_; } hermtx_;
+    struct { Attributes attributes_; ListArgument listargument_; Symvalu symvalu_; } hermty_;
   } u;
 };
 
-Hermt make_Hermtx(Symvalu p0, Comp p1, ListArgument p2);
-Hermt make_Hermty(Symvalu p0, ListArgument p1);
+Hermt make_Hermtx(Symvalu p0, Comp p1, ListArgument p2, Attributes p3);
+Hermt make_Hermty(Symvalu p0, ListArgument p1, Attributes p2);
 
 struct Symvalu_
 {
@@ -391,12 +391,12 @@ struct Proc_
   union
   {
     struct { Attributes attributes_; Comp comp_; ListArgument listargument_; Symvalu symvalu_; } processx_;
-    struct { Attributes attributes_; Symvalu symvalu_; } processy_;
+    struct { Attributes attributes_; ListArgument listargument_; Symvalu symvalu_; } processy_;
   } u;
 };
 
 Proc make_Processx(Symvalu p0, Comp p1, ListArgument p2, Attributes p3);
-Proc make_Processy(Symvalu p0, Attributes p1);
+Proc make_Processy(Symvalu p0, ListArgument p1, Attributes p2);
 
 struct Attributes_
 {

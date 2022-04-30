@@ -378,7 +378,7 @@ LSarrow : _SYMB_3 TypeDef Buffsize _SYMB_6 { $$ = make_Arrowsl($2, $3);  }
 RSarrow : _SYMB_6 TypeDef Buffsize _SYMB_5 { $$ = make_Arrowsr($2, $3);  }
 ;
 TypeDef : Symvalu { $$ = make_Typedefa($1);  }
-  | Symvalu _SYMB_7 Symvalu { $$ = make_Typedefb($1, $3);  }
+  | TypeDef _SYMB_7 Symvalu { $$ = make_Typedefb($1, $3);  }
   | /* empty */ { $$ = make_Typedefnull();  }
   | _SYMB_8 Numval _SYMB_9 TypeDef { $$ = make_TypedefArray($2, $4);  }
   | TypeDef _SYMB_10 TypeDef { $$ = make_Typdefl($1, $3);  }
@@ -386,14 +386,14 @@ TypeDef : Symvalu { $$ = make_Typedefa($1);  }
 Buffsize : Numval { $$ = make_Bufszi($1);  }
   | /* empty */ { $$ = make_Bufsze();  }
 ;
-Hermt : Symvalu Comp ListArgument { $$ = make_Hermtx($1, $2, reverseListArgument($3));  }
-  | Symvalu ListArgument { $$ = make_Hermty($1, reverseListArgument($2));  }
+Hermt : Symvalu Comp ListArgument Attributes { $$ = make_Hermtx($1, $2, reverseListArgument($3), $4);  }
+  | Symvalu ListArgument Attributes { $$ = make_Hermty($1, reverseListArgument($2), $3);  }
 ;
 Symvalu : Symval { $$ = make_Symvaluv($1);  }
   | _SYMB_11 { $$ = make_Symvaluu();  }
 ;
 Proc : _SYMB_12 Symvalu Comp ListArgument Attributes _SYMB_13 { $$ = make_Processx($2, $3, reverseListArgument($4), $5);  }
-  | _SYMB_12 Symvalu Attributes _SYMB_13 { $$ = make_Processy($2, $3);  }
+  | _SYMB_12 Symvalu ListArgument Attributes _SYMB_13 { $$ = make_Processy($2, reverseListArgument($3), $4);  }
 ;
 Attributes : _SYMB_8 ListAttr _SYMB_9 { $$ = make_Attribe($2);  }
   | /* empty */ { $$ = make_Attribs();  }

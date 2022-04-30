@@ -74,8 +74,12 @@ VerifyStream (Stream s)
 #define checkSource(S)
 #endif
 
-static Subnetm
-linkSubnet (Model m, char *name)
+
+/**<Anchor for external port list */
+/**  List of unmatched external ports.*/
+static Extport extprtList=NULL;   
+
+static Subnetm linkSubnet (Model m, char *name)
 {
   Subnetm sn2;
 
@@ -658,9 +662,8 @@ visitTypeDef (TypeDef p)
       return t; 
   case is_Typedefb:
       snprintf(bfr,BUFFSIZE,"%s.%s", 
-        visitSymvalu(p->u.typedefb_.symvalu_1),
-        visitSymvalu(p->u.typedefb_.symvalu_2)
-      );
+        visitTypeDef(p->u.typedefb_.typedef_),
+        visitSymvalu(p->u.typedefb_.symvalu_));
       return strndup(bfr,BUFFSIZE);
     case is_Typedefnull:
       return ""; 
@@ -1011,7 +1014,30 @@ visitExtPortOut (ExtPortOut _p_)
     default:
       badkind (ExtPortOut);
     }
+}/** Add process to model.*/
+static void
+linkProc (Model m, Process p)
+{
+  Process p2;
+
+  p->kind = IS_NET;
+  p2 = m->proc;
+  while (p2)
+    {
+      if (strcmp (p2->name, p->name) == 0)
+	{
+	  return;
+	}
+      p2 = p2->next;
+    };
+
+
+  p->next = m->proc;
+  m->proc = p;
+  m->nprocs++;
+
 }
+
 
 /** Get hermit structure */
 Process
@@ -1030,13 +1056,16 @@ visitHermt (Hermt _p_)
 		       MakeArg (visitListArgument
 				(_p_->u.hermtx_.listargument_), name),
 				NULL);
+		  linkProc(net_model,p);		
       return p;
     case is_Hermty:
-      return MakeProcess (net_model,
+      p=MakeProcess (net_model,
 			   visitSymvalu (_p_->u.hermty_.symvalu_), NULL,
 			   MakeArg (visitListArgument
 				    (_p_->u.hermty_.listargument_),NULL),  
 			   NULL);
+   	  linkProc(net_model,p);
+   	  return p;
     default:
       badkind (Hermt);
     }
@@ -1564,12 +1593,8 @@ copyPort (Port p0)
   return p1;
 }
 
-/**<Anchor for external port list */
-/**  List of unmatched external ports.*/
-static Extport extprtList = NULL;   
-
 // Find a matching port for unmatched external port, ep.  
-static int findAmatchingPort (Model m, Extport extprtList, Process p, Extport ep)
+static int findAmatchingPort (Model m,  Process p, Extport ep)
 {
   Extport ep2 = NULL;
   Port pt;
@@ -1725,7 +1750,7 @@ Expand3 (Model m, Process p, Extport ep)
 	}
     }
 
-  findAmatchingPort (m, extprtList, p, ep);
+  findAmatchingPort (m,  p, ep);
 
 }
 
@@ -1818,7 +1843,7 @@ expandSubnets (Model m)
 	{
 	  if (p->comp)
 	    {
-	      if (p->comp->path[0] == '^')
+	      if (p->comp->path[0] == '_')
 		{		/* Is a subnet */
 		  more = 1;
 		  nexpands++; 
@@ -2140,29 +2165,6 @@ fixFanInOut (Model m)
     }
 }
 
-/** Add process to model.*/
-static void
-linkProc (Model m, Process p)
-{
-  Process p2;
-
-  p->kind = IS_NET;
-  p2 = m->proc;
-  while (p2)
-    {
-      if (strcmp (p2->name, p->name) == 0)
-	{
-	  return;
-	}
-      p2 = p2->next;
-    };
-
-
-  p->next = m->proc;
-  m->proc = p;
-  m->nprocs++;
-
-}
 
 /** MAX(A,B) returns highest of A or B */
 #define MAX(A,B) ( (A>B)? A: B)
@@ -2400,7 +2402,7 @@ removeDeadStreams (Model m)
     {
       if (s->source->comp != NULL)
 	{
-	  if (s->source->comp->path[0] == '^')
+	  if (s->source->comp->path[0] == '_')
 	    {			/* if subnet, remove stream */
 	      if (s == m->stream)
 		{
