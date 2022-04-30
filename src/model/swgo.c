@@ -406,6 +406,8 @@ static int badType(char *t) {
 		return 0;
 }
 
+#define red "\033[31m"
+
 /** Generate Prefix code */
 void genPrefix(Model m)
 {
@@ -452,8 +454,8 @@ void genPrefix(Model m)
     f = m->stream;
     i = 0;
     while (f) {
-      if(f->type != IS_ORPHAN) {
-	  bfrtbl[nstreams - i++ - 1] = f->bufsz;
+      if(f->type != IS_ORPHAN && f->type != IS_SUB) {
+	  	bfrtbl[nstreams - i++ - 1] = f->bufsz;
       if(defaultChannelType == NULL || defaultChannelType[0]=='_') 
         defaultChannelType="interface{}";
         char *ftype=defaultChannelType;
@@ -465,7 +467,8 @@ void genPrefix(Model m)
           ftype=f->iptype;
         }
         if(badType(ftype)) {
-        	FAIL(GenPrefix,"Bad Type");
+        	fprintf(stderr,"%sExported Type from process, %s. ", red, f->source->name ); 
+        	FAIL(GenPrefix," is not capitalized");
         }
         f->iptype=ftype;
         f->streamNum=nstream;
@@ -474,8 +477,10 @@ void genPrefix(Model m)
 		    //				nstream++, module, ftype,f->bufsz,            
 		    //				f->source->name,f->SourcePort->id, 
 		    //				f->sink->name,f->SinkPort->id);
-	      printf("_ch%d := make(chan %s,%i)\t//%s.%d->%s.%d\n",
-		    				nstream++, ftype,f->bufsz,            
+	      printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
+		    				nstream++,
+		    				module, 
+		    				ftype,f->bufsz,            
 		    				f->source->name,f->SourcePort->id, 
 		    				f->sink->name,f->SinkPort->id);
 	   }  // End if not orphan 	    

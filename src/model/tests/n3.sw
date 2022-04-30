@@ -19,5 +19,9 @@ X ^a; Y ^b;
 X ^a; Y ^c; 
 };
 
+^dummy {
+D ^a; E ^c;
+};
+
 T ^ab;
 U ^ac;
