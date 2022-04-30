@@ -74,8 +74,12 @@ VerifyStream (Stream s)
 #define checkSource(S)
 #endif
 
-static Subnetm
-linkSubnet (Model m, char *name)
+
+/**<Anchor for external port list */
+/**  List of unmatched external ports.*/
+static Extport extprtList=NULL;   
+
+static Subnetm linkSubnet (Model m, char *name)
 {
   Subnetm sn2;
 
@@ -1589,12 +1593,8 @@ copyPort (Port p0)
   return p1;
 }
 
-/**<Anchor for external port list */
-/**  List of unmatched external ports.*/
-static Extport extprtList = NULL;   
-
 // Find a matching port for unmatched external port, ep.  
-static int findAmatchingPort (Model m, Extport extprtList, Process p, Extport ep)
+static int findAmatchingPort (Model m,  Process p, Extport ep)
 {
   Extport ep2 = NULL;
   Port pt;
@@ -1750,7 +1750,7 @@ Expand3 (Model m, Process p, Extport ep)
 	}
     }
 
-  findAmatchingPort (m, extprtList, p, ep);
+  findAmatchingPort (m,  p, ep);
 
 }
 

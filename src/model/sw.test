@@ -151,7 +151,7 @@ cat << EOF.collate.sw | ./sw >/dev/null && echo ok 14 - collate.sw || echo not o
 
 # WARNING: Merge sends output on channel 0(Zero) contrary to convention(channel 1). 
 
-$tip = "sw.Print/Match0: You can specify your own attributes plus color, tooltip and other dot attributes.";  
+\$tip = "sw.Print/Match0: You can specify your own attributes plus color, tooltip and other dot attributes.";  
 
 (C sw/swutility/Collate [size="large", fill="lightgreen"]) 
      <1-  (G0  Gen "12" "1" "2" );  
@@ -159,7 +159,7 @@ $tip = "sw.Print/Match0: You can specify your own attributes plus color, tooltip
 (M)2	    		<-  (G1  Gen "5"  "5" "1" );
 (M)IN.1		    	< 3-  (G2  Gen "8"  "2" "3" );
 
-(Match0 Print [fillcolor="lightgreen", tooltip=$tip]) 	<- 2(C);
+(Match0 Print [fillcolor="lightgreen", tooltip=\$tip]) 	<- 2(C);
 (Match1 Print [fillcolor="lightgreen", tooltip="match1"]) 	<- 3(C);
 (Miss0  Print [fillcolor="red", tooltip="MISS!!"])MISS 	<- 4.MISS(C);
 (Miss1  Print [tooltip="MISS!!", fillcolor="red"]) 	<- OUT.5(C);   
@@ -621,12 +621,12 @@ cat << EOF.postage.sw | ./sw >/dev/null && echo ok 43 - postage.sw || echo not o
 
 # POSTAGE.SW:  Postal rate Streamwork Network Definition Example
 
-$mod="postage";
-(Rates  $mod/Rates ".58" "oz" )		-RateT  3> 	 3(cp $mod/ComputePostage);
-(Weight $mod/GetWeight "10" "oz")	-WeighT 2> 	 2(cp);
-(From   $mod/GetLoc "New York")		-> 					 0(cp);
-(To     $mod/GetLoc "LA" )				-_> 			   1(cp);
-(cp)4					        			      -PostageT> 	 (print $mod/PrintLabel);
+\$mod="postage";
+(Rates  \$mod/Rates ".58" "oz" )		-RateT  3> 	 3(cp \$mod/ComputePostage);
+(Weight \$mod/GetWeight "10" "oz")	-WeighT 2> 	 2(cp);
+(From   \$mod/GetLoc "New York")		-> 					 0(cp);
+(To     \$mod/GetLoc "LA" )				-_> 			   1(cp);
+(cp)4					        			      -PostageT> 	 (print \$mod/PrintLabel);
 EOF.postage.sw
 
 cat << EOF.prefix.sw | ./sw >/dev/null && echo ok 44 - prefix.sw || echo not ok 44 -  prefix.sw
