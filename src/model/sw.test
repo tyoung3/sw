@@ -732,9 +732,9 @@ cat << EOF.struct.sw | ./sw >/dev/null && echo ok 49 - struct.sw || echo not ok 
 (R)6->6(S);
 (R)5->5(S);
 (R)4-int>4(S);
-(R)3-int>3(S);
+(R)3-uint>3(S);
 (R)2-sw.IpT>2(S);
-(R)1-sw.IpT>1(S);
+(R)1-rune>1(S);
 (R)0-[100]int>0(S);
 EOF.struct.sw
 
@@ -781,13 +781,13 @@ cat << EOF.subnet2.sw | ./sw >/dev/null && echo ok 51 - subnet2.sw || echo not o
 ^N {   
 (A1)0	<9- 		0;  
 (A1)1 	<10- 		1;
-(e E)0	<type_K3 11- 	2; 
+(e E)0	< 11- 	2; 
 #3      <12-  		(u); 
 };
 
 (X ^N)0 <type_L 1- 0(Y ^M);
 (X ^N)1 <string 2- 1(Y ^M);
-(X ^N)2 <type_M 3- 2(Y ^M);
+(X ^N)2 <type_K2 3- 2(Y ^M);
 
 (T) 	<4- (U);
 EOF.subnet2.sw
