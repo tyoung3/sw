@@ -694,6 +694,11 @@ break existing networks.
     type are combined into a channel slice.     
   * Fixed numerous problems with swproject. 
   
+## 0.28.1
+   * Fixed IP type bugs
+   * Updated docs  
+
+  
 ## Author<a name="author"/>
 
     Tom Young, streamwork@twyoung.com
