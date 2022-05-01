@@ -695,8 +695,9 @@ break existing networks.
   * Fixed numerous problems with swproject. 
   
 ## 0.28.1
-  * Fixed IP type bugs
-  * Updated docs  
+   * Fixed IP type bugs
+   * Updated docs  
+
   
 ## Author<a name="author"/>
 
