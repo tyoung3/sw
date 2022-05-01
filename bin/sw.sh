@@ -208,8 +208,7 @@ case $1 in
 	    cd ../
 	    mkdocs build
 	    mkdocs serve -a localhost:8001 &
-	    sleep 4
-	    $BROWSER localhost:8001 &
+	    # ?? ( sleep 60; $BROWSER localhost:8001 ) &
 	    ;;
 	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0 &;;
@@ -227,6 +226,7 @@ sw.sh-$version USAGE:
 		jl		. Generate and view locusts.png 
 		p  [NAME..]	. Generate project(s) named NAME[default nds/postage.sw]
 		poc		. Build and run Proof of Concept 
+		postage . Create postage project tree
 		rm		. View README in $BROWSER 
 		rc		. Build and run Collate program 
 		rl		. Run locusts program
