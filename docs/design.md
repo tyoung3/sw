@@ -3,11 +3,14 @@
 
 ## GO Design Guidelines
 
+	* Begin component with defer _wg.Done(). 
+	* defer Close(CHANNEL) for all output channels.
+	* Do not close input channels. 
   * Separate concerns
    	* GUI, business logic, DB,  etc. should not be intermixed. 
    	* Try to make the business logic clear to the business experts and easily modifiable.  
    	  Use decision tables, graphs, etc.
-  * Do not avoid the GO init() function.  The init() function in all
+  * Use the GO init() function.  The init() function in all
     processes will execute, in parallel, prior to any main function.
     For instance, one process could set the DEBUG variable on within 
     its init() function, causing
@@ -21,10 +24,10 @@
   	  reconstructed on receipt. 
   	* Strive for less than four channels per component, 
   	  splitting into multiple components if necessary.   
-  	  Exception:  same IP type on multiple channels.     
+  	  Exception:  same IP type on multiple channels, as in merging.    
   	* Don't over simplify and create too many fine-grained processes.
- 	* Use simple URI rules [URI Rules](https://dzone.com/articles/7-rules-for-rest-api-uri-design-1)
-  * Don't buffer unnecessarily.   Zero-length buffers are a bit more secure and minimize latency.  
+ 	  * Use simple URI rules [URI Rules](https://dzone.com/articles/7-rules-for-rest-api-uri-design-1)
+    * Don't buffer unnecessarily.   Zero-length buffers are a bit more secure and minimize latency.  
   	 In come cases, particularly in cyclic networks, however, non-zero buffers may be 
   	 necessary to prevent deadlock.  Non-zero buffers may also speed processing sometimes. 
   	 Note that Go uses ring buffers, implying that IPs can be received even when the buffer 
@@ -51,8 +54,11 @@ StreamWork:
 
   * does not complicate debugging with subnet logic.  Subnets are purely
     design aids.
-  * does not process IPs; it merely creates a channel for every stream, assigning the channels to the sending and receiving components;
-  * has a number of rules for automatically connecting ports according to their names and modes(sink or source)<!-- ?? show rules -->;  
+  * does not process or examine IPs; it merely creates a channel for every stream, assigning the channels to the sending and receiving components;
+  * has a number of rules for automatically connecting ports according to their names and modes(sink or source)
+     * Matches (upper and lower case port names) 'OUT' to 'IN'; 
+       'TAB' to 'SLOT'; and 'PLUG' to 'SOCKET'.  
+     * Also matches output ports to input ports with the same name.     
   * implements a text based, context free, program language agnostic, network definition language, SWL;
   * produces pure Go code with no dependencies other than those required by the components themselves; 
    (The generated code, should run on any platform Go supports. Non-standard components may contain OS dependent code, however.)  

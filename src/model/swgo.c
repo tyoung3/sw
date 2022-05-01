@@ -368,6 +368,9 @@ char *fixModule(Model m, char *ftype) {
 		if(strncmp(ftype,"interface{}",30) == 0)  
 		  	return "";
 		
+		if( ftype[0] < 'A' || ftype[0] > 'Z' ) 
+			  return "";
+			  
 		while(m->name[i] != 0) {
 				bfr[i]=m->name[i];
 			  if(m->name[i] == '.') {

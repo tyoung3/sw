@@ -20,7 +20,7 @@ FUNCTIONS
 
 func Gen(wg *sync.WaitGroup, arg []string, ch chan interface{})
     Gen sends 'nbr' integers, beginning with 'start', incremented by 'inc';
-    argcuments 1, 2, and 3 respectively over port 0.
+    arguments 1, 2, and 3 respectively over port 0.
 
     #####Examples
 

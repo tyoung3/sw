@@ -4,11 +4,11 @@ package sw
 import "sync"
 import "strconv"
 
-var version = "v0.28.0"
+var version = "v0.28.1"
 
 /*
 Gen sends 'nbr' integers, beginning with 'start', incremented
-by 'inc';  argcuments 1, 2, and 3 respectively over port 0.
+by 'inc';  arguments 1, 2, and 3 respectively over port 0.
 
 #####Examples
 		(Gen will send:
