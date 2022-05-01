@@ -140,6 +140,10 @@
               
                 <h1 id="streamwork-design-guidelines">StreamWork Design Guidelines</h1>
 <h2 id="go-design-guidelines">GO Design Guidelines</h2>
+<pre><code>* Begin component with defer _wg.Done(). 
+* defer Close(CHANNEL) for all output channels.
+* Do not close input channels.
+</code></pre>
 <ul>
 <li>Separate concerns<ul>
 <li>GUI, business logic, DB,  etc. should not be intermixed. </li>
@@ -147,12 +151,14 @@
   Use decision tables, graphs, etc.</li>
 </ul>
 </li>
-<li>Do not avoid the GO init() function.  The init() function in all
+<li>Use the GO init() function.  The init() function in all
     processes will execute, in parallel, prior to any main function.
     For instance, one process could set the DEBUG variable on within 
     its init() function, causing
     all processes to continue in DEBUG mode.      </li>
-<li>Simple interfaces<ul>
+<li>
+<p>Simple interfaces</p>
+<ul>
 <li>Avoid global variables.  Ensure components are re-entrant.  </li>
 <li>Limit each channel to one type of data.  Pass a structure, 
   instead of multiple data elements.<br />
@@ -161,17 +167,15 @@
   reconstructed on receipt. </li>
 <li>Strive for less than four channels per component, 
   splitting into multiple components if necessary. <br />
-  Exception:  same IP type on multiple channels.     </li>
+  Exception:  same IP type on multiple channels, as in merging.    </li>
 <li>Don't over simplify and create too many fine-grained processes.</li>
 <li>Use simple URI rules <a href="https://dzone.com/articles/7-rules-for-rest-api-uri-design-1">URI Rules</a></li>
+<li>Don't buffer unnecessarily.   Zero-length buffers are a bit more secure and minimize latency.<br />
+ In come cases, particularly in cyclic networks, however, non-zero buffers may be 
+ necessary to prevent deadlock.  Non-zero buffers may also speed processing sometimes. 
+ Note that Go uses ring buffers, implying that IPs can be received even when the buffer 
+ is not full.  Buffers can be useful when input arrives erratically.  </li>
 </ul>
-</li>
-<li>
-<p>Don't buffer unnecessarily.   Zero-length buffers are a bit more secure and minimize latency.<br />
-     In come cases, particularly in cyclic networks, however, non-zero buffers may be 
-     necessary to prevent deadlock.  Non-zero buffers may also speed processing sometimes. 
-     Note that Go uses ring buffers, implying that IPs can be received even when the buffer 
-     is not full.  Buffers can be useful when input arrives erratically.  </p>
 </li>
 <li>
 <p>Security and synchronization</p>
@@ -195,8 +199,13 @@
 <ul>
 <li>does not complicate debugging with subnet logic.  Subnets are purely
     design aids.</li>
-<li>does not process IPs; it merely creates a channel for every stream, assigning the channels to the sending and receiving components;</li>
-<li>has a number of rules for automatically connecting ports according to their names and modes(sink or source)<!-- ?? show rules -->;  </li>
+<li>does not process or examine IPs; it merely creates a channel for every stream, assigning the channels to the sending and receiving components;</li>
+<li>has a number of rules for automatically connecting ports according to their names and modes(sink or source)<ul>
+<li>Matches (upper and lower case port names) 'OUT' to 'IN'; 
+   'TAB' to 'SLOT'; and 'PLUG' to 'SOCKET'.  </li>
+<li>Also matches output ports to input ports with the same name.     </li>
+</ul>
+</li>
 <li>implements a text based, context free, program language agnostic, network definition language, SWL;</li>
 <li>produces pure Go code with no dependencies other than those required by the components themselves; 
    (The generated code, should run on any platform Go supports. Non-standard components may contain OS dependent code, however.)  </li>
