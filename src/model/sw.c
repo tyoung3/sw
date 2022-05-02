@@ -1411,7 +1411,7 @@ checkIPtype(char *msg, char *srcType, char *snkType, char *srcName,
 }
 
 /** Expand a subnet*/
-static void Expand2(Model m, Process p, Stream s)
+static void ExpandAsubnet(Model m, Process p, Stream s)
 {
 	char *srcname, *snkname;	// Concatenated process names 
 	Process src, snk;
@@ -1514,7 +1514,7 @@ int sameName(char *s0, char *s1)
 /** Expand process,p, subnet component.  
       Match ep to a port,pt in p.
       Update existing stream,s, in pt */
-static void Expand3(Model m, Process p, Extport ep)
+static void ExpandAprocess(Model m, Process p, Extport ep)
 {
 
 	Port pt = NULL, ptc = NULL;
@@ -1547,7 +1547,7 @@ static void Expand3(Model m, Process p, Extport ep)
 					s->source = pnew;
 					if (ep->bufsz > s->bufsz)
 						s->bufsz = ep->bufsz;
-					checkIPtype("Expand3A", ep->iptype,
+					checkIPtype("ExpandAprocessA", ep->iptype,
 						    s->iptype, s->source->name,
 						    ep->name);
 					if ((ep->iptype && ep->iptype[0]) != 0)
@@ -1592,7 +1592,7 @@ static void Expand3(Model m, Process p, Extport ep)
 					s->sink = pnew;
 					if (ep->bufsz > s->bufsz)
 						s->bufsz = ep->bufsz;
-					checkIPtype("Expand3B", s->iptype,
+					checkIPtype("ExpandAprocessB", s->iptype,
 						    ep->iptype, s->sink->name,
 						    ep->name);
 					if ((ep->iptype && ep->iptype[0]) != 0)
@@ -1621,20 +1621,20 @@ static void Expand3(Model m, Process p, Extport ep)
 }
 
 	/** Expand the model for each external port and stream in the subnet */
-static void Expand(Model m, Process p, Subnetm sn)
+static void ExpandStreams(Model m, Process p, Subnetm sn)
 {
 	Stream s;
 	Extport ep;
 
 	ep = sn->extport;
 	while (ep) {
-		Expand3(m, p, ep);
+		ExpandAprocess(m, p, ep);
 		ep = ep->next;
 	}
 
 	s = sn->stream;
 	while (s) {
-		Expand2(m, p, s);
+		ExpandAsubnet(m, p, s);
 		s = s->next;
 	}
 
@@ -1649,7 +1649,7 @@ static void expandSub(Model m, Process p)
 	sn = m->subnetm;
 	while (sn) {		// find the subnet for p
 		if (strncmp(sn->name, p->comp->name, 100) == 0) {
-			Expand(m, p, sn);
+			ExpandStreams(m, p, sn);
 			return;
 		}
 		sn = sn->next;
