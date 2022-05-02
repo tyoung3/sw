@@ -2043,6 +2043,13 @@ static void SortPorts(Process p)
 	}
 }
 
+static char *pickType(char *t1, char *t2) {
+    if(t1==NULL || t1=="") 
+            return t2;
+            
+    return t1;
+}
+
 /** Create a new stream structure. */
 static void createStream(Model m, Extport ep, Extport ep2)
 {
@@ -2072,7 +2079,7 @@ static void createStream(Model m, Extport ep, Extport ep2)
 
 	s = MakeStream(IS_NET, ep->source, ep2->sink,
 		       MAX(ep->bufsz, ep2->bufsz), m, srcpt, snkpt,
-		       ep2->iptype);
+		       pickType(ep->iptype,ep2->iptype));
 
 	linkProc(m, ep->source);
 	linkProc(m, ep2->sink);
@@ -2113,6 +2120,9 @@ static int Matched(Extport ep2)
 //Iptypes match if they are identical or if one or the other is not specified.
 static int matchIpType(char *t1, char *t2)
 {
+    if (strncmp(t1, t2, 100) == 0)  
+            return 1;
+
 	if ((t1 == t2) ||
 	    (t1 == NULL) || (t2 == NULL) ||
 	    (t1 == "") || (t2 == "") || (t1[0] == ' ') || t2[0] == ' ')

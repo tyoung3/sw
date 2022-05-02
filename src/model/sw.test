@@ -766,7 +766,6 @@ EOF.subnet1.sw
 
 cat << EOF.subnet2.sw | ./sw >/dev/null && echo ok 51 - subnet2.sw || echo not ok 51 -  subnet2.sw
 {#Subnets M and N
-	FAIL: SW/msg: Expand3A: Type Mismatch for (YS2) -type_K2>  and ((null)) -type_M>
 #}
 
 ^M { 
@@ -873,14 +872,44 @@ cat << EOF.tooltip.sw | ./sw >/dev/null && echo ok 57 - tooltip.sw || echo not o
 T ^top;
 EOF.tooltip.sw
 
-cat << EOF.var.sw | ./sw >/dev/null && echo ok 58 - var.sw || echo not ok 58 -  var.sw
+cat << EOF.tp1.sw | ./sw >/dev/null && echo ok 58 - tp1.sw || echo not ok 58 -  tp1.sw
+^a {  
+   (A)	<int 2- m1 ;
+    m2 	<1-     1(A CO1);
+};  
+
+^b {  
+    m1	<int 5- 1(B CO2);
+   (B)	<6-     m2 ;
+};  
+
+Y ^b;
+X ^a; 
+EOF.tp1.sw
+
+cat << EOF.tp3.sw | ./sw >/dev/null && echo ok 59 - tp3.sw || echo not ok 59 -  tp3.sw
+^a {  
+   (A)	<int 2- m1 ;
+    m2 	<Ty1 1- 1(A CO1);
+};  
+
+^b {  
+    m1	<int 5- 1(B CO2);
+   (B)	<6- m2 ;
+};  
+
+Y ^b;
+X ^a; 
+EOF.tp3.sw
+
+cat << EOF.var.sw | ./sw >/dev/null && echo ok 60 - var.sw || echo not ok 60 -  var.sw
 #\$AA="AA)(\n"; 
 &BBB = BBB;
 
 (&BBB) <- (y Y \$AA);
 EOF.var.sw
 
-cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 59 - FAILOK/ac.sw || echo ok 59 - FAILOK/ac.sw
+cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 61 - FAILOK/ac.sw || echo ok 61 - FAILOK/ac.sw
 {#
       AE1.sw
       
@@ -901,13 +930,13 @@ cat << FAIL.ac.sw | ./sw >/dev/null && echo not ok 59 - FAILOK/ac.sw || echo ok 
 (C strings/Print1)0 <a b- out1(D strings/Gen1 "2"); 
 FAIL.ac.sw
 
-cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 60 - FAILOK/e3.sw || echo ok 60 - FAILOK/e3.sw
+cat << FAIL.e3.sw | ./sw >/dev/null && echo not ok 62 - FAILOK/e3.sw || echo ok 62 - FAILOK/e3.sw
 # Missmatched port names:  
 
 (F A)MATCH  <- MISS(G b);
 FAIL.e3.sw
 
-cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 61 - FAILOK/e4.sw || echo ok 61 - FAILOK/e4.sw
+cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 63 - FAILOK/e4.sw || echo ok 63 - FAILOK/e4.sw
 # Missmatched port 
 
 (H A)0  <- 0(I b);
@@ -916,18 +945,18 @@ cat << FAIL.e4.sw | ./sw >/dev/null && echo not ok 61 - FAILOK/e4.sw || echo ok 
 (H)3  <- 3(I);
 FAIL.e4.sw
 
-cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 62 - FAILOK/e5.sw || echo ok 62 - FAILOK/e5.sw
+cat << FAIL.e5.sw | ./sw >/dev/null && echo not ok 64 - FAILOK/e5.sw || echo ok 64 - FAILOK/e5.sw
 # (K) port error
 
 (K)   <-  OUT(J);
 (J)IN <-  (K);
 FAIL.e5.sw
 
-cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 63 - FAILOK/fail_include.sw || echo ok 63 - FAILOK/fail_include.sw
+cat << FAIL.fail_include.sw | ./sw >/dev/null && echo not ok 65 - FAILOK/fail_include.sw || echo ok 65 - FAILOK/fail_include.sw
 INCLUDE "fail_include.sw";
 FAIL.fail_include.sw
 
-cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 64 - FAILOK/inc.sw || echo ok 64 - FAILOK/inc.sw
+cat << FAIL.inc.sw | ./sw >/dev/null && echo not ok 66 - FAILOK/inc.sw || echo ok 66 - FAILOK/inc.sw
 #include "/home/tyoung3/go/src/github.com/tyoung3/sw/model/tests/inc.isw"; 
 
 INCLUDE "inc.isw"; 
@@ -940,7 +969,7 @@ INCLUDE "inc.isw";
 
 FAIL.inc.sw
 
-cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 65 - FAILOK/recurse.sw || echo ok 65 - FAILOK/recurse.sw
+cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 67 - FAILOK/recurse.sw || echo ok 67 - FAILOK/recurse.sw
 {# RECURSE.sw 
  
 
@@ -958,7 +987,7 @@ cat << FAIL.recurse.sw | ./sw >/dev/null && echo not ok 65 - FAILOK/recurse.sw |
 (E ^R) -> (F f);
 FAIL.recurse.sw
 
-cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 66 - FAILOK/subnet3.sw || echo ok 66 - FAILOK/subnet3.sw
+cat << FAIL.subnet3.sw | ./sw >/dev/null && echo not ok 68 - FAILOK/subnet3.sw || echo ok 68 - FAILOK/subnet3.sw
 {#  SUBNET3.sw
  FAIL: SW/msg: createStream: Type Mismatch for (Eb) -type_A>  and (Eb) -type_N2>
 #}
@@ -981,7 +1010,7 @@ Ea	<type_B 15-	0(A);
 #################   The End   ###########################
 FAIL.subnet3.sw
 
-cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 67 - FAILOK/tee.sw || echo ok 67 - FAILOK/tee.sw
+cat << FAIL.tee.sw | ./sw >/dev/null && echo not ok 69 - FAILOK/tee.sw || echo ok 69 - FAILOK/tee.sw
 #!/usr/local/bin/swgraph
 
 # TEE.SW: derived from swedit.sw adding tee function to record trafic.
@@ -1033,4 +1062,19 @@ _ ^model;
 _ ^view; 
 _ ^control;
 FAIL.tee.sw
-echo  1..67 # Number of tests to be executed.
+
+cat << FAIL.tp2.sw | ./sw >/dev/null && echo not ok 70 - FAILOK/tp2.sw || echo ok 70 - FAILOK/tp2.sw
+^a {  
+   (A)	<int 2- m1 ;
+    m2 	<1-     1(A CO1);
+};  
+
+^b {  
+    m1	<string 5- 1(B CO2);
+   (B)	<6-     m2 ;
+};  
+
+Y ^b;
+X ^a; 
+FAIL.tp2.sw
+echo  1..70 # Number of tests to be executed.
