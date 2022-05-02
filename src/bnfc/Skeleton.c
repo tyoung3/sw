@@ -368,8 +368,8 @@ void visitTypeDef(TypeDef p)
     break;
   case is_Typedefb:
     /* Code for Typedefb Goes Here */
-    visitSymvalu(p->u.typedefb_.symvalu_1);
-    visitSymvalu(p->u.typedefb_.symvalu_2);
+    visitTypeDef(p->u.typedefb_.typedef_);
+    visitSymvalu(p->u.typedefb_.symvalu_);
     break;
   case is_Typedefnull:
     /* Code for Typedefnull Goes Here */
@@ -418,11 +418,13 @@ void visitHermt(Hermt p)
     visitSymvalu(p->u.hermtx_.symvalu_);
     visitComp(p->u.hermtx_.comp_);
     visitListArgument(p->u.hermtx_.listargument_);
+    visitAttributes(p->u.hermtx_.attributes_);
     break;
   case is_Hermty:
     /* Code for Hermty Goes Here */
     visitSymvalu(p->u.hermty_.symvalu_);
     visitListArgument(p->u.hermty_.listargument_);
+    visitAttributes(p->u.hermty_.attributes_);
     break;
 
   default:
@@ -463,6 +465,7 @@ void visitProc(Proc p)
   case is_Processy:
     /* Code for Processy Goes Here */
     visitSymvalu(p->u.processy_.symvalu_);
+    visitListArgument(p->u.processy_.listargument_);
     visitAttributes(p->u.processy_.attributes_);
     break;
 

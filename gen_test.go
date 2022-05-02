@@ -11,13 +11,11 @@ import "fmt"
 import "sync"
 
 func TestGen(t *testing.T) {
-	var cs []chan interface{}
 	var wg sync.WaitGroup
 
 	arg := []string{"ABC", "3", "5", "7"}
 
-	cs = append(cs, make(chan interface{}))
-	c := cs[0]
+	c := make(chan interface{})
 
 	go func() {
 		defer wg.Done()
@@ -33,7 +31,7 @@ func TestGen(t *testing.T) {
 	}()
 
 	wg.Add(2)
-	go Gen(&wg, arg, cs)
+	go Gen(&wg, arg, c)
 	wg.Wait()
 
 }

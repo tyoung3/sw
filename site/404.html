@@ -10,15 +10,16 @@
   
   <link rel="shortcut icon" href="/img/favicon.ico">
   <title>StreamWork</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
   <link rel="stylesheet" href="/css/theme.css" />
   <link rel="stylesheet" href="/css/theme_extra.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
   
   <script src="/js/jquery-2.1.1.min.js" defer></script>
   <script src="/js/modernizr-2.8.3.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
-  
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -32,7 +33,7 @@
         <a href="/." class="icon icon-home"> StreamWork</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="//search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -46,19 +47,46 @@
                     <li class="toctree-l1"><a class="reference internal" href="/rdm/">Readme</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">User Guide</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="/github/">Github</a>
+                    <li class="toctree-l1"><a class="reference internal" href="/components/">Components</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/components/sw/">SwBase</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/components/swutility/">Swutility</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/components/os/">Os</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/components/config/">Config</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/components/fileio/">Fileio</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/SWL.pdf">SW Language Labeled BNF(pdf)</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">Developer Guide</span></p>
                 <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="/license/">License</a>
+                    <li class="toctree-l1"><a class="reference internal" href="/design/">Design Guidelines</a>
                     </li>
-                </ul>
-                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="/PROJECT/">Project Generation</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="/mkdocs/">Mkdocs</a>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/github/">Github Project</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/DOCKER/">Docker</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/APIs/">API Comments</a>
+                    </li>
                 </ul>
+                <p class="caption"><span class="caption-text">About</span></p>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="/FBP/">FBP</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/license/">License</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="/SECURITY/">Security</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="/about/">About</a>
                     </li>
                 </ul>
@@ -89,6 +117,7 @@
   
   <hr/>
 </div>
+
           <div role="main">
             <div class="section">
               
@@ -108,6 +137,8 @@
   <div role="contentinfo">
     <!-- Copyright etc -->
     
+      <p>Copyright &copy; 2021, 2022, Tom Young, streamwork@twyoung.com.</p>
+    
   </div>
 
   Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
@@ -121,13 +152,14 @@
   </div>
 
   <div class="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      
-      
-      
-    </span>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
 </div>
     <script>var base_url = '/';</script>
+    <script src="/js/theme_extra.js" defer></script>
     <script src="/js/theme.js" defer></script>
       <script src="/search/main.js" defer></script>
     <script defer>

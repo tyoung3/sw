@@ -1,10 +1,31 @@
 site_name: StreamWork
+site_url: https://sw.twyoung.com
+#repo_url: https://github.com/tyoung3/sw/docs
+#repo_name: GitHub
 nav:
   - Home: index.md
   - Readme: rdm.md
-  - Github: github.md
-  - License: license.md
-  - Mkdocs: mkdocs.md
-  - About: about.md
-       
+  - User Guide: 
+      - Components: components.md
+      - SwBase: components/sw.md 
+      - Swutility: components/swutility.md
+      - Os:   components/os.md
+      - Config:  components/config.md
+      - Fileio:  components/fileio.md 
+      - SW Language Labeled BNF(pdf): SWL.pdf
+  - Developer Guide: 
+      - Design Guidelines: design.md
+      - Project Generation: PROJECT.md
+      - Mkdocs: mkdocs.md   
+      - Github Project: github.md 
+      - Docker: DOCKER.md
+      - API Comments: APIs.md
+  - About: 
+      - FBP:    FBP.md   
+      - License: license.md
+      - Security: SECURITY.md
+      - About: about.md
+
+copyright: Copyright &copy; 2021, 2022, Tom Young, streamwork@twyoung.com.
+
 theme: readthedocs

@@ -61,11 +61,11 @@ Arrowr.			Rarrow	 	::=  "-" TypeDef Buffsize ">" 		;
 Arrowsl.		LSarrow	 	::=  "<" TypeDef Buffsize "=" 		;
 Arrowsr.		RSarrow	 	::=  "=" TypeDef Buffsize ">" 		; 
 
-Typedefa.		TypeDef		::=  Symvalu 	 		;
-Typedefb.       TypeDef     ::=  Symvalu "." Symvalu;
-Typedefnull.	TypeDef		::=  "";
+Typedefa.				TypeDef			::=  Symvalu 	 		;
+Typedefb.       TypeDef     ::=  TypeDef "." Symvalu;
+Typedefnull.		TypeDef			::=  "";
 TypedefArray.   TypeDef     ::=  "[" Numval "]" TypeDef;
-Typdefl.        TypeDef     ::=  TypeDef    "," TypeDef;  
+Typdefl.        	TypeDef     ::=  TypeDef    "," TypeDef;  
 
 Bufszi.			Buffsize 	::= Numval ;
 Bufsze.			Buffsize 	::=        ; 
@@ -93,7 +93,7 @@ Portn.          Prt     	::= Symval		        ;
 Porte.			Prt		    ::= ;		
 
 Compx.			Comp		::= Symval		;	
-Compn.		    Comp		::= SubId		;
+Compn.		  Comp		::= SubId		;
 Compz.			Comp		::= ModPath Symval	;
 Compa.			Comp		::= RemPath 		;
 

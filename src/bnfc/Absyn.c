@@ -523,7 +523,7 @@ TypeDef make_Typedefa(Symvalu p1)
     return tmp;
 }
 /********************   Typedefb    ********************/
-TypeDef make_Typedefb(Symvalu p1, Symvalu p2)
+TypeDef make_Typedefb(TypeDef p1, Symvalu p2)
 {
     TypeDef tmp = (TypeDef) malloc(sizeof(*tmp));
     if (!tmp)
@@ -532,8 +532,8 @@ TypeDef make_Typedefb(Symvalu p1, Symvalu p2)
         exit(1);
     }
     tmp->kind = is_Typedefb;
-    tmp->u.typedefb_.symvalu_1 = p1;
-    tmp->u.typedefb_.symvalu_2 = p2;
+    tmp->u.typedefb_.typedef_ = p1;
+    tmp->u.typedefb_.symvalu_ = p2;
     return tmp;
 }
 /********************   Typedefnull    ********************/
@@ -600,7 +600,7 @@ Buffsize make_Bufsze()
     tmp->kind = is_Bufsze;
     return tmp;
 }/********************   Hermtx    ********************/
-Hermt make_Hermtx(Symvalu p1, Comp p2, ListArgument p3)
+Hermt make_Hermtx(Symvalu p1, Comp p2, ListArgument p3, Attributes p4)
 {
     Hermt tmp = (Hermt) malloc(sizeof(*tmp));
     if (!tmp)
@@ -612,10 +612,11 @@ Hermt make_Hermtx(Symvalu p1, Comp p2, ListArgument p3)
     tmp->u.hermtx_.symvalu_ = p1;
     tmp->u.hermtx_.comp_ = p2;
     tmp->u.hermtx_.listargument_ = p3;
+    tmp->u.hermtx_.attributes_ = p4;
     return tmp;
 }
 /********************   Hermty    ********************/
-Hermt make_Hermty(Symvalu p1, ListArgument p2)
+Hermt make_Hermty(Symvalu p1, ListArgument p2, Attributes p3)
 {
     Hermt tmp = (Hermt) malloc(sizeof(*tmp));
     if (!tmp)
@@ -626,6 +627,7 @@ Hermt make_Hermty(Symvalu p1, ListArgument p2)
     tmp->kind = is_Hermty;
     tmp->u.hermty_.symvalu_ = p1;
     tmp->u.hermty_.listargument_ = p2;
+    tmp->u.hermty_.attributes_ = p3;
     return tmp;
 }/********************   Symvaluv    ********************/
 Symvalu make_Symvaluv(Symval p1)
@@ -668,7 +670,7 @@ Proc make_Processx(Symvalu p1, Comp p2, ListArgument p3, Attributes p4)
     return tmp;
 }
 /********************   Processy    ********************/
-Proc make_Processy(Symvalu p1, Attributes p2)
+Proc make_Processy(Symvalu p1, ListArgument p2, Attributes p3)
 {
     Proc tmp = (Proc) malloc(sizeof(*tmp));
     if (!tmp)
@@ -678,7 +680,8 @@ Proc make_Processy(Symvalu p1, Attributes p2)
     }
     tmp->kind = is_Processy;
     tmp->u.processy_.symvalu_ = p1;
-    tmp->u.processy_.attributes_ = p2;
+    tmp->u.processy_.listargument_ = p2;
+    tmp->u.processy_.attributes_ = p3;
     return tmp;
 }/********************   Attribe    ********************/
 Attributes make_Attribe(ListAttr p1)

@@ -3,7 +3,7 @@
 # sw/bin/sw.sh
 # Lorca/pipes:  https://github.com/zserge/lorca/issues/43
 
-version="0.19.2"
+version="0.28.1"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -185,10 +185,16 @@ case $1 in
 	
 	p)  echo $*; shift
 		nd=$1 
-		[ -z $1 ] && export nd="postage.sw" && pushd nds ; # Get good sw.cfg
+		[ -z $1 ] && export nd="postage.sw"  ; # Get good sw.cfg
 		shift
-		swproject g  $nd $*  ;;
+		swproject $*  ../*/model/tests/$nd  ;;
 	poc) RunPoC;;
+	postage)pushd ../
+			if [ -d /usr/local/src/postage ]; then
+				mv /usr/local/src/postage /tmp/postage_$$
+			fi
+		./bin/swproject -yaml YAML -cfg ./src/nds/postage.cfg ./src/model/tests/postage.sw 
+		;;
 	rc) RunCollate;;
 	rl) ../bin/swlocusts r ;;
 	rm) pushd ../
@@ -197,9 +203,12 @@ case $1 in
 	    $BROWSER https://sw.twyoung.com 
 	   ;;
 	s) shift; Shell $*;;
-	smkd|sm|smk)shift; cd ../; mkdocs serve -a localhost:8001 &
-	    sleep 2
-	    $BROWSER localhost:8001 &
+	smkd|sm|smk)shift
+	    killall mkdocs
+	    cd ../
+	    mkdocs build
+	    mkdocs serve -a localhost:8001 &
+	    # ?? ( sleep 60; $BROWSER localhost:8001 ) &
 	    ;;
 	v|version) echo sw.sh-v$version;;
 	x) $EDITOR $0 &;;
@@ -217,11 +226,12 @@ sw.sh-$version USAGE:
 		jl		. Generate and view locusts.png 
 		p  [NAME..]	. Generate project(s) named NAME[default nds/postage.sw]
 		poc		. Build and run Proof of Concept 
+		postage . Create postage project tree
 		rm		. View README in $BROWSER 
 		rc		. Build and run Collate program 
 		rl		. Run locusts program
 		s		. Enter SW shell.  'e' to exit the shell. 
-		sm      . Serve makedocs at localhost:8001
+		sm		. Serve makedocs at localhost:8001
 		v		. Display this script version
 		x		. Edit this script
 		--help	. Display this help

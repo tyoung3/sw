@@ -14,17 +14,25 @@ func TestJoin(t *testing.T) {
 	var cs []chan interface{}
 	var wg sync.WaitGroup
 
-	for i := 0; i < 4; i++ {
-		cs = append(cs, make(chan interface{}))
-	}
-
-	fmt.Println("Testing Join-0.0.3")
-	wg.Add(1)
-	go Join(&wg, []string{"Join"}, cs[0:4])
-	Launch(&wg, []string{"G2", "5", "0", "2"}, Gen, cs[1:2])
-	Launch(&wg, []string{"G3", "3", "0", "3"}, Gen, cs[2:3])
-	Launch(&wg, []string{"G5", "2", "0", "5"}, Gen, cs[3:4])
-	Launch(&wg, []string{"Sink"}, Print, cs[0:1])
+	fmt.Println("Testing Join-0.28.0")
+	
+	cs0 := make(chan interface{})
+	cs1 := make(chan interface{})
+	cs2 := make(chan interface{})
+	cs3 := make(chan interface{})
+	
+	cs = append(cs,cs0)
+	cs = append(cs,cs1)
+	cs = append(cs,cs2)
+	cs = append(cs,cs3)
+		
+	wg.Add(5)
+	
+	go Join(&wg,  []string{"Join"}, cs[0:4])
+	go Gen(&wg,   []string{"G2", "5", "0", "2"}, cs1)
+	go Gen(&wg,   []string{"G3", "3", "0", "3"}, cs2)
+	go Gen(&wg,   []string{"G5", "2", "0", "5"}, cs3)
+	go Print(&wg, []string{"Sink"}, cs0)
 
 	fmt.Println("TestJoin waiting")
 	wg.Wait()

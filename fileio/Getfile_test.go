@@ -11,22 +11,19 @@ import "fmt"
 import "sync"
 
 func Test_Getfile(t *testing.T) {
-	var cs []chan interface{}
 	var wg sync.WaitGroup
 
 	arg := []string{"Test_Getfile"}
 
 	fmt.Println("\u001b[32m", arg[0], "\u001b[0m")
-	for i := 0; i < 1+0; i++ {
-		cs = append(cs, make(chan interface{}))
-	}
+	_ch0 := make(chan interface{})
 
 	wg.Add(2)
 	go func() {
 
 		j := 0
 		for j >= 0 {
-			ip, ok := <-cs[j]
+			ip, ok := <- _ch0
 			if ok != true {
 				break
 			}
@@ -38,7 +35,7 @@ func Test_Getfile(t *testing.T) {
 		return
 	}()
 
-	go Getfile(&wg, arg, cs)
+	go Getfile(&wg, arg, _ch0)
 	wg.Wait()
 	fmt.Println("\u001b[32mTest_Getfile Ended\u001b[0m")
 }

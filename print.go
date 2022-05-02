@@ -9,10 +9,9 @@ with the process identifier(arg[0]) string,
 */
 func Print(wg *sync.WaitGroup,
 	arg []string,
-	cs []chan interface{}) {
+	c chan interface{}) {
 
 	defer wg.Done()
-	c := cs[0]
 	s := arg[0]
 
 	for {

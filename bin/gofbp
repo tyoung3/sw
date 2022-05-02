@@ -98,4 +98,4 @@ esac
 
 
 
-// ?? Does not fix message, as suggested. Just gets another msg. BROWSER="$BROWSER --disable-gpu --disable-software-rasterizer"
+# ?? Does not fix message, as suggested. Just gets another msg. BROWSER="$BROWSER --disable-gpu --disable-software-rasterizer"

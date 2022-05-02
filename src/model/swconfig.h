@@ -12,17 +12,17 @@
 
 #define htmldir		  cfg.HTMLdir
 #define defaultPath 	  cfg.DefaultPath
-#define defaultTypePath   cfg.DefaultTypePath
-#define defaultSourceComp cfg.DefaultSourceComp
-#define defaultSinkComp   cfg.DefaultSinkComp
-#define defaultFilterComp cfg.DefaultFilterComp
-#define defaultOrphanComp cfg.DefaultOrphanComp
+#define defaultTypePath    cfg.DefaultTypePath
+#define defaultSourceComp  cfg.DefaultSourceComp
+#define defaultSinkComp    cfg.DefaultSinkComp
+#define defaultFilterComp  cfg.DefaultFilterComp
+#define defaultOrphanComp  cfg.DefaultOrphanComp
 #define defaultChannelType cfg.DefaultChannelType
-#define defaultBufferSize cfg.DefaultBufferSize
+#define defaultBufferSize   cfg.DefaultBufferSize
 #define defaultLibrary	  cfg.DefaultLibrary
 #define includePath	  cfg.IncludePath
 #define maxbfsz		  cfg.Maxbfsz
-#define maxdepth	  cfg.MaxDepth
+#define maxdepth	          cfg.MaxDepth       	// Maximum subnet depth
 #define TABLESIZE 	  cfg.Tablesize
 
 #define badkind(S) { 						\

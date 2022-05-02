@@ -623,9 +623,9 @@ void ppTypeDef(TypeDef p, int _i_)
 
   case is_Typedefb:
     if (_i_ > 0) renderC(_L_PAREN);
-    ppSymvalu(p->u.typedefb_.symvalu_1, 0);
+    ppTypeDef(p->u.typedefb_.typedef_, 0);
     renderC('.');
-    ppSymvalu(p->u.typedefb_.symvalu_2, 0);
+    ppSymvalu(p->u.typedefb_.symvalu_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -695,6 +695,7 @@ void ppHermt(Hermt p, int _i_)
     ppSymvalu(p->u.hermtx_.symvalu_, 0);
     ppComp(p->u.hermtx_.comp_, 0);
     ppListArgument(p->u.hermtx_.listargument_, 0);
+    ppAttributes(p->u.hermtx_.attributes_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -703,6 +704,7 @@ void ppHermt(Hermt p, int _i_)
     if (_i_ > 0) renderC(_L_PAREN);
     ppSymvalu(p->u.hermty_.symvalu_, 0);
     ppListArgument(p->u.hermty_.listargument_, 0);
+    ppAttributes(p->u.hermty_.attributes_, 0);
 
     if (_i_ > 0) renderC(_R_PAREN);
     break;
@@ -759,6 +761,7 @@ void ppProc(Proc p, int _i_)
     if (_i_ > 0) renderC(_L_PAREN);
     renderC('(');
     ppSymvalu(p->u.processy_.symvalu_, 0);
+    ppListArgument(p->u.processy_.listargument_, 0);
     ppAttributes(p->u.processy_.attributes_, 0);
     renderC(')');
 
@@ -2210,9 +2213,9 @@ void shTypeDef(TypeDef p)
 
     bufAppendC(' ');
 
-    shSymvalu(p->u.typedefb_.symvalu_1);
+    shTypeDef(p->u.typedefb_.typedef_);
   bufAppendC(' ');
-    shSymvalu(p->u.typedefb_.symvalu_2);
+    shSymvalu(p->u.typedefb_.symvalu_);
 
     bufAppendC(')');
 
@@ -2307,6 +2310,8 @@ void shHermt(Hermt p)
     shComp(p->u.hermtx_.comp_);
   bufAppendC(' ');
     shListArgument(p->u.hermtx_.listargument_);
+  bufAppendC(' ');
+    shAttributes(p->u.hermtx_.attributes_);
 
     bufAppendC(')');
 
@@ -2321,6 +2326,8 @@ void shHermt(Hermt p)
     shSymvalu(p->u.hermty_.symvalu_);
   bufAppendC(' ');
     shListArgument(p->u.hermty_.listargument_);
+  bufAppendC(' ');
+    shAttributes(p->u.hermty_.attributes_);
 
     bufAppendC(')');
 
@@ -2393,6 +2400,8 @@ void shProc(Proc p)
     bufAppendC(' ');
 
     shSymvalu(p->u.processy_.symvalu_);
+  bufAppendC(' ');
+    shListArgument(p->u.processy_.listargument_);
   bufAppendC(' ');
     shAttributes(p->u.processy_.attributes_);
 

@@ -1,5 +1,8 @@
-# About StreamWork -v0.26.6 <a name="about"/>
+# About StreamWork-v0.28.0 <a name="about"/>
 
-Report an issue to sw@twyoung.com 
+Report issues to sw@twyoung.com 
 
+## References
 
+  * [Semantic Versioning](https://semver.org/)  
+  * [Github Markdown](https://guides.github.com/features/mastering-markdown/)

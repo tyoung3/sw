@@ -1,12 +1,13 @@
 # STREAMWORK -- SW-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@ 
 
+
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
-You may obtain a copy of the License at
+You may obtain a copy of the License  at
 
-http://www.apache.org/licenses/LICENSE-2.0
+[Apache License](http://www.apache.org/licenses/LICENSE-2.0)
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,19 +17,19 @@ limitations under the License.
 
 All files in this repo are included in this license.
 
-
+<!-- https://phrase.com/blog/posts/internationalization-i18n-go/ -->
  
 ![StreamWork Logo](http://sw.twyoung.com/images/StreamWork.svg)
 
 ## StreamWork
          
-   Flow based program(FBP) Go language framework and code generator.
+   Go language code generator.
          
 [![CodeQL](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/tyoung3/sw/actions/workflows/codeql-analysis.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/tyoung3/sw)](https://goreportcard.com/report/github.com/tyoung3/sw)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## Table of contents
+## Contents
  * [Description](#description)
    * [Synopsis](#synopsis)
  * [Return code](#returncode)
@@ -124,7 +125,7 @@ StreamWork is concerned primarily with Go language FBP programs,
 however, the network definition described here is language agnostic.  It is quite possible 
 to generate corresponding code in other languages from a StreamWork ND.         
 
-The script, **_swgo_**, reads and executes an ND employing **_sw_** to properly launch and connect the processes.  By default, **_sw_** generates 
+The script, **_swgo_**, reads and executes a network definition employing **_sw_** to properly launch and connect the processes.  By default, **_sw_** generates 
 and builds a single main Go program which:  
   * imports sw compatible component package(s) as specified in the network definition,  
   * launches a goroutine for each process,  
@@ -206,7 +207,7 @@ Process names are not apparent to Go and so need not follow Go naming
 rules, just the StreamWork conventions. 
 
 A component identifier consists of its import module/package identifier, 
-a slash, '/', and the component name.  Go component names need to be capitalized.type
+a slash, '/', and the component name.  Go component names need to be capitalized.
 If  the path is omitted,  a configuration default path is assumed.  
 If the component name is also omitted, configuration default component names
 are assumed for sink, source, and filter(has both inputs and outputs) processes.
@@ -217,14 +218,14 @@ Stream directors consist of ```<```, an optional, comma-separated list of type i
 an optional buffersize integer, and ```-```. Example: ```<100-```
 The reverse (Ex: `-myDataType,yourType 100>`) is also valid.
  
-Information packets(IPs) are designed as nitypel(empty) interfaces.  The
+Information packets(IPs) are designed as nil(empty) interfaces.  The
 data type is determined by the sending component.  It is possible for 
 properly coded sink components to handle multiple data types.
 A type mis-match will be reported by incompatible receiving 
 components.  Components can be coded to handle any
-type(including user-defined types and structures). 
-Some components (sw.Print, for instance) can process strings and integers; 
-some just a single type; on each receiving port.   
+type, including user-defined types and structures. 
+Some components  can process strings and integers; 
+other components just a single type; on each receiving port.   
  
 **_sw_** versions beginning with v1.0.0 are backward compatible within the same major 
 version(currently v0).  There is no such guarantee with v0.N.N versions, but we will
@@ -241,7 +242,7 @@ either
   * or Go main source code for JFM's gofbp. 
 
 C and other languages could also be generated, but this has not been implemented.
-JavaFBP is also possible.   
+JavaFBP is possible, for instance.   
 
 Comments and critiques are welcome.    Contributors are encouraged.  
 
@@ -259,10 +260,10 @@ e-mailing streamwork@twyoung.com or Discord/gofbp message is preferred to postin
   
 ### Installation<a name="installation"/>   
   * cd to any convenient workspace (/usr/local/src for example).
-  * Download the latest sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@.tar.gz file 
+  * Download the latest sw-0.28.0.tar.gz file 
 	  from https://github.com/tyoung3/sw/build
-  * Run 'tar -xzf .../sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@.tar.gz' to extract source files
-  * cd  sw-@SW_MAJOR@.@SW_MINOR@.@SW_LEVEL@
+  * Run 'tar -xzf .../sw-0.28.0.tar.gz' to extract source files
+  * cd  sw-0.28.0
   * Run ./configure && make check
   * Run sudo make install.  
 	  **_sw_** and associated scripts will be installed in /usr/local/bin
@@ -329,7 +330,7 @@ are required.  It is quite possible to define a network with no
 dependencies (other than Go packages) at all.  
 The only requirement for a component is 
 an entry point with two or more parameters: wait group, argument string 
-slice, and as many channel slices as there are channel types. 
+slice, and a channel for each port. 
 
 #### Variables<a name="varaibles"/>
 SWL accepts string($NAME), environment string($_NAME), symbol(&NAME),  and numeric(%NAME) variables.  See SWL.pdf for acceptable usage.
@@ -339,14 +340,15 @@ StreamWork uses the following environment variables:
   * $GOPATH  -- Go language path
   * $DEBUG   -- 'Y' will cause some messages to print.
     
-#### Semi-colon commentary<a name="semicolons"/>
+#### Semi-colons<a name="semicolons"/>
 Statements in SWL, are terminated with a semi-colon.  Semi-colons in code are like 
 periods at the end of English statements -- 
 they tell the reader (and the SWL interpreter) when
-you have reached the end of a statement; making reading the statements easier. 
+you have reached the end of a statement. This makes reading the statements easier. 
 Imagine trying to read a book without any periods (or initial capitals). 
 Additionally, without semi-colons line breaks become part of the language 
-definition, leading to awkward, confusing syntax rules.  
+definition, leading to awkward, confusing syntax rules; difficult for the
+reader to interpret.  
 
 #### Left Arrow comments<a name="leftarrow"/>
 The, ```<-```,  token is employed in order to be consistent with its 
@@ -521,36 +523,44 @@ Input to DelayedReceiver: Receiver0 > IP - # 9
 ```
 
 ### Generate a project<a name="generateaproject"/>
-**_swproject_** .../nds/postage.sw
+**_swproject_** -yaml YAML  -cfg ./src/nds/postage.cfg ./src/model/tests/postage.sw
+
 produces the following source tree:
 
 ```
 postage
-├── addr
-│   ├── GetDest.go
-│   └── GetDest_test.go
 ├── ComputePostage.go
 ├── ComputePostage_test.go
 ├── config.go
-├── getr
-│   ├── Rates.go
-│   └── Rates_test.go
+├── GetLoc.go
+├── GetLoc_test.go
+├── GetWeight.go
+├── GetWeight_test.go
 ├── go.mod
 ├── go.sum
 ├── internal
-│   ├── gen_swproject
+│   ├── gen.sh
 │   ├── postage.go
 │   ├── postage.sw
 │   └── sw.cfg
+├── ipT.go
+├── PostageT.go
 ├── postage.yaml
 ├── PrintLabel.go
-└── PrintLabel_test.go
+├── PrintLabel_test.go
+├── Rates.go
+├── Rates_test.go
+├── RateT.go
+└── WeighT.go
+
+1 directory, 22 files
 
 ```
 
 then produces this graph 
 ![postage.svg](http://sw.twyoung.com/images/postage.svg)
 vets the code, and finally runs it.
+The result is a running program ready for your enhancements.
 
 #### **_sw.sh_** Synopsis<a name="sw.sh"/>
 
@@ -639,7 +649,7 @@ break existing networks.
   * Provide process attributes.  
   
 ### 0.21.0 
-  * Can generate projects with or without YAML configuration. 
+  * Can generate projects with or without YAML configurationswpro. 
   * Fixes to Wrap function.  
   
 ### 0.21.1
@@ -657,13 +667,37 @@ break existing networks.
 ### 0.26.7
   * Introduced mkdocs
   * Attempt to fix go.in yaml  Dependabot alert
-  * Fix build error in swgraph.c
+  * Fix build error in swgraph.cswpro
   
 ### 0.26.8
   * Removed 'default:' error from swgraph.c 
   
 ## 0.26.9
-  * Fixed bug with subnet attributes   
+  * Fixed bug with subnet attributes  
+  
+## 0.26.10
+  * Fixed maximum subnet level checking
+  * Introducted mkdocs web site docs
+  
+## 0.26.11
+  * Changed type mismatches from FAILing to WARNING.   
+  
+## 0.27.0 
+  * Changed package name from sw/linux to sw/os
+  * Added sw/os/Debug function   
+  
+## 0.28.0 
+  * Implemented typing of component channels. 
+  * Defined underscore '_' as shorthand for 'interface{}' type.
+  * Changed component argument from interface slice to interface in SW components with a single port. 
+  * For components with multiple ports; adjacent channels of the same   
+    type are combined into a channel slice.     
+  * Fixed numerous problems with swproject. 
+  
+## 0.28.1
+   * Fixed IP type bugs
+   * Updated docs  
+
   
 ## Author<a name="author"/>
 

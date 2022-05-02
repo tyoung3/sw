@@ -7,25 +7,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  
+  <link rel="canonical" href="https://sw.twyoung.com/github/">
   <link rel="shortcut icon" href="../img/favicon.ico">
-  <title>Github - StreamWork</title>
+  <title>Github Project - StreamWork</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700" />
+
   <link rel="stylesheet" href="../css/theme.css" />
   <link rel="stylesheet" href="../css/theme_extra.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Github";
+    var mkdocs_page_name = "Github Project";
     var mkdocs_page_input_path = "github.md";
-    var mkdocs_page_url = null;
+    var mkdocs_page_url = "/github/";
   </script>
   
   <script src="../js/jquery-2.1.1.min.js" defer></script>
   <script src="../js/modernizr-2.8.3.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script> 
-  
 </head>
 
 <body class="wy-body-for-nav" role="document">
@@ -39,7 +40,7 @@
         <a href=".." class="icon icon-home"> StreamWork</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -53,21 +54,48 @@
                     <li class="toctree-l1"><a class="reference internal" href="../rdm/">Readme</a>
                     </li>
                 </ul>
+                <p class="caption"><span class="caption-text">User Guide</span></p>
+                <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/">Components</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/sw/">SwBase</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/swutility/">Swutility</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/os/">Os</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/config/">Config</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../components/fileio/">Fileio</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../SWL.pdf">SW Language Labeled BNF(pdf)</a>
+                    </li>
+                </ul>
+                <p class="caption"><span class="caption-text">Developer Guide</span></p>
                 <ul class="current">
-                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Github</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../design/">Design Guidelines</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../PROJECT/">Project Generation</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">Mkdocs</a>
+                    </li>
+                    <li class="toctree-l1 current"><a class="reference internal current" href="./">Github Project</a>
     <ul class="current">
     </ul>
                     </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../DOCKER/">Docker</a>
+                    </li>
+                    <li class="toctree-l1"><a class="reference internal" href="../APIs/">API Comments</a>
+                    </li>
                 </ul>
+                <p class="caption"><span class="caption-text">About</span></p>
                 <ul>
+                    <li class="toctree-l1"><a class="reference internal" href="../FBP/">FBP</a>
+                    </li>
                     <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
                     </li>
-                </ul>
-                <ul>
-                    <li class="toctree-l1"><a class="reference internal" href="../mkdocs/">Mkdocs</a>
+                    <li class="toctree-l1"><a class="reference internal" href="../SECURITY/">Security</a>
                     </li>
-                </ul>
-                <ul>
                     <li class="toctree-l1"><a class="reference internal" href="../about/">About</a>
                     </li>
                 </ul>
@@ -91,8 +119,12 @@
     <li><a href="..">Docs</a> &raquo;</li>
     
       
+        
+          <li>Developer Guide &raquo;</li>
+        
+      
     
-    <li>Github</li>
+    <li>Github Project</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -100,10 +132,11 @@
   
   <hr/>
 </div>
+
           <div role="main">
             <div class="section">
               
-                <h1 id="githhub"><a href="https://github.com/tyoung3/sw">Githhub</a></h1>
+                <h1 id="link-to-githhub">Link to <a href="https://github.com/tyoung3/sw">Githhub</a></h1>
               
             </div>
           </div>
@@ -111,10 +144,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../license/" class="btn btn-neutral float-right" title="License">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../DOCKER/" class="btn btn-neutral float-right" title="Docker">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../rdm/" class="btn btn-neutral" title="Readme"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../mkdocs/" class="btn btn-neutral" title="Mkdocs"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -123,6 +156,8 @@
 
   <div role="contentinfo">
     <!-- Copyright etc -->
+    
+      <p>Copyright &copy; 2021, 2022, Tom Young, streamwork@twyoung.com.</p>
     
   </div>
 
@@ -137,17 +172,18 @@
   </div>
 
   <div class="rst-versions" role="note" aria-label="versions">
-    <span class="rst-current-version" data-toggle="rst-current-version">
-      
-      
-        <span><a href="../rdm/" style="color: #fcfcfc;">&laquo; Previous</a></span>
-      
-      
-        <span style="margin-left: 15px"><a href="../license/" style="color: #fcfcfc">Next &raquo;</a></span>
-      
-    </span>
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../mkdocs/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../DOCKER/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
 </div>
     <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
     <script src="../js/theme.js" defer></script>
       <script src="../search/main.js" defer></script>
     <script defer>
