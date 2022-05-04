@@ -1693,7 +1693,7 @@ static void expandSubnets(Model m)
 
 	do {
 		p = m->proc;
-		pp = NULL;
+		pp = NULL;  /* Previous process in chain*/
 		more = 0;
 		/* Allow limit on graph expansion. */
 		while (p && (m->maxexpands < 0 || nexpands < m->maxexpands)) {
@@ -1709,11 +1709,11 @@ static void expandSubnets(Model m)
 						m->proc = p->next;
 					}
 					expandSub(m, ps);
+			        level++;
 					FreeLater(&fl, ps);	/* Pointers to ps still exist. */
 					break;
 				}
 			}
-			level += more;
 			pp = p;
 			p = p->next;
 		}
@@ -2139,7 +2139,7 @@ static int matchIpType(char *t1, char *t2)
 static int isaMatch(Extport ep2, Extport ep)
 {
 
-	if (Matched(ep2))  /** Create a new stream if external port is already matched.*/
+	if (Matched(ep2))  /** Create a new stream if external port is not already matched.*/
 		return 0;
 
 	if (!matchIpType(ep->iptype, ep2->iptype))
@@ -2158,7 +2158,7 @@ static int isaMatch(Extport ep2, Extport ep)
 }
 
 /** Create a new stream if external port is matched.*/
-static void findSink(Model m, Extport ep)
+static int findSink(Model m, Extport ep)
 {
 	Extport ep2;		/* sink port */
 	Process p;
@@ -2171,17 +2171,19 @@ static void findSink(Model m, Extport ep)
 			if (p != ep->source) {
 				if (isaMatch(ep2, ep)) {
 					createStream(m, ep, ep2);
-					return;
+					return 1;
 				}
 			}
 		}
 		ep2 = ep2->next;
 	}
+	return 0;  
 }
 
-	/** Match source ports to appropriate sink ports 
-	    then identify and mark any leftover orphan processes, creating orphan streams 
-	 */
+	/** Create new streams for matching external ports.
+	    Then identify and mark any leftover orphan processes, 
+	    creating orphan streams. 
+	**/
 static void autolink(Model m)
 {
 	Extport ep;
@@ -2192,7 +2194,9 @@ static void autolink(Model m)
 
 	while (ep) {
 		if (ep->type == SOURCE) {
-			findSink(m, ep);      /** Create a new stream if external port 																		is matched.*/
+			findSink(m, ep);  /** Create a new stream if external
+			                          port is not already matched.*/
+			    // ep=extprtList;                        
 		}
 		ep = ep->next;
 	}
@@ -2241,6 +2245,9 @@ Model visitValidSW(Model model, ValidSW _p_)
 	expandSubnets(net_model);
 	fixFanInOut(net_model);
 	autolink(net_model);	/* Connect orphan ports.                         */
+	// expandSubnets(net_model);
+	// fixFanInOut(net_model);
+	// autolink(net_model);	/* Connect orphan ports.                         */
 	removeDeadStreams(net_model);	/* Some streams could have all subnet components. */
 	FreeExpandedProcesses(&fl);	/* Need to remove dead streams first.            */
 	return net_model;
