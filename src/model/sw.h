@@ -28,7 +28,7 @@ char *strncat(char *dest, const char *src, size_t n);
 
 char *mystrncat(char *d, char *s, size_t n);
 
-extern char *version;  /* In swmain.c from Makefile $VERSION */
+extern char *version;  /* In swmain.c from Makefile $VERSION */                                                   \
 
 /** Terminate with message */
 #define FAIL1(S) { 						\

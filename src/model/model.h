@@ -50,9 +50,10 @@ typedef struct Port_ {
 typedef struct Port_ *Port; /**<Pointer to Port */
 
 /** Port Direction */
-typedef enum {SINK,SOURCE} PortType;  
+typedef enum {SINK,SOURCE,ORPHAN} PortType;  
 
 typedef enum {INT, STRING} DataType;
+
 /* Attributes will be used to decorate graphs in order to 
 distinquish component attributes, such as language, development state, module path, etc.*/
 typedef struct Attribute_ {
