@@ -46,9 +46,32 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */                 
 	}	
 
 
+// #define stype type
+
+#define DEBUGGING
+#ifdef DEBUGGING
+
+#define Debug(ID,MSG) {                          \
+    if( getenv("DEBUG") != NULL &&               \
+        getenv("DEBUG")[0] == 'Y')               \
+        fprintf(stderr,                          \
+            "\033[33mDEBUG/SW/%s: %s\033[39m\n", \
+                 #ID, MSG);                      \
+}    
+#else
+#define Debug(A,B) 
+#define VerifyStream(S)
+#define checkSource(S)
+#endif
 
 	
 /* sw.c  */
+typedef struct Arrow_ {
+	char *iptype;
+	int bs;
+} Arrow_;
+typedef struct Arrow_ *Arrow;
+Extport MakeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 
 void 	visitDouble(Double d);			/**<Get Double ?*/	
 void 	visitChar(Char c);			/**<Get a char */

@@ -101,10 +101,11 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_sw_OBJECTS = sw.$(OBJEXT) swconfig.$(OBJEXT) swgraph.$(OBJEXT) \
-	swmain.$(OBJEXT) swsym.$(OBJEXT) swc.$(OBJEXT) swgo.$(OBJEXT) \
-	swjavafbp.$(OBJEXT) swproject.$(OBJEXT) swgofbp.$(OBJEXT) \
-	re.$(OBJEXT) strndup.$(OBJEXT)
+am_sw_OBJECTS = sw.$(OBJEXT) swexpand.$(OBJEXT) swconfig.$(OBJEXT) \
+	swgraph.$(OBJEXT) swmain.$(OBJEXT) swsym.$(OBJEXT) \
+	swc.$(OBJEXT) swgo.$(OBJEXT) swjavafbp.$(OBJEXT) \
+	swproject.$(OBJEXT) swgofbp.$(OBJEXT) re.$(OBJEXT) \
+	strndup.$(OBJEXT)
 sw_OBJECTS = $(am_sw_OBJECTS)
 sw_DEPENDENCIES = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o \
 	../bnfc/Printer.o
@@ -125,10 +126,10 @@ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/re.Po ./$(DEPDIR)/strndup.Po \
 	./$(DEPDIR)/sw.Po ./$(DEPDIR)/swc.Po ./$(DEPDIR)/swconfig.Po \
-	./$(DEPDIR)/swgo.Po ./$(DEPDIR)/swgofbp.Po \
-	./$(DEPDIR)/swgraph.Po ./$(DEPDIR)/swjavafbp.Po \
-	./$(DEPDIR)/swmain.Po ./$(DEPDIR)/swproject.Po \
-	./$(DEPDIR)/swsym.Po
+	./$(DEPDIR)/swexpand.Po ./$(DEPDIR)/swgo.Po \
+	./$(DEPDIR)/swgofbp.Po ./$(DEPDIR)/swgraph.Po \
+	./$(DEPDIR)/swjavafbp.Po ./$(DEPDIR)/swmain.Po \
+	./$(DEPDIR)/swproject.Po ./$(DEPDIR)/swsym.Po
 am__mv = mv -f
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
@@ -484,7 +485,7 @@ bin_scripts = sw.test mktest.sh
 scriptsdir = "$(DESTDIR)/bin"
 PGM = ./${bin_PROGRAMS} 
 swdir = ./
-sw_SOURCES = sw.c swconfig.c swgraph.c swmain.c swsym.c swc.c  swgo.c  swjavafbp.c  swproject.c model.h  swconfig.h  swgo.h  swgraph.h	sw.h  swmain.h	swsym.h swgofbp.c swgofbp.h re.c re.h strndup.c 
+sw_SOURCES = sw.c swexpand.c swconfig.c swgraph.c swmain.c swsym.c swc.c  swgo.c  swjavafbp.c  swproject.c model.h  swconfig.h  swgo.h  swgraph.h	sw.h  swmain.h	swsym.h swgofbp.c swgofbp.h re.c re.h strndup.c 
 sw_LDADD = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -593,6 +594,7 @@ include ./$(DEPDIR)/strndup.Po # am--include-marker
 include ./$(DEPDIR)/sw.Po # am--include-marker
 include ./$(DEPDIR)/swc.Po # am--include-marker
 include ./$(DEPDIR)/swconfig.Po # am--include-marker
+include ./$(DEPDIR)/swexpand.Po # am--include-marker
 include ./$(DEPDIR)/swgo.Po # am--include-marker
 include ./$(DEPDIR)/swgofbp.Po # am--include-marker
 include ./$(DEPDIR)/swgraph.Po # am--include-marker
@@ -914,6 +916,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/sw.Po
 	-rm -f ./$(DEPDIR)/swc.Po
 	-rm -f ./$(DEPDIR)/swconfig.Po
+	-rm -f ./$(DEPDIR)/swexpand.Po
 	-rm -f ./$(DEPDIR)/swgo.Po
 	-rm -f ./$(DEPDIR)/swgofbp.Po
 	-rm -f ./$(DEPDIR)/swgraph.Po
@@ -971,6 +974,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/sw.Po
 	-rm -f ./$(DEPDIR)/swc.Po
 	-rm -f ./$(DEPDIR)/swconfig.Po
+	-rm -f ./$(DEPDIR)/swexpand.Po
 	-rm -f ./$(DEPDIR)/swgo.Po
 	-rm -f ./$(DEPDIR)/swgofbp.Po
 	-rm -f ./$(DEPDIR)/swgraph.Po
