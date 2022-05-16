@@ -809,17 +809,13 @@ EOF.subnet4.sw
 cat << EOF.subnet5.sw | ./sw >/dev/null && echo ok 53 - subnet5.sw || echo not ok 53 -  subnet5.sw
 # Buggy
 
-^j {
-(J x)IN.0 	<1- 	0;
-AOUT    	<2- OUT.1(J);
+^a {
+(x x)IN.0 	<1- 	0;
+#OUT    	    <2-     OUT.1(x);
 };
 
-(A ^j)IN.0	<4-   OUT.0(Y);
-(C c)IN.0  <8-    OUT.1(A);
-
-
-(A2 ^j)IN.0	<4-   OUT.0(Y2);
-(C2 c)IN.0  <8-   OUT.1(A2);
+(A1 ^a)IN.0	<3-   OUT.0(B1);
+(A2 ^a)IN.0	<4-   OUT.0(B2);
 EOF.subnet5.sw
 
 cat << EOF.subnetn.sw | ./sw >/dev/null && echo ok 54 - subnetn.sw || echo not ok 54 -  subnetn.sw

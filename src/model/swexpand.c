@@ -1039,7 +1039,7 @@ static void FreeExpandedProcesses(Process * fl)
 void ExpandModel(Model m) {    /* Called by sw.c after parsing */
 	fixFanInOut(m);	/* Insert Join and Split processes as necessary. */
 	filloutSubnets(m);
-	filloutSubnets(m);
+	// filloutSubnets(m);
 	fixFanInOut(m);
 	autolink(m);	           /* Connect disconnected matching ports. */
 	removeDeadStreams(m);      /*  Some streams could have 

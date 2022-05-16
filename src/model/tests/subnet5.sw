@@ -1,13 +1,9 @@
 # Buggy
 
-^j {
-(J x)IN.0 	<1- 	0;
-AOUT    	<2- OUT.1(J);
+^a {
+(x x)IN.0 	<1- 	0;
+#OUT    	    <2-     OUT.1(x);
 };
 
-(A ^j)IN.0	<4-   OUT.0(Y);
-(C c)IN.0  <8-    OUT.1(A);
-
-
-(A2 ^j)IN.0	<4-   OUT.0(Y2);
-(C2 c)IN.0  <8-   OUT.1(A2);
+(A1 ^a)IN.0	<3-   OUT.0(B1);
+(A2 ^a)IN.0	<4-   OUT.0(B2);

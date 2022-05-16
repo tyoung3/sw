@@ -1314,6 +1314,5 @@ Model visitValidSW(Model m, ValidSW _p_) {
 	savePrefix(SET, "");
 	net_model = m;    /** ? @todo remove global **/
 	visitListStm(_p_->u.valid_.liststm_);	/* Visit the root of the parse tree to begin.    */
-	ExpandModel(m);
 	return m;
 }

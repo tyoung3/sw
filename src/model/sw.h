@@ -92,6 +92,8 @@ String visitStringval(Stringval p);		/**<Get String value*/
 Component MakeComponent(Ident name, String path);/**<Create component structure*/
 char *makeModPath(char *pn, char *nn);
 
+    /*swexpand.c */
+void        ExpandModel(Model);
 	/** swjafafbp.c */	
 void genJavaFBP(Model model);
 
