@@ -25,7 +25,6 @@
 /******************   Function Prototypes   *****************/
 static void expandSubnet(Model m, Process p, Subnetm sn);
 static void expandSub(Model m, Process p); 
-void        ExpandModel(Model);
 int         VerifyStream(Stream s);
 char        *makeName(char *pn, char *nn);
 char        *fixName(char *name);

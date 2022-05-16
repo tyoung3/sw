@@ -899,7 +899,7 @@ X ^a;
 EOF.tp3.sw
 
 cat << EOF.tp4.sw | ./sw >/dev/null && echo ok 60 - tp4.sw || echo not ok 60 -  tp4.sw
-^a {  
+^x {  
    (A)	<int 1- m1 ;
    (A)2 <6- TAG;
     m2 	<2-     1(A CO1);
@@ -915,11 +915,11 @@ cat << EOF.tp4.sw | ./sw >/dev/null && echo ok 60 - tp4.sw || echo not ok 60 -  
 };
 
 ^y {
-    Y ^b;
-    Z ^z;
+    T ^b;
+    U ^z;
 };
 
-X ^a; 
+X ^x; 
 Y ^y; 
 EOF.tp4.sw
 

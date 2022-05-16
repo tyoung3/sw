@@ -350,7 +350,7 @@ static void ExpandAsubnet(Model m, Process p, Stream s)
 static void expandSubnet(Model m, Process p, Subnetm sn)
 {
 	Stream s;
-	Extport ep;
+	Extport ep, eps;
 
 	ep = sn->extport;
 	while (ep) {
