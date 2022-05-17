@@ -1,4 +1,4 @@
-# STREAMWORK -- SW-0.28.1 
+# STREAMWORK -- SW-0.28.2 
 
 
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
@@ -697,7 +697,9 @@ break existing networks.
 ## 0.28.1
    * Fixed IP type bugs
    * Updated docs  
-
+   
+## 0.28.2
+	* Fixed subnet expansion bugs   
   
 ## Author<a name="author"/>
 

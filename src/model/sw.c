@@ -953,6 +953,7 @@ static void Unlink(Process p) {
 						} else {
 							m->proc=p->next;
 						}
+						m->nprocs--;
 						return;
 				}
 				pp=pm;
