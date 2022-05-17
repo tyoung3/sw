@@ -936,6 +936,30 @@ static Ident UnderScore(Ident id)
 	return uid;
 }
 
+// Remove p from Model->proc list.
+static void Unlink(Process p) {
+		Model m;
+		Process pm, pp; 
+		
+		m=net_model;
+		
+		pm=m->proc;
+		
+		pp=NULL;
+		while(pm) {
+				if( p==pm) {
+						if(pp) {
+							pp->next=p->next;
+						} else {
+							m->proc=p->next;
+						}
+						return;
+				}
+				pp=pm;
+				pm=pm->next;
+		}
+}
+
 /** Get subnet */
 Subnetm visitSubnet(Subnet _p_, Ident id)
 {
@@ -946,6 +970,8 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 	switch (_p_->kind) {
 	case is_Sneth:
 		p = visitHermt(_p_->u.sneth_.hermt_);
+		if(p) 
+			Unlink(p);   // Remove p from Model->proc list.
 		if (!p->comp)
 			p->comp = MakeComponent(p->name, defaultPath);
 		return MakeSubnetm(id, NULL, eport, eport, p);
