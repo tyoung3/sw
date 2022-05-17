@@ -509,7 +509,7 @@ int main(int argc, char **argv)
 {
 	version = FixVersion();
 	ValidSW parse_tree = NULL;
-	Model model = NULL;	/* Network Model */
+	Model m = NULL;	/* Network Model */
 
 	input = stdin;
 
@@ -527,15 +527,16 @@ int main(int argc, char **argv)
 	if (parse_tree) {
 		tabinit();
 			/** set symbol table */
-		model = MakeModel(NULL);
-		visitValidSW(model, parse_tree);/** Build model */
-		model->name = baseOf(fname);
-		model->filename = fname;
-		if (verifyOK(model)) {
-			if (!model->proc) {
+		m = MakeModel(NULL);
+		visitValidSW(m, parse_tree);/** Build model */
+		m->name = baseOf(fname);
+		m->filename = fname;
+	    ExpandModel(m);
+		if (verifyOK(m)) {
+			if (!m->proc) {
 				FAIL(swmain/main, "No processes found.");
 			} else {
-				output(model, parse_tree);
+				output(m, parse_tree);
 			}
 		} else {
 			FAIL(VerfyOK, "Verify failed!");
