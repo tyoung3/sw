@@ -345,8 +345,7 @@ static void ExpandAsubnet(Model m, Process p, Stream s)
 
 }
 
-
-	/** Expand the model for each external port and stream in the subnet */
+/** Expand the model for each external port and stream in the subnet */
 static void expandSubnet(Model m, Process p, Subnetm sn)
 {
 	Stream s;
@@ -394,7 +393,7 @@ static void expandSub(Model m, Process p)
 	FAIL(expandSub, fbfr);
 }	/** While some process contains a subnet component, 
 	   expand that component subnet. */
-static void filloutSubnets(Model m)
+static void explodeSubnets(Model m)
 {
 	Process p, pp, ps;
 	int more;		/** 1=could be more subnets  	*/
@@ -1038,8 +1037,7 @@ static void FreeExpandedProcesses(Process * fl)
 
 void ExpandModel(Model m) {    /* Called by sw.c after parsing */
 	fixFanInOut(m);	/* Insert Join and Split processes as necessary. */
-	filloutSubnets(m);
-	// filloutSubnets(m);
+	explodeSubnets(m);
 	fixFanInOut(m);
 	autolink(m);	           /* Connect disconnected matching ports. */
 	removeDeadStreams(m);      /*  Some streams could have 

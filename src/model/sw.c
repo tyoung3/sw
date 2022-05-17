@@ -913,7 +913,6 @@ Process visitHermt(Hermt _p_)
 				MakeArg(visitListArgument
 					(_p_->u.hermtx_.listargument_), name),
 				NULL);
-		linkProc(net_model, p);
 		return p;
 	case is_Hermty:
 		p = MakeProcess(net_model,
