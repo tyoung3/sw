@@ -5,7 +5,11 @@
   High Priority:
   
     @todo Advertise StreamWork
-    @todo fix null type path problem.
+    @todo Generics for collate, merge, etc. components.
+    @todo Build huge running network.
+    @todo Build benchmark program(s).
+    @todo Example solutions to popular problems.
+    @done fix null type path problem.
     @todo swgrapgh levels.
     @todo use $PATH and/or $GOPATH to find .sw and config files
     @todo Update project generation
