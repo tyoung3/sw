@@ -411,17 +411,56 @@ static int badType(char *t) {
 
 #define red "\033[31m"
 
+static void MakeChannels(Model m) {  
+    int nstream=0;
+    int nstreams = m->nstreams + m->nStructStreams+m->nIntStreams + m->nStringStreams;
+    int bfrtbl[m->nstreams + 10];
+    int i = 0;      
+    Stream f = m->stream;
+    char *module="postage.";
+    
+    while (f) {
+      if(f->type != IS_ORPHAN && f->type != IS_SUB) {
+	  	bfrtbl[nstreams - i++ - 1] = f->bufsz;
+      if(defaultChannelType == NULL || defaultChannelType[0]=='_') 
+        defaultChannelType="interface{}";
+        char *ftype=defaultChannelType;
+        if(    (f->iptype==NULL) 
+        		|| (f->iptype[0]==0) ) {
+            ftype=defaultChannelType;
+        } else {		
+        	if(f->iptype[0]=='_') { 
+        	   ftype="interface{}";
+        } else {
+          ftype=f->iptype;
+        }}
+        if(badType(ftype)) {
+        	fprintf(stderr,"%sExported Type from process, %s. ", red, f->source->name ); 
+        	FAIL(GenPrefix," is not capitalized");
+        }
+        f->iptype=ftype;
+        f->streamNum=nstream;
+        module=fixModule(m, ftype);
+	      //printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
+		    //				nstream++, module, ftype,f->bufsz,            
+		    //				f->source->name,f->SourcePort->id, 
+		    //				f->sink->name,f->SinkPort->id);
+	      printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
+		    				nstream++,
+		    				module, 
+		    				ftype,f->bufsz,            
+		    				f->source->name,f->SourcePort->id, 
+		    				f->sink->name,f->SinkPort->id);
+	   }  // End if not orphan 	    
+	    f=f->next;
+    }
+}    
+
 /** Generate Prefix code */
 void genPrefix(Model m)
 {
-    int nstreams = m->nstreams + m->nStructStreams+m->nIntStreams + m->nStringStreams;
-    int bfrtbl[m->nstreams + 10];
-    int i;
     char bfr[maxbfsz]; 
-    Stream f;
     char *channelType="interface{}";
-    int nstream=0;
-    char *module="postage.";
      
     if(m->nStructStreams > 0) {
         channelType=defaultChannelType;
@@ -454,41 +493,7 @@ void genPrefix(Model m)
     P(var _wg sync.WaitGroup);
     printf("\n");
 
-    f = m->stream;
-    i = 0;
-    while (f) {
-      if(f->type != IS_ORPHAN && f->type != IS_SUB) {
-	  	bfrtbl[nstreams - i++ - 1] = f->bufsz;
-      if(defaultChannelType == NULL || defaultChannelType[0]=='_') 
-        defaultChannelType="interface{}";
-        char *ftype=defaultChannelType;
-        if(    (f->iptype==NULL) 
-        		|| (f->iptype[0]==0) 
-        		|| (f->iptype[0]=='_') ){
-          ftype="interface{}";
-        } else {
-          ftype=f->iptype;
-        }
-        if(badType(ftype)) {
-        	fprintf(stderr,"%sExported Type from process, %s. ", red, f->source->name ); 
-        	FAIL(GenPrefix," is not capitalized");
-        }
-        f->iptype=ftype;
-        f->streamNum=nstream;
-        module=fixModule(m, ftype);
-	      //printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
-		    //				nstream++, module, ftype,f->bufsz,            
-		    //				f->source->name,f->SourcePort->id, 
-		    //				f->sink->name,f->SinkPort->id);
-	      printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
-		    				nstream++,
-		    				module, 
-		    				ftype,f->bufsz,            
-		    				f->source->name,f->SourcePort->id, 
-		    				f->sink->name,f->SinkPort->id);
-	   }  // End if not orphan 	    
-	    f=f->next;
-    }
+    MakeChannels(m);
     printf("\n\t_wg.Add(%d)\n", m->nprocs);
 }
 
@@ -579,12 +584,14 @@ static void generateChannels(Process p, int nslice) {
 	      
         while(pt != NULL) {
             if(pt->next != p->port 
-          			&& pt->stream->iptype == pt->next->stream->iptype)
-          			{ 
-          			// create slices previously     	 
+          			//&& pt->stream->iptype == pt->next->stream->iptype)
+          			&& strncmp(pt->stream->iptype,
+          			     pt->next->stream->iptype,100)==0)
+          			{    	 
 	        	    snprintf(bfr2,BSIZE,",_cs%d",nslice++);
 	        	    strncat(bfr,bfr2,BSIZE);
-	        	    while(pt->stream->iptype == pt->next->stream->iptype
+	        	    while( (strncmp(pt->stream->iptype,
+	        	            pt->next->stream->iptype,100)==0)
 	        	      && pt->next != p->port) {
 	        	    	pt=pt->next;
 	        	    }
@@ -604,15 +611,17 @@ static int generateSlices(Process p, int nslice) {
 		Port pt;
 		int n = nslice;
 		char *ctype;
+		char *pkgPath="nqueens.";
 		
 		pt = p->port;
 		
 		if(pt != NULL ) {
 		  do {
+			  ctype = pt->stream->iptype;
 			  if(pt->next != p->port 
-				   && pt->stream->iptype == pt->next->stream->iptype) {
-				      printf("\nvar _cs%d []chan interface{}\n", n);
-				      ctype = pt->stream->iptype;
+				   && strncmp(ctype, pt->next->stream->iptype,100) == 0) {
+				      printf("\nvar _cs%d []chan %s%s\n", 
+				                n, pkgPath,  ctype);
 				      do {
 				 	  			 printf("_cs%d = append(_cs%d,_ch%d)\n",
 				 	  			 		n,n,pt->stream->streamNum);		

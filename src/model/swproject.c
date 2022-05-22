@@ -66,7 +66,7 @@ static char **getArgs( Model m, Component c) {
 }
 
 /** Find number of input and output ports for component **/
-static void getPorts(Model m, Component c,  int *inp, int *outp) {
+static Process getPorts(Model m, Component c,  int *inp, int *outp) {
 	Stream s;
 	Process p;
 	
@@ -78,13 +78,13 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 		if ( p->comp == c ) {
 			*inp=p->nportsIn;
 			*outp=p->nportsOut;
-			return;	
+			return p;	
 		}
 		p=s->sink;
 		if (p->comp == c) {
 			*inp=p->nportsIn;
 			*outp=p->nportsOut;
-			return;	
+			return p;	
 		}
 	    }	
 		s = s->next;
@@ -92,6 +92,7 @@ static void getPorts(Model m, Component c,  int *inp, int *outp) {
 	
 	*inp=0;
 	*outp=0;
+	return NULL;
 }
 
 /** Return true if pkg is an existing SW package: 
@@ -118,25 +119,29 @@ static Process findProcForComp(Model m,Component c) {
 	FAIL(findProcForComp, "Cannot find process");
 }
 
-static char setIO(Component c, Port pt) {
+static char setIO(Component c, Port pt, Process p) {
+    Process src;
 
-	if(pt->stream->source->comp == c) 
-		return 'o';
+    src=pt->stream->source;  // component can be both source and sink 
+    if(src==p) {             //   so check if this process 
+	    if(src->comp == c)   //   is souce or not.
+		    return 'o';
+	}
+		    
 	return 'i';	
 }
 
 // print  -i type1 -o type 2 ...
-static void printTypes(Model m, Component c) {
-	Process p;
+static void printTypes(Model m, Process p, Component c) {
 	Port pt;
 	char io;
 	
-	
-	p=findProcForComp(m,c);
+	c=p->comp;
+	// p=findProcForComp(m,c);
 	pt=p->port;
 	do {
 	  char *typ="_";
-		io=setIO(c,pt);
+		io=setIO(c,pt,p);
 		if( pt->stream->iptype != NULL && pt->stream->iptype[0] != 0)
 			typ=pt->stream->iptype;
 		printf(" -%c %s", io, typ);
@@ -147,6 +152,7 @@ static void printTypes(Model m, Component c) {
 /** Generate a project from the network model. */
 void genProject(Model m) {
 	Component c;
+	Process p;
 	int inp=0;	// Number of input ports 	
 	int outp=0;	// Number of output ports
 	char *module; 	// Go Module (and executable name)  
@@ -157,13 +163,13 @@ void genProject(Model m) {
 	module=getPrefix(m->name);   // Strip off suffix: .sw
 	
 	while(c!=NULL) {
-		getPorts(m, c, &inp,&outp); 
+		p=getPorts(m, c, &inp,&outp); 
 		args=getArgs(m, c);  
 		if((c->path[0] != '{') & (c->path[0] != '/')) {
 			if(!isaSwPkg(c->path))  {			 
 				printf("swgen.sh gs %s %s %s %s",
 					module ,c->path, getConfType(c->path), c->name);
-				printTypes(m,c);
+				printTypes(m,p,c);
 				i=0;	
 				while( args[i] !=NULL  ) 	
 				 	printf(" %s", args[i++]);		  
