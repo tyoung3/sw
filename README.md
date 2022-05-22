@@ -1,4 +1,4 @@
-# STREAMWORK -- SW-0.28.2 
+# STREAMWORK -- SW-0.28.3 
 
 
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
@@ -588,6 +588,7 @@ sw.sh-1.0.1 USAGE:
 
 ## BUGS:<a name="bugs"/>
 
+Subnet process names must be unique, but this is not guaranteed.
 
 **_sw.Gen_** fails unless all three arguments are present.
 
@@ -700,6 +701,9 @@ break existing networks.
    
 ## 0.28.2
 	* Fixed subnet expansion bugs   
+	
+## 0.28.3
+    * Fix project generation i/o bug	
   
 ## Author<a name="author"/>
 

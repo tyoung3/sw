@@ -22,6 +22,8 @@
     exit(1);                      \
 }
 
+#define CHKa2    a2b2=A2HasB2();
+
 /******************   Function Prototypes   *****************/
 static void expandSubnet(Model m, Process p, Subnetm sn);
 static void expandSub(Model m, Process p); 
@@ -39,21 +41,41 @@ static Model      net_model = NULL; /** Network model anchor point. */
 static String     saves = NULL;     /**<Save name ?? */
 
 /******************   Local Functions   *****************/
+static Process ewatch=NULL; 
+
+static int A2HasB2() {
+        Model m;
+        Subnetm sn;
+        Stream s;
+        Process snk;
+        
+        m=net_model;
+        sn=m->subnetm;
+        
+        while(sn) {
+            if(strncmp(sn->name,"^e",100)==0) {
+                s=sn->stream;
+                while(s) {
+                    snk=s->sink;
+                    if(strncmp(s->sink->comp->name,"^b2",100) == 0) {
+                            ewatch=s->sink;
+                            return 1;
+                    } 
+                    FAIL(A2HasB2,s->sink->comp->name);
+                }  
+                return 2;
+            }
+            sn=sn->next;
+        }
+        
+        return 0;
+}
 
 static Subnetm linkSubnet(Model m, char *name)
 {
 	Subnetm sn2;
 
 	sn2 = m->subnetm;
-	if (!sn2) {
-		sn2 = (Subnetm) malloc(sizeof(Subnetm_));
-		sn2->name = name;
-		sn2->stream = NULL;
-		sn2->extport = NULL;
-		sn2->next = NULL;
-		m->subnetm = sn2;
-		return sn2;
-	}
 
 	while (sn2) {
 		if (strncmp(name, sn2->name, 100) == 0) {
@@ -61,6 +83,7 @@ static Subnetm linkSubnet(Model m, char *name)
 		}
 		sn2 = sn2->next;
 	}
+	
 	sn2 = (Subnetm) malloc(sizeof(Subnetm_));
 	sn2->name = name;
 	sn2->stream = NULL;
@@ -84,21 +107,35 @@ static void linkExt(Subnetm sn, Extport pt)
 	sn->extport = pt;
 }
 
+static Stream dupeStream(Stream s) {
+    Stream s2;
+    
+	s2 = (Stream) malloc(sizeof(Stream_));
+	*s2 = *s; return s2;
+}
+
+	
+static int a2b2=-1;
+	
 /** Make subnet definition */
 Subnetm MakeSubnetm(Ident name, Stream s, 
                     Extport in, Extport out,
-                    Process p)
+                    Process p)                 
 {
 	Subnetm sn;
 	Extport orphan;
 
+    CHKa2;
 	sn = linkSubnet(net_model, name);
 
 	if (s) {
 		s->next = sn->stream;
+		// sn->stream = dupeStream(s);
 		sn->stream = s;
 	}
 
+    CHKa2;
+    
 	if (in) {
 		linkExt(sn, in);
 	} else {
@@ -111,6 +148,8 @@ Subnetm MakeSubnetm(Ident name, Stream s,
 	        }
 	    }     
 	}
+
+    CHKa2;
 
 	return sn;
 };
@@ -346,7 +385,6 @@ MakeStream(streamType stype, Process src, Process snk, int bs, Model m,
 
 	if (!src) {
 		FAIL(MakeStream, "No source for stream. Hermit maybe.\n");
-		exit(EXIT_FAILURE);
 	}
 
 	f = (Stream) malloc(sizeof(Stream_));
@@ -978,6 +1016,8 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 		return MakeSubnetm(id, NULL, eport, eport, p);
 	case is_Snets:
 		s = visitDataFlow(_p_->u.snets_.dataflow_);
+		//s=dupeStream(s);  // ??? debugging
+		//free(s); 
 		return MakeSubnetm(id, s, eport, eport, NULL);
 	case is_Snetin:
 		return MakeSubnetm(id, s,
@@ -995,6 +1035,7 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 /** Get subnet list */
 static void visitListSubnet(ListSubnet listsubnet, Ident id)
 {
+    CHKa2;
 	while (listsubnet != 0) {
 		(visitSubnet(listsubnet->subnet_, UnderScore(id)));
 		listsubnet = listsubnet->listsubnet_;
@@ -1004,43 +1045,12 @@ static void visitListSubnet(ListSubnet listsubnet, Ident id)
 /** Get subnet definition */
 void visitSubdef(Subdef _p_)
 {
+    CHKa2;
 	visitListSubnet(_p_->u.snet_.listsubnet_,
 			visitSubId(_p_->u.snet_.subid_));
 	//visitListSubnet(_p_->u.snet_.listsubnet_,
 	//                  visitSymval(_p_->u.snet_.symval_));
 }
-
-#if 0
-static char *Exists(char *s)
-{
-	struct stat sb;
-	char bfr[BUFFSIZE + 1];
-
-	if (lstat(s, &sb) == 0)
-		return s;
-
-	if (includePath == NULL)
-		return NULL;
-
-	strncpy(bfr, includePath, BUFFSIZE);
-	if (lstat(strncat(bfr, s, BUFFSIZE), &sb) == 0)
-		return strdup(bfr);
-
-	return NULL;
-}
-
-static char *findFile(char *s)
-{
-	char *s2;
-
-	s2 = Exists(s);
-
-	if (s2 != NULL)
-		return s2;
-
-	FAIL(Cannot locate, s);
-}
-#endif
 
 void visitStm(Stm _p_)
 {
@@ -1048,6 +1058,7 @@ void visitStm(Stm _p_)
 	ValidSW pt;
 	static int includeLevel = 0;
 
+    CHKa2;
 	stype = IS_NET;
 
 	switch (_p_->kind) {
