@@ -704,6 +704,9 @@ break existing networks.
 	
 ## 0.28.3
     * Fix project generation i/o bug	
+    
+## 0.28.4
+    * More roject generation fixes	
   
 ## Author<a name="author"/>
 

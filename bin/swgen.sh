@@ -604,7 +604,7 @@ const (
 func Debug(s string) {
  	if os.Getenv("DEBUG") == "Y" {
  	 	fmt.Print(yellow)
- 	 	fmt.Println("postage/config.go/DEBUG:",s,reset)
+ 	 	fmt.Println("config.go/DEBUG:",s,reset)
  	} 
 } 	
 
@@ -729,7 +729,7 @@ const (
 func Debug(s string) {
  	if os.Getenv("DEBUG") == "Y" {
  	 	fmt.Print(yellow)
- 	 	fmt.Println("postage/config.go/DEBUG:",s,reset)
+ 	 	fmt.Println("config.go/DEBUG:",s,reset)
  	} 
 } 	
 

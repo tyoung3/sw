@@ -23,7 +23,7 @@
         white="\u001b[37m"
         reset="\u001b[0m"
         
-version="0.21.1"  
+version="0.28.3"  
 targetdir=/usr/local/src
 pgm=swproject
 
@@ -67,6 +67,7 @@ GenCFG() {
 	StreamWork:
   defaults:  
     DefaultSourceComp: 	"Gen"
+    DefaultTypePath:    "$p"
     DefaultSinkComp: 	"Print"
     DefaultPath: 	"$p"
     DefaultFilterComp: 	"Pass"  
@@ -176,7 +177,7 @@ GenProjectP() {
              ;; 
         *)
 	        nd=$1;
-	        exam=src/nds/postage
+	        exam=src/nds/$p
 	        [ -z $1 ]   \
 	            && Die Missing PROJECT_NAME.  Try \'swproject $exam\' 
 	        Display GenProject:  for nd=$nd  cfg=$cfg yamlq=$yamlq

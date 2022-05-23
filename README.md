@@ -1,4 +1,4 @@
-# STREAMWORK -- SW-0.28.3 
+# STREAMWORK -- SW-0.28.4 
 
 
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
@@ -704,6 +704,9 @@ break existing networks.
 	
 ## 0.28.3
     * Fix project generation i/o bug	
+    
+## 0.28.4
+    * More roject generation fixes	
   
 ## Author<a name="author"/>
 

@@ -611,13 +611,18 @@ static int generateSlices(Process p, int nslice) {
 		Port pt;
 		int n = nslice;
 		char *ctype;
-		char *pkgPath="nqueens.";
+		char *pkgPath="";
+		
+		pkgPath=defaultTypePath;
 		
 		pt = p->port;
 		
 		if(pt != NULL ) {
 		  do {
 			  ctype = pt->stream->iptype;
+			  if(strncmp(ctype,"interface{}",100) == 0) {
+			    pkgPath="";
+			  }
 			  if(pt->next != p->port 
 				   && strncmp(ctype, pt->next->stream->iptype,100) == 0) {
 				      printf("\nvar _cs%d []chan %s%s\n", 
