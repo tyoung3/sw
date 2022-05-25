@@ -131,8 +131,8 @@ and builds a single main Go program which:
   * launches a goroutine for each process,  
   * connects these processes via Golang interface channels, and 
   * waits for all processes to finish.  
-  * StreamWork has no other interaction with the component processes, which do not call on StreamWork functions
-    in any way. 
+  * Once the processes launched, StreamWork has no subsequent
+   interaction with them.
 
 On option, **_sw_** will read, parse and interpret a network definition file then  create either a:
  
@@ -528,7 +528,8 @@ Input to DelayedReceiver: Receiver0 > IP - # 9
 produces the following source tree:
 
 ```
-postage
+├── cmd
+│   └── postage.go
 ├── ComputePostage.go
 ├── ComputePostage_test.go
 ├── config.go
@@ -540,7 +541,6 @@ postage
 ├── go.sum
 ├── internal
 │   ├── gen.sh
-│   ├── postage.go
 │   ├── postage.sw
 │   └── sw.cfg
 ├── ipT.go
@@ -551,9 +551,11 @@ postage
 ├── Rates.go
 ├── Rates_test.go
 ├── RateT.go
+├── testdata
+│   └── README
 └── WeighT.go
 
-1 directory, 22 files
+3 directories, 23 files
 
 ```
 
@@ -589,6 +591,8 @@ sw.sh-1.0.1 USAGE:
 ## BUGS:<a name="bugs"/>
 
 Subnet process names must be unique, but this is not guaranteed.
+Using the same process name in different subnet definitions will cause
+unpredictable, negative consequences.
 
 **_sw.Gen_** fails unless all three arguments are present.
 

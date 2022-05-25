@@ -8,7 +8,7 @@ init() {
     #pgm=swgen_none.sh
     fmt=""
     pgm=$(basename "$0")
-    version="0.3.1"
+    version="0.28.5"
     # HTML=fbpgo.html
     export modpath="$GOPATH/src"
 
@@ -610,6 +610,7 @@ func Debug(s string) {
 
 	func init() {
 		os.Setenv("DEBUG","Y")
+        Debug("DEBUG set by init() function here.");
 	}	
 					 
 EOF
@@ -735,6 +736,7 @@ func Debug(s string) {
 
 func init() {
  	os.Setenv("DEBUG","Y")
+    Debug("DEBUG set by init() function here.");
 }
  				
 // PkgConfig initializes the go-config package.  See: https://github.com/zpatrick/go-config for details.

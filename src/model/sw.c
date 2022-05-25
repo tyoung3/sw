@@ -22,13 +22,12 @@
     exit(1);                      \
 }
 
-#define CHKa2    a2b2=A2HasB2();
-
+// #define CHKa2    a2b2=A2HasB2();
+#define CHKa2 ;
 /******************   Function Prototypes   *****************/
 static void expandSubnet(Model m, Process p, Subnetm sn);
 static void expandSub(Model m, Process p); 
 int         VerifyStream(Stream s);
-char        *makeName(char *pn, char *nn);
 char        *fixName(char *name);
 Extport     MakeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 
@@ -43,6 +42,7 @@ static String     saves = NULL;     /**<Save name ?? */
 /******************   Local Functions   *****************/
 static Process ewatch=NULL; 
 
+#if 0
 static int A2HasB2() {
         Model m;
         Subnetm sn;
@@ -70,6 +70,7 @@ static int A2HasB2() {
         
         return 0;
 }
+#endif
 
 static Subnetm linkSubnet(Model m, char *name)
 {
@@ -999,6 +1000,20 @@ static void Unlink(Process p) {
 		}
 }
 
+    /** Concat subnet id and process name. Ex. ^sn, P1 ==> _snP1 **/
+static void setSubName(char *id, Process p) {
+    char bfr[1001];
+    
+    return;   /** Not helping with subnet conflicts. */
+    bfr[0]='_';
+    bfr[1]=0;
+    strncat(bfr,id+1,1000);
+    strncat(bfr,p->name,1000);
+    p->name=strdup(bfr);
+    linkProc(net_model,p);
+    net_model->nprocs--;
+}
+
 /** Get subnet */
 Subnetm visitSubnet(Subnet _p_, Ident id)
 {
@@ -1009,6 +1024,7 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 	switch (_p_->kind) {
 	case is_Sneth:
 		p = visitHermt(_p_->u.sneth_.hermt_);
+		setSubName(id,p);
 		if(p) 
 			Unlink(p);   // Remove p from Model->proc list.
 		if (!p->comp)
@@ -1016,15 +1032,15 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 		return MakeSubnetm(id, NULL, eport, eport, p);
 	case is_Snets:
 		s = visitDataFlow(_p_->u.snets_.dataflow_);
-		//s=dupeStream(s);  // ??? debugging
-		//free(s); 
+		setSubName(id,s->source);
+		setSubName(id,s->sink);
 		return MakeSubnetm(id, s, eport, eport, NULL);
 	case is_Snetin:
-		return MakeSubnetm(id, s,
+		return MakeSubnetm(id, NULL,
 				   visitExtPortIn(_p_->u.snetin_.extportin_),
 				   eport,NULL);
 	case is_Snetout:
-		return MakeSubnetm(id, s,
+		return MakeSubnetm(id, NULL, 
 				   visitExtPortOut(_p_->u.snetout_.extportout_),
 				   eport,NULL);
 	default:
@@ -1336,15 +1352,6 @@ char *fixName(char *name)  {
 	return strndup(bfr, 100);
 }
 
-char *makeName(char *pn, char *nn) /** Create a name string */
-{
-	char bfr[1000];
-
-	strncpy(bfr, pn, 500);
-	//  strncat(bfr, "_", 501);
-	strncat(bfr, nn, 1000);
-	return (strdup(bfr));
-}
 /** Convert the parse tree into a SW network model. */
 Model visitValidSW(Model m, ValidSW _p_) {
 	savePrefix(SET, "");

@@ -38,7 +38,6 @@ int fixId(int i);
 int VerifyStream(Stream s);
 int fixId(int i);
 char **MakeArg(ListArgument la, char *name);
-char *makeName(char *pn, char *nn);
 char *fixName(char *name);
 Extport MakeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 Arrow makeArrow(char *iptype, int bs);
@@ -55,6 +54,17 @@ Process MakeProcess(Model model, Ident name,
             
 /******************   Local Functions   *****************/
 
+static char *makeName(char *nn, Process p) /** Create a name string */
+{
+	char bfr[1000];
+
+	strncpy(bfr, p->name, 500);
+	if(p->comp->name[0] == '^') {
+	    // strncat(bfr,p->comp->name,1000);
+	}
+	strncat(bfr, nn, 1000);
+	return (strdup(bfr));
+}
 /** Check depth of subnet expansion.   Subnets may invoke subnets up to maxdepth depth. */
 static int CheckDepth(int d)
 {
@@ -89,7 +99,7 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
 	stype = IS_ORPHAN;
 
 	if (ep->type == SOURCE) {
-		srcname = makeName(p->name, fixName(ep->source->name));
+		srcname = makeName(fixName(ep->source->name),p);
 		p2 = getProc(srcname);
 		if (!p2) {
 			p2 = MakeProcess(m, srcname, ep->source->comp,
@@ -98,7 +108,7 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
 
 		pt = MakePort(ep->source_id, ep->name);
 	} else { if(ep->type == SINK) {
-		        snkname = makeName(p->name, fixName(ep->sink->name));
+		        snkname = makeName(fixName(ep->sink->name),p);
 		        p2 = getProc(snkname);
 		        if (!p2) {
 			        p2 = MakeProcess(m, snkname, ep->sink->comp,
@@ -147,8 +157,7 @@ static void buildStream(Model m, Process p, Port pt, Extport ep) {
 					VerifyStream(s);
 					assert(s && pt == s->SourcePort);
 					srcname =
-					    makeName(p->name,
-						     fixName(ep->source->name));
+					    makeName(fixName(ep->source->name),p);
 					pnew =
 					    MakeProcess(m, srcname,
 							ep->source->comp,
@@ -188,8 +197,7 @@ static void buildStream2(Model m, Process p, Port pt, Extport ep) {
 					VerifyStream(s);
 					assert(s && pt == s->SinkPort);
 					snkname =
-					    makeName(p->name,
-						     fixName(ep->sink->name));
+					    makeName(fixName(ep->sink->name),p);
 					pnew =
 					    MakeProcess(m, snkname,
 							ep->sink->comp,
@@ -223,13 +231,13 @@ static void expandSn(Model m, Process p, Subnetm sn) {
     
     ep=sn->extport;
     while(ep) {
-        p2 = MakeProcess(m, makeName(p->name,ep->source->name), ep->source->comp,
+        p2 = MakeProcess(m, makeName(ep->source->name,p), ep->source->comp,
 					 ep->source->arg, ep->source->attr);
 	    ep2 =MakeExtport(ep->type, p2, pt, 
 	                  makeArrow(ep->iptype, ep->bufsz), -1);
 	    ep2->source_id = ep->source_id;
 	    ep2->sink_id = ep->sink_id;
-	    ep2->name = makeName(p->name,ep->source->name);
+	    ep2->name = makeName(ep->source->name,p);
         ep2->type=ep->type;
         ep2->source=ep->source;
         ep2->sink=ep->sink;
@@ -257,8 +265,6 @@ static void expandOrphan(Model m, Process p, Port pt, Extport ep) {
 	    }
 	    FAIL(expandOrphan,"Cannot find subnet definition");
 	}
-	
-	// LOOPS??         expandSub(m, p);
 }
 
 /** Expand process,p, subnet component.  
@@ -315,8 +321,8 @@ static void ExpandAsubnet(Model m, Process p, Stream s)
 	Stream ns;		/* New Stream */
 	stype = IS_NET;
 	CheckDepth(p->depth);  /* FAIL if excessive expansion depth*/
-	srcname = makeName(p->name, s->source->name);
-	snkname = makeName(p->name, s->sink->name);
+	srcname = makeName(s->source->name,p);
+	snkname = makeName(s->sink->name,p);
 	src =
 	    MakeProcess(m, srcname, s->source->comp, MakeArg(NULL, NULL), NULL);
 	src->arg = s->source->arg;

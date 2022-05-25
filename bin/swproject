@@ -23,7 +23,7 @@
         white="\u001b[37m"
         reset="\u001b[0m"
         
-version="0.28.3"  
+version="0.28.5"  
 targetdir=/usr/local/src
 pgm=swproject
 
@@ -109,14 +109,15 @@ Genp1() {
 	if [ -f `pwd`/$sw ]; then 
 		sw=`pwd`/$sw
 	fi
-	#Debug sw=$sw p=$p $* 
+	
 	icfg=$cfg
 	[ -f $sw ] || Die Genp1: Cannot locate $sw 
 	shift 3
-	[ -f $dir/$p/.git ] && Die Found .giGenpt in source directory -- FAILED 
-	echo; # Display $0/GenP1: Generating  go module $p  from $sw
+	[ -f $dir/$p/.git ] && Die Found .git in source directory -- FAILED 
+	echo;  
 	[ -d $dir/$p ] && echo Updating go module $p  from $sw || echo Generating  go module $p  from $sw in $dir/$p
 	[ -d $dir/$p/internal ] || mkdir -p $dir/$p/internal || Die Cannot mkdir $dir/$p/internal
+	[ -d $dir/$p/cmd ] || mkdir -p $dir/$p/cmd || Die Cannot mkdir $dir/$p/cmd
 	cp $cfg $dir/$p/internal/sw.cfg || Die Cannot copy $cfg
 	cp  $sw $dir/$p/internal/${p}.sw || Die Cannot copy $sw  
 }
@@ -124,15 +125,14 @@ Genp1() {
 Genp4() {
 	      
 	   pushd internal || Die Cannot pushd internal	
-	         [ -f ${p}.go ] && mv ${p}.go ${p}.go.bak
-	   	 # [ -f ${p}.sw ] && mv ${p}.sw ${p}.sw.bak  
-	   	 Debug Genp4: internal run sw -cfg $cfg `pwd`/${p}.sw	 
+	         [ -f ../cmd/${p}.go ] && mv ../cmd/${p}.go ${p}.go.bak
+	   	 Debug Genp4: run sw -cfg $cfg 
+	   	 ${p}.sw	 
 	   	 ( [ -f $cfg ]  || GenCFG )  				\
-	   	 && sw -cfg sw.cfg ${p}.sw > ${p}.go			\
+	   	 && sw -cfg sw.cfg ${p}.sw > ../cmd/${p}.go			\
 	   	 && GenGo $* 						\
 	   	 && go mod tidy						\
 	   	 && swgraph ${p}.sw &
-	   	 #  && wait
 	   popd							
 }
 
@@ -150,7 +150,7 @@ Genp2() {
 	   && go mod tidy						\
 	   && go fmt  ./...						\
 	   && go test -coverporfile c.out					\
-	   && go run internal/${p}.go					\
+	   && go run cmd/${p}.go					\
 	   && echo -e "${green}$self: ${p}.go Succeeded. $reset" 	\
 	   || Die "${red}$self:  ${p}.go FAILED.$reset"		
 	   echo
