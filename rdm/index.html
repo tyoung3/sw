@@ -191,6 +191,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#0283">0.28.3</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#0284">0.28.4</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
     </li>
     </ul>
@@ -272,7 +274,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="streamwork-sw-0283">STREAMWORK -- SW-0.28.3</h1>
+                <h1 id="streamwork-sw-0285">STREAMWORK -- SW-0.28.5</h1>
 <p>Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com </p>
 <p>Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
@@ -383,8 +385,8 @@ and builds a single main Go program which:<br />
   * launches a goroutine for each process,<br />
   * connects these processes via Golang interface channels, and 
   * waits for all processes to finish.<br />
-  * StreamWork has no other interaction with the component processes, which do not call on StreamWork functions
-    in any way. </p>
+  * Once the processes launched, StreamWork has no subsequent
+   interaction with them.</p>
 <p>On option, <strong><em>sw</em></strong> will read, parse and interpret a network definition file then  create either a:</p>
 <ul>
 <li>a StreamWork Go main program,</li>
@@ -528,11 +530,14 @@ Foo Bar-7
 <p>SWL is an unambiguous, context free grammar, making it directly interpretable, without preprocessing. </p>
 <p>See the bnfc StreamWork language description file, SWL.pdf. </p>
 <p>SWL has few reserved words,  making it somewhat natural language
-agnostic.  There is no guarantee this condition will continue, however, every effort 
-will be made to ensure that all currently valid SWL statements will remain valid.  Should 
-this prove impossible,  the minor version will be incremented.
-Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for network definition files, <strong><em>sw</em></strong>, and published Go modules only.<br />
-Linux scripts and Go modules, are separately versioned.  </p>
+agnostic.   </p>
+<p>Every effort is made to ensure that all currently valid SWL
+statements will remain valid.  Should 
+this prove impractible,  the minor version will be incremented.
+Once v1.0.0 is reached, the major version will be incremented instead.
+Backward conpatibility is enforced for network definition files,
+<strong><em>sw</em></strong>, and published Go modules only.  </p>
+<p>Linux scripts and Go modules, are separately versioned.  </p>
 <h4 id="stream-types-and-component-arguments">Stream types and component arguments<a name="streamtypes"/></h4>
 <p>Stream channels can be any Go language type: int, string, struct, 
 or interface.  '_' is shorthand for an interface channel type. <br />
@@ -700,7 +705,8 @@ Input to DelayedReceiver: Receiver0 &gt; IP - # 9
 <h3 id="generate-a-project">Generate a project<a name="generateaproject"/></h3>
 <p><strong><em>swproject</em></strong> -yaml YAML  -cfg ./src/nds/postage.cfg ./src/model/tests/postage.sw</p>
 <p>produces the following source tree:</p>
-<pre><code>postage
+<pre><code>├── cmd
+│   └── postage.go
 ├── ComputePostage.go
 ├── ComputePostage_test.go
 ├── config.go
@@ -712,7 +718,6 @@ Input to DelayedReceiver: Receiver0 &gt; IP - # 9
 ├── go.sum
 ├── internal
 │   ├── gen.sh
-│   ├── postage.go
 │   ├── postage.sw
 │   └── sw.cfg
 ├── ipT.go
@@ -723,9 +728,11 @@ Input to DelayedReceiver: Receiver0 &gt; IP - # 9
 ├── Rates.go
 ├── Rates_test.go
 ├── RateT.go
+├── testdata
+│   └── README
 └── WeighT.go
 
-1 directory, 22 files
+3 directories, 23 files
 
 </code></pre>
 <p>then produces this graph 
@@ -754,7 +761,9 @@ The result is a running program ready for your enhancements.</p>
         --help  . Display this help
 </code></pre>
 <h2 id="bugs">BUGS:<a name="bugs"/></h2>
-<p>Subnet process names must be unique, but this is not guaranteed.</p>
+<p>Subnet process names must be unique, but this is not guaranteed.
+Using the same process name in different subnet definitions will cause
+unpredictable, negative consequences.</p>
 <p><strong><em>sw.Gen</em></strong> fails unless all three arguments are present.</p>
 <p>Stream directors like =&gt; and &lt;= are accepted, but treated the same
 as -&gt; and &lt;-, except for appearing differently in graphs.<br />
@@ -890,6 +899,9 @@ break existing networks.</p>
 </code></pre>
 <h2 id="0283">0.28.3</h2>
 <pre><code>* Fix project generation i/o bug
+</code></pre>
+<h2 id="0284">0.28.4</h2>
+<pre><code>* More roject generation fixes
 </code></pre>
 <h2 id="author">Author<a name="author"/></h2>
 <pre><code>Tom Young, streamwork@twyoung.com
