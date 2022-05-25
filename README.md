@@ -311,10 +311,15 @@ SWL is an unambiguous, context free grammar, making it directly interpretable, w
 See the bnfc StreamWork language description file, SWL.pdf. 
 
 SWL has few reserved words,  making it somewhat natural language
-agnostic.  There is no guarantee this condition will continue, however, every effort 
-will be made to ensure that all currently valid SWL statements will remain valid.  Should 
-this prove impossible,  the minor version will be incremented.
-Once v1.0.0 is reached, the major version will be incremented instead. Backward conpatibility is enforced for network definition files, **_sw_**, and published Go modules only.  
+agnostic.   
+
+Every effort is made to ensure that all currently valid SWL
+statements will remain valid.  Should 
+this prove impractible,  the minor version will be incremented.
+Once v1.0.0 is reached, the major version will be incremented instead.
+Backward conpatibility is enforced for network definition files,
+**_sw_**, and published Go modules only.  
+
 Linux scripts and Go modules, are separately versioned.  
 
 #### Stream types and component arguments<a name="streamtypes"/>
