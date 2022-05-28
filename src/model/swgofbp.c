@@ -50,7 +50,6 @@ static String deleteBrace(char *s0) {
 static void genPath(Component  c)
 {
     char *s=c->path;
-    char *importLib  = { defaultLibrary };
     
     if( strcmp(s,STDPACKAGE) == 0) 
     	 return;
@@ -184,6 +183,7 @@ static void assignChannels(Model m)
 	switch (f->type) {
 	   case IS_SUB:
 	   case IS_ORPHAN:
+	   case IS_IFACE:
 		break;
 	   case IS_STRUCT:
 	   case IS_NET:
@@ -301,6 +301,7 @@ static void showND(Model m)
 
     while (f) {
 	switch (f->source->kind) {
+	    case IS_IFACE:
 		case IS_SUB:
 			break;
 		case IS_STRUCT:
@@ -431,7 +432,6 @@ static char *stripPath( char *s1 ) {
 /** print launch process code. */
 static void genLaunch1(Process p)
 {
-	static int nproc=0;
 	printf( "\t%s := net.NewProc(\"%s\", &%s.%s{})\n",
 		 p->name, p->name, stripPath(p->comp->path), p->comp->name);
 
@@ -454,10 +454,7 @@ static void genLaunch1(Process p)
 /** Generate startup code */
 static void genLaunches(Process p)
 {
-    int ch;			/* Assigned channel */
     int nstreams;
-    int ch0;			/* initial channel index */
-
 
     while (p) {
 	nstreams = p->nportsIn + p->nportsOut;
@@ -468,12 +465,10 @@ static void genLaunches(Process p)
 		   // printf("_cs%s[0:%i])\n", p->name, nstreams);
 	    } else {
 		   genLaunch1(p);
-		   ch0 = p->port->channel;
 		   // printf("cs[%i:%i])\n", ch0, ch0 + nstreams);
 	    }
 	} else {
 	    if (nstreams > 0) {
-		ch = p->port->channel;
 		genLaunch1(p);
 		// printf("cs[%i:%i])\n", ch, ch + 1);
 	    } else {
@@ -526,6 +521,7 @@ void genGoFBP(Model model)
     genSuffix();		/* Generate Suffix code */
 }
 
+#if 0
 /** Generate Expanded Network Definition */
 static void genND(Model mod)
 {
@@ -558,5 +554,6 @@ static void genND(Model mod)
     }
 
 }
+#endif
 
 /***************   End of SWGO.C   ********************/

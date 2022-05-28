@@ -715,7 +715,12 @@ break existing networks.
     * Fix project generation i/o bug	
     
 ## 0.28.4
-    * More roject generation fixes	
+    * More project generation fixes	
+    
+## 0.28.6
+    * Fix cfg initialization
+    * Check Wextra warnings.
+    * Remove some dead code    
   
 ## Author<a name="author"/>
 

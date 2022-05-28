@@ -221,7 +221,7 @@ public class xxxxxx extends Network {
 }
 #endif  //  #ifdef INCORPORATED 
 
-#endif 
 static void NeededForTodos() {
     printf("Dummy function\n");
 }
+#endif 

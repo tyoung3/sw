@@ -383,7 +383,7 @@ AUTOMAKE = ${SHELL} '/usr/local/src/sw/build-aux/missing' automake-1.16
 AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -g  $(AM_CFLAGS) -DMAJOR="${SW_MAJOR}" -DMINOR="${SW_MINOR}" -DSLEVEL="${SW_LEVEL}"
+CFLAGS = -g  $(AM_CFLAGS) -Wall -Wextra -DMAJOR="${SW_MAJOR}" -DMINOR="${SW_MINOR}" -DSLEVEL="${SW_LEVEL}" 
 CPP = gcc -E
 CPPFLAGS = 
 CSCOPE = cscope
@@ -419,18 +419,18 @@ OBJEXT = o
 PACKAGE = sw
 PACKAGE_BUGREPORT = sw@twyoung.com
 PACKAGE_NAME = sw
-PACKAGE_STRING = sw 0.28.5
+PACKAGE_STRING = sw 0.28.6
 PACKAGE_TARNAME = sw
 PACKAGE_URL = 
-PACKAGE_VERSION = 0.28.5
+PACKAGE_VERSION = 0.28.6
 PATH_SEPARATOR = :
 SET_MAKE = 
 SHELL = /bin/bash
 STRIP = 
-SW_LEVEL = 5
+SW_LEVEL = 6
 SW_MAJOR = 0
 SW_MINOR = 28
-VERSION = 0.28.5
+VERSION = 0.28.6
 abs_builddir = /usr/local/src/sw/src/model
 abs_srcdir = /usr/local/src/sw/src/model
 abs_top_builddir = /usr/local/src/sw

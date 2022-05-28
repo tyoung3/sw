@@ -18,7 +18,7 @@ swdir = ./
 
 sw_SOURCES =  sw.c swexpand.c swconfig.c swgraph.c swmain.c swsym.c swc.c  swgo.c  swjavafbp.c  swproject.c model.h  swconfig.h  swgo.h  swgraph.h	sw.h  swmain.h	swsym.h swgofbp.c swgofbp.h re.c re.h strndup.c 
 
-CFLAGS = -g  $(AM_CFLAGS) -DMAJOR="${SW_MAJOR}" -DMINOR="${SW_MINOR}" -DSLEVEL="${SW_LEVEL}"
+CFLAGS = -g  $(AM_CFLAGS) -Wall -Wextra -DMAJOR="${SW_MAJOR}" -DMINOR="${SW_MINOR}" -DSLEVEL="${SW_LEVEL}" 
 
 sw_LDADD = ../bnfc/Absyn.o ../bnfc/Lexer.o ../bnfc/Parser.o ../bnfc/Printer.o
 

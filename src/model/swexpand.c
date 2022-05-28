@@ -149,7 +149,6 @@ static void buildStream(Model m, Process p, Port pt, Extport ep) {
 	Process pnew;
 	Port ptc = NULL;
 	char *srcname;
-	char *snkname;
 			    
 					s = pt->stream;
 					if (s == NULL)
@@ -189,7 +188,6 @@ static void buildStream2(Model m, Process p, Port pt, Extport ep) {
 	Stream s;
 	Process pnew;
 	Port ptc = NULL;
-	char *srcname;
 	char *snkname;
 					s = pt->stream;
 					if (s == NULL)
@@ -248,9 +246,7 @@ static void expandSn(Model m, Process p, Subnetm sn) {
     
 }
 
-static void expandOrphan(Model m, Process p, Port pt, Extport ep) {	
-	Stream s;
-	Process pnew;
+static void expandOrphan(Model m, Process p) {	
 	Subnetm sn;
 	
 	if(p->comp->name[0] == '^') {
@@ -273,7 +269,7 @@ static void expandOrphan(Model m, Process p, Port pt, Extport ep) {
 static void ExpandAprocess(Model m, Process p, Extport ep)
 {
 
-	Port pt = NULL, ptc = NULL;
+	Port pt = NULL;
 	CheckDepth(p->depth);        /* FAIL if excessive expansion depth*/
 	
 	if (ep->type == SOURCE) {
@@ -306,7 +302,7 @@ static void ExpandAprocess(Model m, Process p, Extport ep)
 			while (pt != p->port);
 		}
 	} else {  /* Must be orphan*/
-	        expandOrphan(m, p, pt, ep);
+	        expandOrphan(m, p);
 	}}
 
 	findAmatchingPort(m, p, ep);
@@ -355,7 +351,7 @@ static void ExpandAsubnet(Model m, Process p, Stream s)
 static void expandSubnet(Model m, Process p, Subnetm sn)
 {
 	Stream s;
-	Extport ep, eps;
+	Extport ep;
 
 	ep = sn->extport;
 	while (ep) {
@@ -592,7 +588,7 @@ static void SortPorts(Process p)
 
 
 static char *pickType(char *t1, char *t2) {
-    if(t1==NULL || t1=="") 
+    if(t1==NULL || t1[0]==0) 
             return t2;
             
     return t1;

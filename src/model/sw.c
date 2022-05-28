@@ -25,22 +25,20 @@
 // #define CHKa2    a2b2=A2HasB2();
 #define CHKa2 ;
 /******************   Function Prototypes   *****************/
-static void expandSubnet(Model m, Process p, Subnetm sn);
-static void expandSub(Model m, Process p); 
 int         VerifyStream(Stream s);
 char        *fixName(char *name);
 Extport     MakeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 
 /******************   Local  Variables   *****************/
-static int        bs = 1;			/**<  Buffer size */
+// static int        bs = 1;			/**<  Buffer size */
 static char      *savedPrefix = "";
-static Port       LatestSrcPort = NULL;/** Latest visited source port. */
+// static Port       LatestSrcPort = NULL;/** Latest visited source port. */
 static streamType stype = IS_NET;   /** Current network type. */
 static Model      net_model = NULL; /** Network model anchor point. */
 static String     saves = NULL;     /**<Save name ?? */
 
 /******************   Local Functions   *****************/
-static Process ewatch=NULL; 
+// static Process ewatch=NULL; 
 
 #if 0
 static int A2HasB2() {
@@ -107,16 +105,6 @@ static void linkExt(Subnetm sn, Extport pt)
 	pt->next = pt2;
 	sn->extport = pt;
 }
-
-static Stream dupeStream(Stream s) {
-    Stream s2;
-    
-	s2 = (Stream) malloc(sizeof(Stream_));
-	*s2 = *s; return s2;
-}
-
-	
-static int a2b2=-1;
 	
 /** Make subnet definition */
 Subnetm MakeSubnetm(Ident name, Stream s, 
@@ -412,6 +400,7 @@ MakeStream(streamType stype, Process src, Process snk, int bs, Model m,
 	case IS_STRUCT:
 		m->nstreams--;
 		m->nStructStreams++;
+		__attribute__((fallthrough));  // Avoids Wextra warning
 	case IS_NET:
 		m->nstreams++;
 		__attribute__((fallthrough));
@@ -419,8 +408,10 @@ MakeStream(streamType stype, Process src, Process snk, int bs, Model m,
 		f->source_id = fixId(SourcePort->id);
 		f->sink_id = fixId(SinkPort->id);
 		break;
+	case IS_IFACE:
 	case IS_ORPHAN:
 		break;
+	default:	
 		badkind(MakeStream);
 	}
 
@@ -544,6 +535,7 @@ String visitSymvalu(Symvalu p)
 	}
 }
 
+#if 0
 static int builtinType(char *t)
 {
 	char c = t[0];
@@ -571,6 +563,7 @@ static int builtinType(char *t)
       return 0;
 */
 }
+#endif
 
 String visitTypeDef(TypeDef p)
 {
@@ -669,15 +662,6 @@ void linkPort(Process P, Port p)
 
 }
 
-/** Set stream pointer in port structure */
-static void setStream(Port pt, Stream s)
-{
-	while (pt->stream) {
-		pt = pt->next;
-	}
-	pt->stream = s;
-}
-
 /** Set number of out ports in source process */
 static void SetSource(Process p)
 {
@@ -730,10 +714,6 @@ Stream df(streamType stype, Arrow a, Process src, Process snk,
 /** Get stream structure */
 Stream visitDataFlow(DataFlow _p_)
 {
-	Process snk, src;
-	Port pt, src_pt, snk_pt;
-	Stream s, s2;
-	int bs;
 
 	switch (_p_->kind) {
 	case is_Streamx:

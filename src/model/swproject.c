@@ -105,6 +105,7 @@ int isaSwPkg(char *pkg) {
 	return 0;   
 }
 
+#if 0
 static Process findProcForComp(Model m,Component c) {
 	Stream s;
 	
@@ -118,6 +119,7 @@ static Process findProcForComp(Model m,Component c) {
 	}
 	FAIL(findProcForComp, "Cannot find process");
 }
+#endif
 
 static char setIO(Component c, Port pt, Process p) {
     Process src;
@@ -132,7 +134,7 @@ static char setIO(Component c, Port pt, Process p) {
 }
 
 // print  -i type1 -o type 2 ...
-static void printTypes(Model m, Process p, Component c) {
+static void printTypes(Process p, Component c) {
 	Port pt;
 	char io;
 	
@@ -169,7 +171,7 @@ void genProject(Model m) {
 			if(!isaSwPkg(c->path))  {			 
 				printf("swgen.sh gs %s %s %s %s",
 					module ,c->path, getConfType(c->path), c->name);
-				printTypes(m,p,c);
+				printTypes(p,c);
 				i=0;	
 				while( args[i] !=NULL  ) 	
 				 	printf(" %s", args[i++]);		  

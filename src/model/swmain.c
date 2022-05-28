@@ -42,11 +42,11 @@ code(decision table) from which it is derived. If you created the source,
 you are free to do anything you like with the generated code, 
 including incorporating it into or linking it with proprietary software.  
 */ 
-static int ccide_group=1; 
 #ifndef UINT_MAX 
 #include "limits.h" 
 #endif /* End if not defined UINT_MAX */ 
  
+#if 0
 		/* Return rule number */ 
 static int CCIDEFindRule(
 	int nbrrules,  unsigned long ccide_table, unsigned long yes[], unsigned long no[]){ 
@@ -62,6 +62,7 @@ static int CCIDEFindRule(
  
         return r; 
 } 
+#endif 
  
 static int CCIDEFindRuleYes(             /* Return rule number */
 	int nbrrules, unsigned long ccide_table, unsigned long yes[]) 
@@ -82,6 +83,7 @@ char *FixVersion()
 
 	sprintf(bfr, "%d.%d.%d", MAJOR, MINOR, SLEVEL);
 	version = strdup(bfr);
+	return version;
 }
 
 char *mystrncat(char *d, char *s, size_t n)
@@ -261,6 +263,7 @@ static int verifyOK(Model model)
 	f = model->stream;
 	while (f) {
 		switch (f->type) {
+		case IS_IFACE:
 		case IS_ORPHAN:
 			break;
 		case IS_SUB:
@@ -339,7 +342,7 @@ char *baseOf(char *s)
 }
 
 
-static void CheckInput(FILE *s) {
+static void CheckInput() {
 
 	if (input == NULL) {
 		snprintf(fbfr,
@@ -377,7 +380,7 @@ static int BadArg(int argc, char **argv)
 /*   -  -  -  -  -  -  -  -  X  -  -  - | Usage();				*/
 /*   -  -  -  -  -  -  -  -  -  X  -  - | fname = argv[i];			*/
 /*   -  -  -  -  -  -  -  -  -  X  -  - | input = openFile(fname);		*/
-/*   -  -  -  -  -  -  -  -  -  X  -  - | CheckInput(input);			*/
+/*   -  -  -  -  -  -  -  -  -  X  -  - | CheckInput();			*/
 /*   -  -  -  -  -  -  -  -  -  -  X  - | maxlevel=atoi(argv[++i]);		*/
 /*   -  -  X  -  X  -  -  X  -  -  -  X | fprintf(stderr,"CONFIG/WARNING/BadArg:%s\n",argv[i]); */
 /*   X  X  -  X  -  -  X  -  -  -  X  - | i++; 			*/
@@ -419,7 +422,7 @@ static int BadArg(int argc, char **argv)
 	case 11:	/*	Rule 10 */
 	    fname = argv[i];
 	    input = openFile(fname);
-	    CheckInput(input);
+	    CheckInput();
 	    return 0;
 	    break;
 	case 10:	/*	Rule 11 */

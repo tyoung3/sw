@@ -8,10 +8,10 @@
 #include <string.h>
 #include "model.h"
 #include "sw.h"
-#include "swconfig.h"       
+#include "swconfig.h"
 #include <unistd.h>
 
-#define MAX_LEVELS maxlevel    // Maximum subnet depth.  Will become execute option 
+#define MAX_LEVELS maxlevel	// Maximum subnet depth.  Will become execute option
 
 /** @todo Declutter graph option 
     @todo Config file color palette option
@@ -22,8 +22,11 @@
 #define FIXINDENT(s) {};		/**<Nullify FIXINDENT */
 #define C(s) printf("%s,\n",(#s));	/**<Print String*/
 
-/* Process colors in graph */  
-String fcolors[]={"lightblue", "gold", "red", "orange",  "yellow", "lightgreen",  "violet",  "brown", "gray", "white"}; 
+/* Process colors in graph */
+String fcolors[] =
+    { "lightblue", "gold", "red", "orange", "yellow", "lightgreen",
+    "violet", "brown", "gray", "white"
+};
 
 /** Type of Component name */
 typedef enum { NOCOMP, COMPNAME, WITHPATH } SHOWC;
@@ -31,45 +34,40 @@ static SHOWC showcomp = COMPNAME; /**<??*/
 static char *twoline = "";	  /**<??*/
 
 /** Find port for id */
-static Port findPort (Port pt, int id)
+static Port findPort(Port pt, int id)
 {
-  Port pt0 = pt;
+    Port pt0 = pt;
 
-  do
-    {
-      if (pt->id == id)
-	{
-	  return pt;
+    do {
+	if (pt->id == id) {
+	    return pt;
 	}
-      pt = pt->next;
+	pt = pt->next;
     }
-  while (pt != pt0);
+    while (pt != pt0);
 
-  return NULL;	       /** @todo SWGRAPH.C: error message on error   */
+    return NULL;       /** @todo SWGRAPH.C: error message on error   */
 }
 
 /** Assign channel to ports for stream */
-static int
-assign_channel (int ch, Stream f)
+static int assign_channel(int ch, Stream f)
 {
 
-  findPort (f->source->port, f->source_id)->channel = ch;
-  findPort (f->sink->port, f->sink_id)->channel = ch;
-  return ch;
+    findPort(f->source->port, f->source_id)->channel = ch;
+    findPort(f->sink->port, f->sink_id)->channel = ch;
+    return ch;
 }
 
 /** For each stream; assign the channel */
-static void
-assignChannels (Model m)
+static void assignChannels(Model m)
 {
-  int ch = m->nstreams - 1;
-  Stream f = m->stream;
+    int ch = m->nstreams - 1;
+    Stream f = m->stream;
 
-  while (f)
-    {
-      if (f->type == IS_NET || f->type == IS_STRUCT)
-	assign_channel (ch--, f);
-      f = f->next;
+    while (f) {
+	if (f->type == IS_NET || f->type == IS_STRUCT)
+	    assign_channel(ch--, f);
+	f = f->next;
     }
 }
 
@@ -78,390 +76,385 @@ assignChannels (Model m)
 #define LB "{"	/**<Left Brace*/
 
 /** Generate End Of Block */
-static void
-genSuffix ()
+static void genSuffix()
 {
-  printf ("%s\n", RB);
+    printf("%s\n", RB);
 }
 
 /** Generate beginning of .dot file */
-static void
-genPrefix (char *gname, int nstreams)
+static void genPrefix(char *gname, int nstreams)
 {
 
-  printf ("#Prefix here. %d streams\n", nstreams);
-  printf ("digraph \"%s\" %s", gname, LB);
+    printf("#Prefix here. %d streams\n", nstreams);
+    printf("digraph \"%s\" %s", gname, LB);
 
-  printf
-    ("URL=\"https://github.com/tyoung3/sw\" graph [");
-  printf ("\tname=\"Streamwork/swgraph:  v%s\",\n", version);
-  C (fontcolor = black);
-  printf ("\tlabel=\"https://github.com/tyoung3/sw\",\n");
-  P (fontname = "Helvetica");
-  printf (",bgcolor=\"gray65\"]");
+    printf("URL=\"https://github.com/tyoung3/sw\" graph [");
+    printf("\tname=\"Streamwork/swgraph:  v%s\",\n", version);
+    C(fontcolor = black);
+    printf("\tlabel=\"https://github.com/tyoung3/sw\",\n");
+    P(fontname = "Helvetica");
+    printf(",bgcolor=\"gray65\"]");
 
-  // FIXINDENT(\();
-  C (node[shape = Mrecord);
-     C (fontsize = "18"); C (fontcolor = black); C (fontname = "Helvetica");
-     C (color = black); C (fillcolor = powderblue); C (style = filled);
-     P (height = .2);
-     P (];);
-  C (edge[color = blue);
-     C (style = bold);
-     // NG in dot.    C(              len=0.1);
-     C (fontsize = "18"); C (labelfontcolor = black);
-     C (fontcolor = blue);
-     P (]);
+    // FIXINDENT(\();
+    C(node[shape = Mrecord);
+      C(fontsize = "18"); C(fontcolor = black); C(fontname = "Helvetica");
+      C(color = black); C(fillcolor = powderblue); C(style = filled);
+      P(height = .2);
+      P(];);
+    C(edge[color = blue);
+      C(style = bold);
+      // NG in dot.    C(              len=0.1);
+      C(fontsize = "18"); C(labelfontcolor = black);
+      C(fontcolor = blue);
+      P(]);
 
 }
 
-#undef SHOW_PORTS   // Do not show ports in table format 
+#undef SHOW_PORTS		// Do not show ports in table format
 #ifdef SHOW_PORTS
 /** Generate port data */
-static void
-genPort (int n)
+static void genPort(int n)
 {
-  printf ("<%i> %i  ", n, n);
+    printf("<%i> %i  ", n, n);
 }
-#else 
-#define genPort(X) 
+#else
+#define genPort(X)
 #endif
 
 /** Generate arguments */
-static void
-genArgs (char **a)
+static void genArgs(char **a)
 {
-  int i = 1;
+    int i = 1;
 
-  while (a[i] != NULL)
-    {
-      printf (" \\\"%s\\\"", a[i++]);
+    while (a[i] != NULL) {
+	printf(" \\\"%s\\\"", a[i++]);
     }
 }
 
 /** return generated URL */
-static char *
-makeURL (char *comp)
+static char *makeURL(char *comp)
 {
-  char bfr[110];
+    char bfr[110];
 
-  snprintf (bfr, sizeof (bfr) - 1, "%s/%s.html", htmldir, comp);   /* htmldir is guaranteed to have a trailing slash('/'). */
-  return strndup (bfr, sizeof (bfr) - 1);
+    snprintf(bfr, sizeof(bfr) - 1, "%s/%s.html", htmldir, comp);	/* htmldir is guaranteed to have a trailing slash('/'). */
+    return strndup(bfr, sizeof(bfr) - 1);
 }
 
     /**  EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */
-    
+
 	  // genProc (p->name, p->comp->name, p->comp->path, "taos_", p->arg);
-static void genProc1(Process p,  char *host) {
-  Attribute attr;
-  char **args=p->arg;
-  char *comp=p->comp->name;
-  char *name=p->name;
-  char *path=p->comp->path;
-  
-  printf ("       \"%s\" ", name);
-  printf ("[shape = Mrecord,");
-  C (color = "black");
-  
-  printf ("fillcolor=%s", fcolors[getPathColor(p->comp->path)]);
-  
-  
-  printf ("  URL=\"%s\"\n", makeURL (comp));
-  printf (" host=\"%s\" \n", host);
-  
-  
-  printf (" tooltip=\"%s.%s ", path, comp);
-  
-  genArgs (args);
-  printf ("\"\n");
-  
-  attr=p->attr;
-  while(attr != NULL) {
-    switch (attr->type) {
-    case STRING:
-         printf("       %s=\"%s\",\n", attr->key, attr->val.s );
-         break;
-    case INT:    
-         printf("       %s=%d,\n", attr->key, attr->val.i );
-         break;
-    default:
-        badkind(attribute Type);     
+static void genProc1(Process p, char *host)
+{
+    Attribute attr;
+    char **args = p->arg;
+    char *comp = p->comp->name;
+    char *name = p->name;
+    char *path = p->comp->path;
+
+    printf("       \"%s\" ", name);
+    printf("[shape = Mrecord,");
+    C(color = "black");
+
+    printf("fillcolor=%s", fcolors[getPathColor(p->comp->path)]);
+
+
+    printf("  URL=\"%s\"\n", makeURL(comp));
+    printf(" host=\"%s\" \n", host);
+
+
+    printf(" tooltip=\"%s.%s ", path, comp);
+
+    genArgs(args);
+    printf("\"\n");
+
+    attr = p->attr;
+    while (attr != NULL) {
+	switch (attr->type) {
+	case STRING:
+	    printf("       %s=\"%s\",\n", attr->key, attr->val.s);
+	    break;
+	case INT:
+	    printf("       %s=%d,\n", attr->key, attr->val.i);
+	    break;
+	default:
+	    badkind(attribute Type);
+	}
+	attr = attr->next;
     }
-    attr = attr->next;
-  }
-  
-  switch (showcomp)
-    {
+
+    switch (showcomp) {
     case NOCOMP:
-      printf ("label=\"{<P> %s ", name);
-      break;
+	printf("label=\"{<P> %s ", name);
+	break;
     case COMPNAME:
-      printf ("label=\"{<P> %s %s %s", name, twoline, comp);
-      genArgs (args);
-      break;
+	printf("label=\"{<P> %s %s %s", name, twoline, comp);
+	genArgs(args);
+	break;
     case WITHPATH:
-      printf ("label=\"{<P> %s %s %s.%s", name, twoline, path, comp);
-      genArgs (args);
+	printf("label=\"{<P> %s %s %s.%s", name, twoline, path, comp);
+	genArgs(args);
     }
 }
 
- 
+
 /** End code for process */
-static void
-endProc ()
+static void endProc()
 {
-  printf ("\"\n");
-  printf ("];\n");		// End proc 
+    printf("\"\n");
+    printf("];\n");		// End proc 
 }
 
 /** Generate graph cluster code */
-static void
-genCluster1 (char *name, char *filename)
+static void genCluster1(char *name, char *filename)
 {
-  char bfr[maxbfsz];	
 
-  printf ("subgraph \"cluster%s\" %s\n", name, LB);
-  printf ("label = \"%s\"; name=\"%s\";\n", name, name);
-  printf ("URL=\"%s\";\n\n", filename);
+    printf("subgraph \"cluster%s\" %s\n", name, LB);
+    printf("label = \"%s\"; name=\"%s\";\n", name, name);
+    printf("URL=\"%s\";\n\n", filename);
 }
 
 
 /** Find channel for port */
-static int
-findChannel (Port p, int id)
+static int findChannel(Port p, int id)
 {
-  Port p0;
+    Port p0;
 
-  p0 = p;
+    p0 = p;
 
-  do
-    {
-      if (p->id == id)
-	{
-	  return p->channel;
+    do {
+	if (p->id == id) {
+	    return p->channel;
 	}
-      p = p->next;
+	p = p->next;
     }
-  while (p != p0);
+    while (p != p0);
 
-  return -1;
+    return -1;
 }
 
+#if 0
 /** Generate port code */
-static void
-showPorts (Stream f, Process src, Process snk, int channel)
+static void showPorts(Stream f, Process src, Process snk, int channel)
 {
-char *arrowhead="normal";  // diamond, ediamond, dot, tee, empty, box, open,
+    char *arrowhead = "normal";	// diamond, ediamond, dot, tee, empty, box, open,
 
-    if ( f->type == IS_ORPHAN ) {
-        return;
-     }
-        
+    if (f->type == IS_ORPHAN) {
+	return;
+    }
+
 #ifdef SHOW_PORTS
-  printf("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.2i\",taillabel=\"%.2i\",tooltip = \"%i[%i]\",arrowhead=\"%s\"];\n", 
-     src->name,f->source_id,
-     snk->name, f->sink_id, channel, 
-        f->sink_id, f->source_id, channel, 
-        f->bufsz,arrowhead);
+    printf
+	("\"%s\":%i -> \"%s\":%i [label=\"%i\"]\",headlabel=\"%.2i\",taillabel=\"%.2i\",tooltip = \"%i[%i]\",arrowhead=\"%s\"];\n",
+	 src->name, f->source_id, snk->name, f->sink_id, channel,
+	 f->sink_id, f->source_id, channel, f->bufsz, arrowhead);
 #else
-  printf("\"%s\" -> \"%s\"       [label=\"%i]\",  headlabel=\"%.i\",taillabel=\"%i\",	tooltip=\"%i[%i]\",arrowhead=\"%s\"];\n",
-     src->name,
-     snk->name, channel, f->sink_id, f->source_id, channel, 
-        f->bufsz,arrowhead);
+    printf
+	("\"%s\" -> \"%s\"       [label=\"%i]\",  headlabel=\"%.i\",taillabel=\"%i\",	tooltip=\"%i[%i]\",arrowhead=\"%s\"];\n",
+	 src->name, snk->name, channel, f->sink_id, f->source_id, channel,
+	 f->bufsz, arrowhead);
 #endif
 }
 
-static char *addDot(char *n) {
-	static char s[100];
-	
-	
-	if(n==NULL) 
-		return ".";
-		
-	strncpy(s,n,99);
-	if(n[0] != 0) 
-		strncat(s,".",99);
-	return strdup(s);
-}
-
-static void SetIsNet( Stream f, char *arrowhead, char *style)  {
-  Process src, snk; 
-  char *edgeColor = "purple";
-  char *sourceColor = "pink"; 
-  int channel = 7;
-  char *srcPortName;
-  char *snkPortName;    
-  
-	  src = f->source;    
-	  snk = f->sink;
-	  edgeColor = "black";
-	  sourceColor=fcolors[getPathColor(src->comp->path)];
-	  channel = findChannel (src->port, f->source_id);
-	  if(f->bufsz > 1) {
-	  	edgeColor="orange";
-	  }	
-	  if(f->bufsz == 1) {
-	  	edgeColor="green";
-	  }
-	  if(f->bufsz > 99) {
-	  	edgeColor="red";
-	  }
-	 	
-	  srcPortName=addDot((findPort(src->port, f->source_id)->name));
-	  
-	  snkPortName=addDot(findPort(snk->port, f->sink_id)->name);	
-	  if (f->bufsz < 1000000)  // ? < 2 
-	    {
-#ifdef SHOW_PORTS
-	      printf
-		("\"%s\":%i -> \"%s\":%i [color=%s,fontcolor=%s, label=\"%i +%s\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
-		src->name, f->source_id, snk->name, f->sink_id,  edgeColor,sourceColor,  channel, f->iptype, f->sink_id, f->source_id,
-		   f->bufsz);
-#else
-	      printf("\"%s\"  -> \"%s\"  [color=%s, fontcolor=%s, label=\"%i %s\",headlabel=\"%s%i\",taillabel=\"%s%i\",tooltip=\"%i\",arrowhead=\"%s\",style=\"%s\"];\n",
-		src->name, snk->name, edgeColor, sourceColor, channel, 
-		f->iptype, snkPortName, f->sink_id, srcPortName,f->source_id,
-		   f->bufsz,arrowhead,style);
 #endif
-	    }  // End if bfsz
-}	    
 
-static int NotTooDeep(Stream f) {
+static char *addDot(char *n)
+{
+    static char s[100];
 
-	if( f->source && f->source->depth > MAX_LEVELS) 
-		return 0;
-	if(f->sink && f->sink->depth   > MAX_LEVELS) 
-		return 0;
-	return 1;	
+
+    if (n == NULL)
+	return ".";
+
+    strncpy(s, n, 99);
+    if (n[0] != 0)
+	strncat(s, ".", 99);
+    return strdup(s);
 }
 
-static void
-genLinks (Model m)
-{				// [label="C Miss"];
-  char *arrowhead="normal"; 
-  char *style="solid";  //dashed", "dotted", "solid", "invis" "bold"     "tapered" 
-  Stream f;    
-  
-  f = m->stream;
-  while (f) {
-    arrowhead="normal"; style="solid";
-    if (NotTooDeep(f)) {
-     switch (f->type) {
-      case IS_STRUCT:
-          arrowhead="diamond"; style="tapered";
-      case IS_NET:
-          SetIsNet(f, arrowhead, style);
-	  case IS_SUB:
-	    break;  
-	      // showPorts (f, src, snk, channel);
-    }			// End switch on type 
-   }           			// Endif 
-   f = f->next; 		// Get next stream
-  }				// End while more streams
-}
+static void SetIsNet(Stream f, char *arrowhead, char *style)
+{
+    Process src, snk;
+    char *edgeColor = "purple";
+    char *sourceColor = "pink";
+    int channel = 7;
+    char *srcPortName;
+    char *snkPortName;
 
+    src = f->source;
+    snk = f->sink;
+    edgeColor = "black";
+    sourceColor = fcolors[getPathColor(src->comp->path)];
+    channel = findChannel(src->port, f->source_id);
+    if (f->bufsz > 1) {
+	edgeColor = "orange";
+    }
+    if (f->bufsz == 1) {
+	edgeColor = "green";
+    }
+    if (f->bufsz > 99) {
+	edgeColor = "red";
+    }
 
-static void graphNS(Process p)       		
-	{
-	  printf ("#(%s %s.%s) %d ports\n",
-		  p->name,
-		  p->comp->path, p->comp->name, p->nportsIn + p->nportsOut);
-	  genProc1 (p, "taos_");
-#ifdef SHOW_PORTS	
-	  Port pt;
-	  pt = p->port;
-	  printf ("|{");
-	  do
-	    {
-	      genPort (pt->id);
-	      pt = pt->next;
-	      if (pt != p->port)
-		{
-		  printf ("|twy");
-		}
-	    }
-	  while (pt != p->port);
-	  printf (" }");
-#endif	  
-	  printf (" }");
-	  endProc ();
-}	
+    srcPortName = addDot((findPort(src->port, f->source_id)->name));
 
-static void graphOrphan(Process p)       		{
-	  printf ("#(%s %s.%s) %d ports\n",
-		  p->name,
-		  p->comp->path, p->comp->name, p->nportsIn + p->nportsOut);
-	  genProc1(p, "taos_");
-	  printf (" }");
-	  endProc ();  
-}	
-
-static void
-genProcs (Process p) {
-
-  while (p)
+    snkPortName = addDot(findPort(snk->port, f->sink_id)->name);
+    if (f->bufsz < 1000000)	// ? < 2 
     {
-     if(p->depth <= MAX_LEVELS ) {
-      if (p->kind == IS_NET || p->kind == IS_STRUCT)
-      		graphNS(p);
-      else if (p->kind == IS_ORPHAN)
-      		graphOrphan(p);   
-     }  		
-      p = p->next;
+#ifdef SHOW_PORTS
+	printf
+	    ("\"%s\":%i -> \"%s\":%i [color=%s,fontcolor=%s, label=\"%i +%s\",headlabel=\"%i\",taillabel=\"%i\",tooltip=\"%i\"];\n",
+	     src->name, f->source_id, snk->name, f->sink_id, edgeColor,
+	     sourceColor, channel, f->iptype, f->sink_id, f->source_id,
+	     f->bufsz);
+#else
+	printf
+	    ("\"%s\"  -> \"%s\"  [color=%s, fontcolor=%s, label=\"%i %s\",headlabel=\"%s%i\",taillabel=\"%s%i\",tooltip=\"%i\",arrowhead=\"%s\",style=\"%s\"];\n",
+	     src->name, snk->name, edgeColor, sourceColor, channel,
+	     f->iptype, snkPortName, f->sink_id, srcPortName, f->source_id,
+	     f->bufsz, arrowhead, style);
+#endif
+    }				// End if bfsz
+}
+
+static int NotTooDeep(Stream f)
+{
+
+    if (f->source && f->source->depth > MAX_LEVELS)
+	return 0;
+    if (f->sink && f->sink->depth > MAX_LEVELS)
+	return 0;
+    return 1;
+}
+
+static void genLinks(Model m)
+{				// [label="C Miss"];
+    char *arrowhead = "normal";
+    char *style = "solid";	//dashed", "dotted", "solid", "invis" "bold"     "tapered" 
+    Stream f;
+
+    f = m->stream;
+    while (f) {
+	arrowhead = "normal";
+	style = "solid";
+	if (NotTooDeep(f)) {
+	    switch (f->type) {
+	    case IS_STRUCT:
+		arrowhead = "diamond";
+		style = "tapered";
+		__attribute__((fallthrough));   // Avoid Wextra WARNING.
+	    case IS_NET:
+		SetIsNet(f, arrowhead, style);
+	    case IS_ORPHAN:
+	    case IS_IFACE:
+	    case IS_SUB:
+		break;
+		// showPorts (f, src, snk, channel);
+	    }			// End switch on type 
+	}			// Endif 
+	f = f->next;		// Get next stream
+    }				// End while more streams
+}
+
+
+static void graphNS(Process p)
+{
+    printf("#(%s %s.%s) %d ports\n",
+	   p->name,
+	   p->comp->path, p->comp->name, p->nportsIn + p->nportsOut);
+    genProc1(p, "taos_");
+#ifdef SHOW_PORTS
+    Port pt;
+    pt = p->port;
+    printf("|{");
+    do {
+	genPort(pt->id);
+	pt = pt->next;
+	if (pt != p->port) {
+	    printf("|twy");
+	}
+    }
+    while (pt != p->port);
+    printf(" }");
+#endif
+    printf(" }");
+    endProc();
+}
+
+static void graphOrphan(Process p)
+{
+    printf("#(%s %s.%s) %d ports\n",
+	   p->name,
+	   p->comp->path, p->comp->name, p->nportsIn + p->nportsOut);
+    genProc1(p, "taos_");
+    printf(" }");
+    endProc();
+}
+
+static void genProcs(Process p)
+{
+
+    while (p) {
+	if (p->depth <= MAX_LEVELS) {
+	    if (p->kind == IS_NET || p->kind == IS_STRUCT)
+		graphNS(p);
+	    else if (p->kind == IS_ORPHAN)
+		graphOrphan(p);
+	}
+	p = p->next;
     }
 
 
-  printf ("\n");
+    printf("\n");
 }
 
 
 /** Generate .dot file from network model. */
-void
-genGraph (Model model)
+void genGraph(Model model)
 {
-  Stream f;
-  Process p;
-  char dash;  // - OR =     
-  
-  assignChannels (model);
-  //* Generate commented Reconstructed Network Definition */
-  printf ("#########   Expanded Network Definition   ######### \n");
-  f = model->stream;
+    Stream f;
+    Process p;
+    char dash;			// - OR =     
 
-  while (f)  {
-      dash='-';
-      switch (f->type)
-	{
+    assignChannels(model);
+    //* Generate commented Reconstructed Network Definition */
+    printf("#########   Expanded Network Definition   ######### \n");
+    f = model->stream;
+
+    while (f) {
+	dash = '-';
+	switch (f->type) {
 	case IS_STRUCT:
-	    dash='=';
+	    dash = '=';
+		__attribute__((fallthrough));   // Avoid Wextra WARNING.
 	case IS_NET:
-	  printf ("# (%s %s/%s)%d\t\t<%c %d(%s %s/%s) \n",
-		  f->sink->name, f->sink->comp->path,
-		  f->sink->comp->name, f->sink_id,
-		  dash,
-		  f->source_id, f->source->name,
-		  f->source->comp->path, f->source->comp->name);
-	  break;
+	    printf("# (%s %s/%s)%d\t\t<%c %d(%s %s/%s) \n",
+		   f->sink->name, f->sink->comp->path,
+		   f->sink->comp->name, f->sink_id,
+		   dash,
+		   f->source_id, f->source->name,
+		   f->source->comp->path, f->source->comp->name);
+	    break;
+	case IS_IFACE:
 	case IS_SUB:
-	  break;
+	    break;
 	case IS_ORPHAN:
-	  printf ("# %s %s/%s\n",
-		  f->source->name, f->source->comp->path,
-		  f->source->comp->name);
+	    printf("# %s %s/%s\n",
+		   f->source->name, f->source->comp->path,
+		   f->source->comp->name);
 	}
-      f = f->next;
+	f = f->next;
     }
 
-  printf ("\n");
-  //* Generate Prefix code */
-  genPrefix (model->name, model->nstreams);
-  genCluster1 (model->name, model->filename);
-  p = model->proc;
-  /* Get first process */
-  genProcs (p);			/*{ */
-  printf ("%s", RB);		/* End Cluster1 */
-  genLinks (model);
-  genSuffix ();			//* Generate Suffix code */
+    printf("\n");
+    //* Generate Prefix code */
+    genPrefix(model->name, model->nstreams);
+    genCluster1(model->name, model->filename);
+    p = model->proc;
+    /* Get first process */
+    genProcs(p);		/*{ */
+    printf("%s", RB);		/* End Cluster1 */
+    genLinks(model);
+    genSuffix();		//* Generate Suffix code */
 }
 
 /*    End of SWGRAPH.C  */

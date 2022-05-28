@@ -203,6 +203,7 @@ static void assignChannels(Model m)
 	switch (f->type) {
 	   case IS_SUB:
 	   case IS_ORPHAN:
+	   case IS_IFACE:
 		break;
 	   case IS_NET:
 	   case IS_STRUCT:
@@ -320,11 +321,13 @@ static void showND(Model m)
 
   while (f) {
     char *ftype;
-    if(f->iptype == NULL || f->iptype[0] == 0) 
+    if(f->iptype == NULL || f->iptype[0] == 0) {
         ftype=defaultChannelType;
-    else
-        ftype=f->iptype;    
+    } else {
+        ftype=f->iptype;
+    }        
 	switch (f->type) {
+	    case IS_IFACE:
 		case IS_SUB:
 			break;
 		case IS_STRUCT:
@@ -413,17 +416,14 @@ static int badType(char *t) {
 
 static void MakeChannels(Model m) {  
     int nstream=0;
-    int nstreams = m->nstreams + m->nStructStreams+m->nIntStreams + m->nStringStreams;
-    int bfrtbl[m->nstreams + 10];
-    int i = 0;      
     Stream f = m->stream;
     char *module="postage.";
     
     while (f) {
-      if(f->type != IS_ORPHAN && f->type != IS_SUB) {
-	  	bfrtbl[nstreams - i++ - 1] = f->bufsz;
-      if(defaultChannelType == NULL || defaultChannelType[0]=='_') 
+      if( (f->type != IS_ORPHAN) && (f->type != IS_SUB) ) {
+      if( (defaultChannelType == NULL) || (defaultChannelType[0]=='_') ) {
         defaultChannelType="interface{}";
+      }  
         char *ftype=defaultChannelType;
         if(    (f->iptype==NULL) 
         		|| (f->iptype[0]==0) ) {
@@ -460,11 +460,6 @@ static void MakeChannels(Model m) {
 void genPrefix(Model m)
 {
     char bfr[maxbfsz]; 
-    char *channelType="interface{}";
-     
-    if(m->nStructStreams > 0) {
-        channelType=defaultChannelType;
-    }
 
     P(package main);
     printf("\n/*\n"); 
@@ -497,6 +492,7 @@ void genPrefix(Model m)
     printf("\n\t_wg.Add(%d)\n", m->nprocs);
 }
 
+#if 0
 /** Return true if channel numbers not lined up */
 static int needaSlice(Port pt)
 {
@@ -534,6 +530,7 @@ static void makeChSlice(Process p, int nstreams, char *channelType)
 	    pt = pt->next;
     } while (pt != p->port);
 }
+#endif
 
 /** Return rightmost path element */
 char *stripPath( char *s1 ) {
@@ -644,13 +641,12 @@ static int generateSlices(Process p, int nslice) {
 }
     
 /** Launch component goroutines. */
-static void genLaunches(Process p, char *channelType)
+static void genLaunches(Process p)
 {
     int nslice=0, lastSlice=0;
     while (p!=NULL) {
-        char *lastType, *ftype;
-	      lastType="";
-	      lastSlice = nslice;
+	       
+	    lastSlice = nslice;
         nslice = generateSlices(p,nslice);
         genLaunchComp(p);
         generateChannels(p,lastSlice);
@@ -663,16 +659,10 @@ static void genLaunches(Process p, char *channelType)
 void genGo(Model model)
 {
     Process p;
-    char *channelType;
-
-    if (model->nStructStreams > 0) 
-        channelType="sw.IpT";
-    else 
-        channelType="interface{}";
             
     genPrefix(model);		/* Generate Prefix code */
     p = model->proc;		/* Get first process    */
-    genLaunches(p,channelType);		/* Expand processes     */
+    genLaunches(p);		/* Expand processes     */
     genSuffix(model->name);		/* Generate Suffix code */
 }
 

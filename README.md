@@ -1,4 +1,4 @@
-# STREAMWORK -- SW-0.28.5 
+# STREAMWORK -- SW-0.28.6 
 
 
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
@@ -715,7 +715,12 @@ break existing networks.
     * Fix project generation i/o bug	
     
 ## 0.28.4
-    * More roject generation fixes	
+    * More project generation fixes	
+    
+## 0.28.6
+    * Fix cfg initialization
+    * Check Wextra warnings.
+    * Remove some dead code    
   
 ## Author<a name="author"/>
 
