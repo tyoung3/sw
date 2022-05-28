@@ -33,7 +33,7 @@ Extport     makeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 // static int        bs = 1;			/**<  Buffer size */
 static char      *savedPrefix = "";
 // static Port       LatestSrcPort = NULL;/** Latest visited source port. */
-static streamType stype = IS_NET;   /** Current network type. */
+static StreamType stype = IS_NET;   /** Current network type. */
 static Model      net_model = NULL; /** Network model anchor point. */
 static String     saves = NULL;     /**<Save name ?? */
 
@@ -367,7 +367,7 @@ Component makeComponent(Ident name, String path)
 
 /** Make Stream structure */
 Stream
-makeStream(streamType stype, Process src, Process snk, int bs, Model m,
+makeStream(StreamType stype, Process src, Process snk, int bs, Model m,
 	   Port SourcePort, Port SinkPort, char *iptype)
 {
 	Stream f;
@@ -477,7 +477,7 @@ void visitNumassgn(Numassgn _p_)
 
 #if 1
 /** Get Id */
-#define visitId(i) (String) i
+#define VisitId(i) (String) i
 #endif
 
 /** Get Symbol value */
@@ -489,7 +489,7 @@ String visitSymval(Symval _p_)
 		return getSymVar(_p_->u.symvalv_.symvar_);
 
 	case is_Symvali:
-		return (visitId(_p_->u.symvali_.id_));
+		return (VisitId(_p_->u.symvali_.id_));
 
 	default:
 		badkind(Symval);
@@ -688,7 +688,7 @@ static void SetSink(Process p)
 	p->nportsIn++;
 }
 
-Stream df(streamType stype, Arrow a, Process src, Process snk,
+Stream df(StreamType stype, Arrow a, Process src, Process snk,
    Port src_pt, Port snk_pt)
 {
 	Stream s;

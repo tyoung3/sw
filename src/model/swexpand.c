@@ -24,7 +24,7 @@
 #define MAX(A,B) ( (A>B)? A: B)
 
 /******************   Local Variables   *****************/
-static streamType stype = IS_NET;
+static StreamType stype = IS_NET;
 static Process fl = NULL;  /** List of processes to free	*/
 
 /**<Anchor for external port list */
@@ -43,7 +43,7 @@ Extport makeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 Arrow makeArrow(char *iptype, int bs);
 Port makePort(int n, Ident id);
 
-Stream makeStream(streamType stype, Process src, Process snk, int bs,
+Stream makeStream(StreamType stype, Process src, Process snk, int bs,
     Model m, Port SourcePort, Port SinkPort, char *iptype);
 
 void checkIPtype(char *msg, char *srcType, char *snkType, char *srcName,
