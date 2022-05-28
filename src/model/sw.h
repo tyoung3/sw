@@ -71,7 +71,7 @@ typedef struct Arrow_ {
 	int bs;
 } Arrow_;
 typedef struct Arrow_ *Arrow;
-Extport MakeExtport(PortType type, Process p, Port prt, Arrow a, int id);
+Extport makeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 
 void 	visitDouble(Double d);			/**<Get Double ?*/	
 void 	visitChar(Char c);			/**<Get a char */
@@ -84,16 +84,16 @@ Component visitComp(Comp p);			/**<Get Component*/
 Argument visitArgument(Argument p);		/**<Get argument*/
 ListArgument visitListArgument(ListArgument p);	/**<Get argument list*/
 Model 	visitValidSW(Model, ValidSW p);		/**<Build model from parse tree*/
-Model MakeModel(Stream f);
+Model makeModel(Stream f);
 Ident visitIdent(Ident i);		      	/**<Get port number */
 Integer visitInteger(Integer i); 		/**<Get integer*/
 String visitString(String s);			/**<Get string*/
 String visitStringval(Stringval p);		/**<Get String value*/
-Component MakeComponent(Ident name, String path);/**<Create component structure*/
+Component makeComponent(Ident name, String path);/**<Create component structure*/
 char *makeModPath(char *pn, char *nn);
 
     /*swexpand.c */
-void        ExpandModel(Model);
+void        expandModel(Model);
 	/** swjafafbp.c */	
 void genJavaFBP(Model model);
 
@@ -111,7 +111,7 @@ extern int maxlevel;
 extern String configfile;
 extern struct cfg_ cfg;
 extern char fbfr[]; 	
-ValidSW IncludeFile( char *fname);
+ValidSW includeFile( char *fname);
 
 	/* swsym.c */
 int getPathColor(String path);

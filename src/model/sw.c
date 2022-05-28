@@ -25,9 +25,9 @@
 // #define CHKa2    a2b2=A2HasB2();
 #define CHKa2 ;
 /******************   Function Prototypes   *****************/
-int         VerifyStream(Stream s);
+int         verifyStream(Stream s);
 char        *fixName(char *name);
-Extport     MakeExtport(PortType type, Process p, Port prt, Arrow a, int id);
+Extport     makeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 
 /******************   Local  Variables   *****************/
 // static int        bs = 1;			/**<  Buffer size */
@@ -107,7 +107,7 @@ static void linkExt(Subnetm sn, Extport pt)
 }
 	
 /** Make subnet definition */
-Subnetm MakeSubnetm(Ident name, Stream s, 
+Subnetm makeSubnetm(Ident name, Stream s, 
                     Extport in, Extport out,
                     Process p)                 
 {
@@ -132,7 +132,7 @@ Subnetm MakeSubnetm(Ident name, Stream s,
 			linkExt(sn, out);
 	    } else {        /* Must be an orphan */
 	        if(p) {
-	            orphan=MakeExtport(ORPHAN,p, NULL, NULL, -99); 
+	            orphan=makeExtport(ORPHAN,p, NULL, NULL, -99); 
 	            linkExt(sn,orphan);  
 	        }
 	    }     
@@ -144,14 +144,14 @@ Subnetm MakeSubnetm(Ident name, Stream s,
 };
 
 /** Make Model structure */
-Model MakeModel(Stream f)
+Model makeModel(Stream f)
 {
 	Model m;
 
 	m = (Model) malloc(sizeof(Model_));
 
 	if (!m) {
-		FAIL(MakeModel, "Out of memory when allocating Process!\n");
+		FAIL(makeModel, "Out of memory when allocating Process!\n");
 	}
 
 	m->nstreams = m->nStructStreams = m->nIntStreams = m->nStringStreams =
@@ -169,7 +169,7 @@ Model MakeModel(Stream f)
 
 }
 
-char **MakeArg(ListArgument la, char *name)
+char **makeArg(ListArgument la, char *name)
 {
 	char **arg;		/* Pointer to array of string pointers. */
 	int i = 1, narg = 1;
@@ -214,7 +214,7 @@ Integer visitNumval(Numval _p_)
 	}
 }
 
-Attribute MakeAttr(ListAttr la)
+Attribute makeAttr(ListAttr la)
 {
 	Attribute attr, lattr;
 	ListAttr la2 = la;
@@ -260,7 +260,7 @@ static char *savePrefix(int m, char *s)
 }
 
 
-Process MakeProcess(Model model, Ident name, Component comp, char **arg, Attribute attr)
+Process makeProcess(Model model, Ident name, Component comp, char **arg, Attribute attr)
 {
 	Process p;
 
@@ -271,7 +271,7 @@ Process MakeProcess(Model model, Ident name, Component comp, char **arg, Attribu
 	if (p == NULL) {
 		p = (Process) malloc(sizeof(Process_));
 		if (!p) {
-			FAIL(MakeProcess,
+			FAIL(makeProcess,
 			     "Out of memory when allocating Process!\n");
 		}
 		p->comp = NULL;
@@ -312,7 +312,7 @@ int fixId(int i)
 }
 
 /** Make Port structure */
-Port MakePort(int n, Ident id)
+Port makePort(int n, Ident id)
 {
 	Port p;
 
@@ -339,7 +339,7 @@ Port MakePort(int n, Ident id)
 
 /** Make Component structure */
 //  @BUG Lookup existing component first
-Component MakeComponent(Ident name, String path)
+Component makeComponent(Ident name, String path)
 {
 	Component c;
 
@@ -367,19 +367,19 @@ Component MakeComponent(Ident name, String path)
 
 /** Make Stream structure */
 Stream
-MakeStream(streamType stype, Process src, Process snk, int bs, Model m,
+makeStream(streamType stype, Process src, Process snk, int bs, Model m,
 	   Port SourcePort, Port SinkPort, char *iptype)
 {
 	Stream f;
 
 	if (!src) {
-		FAIL(MakeStream, "No source for stream. Hermit maybe.\n");
+		FAIL(makeStream, "No source for stream. Hermit maybe.\n");
 	}
 
 	f = (Stream) malloc(sizeof(Stream_));
 
 	if (!f) {
-		FAIL(MakeStream, "Out of memory when allocating Stream!\n");
+		FAIL(makeStream, "Out of memory when allocating Stream!\n");
 	}
 	f->SourcePort = SourcePort;
 	f->SinkPort = SinkPort;
@@ -412,7 +412,7 @@ MakeStream(streamType stype, Process src, Process snk, int bs, Model m,
 	case IS_ORPHAN:
 		break;
 	default:	
-		badkind(MakeStream);
+		badkind(makeStream);
 	}
 
 	return f;
@@ -697,7 +697,7 @@ Stream df(streamType stype, Arrow a, Process src, Process snk,
 	SetSink(snk);
 	SetSource(src);
 	linkPort(src, src_pt);
-	s = MakeStream(stype, src, snk,
+	s = makeStream(stype, src, snk,
 		       a->bs, net_model, src_pt, snk_pt, a->iptype);
 	//iptype_save = "";
 	s->SourcePort = src_pt;
@@ -707,7 +707,7 @@ Stream df(streamType stype, Arrow a, Process src, Process snk,
 	s->source_id = src_pt->id = fixId(src_pt->id);
 	s->SinkPort->match = s->SourcePort;
 	s->SourcePort->match = s->SinkPort;
-	VerifyStream(s);
+	verifyStream(s);
 	return s;
 }
 
@@ -781,7 +781,7 @@ Stream visitDataFlow(DataFlow _p_)
 }
 
 /** Create an external port structure. */
-Extport MakeExtport(PortType stype, Process p, Port prt, Arrow a, int id)
+Extport makeExtport(PortType stype, Process p, Port prt, Arrow a, int id)
 {
 	Extport ep;
 
@@ -851,7 +851,7 @@ Extport visitExtPortIn(ExtPortIn _p_)
 	Extport ep;
 	switch (_p_->kind) {
 	case is_Extin:
-		ep = MakeExtport(SINK,
+		ep = makeExtport(SINK,
 				 visitProc(_p_->u.extin_.proc_),
 				 visitPrt(_p_->u.extin_.prt_),
 				 visitLarrow(_p_->u.extin_.larrow_),
@@ -859,7 +859,7 @@ Extport visitExtPortIn(ExtPortIn _p_)
 		//setIpType(ep);
 		return ep;
 	case is_ExtinR:
-		ep = MakeExtport(SINK,
+		ep = makeExtport(SINK,
 				 visitProc(_p_->u.extinr_.proc_),
 				 visitPrt(_p_->u.extinr_.prt_),
 				 visitRarrow(_p_->u.extinr_.rarrow_),
@@ -878,7 +878,7 @@ Extport visitExtPortOut(ExtPortOut _p_)
 	Extport ep;
 	switch (_p_->kind) {
 	case is_Extout:
-		ep = MakeExtport(SOURCE,
+		ep = makeExtport(SOURCE,
 				 visitProc(_p_->u.extout_.proc_),
 				 visitPrt(_p_->u.extout_.prt_),
 				 visitLarrow(_p_->u.extout_.larrow_),
@@ -886,7 +886,7 @@ Extport visitExtPortOut(ExtPortOut _p_)
 		//setIpType(ep);
 		return ep;
 	case is_Extoutr:
-		return MakeExtport(SOURCE,
+		return makeExtport(SOURCE,
 				   visitProc(_p_->u.extoutr_.proc_),
 				   visitPrt(_p_->u.extoutr_.prt_),
 				   visitRarrow(_p_->u.extoutr_.rarrow_),
@@ -926,17 +926,17 @@ Process visitHermt(Hermt _p_)
 	switch (_p_->kind) {
 	case is_Hermtx:
 		name = visitSymvalu(_p_->u.hermtx_.symvalu_);
-		p = MakeProcess(net_model,
+		p = makeProcess(net_model,
 				name,
 				visitComp(_p_->u.hermtx_.comp_),
-				MakeArg(visitListArgument
+				makeArg(visitListArgument
 					(_p_->u.hermtx_.listargument_), name),
 				NULL);
 		return p;
 	case is_Hermty:
-		p = MakeProcess(net_model,
+		p = makeProcess(net_model,
 				visitSymvalu(_p_->u.hermty_.symvalu_), NULL,
-				MakeArg(visitListArgument
+				makeArg(visitListArgument
 					(_p_->u.hermty_.listargument_), NULL),
 				NULL);
 		linkProc(net_model, p);
@@ -1008,19 +1008,19 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 		if(p) 
 			Unlink(p);   // Remove p from Model->proc list.
 		if (!p->comp)
-			p->comp = MakeComponent(p->name, defaultPath);
-		return MakeSubnetm(id, NULL, eport, eport, p);
+			p->comp = makeComponent(p->name, defaultPath);
+		return makeSubnetm(id, NULL, eport, eport, p);
 	case is_Snets:
 		s = visitDataFlow(_p_->u.snets_.dataflow_);
 		setSubName(id,s->source);
 		setSubName(id,s->sink);
-		return MakeSubnetm(id, s, eport, eport, NULL);
+		return makeSubnetm(id, s, eport, eport, NULL);
 	case is_Snetin:
-		return MakeSubnetm(id, NULL,
+		return makeSubnetm(id, NULL,
 				   visitExtPortIn(_p_->u.snetin_.extportin_),
 				   eport,NULL);
 	case is_Snetout:
-		return MakeSubnetm(id, NULL, 
+		return makeSubnetm(id, NULL, 
 				   visitExtPortOut(_p_->u.snetout_.extportout_),
 				   eport,NULL);
 	default:
@@ -1064,8 +1064,7 @@ void visitStm(Stm _p_)
 		savePrefix(SET, s);
 		return;
 	case is_Stminc:
-		// pt = IncludeFile(findFile(visitStringval(_p_->u.stminc_.stringval_)));  
-		pt = IncludeFile(visitStringval(_p_->u.stminc_.stringval_));
+		pt = includeFile(visitStringval(_p_->u.stminc_.stringval_));
 		includeLevel++;
 		if (includeLevel > MAX_INCLUDE_LEVEL)
 			FAIL(INCLUDE statement recursion,
@@ -1092,7 +1091,7 @@ void visitStm(Stm _p_)
 	case is_Stmh:
 		p = visitHermt(_p_->u.stmh_.hermt_);
 		if (!p->comp)
-			p->comp = MakeComponent(p->name, defaultPath);
+			p->comp = makeComponent(p->name, defaultPath);
 		break;
 	default:
 		badkind(Stm);
@@ -1163,21 +1162,21 @@ Process visitProc(Proc _p_)
 	switch (_p_->kind) {
 
 	case is_Processx:
-		return MakeProcess(net_model,
+		return makeProcess(net_model,
 				   visitSymvalu(_p_->u.processx_.symvalu_),
 				   visitComp(_p_->u.processx_.comp_),
-				   MakeArg(visitListArgument
+				   makeArg(visitListArgument
 					   (_p_->u.processx_.listargument_),
 					   visitSymvalu(_p_->u.
 							processx_.symvalu_)),
-				   MakeAttr(visitAttributes
+				   makeAttr(visitAttributes
 					    (_p_->u.processx_.attributes_)));
 	case is_Processy:
-		return MakeProcess(net_model,
+		return makeProcess(net_model,
 				   visitSymvalu(_p_->u.processy_.symvalu_),
 				   NULL,
-				   MakeArg(NULL, NULL),
-				   MakeAttr(visitAttributes
+				   makeArg(NULL, NULL),
+				   makeAttr(visitAttributes
 					    (_p_->u.processy_.attributes_)));
 	default:
 		badkind(Proc);
@@ -1190,17 +1189,17 @@ Port visitPrt(Prt _p_)
 	switch (_p_->kind) {
 	case is_Portx:
 
-		return (MakePort(visitNumval(_p_->u.portx_.numval_), NULL));
+		return (makePort(visitNumval(_p_->u.portx_.numval_), NULL));
 	case is_Portni:
-		return MakePort(visitNumval(_p_->u.portni_.numval_),
+		return makePort(visitNumval(_p_->u.portni_.numval_),
 				visitSymval(_p_->u.portni_.symval_));
 	case is_Portin:
-		return MakePort(visitNumval(_p_->u.portin_.numval_),
+		return makePort(visitNumval(_p_->u.portin_.numval_),
 				visitSymval(_p_->u.portin_.symval_));
 	case is_Portn:
-		return MakePort(-1, visitSymval(_p_->u.portn_.symval_));
+		return makePort(-1, visitSymval(_p_->u.portn_.symval_));
 	case is_Porte:
-		return MakePort(-1, NULL);
+		return makePort(-1, NULL);
 	default:
 		badkind(Prt);
 	}
@@ -1253,7 +1252,7 @@ String visitValidImport(ValidImport s0)
 
 Component visitRemPath(RemPath p)
 {
-	return MakeComponent(visitSymval(p->u.rempatha_.symval_),
+	return makeComponent(visitSymval(p->u.rempatha_.symval_),
 			     visitValidImport(p->u.rempatha_.validimport_));
 }
 
@@ -1264,12 +1263,12 @@ Component visitComp(Comp _p_)
 	case is_Compa:
 		return visitRemPath(_p_->u.compa_.rempath_);
 	case is_Compx:
-		return MakeComponent(visitSymval(_p_->u.compx_.symval_),
+		return makeComponent(visitSymval(_p_->u.compx_.symval_),
 				     defaultPath);
 	case is_Compn:
-		return MakeComponent(visitSubId(_p_->u.compn_.subid_), "_");
+		return makeComponent(visitSubId(_p_->u.compn_.subid_), "_");
 	case is_Compz:
-		return MakeComponent(visitSymval(_p_->u.compz_.symval_),
+		return makeComponent(visitSymval(_p_->u.compz_.symval_),
 				     visitModPath(_p_->u.compz_.modpath_));
 	default:
 		badkind(Comp);
