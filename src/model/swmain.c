@@ -464,7 +464,6 @@ ValidSW includeFile(char *fname)
 	input = openFile(fname);
 	if (input == NULL) {
 		perror(fname);
-		//      #include <errno.h>
 		FAIL(Cannot open, fname);
 	}
 	parse_tree = pValidSW(input);
@@ -550,5 +549,4 @@ int main(int argc, char **argv)
 	}
 
 	return EXIT_SUCCESS;
-    // return 0;
 }

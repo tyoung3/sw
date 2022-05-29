@@ -59,10 +59,12 @@ static char *makeName(char *nn, Process p) /** Create a name string */
 	char bfr[1000];
 
 	strncpy(bfr, p->name, 500);
+#ifdef SCORE_NAME	
 	if(p->comp->name[0] == '^') {
 	    strncat(bfr,"_",1000);
 	    strncat(bfr,p->comp->name+1,1000);
 	}
+#endif	
 	strncat(bfr, nn, 1000);
 	return (strdup(bfr));
 }
@@ -93,7 +95,6 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
 	Extport ep2 = NULL;
 	Port pt;
 	Process p2;
-	// Component c=NULL;
 	char *srcname;
 	char *snkname;
 
@@ -333,7 +334,6 @@ static void ExpandAsubnet(Model m, Process p, Stream s)
 	linkPort(snk, psnk);
 	src->nportsOut++;
 	snk->nportsIn++;
-	//bs = s->bufsz;
 	ns = makeStream(stype, src, snk, s->bufsz, m, psrc, psnk, s->iptype);
 	ns->sink_id = s->sink_id;
 	ns->source_id = s->source_id;
@@ -577,7 +577,6 @@ static void SortPorts(Process p)
 					pt2->next = pt1;
 					pt1->prev = pt2;
 					ptw = pt1;
-					//pt1 = pt2;
 					pt2 = ptw;
 				}
 			}
@@ -656,7 +655,6 @@ static void removeDeadStreams(Model m)
 					sp->next = s->next;
 					s = sp;
 				}
-				//free(s);
 			}
 		}
 		sp = s;

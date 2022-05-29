@@ -13,6 +13,8 @@
 #include "swsym.h"
 #include "model.h"
 
+#define FIX_EX2    /* Fix subnet process name conflicts.*/
+
 #define MAX_INCLUDE_LEVEL 100
 
 #define FailKind(S, K) {          \
@@ -22,7 +24,6 @@
     exit(1);                      \
 }
 
-// #define CHKa2    a2b2=A2HasB2();
 #define CHKa2 ;
 /******************   Function Prototypes   *****************/
 int         verifyStream(Stream s);
@@ -30,45 +31,12 @@ char        *fixName(char *name);
 Extport     makeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 
 /******************   Local  Variables   *****************/
-// static int        bs = 1;			/**<  Buffer size */
 static char      *savedPrefix = "";
-// static Port       LatestSrcPort = NULL;/** Latest visited source port. */
 static StreamType stype = IS_NET;   /** Current network type. */
 static Model      net_model = NULL; /** Network model anchor point. */
 static String     saves = NULL;     /**<Save name ?? */
 
 /******************   Local Functions   *****************/
-// static Process ewatch=NULL; 
-
-#if 0
-static int A2HasB2() {
-        Model m;
-        Subnetm sn;
-        Stream s;
-        Process snk;
-        
-        m=net_model;
-        sn=m->subnetm;
-        
-        while(sn) {
-            if(strncmp(sn->name,"^e",100)==0) {
-                s=sn->stream;
-                while(s) {
-                    snk=s->sink;
-                    if(strncmp(s->sink->comp->name,"^b2",100) == 0) {
-                            ewatch=s->sink;
-                            return 1;
-                    } 
-                    FAIL(A2HasB2,s->sink->comp->name);
-                }  
-                return 2;
-            }
-            sn=sn->next;
-        }
-        
-        return 0;
-}
-#endif
 
 static Subnetm linkSubnet(Model m, char *name)
 {
@@ -119,7 +87,6 @@ Subnetm makeSubnetm(Ident name, Stream s,
 
 	if (s) {
 		s->next = sn->stream;
-		// sn->stream = dupeStream(s);
 		sn->stream = s;
 	}
 
@@ -264,7 +231,6 @@ Process makeProcess(Model model, Ident name, Component comp, char **arg, Attribu
 {
 	Process p;
 
-	// if (name[0] == '_' && name[1] == 0)
 	name = fixName(name);
 	p = getProc(name);
 
@@ -578,9 +544,6 @@ String visitTypeDef(TypeDef p)
 		return strndup(bfr, BUFFSIZE);
 	case is_Typedefa:
 		t = visitSymvalu(p->u.typedefa_.symvalu_);
-		// if( builtinType(t) ) return t;
-		// snprintf(bfr,BUFFSIZE,"%s.%s",defaultTypePath,t);
-		// return strndup(bfr,BUFFSIZE);
 		return t;
 	case is_Typedefb:
 		snprintf(bfr, BUFFSIZE, "%s.%s",
@@ -591,9 +554,6 @@ String visitTypeDef(TypeDef p)
 		return "";
 	case is_Typdefl:
 		return visitTypeDef(p->u.typdefl_.typedef_1);
-		// ?? visitTypeDef(p->u.typdefl_.typedef_2);
-		break;
-
 	default:
 		badkind(TypeDef);
 	}
@@ -614,8 +574,6 @@ static Arrow visitLarrow(Larrow _p_)
 {
 	return makeArrow(visitTypeDef(_p_->u.arrowx_.typedef_),
 			 visitBuffsize(_p_->u.arrowx_.buffsize_));
-	// iptype_save = visitTypeDef (_p_->u.arrowx_.typedef_);
-	//return visitBuffsize (_p_->u.arrowx_.buffsize_);
 }
 
 /** Get right arrow buffersize */
@@ -699,7 +657,6 @@ Stream df(StreamType stype, Arrow a, Process src, Process snk,
 	linkPort(src, src_pt);
 	s = makeStream(stype, src, snk,
 		       a->bs, net_model, src_pt, snk_pt, a->iptype);
-	//iptype_save = "";
 	s->SourcePort = src_pt;
 	s->SinkPort = snk_pt;
 	s->SourcePort->stream = s->SinkPort->stream = s;
@@ -837,14 +794,6 @@ Integer visitTab(Tab _p_)
 	}
 }
 
-//static void setIpType(Extport ep) {                   
-//      ep->iptype = strdup (iptype_save);
-      //if(ep->iptype[0]==0) {
-	    //  ep->iptype=ep->name;
-      //}             
-      //iptype_save = "";
-//}
-
 /** Get external input port */
 Extport visitExtPortIn(ExtPortIn _p_)
 {
@@ -856,7 +805,6 @@ Extport visitExtPortIn(ExtPortIn _p_)
 				 visitPrt(_p_->u.extin_.prt_),
 				 visitLarrow(_p_->u.extin_.larrow_),
 				 visitTab(_p_->u.extin_.tab_));
-		//setIpType(ep);
 		return ep;
 	case is_ExtinR:
 		ep = makeExtport(SINK,
@@ -864,7 +812,6 @@ Extport visitExtPortIn(ExtPortIn _p_)
 				 visitPrt(_p_->u.extinr_.prt_),
 				 visitRarrow(_p_->u.extinr_.rarrow_),
 				 visitTab(_p_->u.extinr_.tab_));
-		//setIpType(ep);
 		return ep;
 	default:
 		badkind(ExtPortIn);
@@ -883,7 +830,6 @@ Extport visitExtPortOut(ExtPortOut _p_)
 				 visitPrt(_p_->u.extout_.prt_),
 				 visitLarrow(_p_->u.extout_.larrow_),
 				 visitTab(_p_->u.extout_.tab_));
-		//setIpType(ep);
 		return ep;
 	case is_Extoutr:
 		return makeExtport(SOURCE,
@@ -891,7 +837,6 @@ Extport visitExtPortOut(ExtPortOut _p_)
 				   visitPrt(_p_->u.extoutr_.prt_),
 				   visitRarrow(_p_->u.extoutr_.rarrow_),
 				   visitTab(_p_->u.extoutr_.tab_));
-		//setIpType(ep);
 		return ep;
 	default:
 		badkind(ExtPortOut);
@@ -956,7 +901,7 @@ static Ident UnderScore(Ident id)
 }
 
 // Remove p from Model->proc list.
-static void Unlink(Process p) {
+static void unlink(Process p) {
 		Model m;
 		Process pm, pp; 
 		
@@ -983,15 +928,37 @@ static void Unlink(Process p) {
     /** Concat subnet id and process name. Ex. ^sn, P1 ==> _snP1 **/
 static void setSubName(char *id, Process p) {
     char bfr[1001];
-    
+ 
+#ifndef FIX_EX2    
     return;   /** Not helping with subnet conflicts. */
-    bfr[0]='_';
-    bfr[1]=0;
-    strncat(bfr,id+1,1000);
+#endif    
+    strncpy(bfr,id+1,1000);
     strncat(bfr,p->name,1000);
+    unlink(p);  
     p->name=strdup(bfr);
     linkProc(net_model,p);
     net_model->nprocs--;
+}
+
+typedef enum NOP{NCLR, NSET, NGET} NOP;
+/** Set pfx for makeProcess to make process names unique. */
+static char *setFixSubName(NOP p, char *id) {
+    static char *pfx;
+    char  bfr[1000];
+    
+    switch(p) {
+    case NCLR: 
+        free(pfx);
+        pfx="";
+        break;
+    case NSET:
+        strncpy(bfr,id+1,1000);
+        strncat(bfr,"_",1000);
+        pfx=strdup(bfr);
+    default:    
+    }
+    
+    return pfx;   
 }
 
 /** Get subnet */
@@ -1000,29 +967,39 @@ Subnetm visitSubnet(Subnet _p_, Ident id)
 	Stream s = NULL;
 	Extport eport = NULL;
 	Process p;
+	Subnetm sn;
 
 	switch (_p_->kind) {
 	case is_Sneth:
 		p = visitHermt(_p_->u.sneth_.hermt_);
 		setSubName(id,p);
 		if(p) 
-			Unlink(p);   // Remove p from Model->proc list.
+			unlink(p);   // Remove p from Model->proc list.
 		if (!p->comp)
 			p->comp = makeComponent(p->name, defaultPath);
 		return makeSubnetm(id, NULL, eport, eport, p);
 	case is_Snets:
+	    setFixSubName(NSET, id);
 		s = visitDataFlow(_p_->u.snets_.dataflow_);
-		setSubName(id,s->source);
-		setSubName(id,s->sink);
+		//setSubName(id,s->source);
+		//setSubName(id,s->sink);
+		setFixSubName(NCLR,"");
 		return makeSubnetm(id, s, eport, eport, NULL);
 	case is_Snetin:
-		return makeSubnetm(id, NULL,
+	    
+	    setFixSubName(NSET, id);
+		sn=makeSubnetm(id, NULL,
 				   visitExtPortIn(_p_->u.snetin_.extportin_),
 				   eport,NULL);
+		setFixSubName(NCLR,"");
+	    return sn;
 	case is_Snetout:
-		return makeSubnetm(id, NULL, 
+	    setFixSubName(NSET, id);
+		sn=makeSubnetm(id, NULL, 
 				   visitExtPortOut(_p_->u.snetout_.extportout_),
 				   eport,NULL);
+		setFixSubName(NCLR,"");
+		return sn;		   
 	default:
 		badkind(Subnet);
 	}
@@ -1044,8 +1021,6 @@ void visitSubdef(Subdef _p_)
     CHKa2;
 	visitListSubnet(_p_->u.snet_.listsubnet_,
 			visitSubId(_p_->u.snet_.subid_));
-	//visitListSubnet(_p_->u.snet_.listsubnet_,
-	//                  visitSymval(_p_->u.snet_.symval_));
 }
 
 void visitStm(Stm _p_)
@@ -1136,10 +1111,8 @@ ListAttr visitListAttr(ListAttr listattr)
 {
 	return listattr;
 	while (listattr != 0) {
-		/* Code For ListAttr Goes Here */
 		visitAttr(listattr->attr_);
 		listattr = listattr->listattr_;
-		// return visitAttr(listattr->listattr_);
 	}
 }
 
@@ -1280,12 +1253,9 @@ Argument visitArgument(Argument _p_)
 {
 	Argument arg;
 
-	//visitStringval(_p_->u.argumentx_.stringval_);
 	arg = make_Argumentx(make_StringVals
 			     (visitStringval(_p_->u.argumentx_.stringval_)));
 	return arg;
-	//make_Argumentx(
-	//             (visitStringval(_p_->u.argumentx_.stringval_));
 }
 
 /** Get list of arguments.*/
@@ -1317,18 +1287,25 @@ String visitString(String s)
 /********************  Global FUnctions   ****************/
 char *fixName(char *name)  {
 	char bfr[BUFFSIZE + 1];
+	char *pfx;
 	static int nanon = 1;	/* Number of anonymous processes */
 
+    pfx=setFixSubName(NGET,NULL);
+    
 	if (name[0] == '_') {	// Anonymous process Q
 		snprintf(bfr, BUFFSIZE, "%i", nanon++);
-		return strndup(bfr, 100);
+		return strdup(bfr);
 	}
 
+
+#if 0
 	if (savePrefix(GET, name) == NULL)
 		return name;
 
 	snprintf(bfr, BUFFSIZE, "%s%s", savePrefix(GET, name), name);
-	return strndup(bfr, 100);
+#endif
+    snprintf(bfr, BUFFSIZE, "%s%s", pfx,name);
+	return strdup(bfr);
 }
 
 /** Convert the parse tree into a SW network model. */

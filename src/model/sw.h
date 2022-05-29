@@ -45,9 +45,6 @@ extern char *version;  /* In swmain.c from Makefile $VERSION */                 
 		exit(EXIT_FAILURE);			\
 	}	
 
-
-// #define stype type
-
 #define DEBUGGING
 #ifdef DEBUGGING
 
