@@ -226,7 +226,7 @@ static int NameMisMatch(Process src, int source_id, Process snk, int sink_id)
 static void FixComp(Process p, char *cn, char *path)
 {
 
-	p->comp = MakeComponent(cn, path);
+	p->comp = makeComponent(cn, path);
 }
 
 /** Insert default components if necessary. */
@@ -456,7 +456,7 @@ static int BadArg(int argc, char **argv)
 	return 0;  /* Assume STDIN */
 }
 
-ValidSW IncludeFile(char *fname)
+ValidSW includeFile(char *fname)
 {
 	ValidSW parse_tree = NULL;
 
@@ -464,7 +464,6 @@ ValidSW IncludeFile(char *fname)
 	input = openFile(fname);
 	if (input == NULL) {
 		perror(fname);
-		//      #include <errno.h>
 		FAIL(Cannot open, fname);
 	}
 	parse_tree = pValidSW(input);
@@ -530,11 +529,11 @@ int main(int argc, char **argv)
 	if (parse_tree) {
 		tabinit();
 			/** set symbol table */
-		m = MakeModel(NULL);
+		m = makeModel(NULL);
 		visitValidSW(m, parse_tree);/** Build model */
 		m->name = baseOf(fname);
 		m->filename = fname;
-	    ExpandModel(m);
+	    expandModel(m);
 		if (verifyOK(m)) {
 			if (!m->proc) {
 				FAIL(swmain/main, "No processes found.");
@@ -550,5 +549,4 @@ int main(int argc, char **argv)
 	}
 
 	return EXIT_SUCCESS;
-    // return 0;
 }

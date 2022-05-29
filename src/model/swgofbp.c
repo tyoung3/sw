@@ -350,28 +350,15 @@ static void genPrefix(Model m)
 	);
     PE(} Fixes indent);
     printf("	net := core.NewNetwork(\"%s\")", m->name);
-
-    //printf("	var cs []chan interface{}\n	");
-    //P(var wg sync.WaitGroup);
     printf("\n");
 
     f = m->stream;
     i = 0;
     while (f) {
-	bfrtbl[nstreams - i++ - 1] = f->bufsz;
-	f = f->next;
+	    bfrtbl[nstreams - i++ - 1] = f->bufsz;
+	    f = f->next;
     }
     i = 0;
-    // f = m->stream;
-    while (i < nstreams) {
-	if (bfrtbl[i] > 0) {
-	    //printf("cs = append(cs,make(chan interface{},%i))\n",
-		//   bfrtbl[i]);
-	} else {
-	    //printf("cs = append(cs,make(chan interface{}))\n");
-	}
-	i++;
-    }
     printf("\n");
 }
 
@@ -435,20 +422,6 @@ static void genLaunch1(Process p)
 	printf( "\t%s := net.NewProc(\"%s\", &%s.%s{})\n",
 		 p->name, p->name, stripPath(p->comp->path), p->comp->name);
 
-#if 0
-    int i = 1;
-    //printf( STDPACKAGE ".Launch(&wg,");
-    // printf("[]string{\"%s\"", p->name);
-
-    if (p->arg) {
-	while (p->arg[i]) {
-	    printf(",\"%s\"", p->arg[i]);
-	    i++;
-	}
-    }
-    
-    printf("},\t%9s.%s, ", stripPath(p->comp->path), p->comp->name);
-#endif
 }
 
 /** Generate startup code */
@@ -462,18 +435,14 @@ static void genLaunches(Process p)
 	    if (needaSlice(p->port)) {
 		   makeChSlice(p, nstreams);
 		   genLaunch1(p);
-		   // printf("_cs%s[0:%i])\n", p->name, nstreams);
 	    } else {
 		   genLaunch1(p);
-		   // printf("cs[%i:%i])\n", ch0, ch0 + nstreams);
 	    }
 	} else {
 	    if (nstreams > 0) {
 		genLaunch1(p);
-		// printf("cs[%i:%i])\n", ch, ch + 1);
 	    } else {
 		genLaunch1(p);
-		// printf("cs[0:1])\n");
 	    }
 	}
 	p = p->next;

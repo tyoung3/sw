@@ -95,7 +95,6 @@ static void genPrefix(char *gname, int nstreams)
     P(fontname = "Helvetica");
     printf(",bgcolor=\"gray65\"]");
 
-    // FIXINDENT(\();
     C(node[shape = Mrecord);
       C(fontsize = "18"); C(fontcolor = black); C(fontname = "Helvetica");
       C(color = black); C(fillcolor = powderblue); C(style = filled);
@@ -103,7 +102,6 @@ static void genPrefix(char *gname, int nstreams)
       P(];);
     C(edge[color = blue);
       C(style = bold);
-      // NG in dot.    C(              len=0.1);
       C(fontsize = "18"); C(labelfontcolor = black);
       C(fontcolor = blue);
       P(]);
@@ -142,7 +140,6 @@ static char *makeURL(char *comp)
 
     /**  EXAMPLE: label="{<P> G1 Gen1 \"xyz\" |{<0> 0 |<1> 1 } }"  */
 
-	  // genProc (p->name, p->comp->name, p->comp->path, "taos_", p->arg);
 static void genProc1(Process p, char *host)
 {
     Attribute attr;

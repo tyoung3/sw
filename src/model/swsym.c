@@ -29,9 +29,9 @@ struct bucket {
     struct bucket *link;	/**<??*/
     struct bucket *next;	/**<??*/
 } bucket;  /**<Variable key/value structure.*/
-typedef struct bucket *bucketp;	/**<Pointer to bucket*/
+typedef struct bucket *Bucketp;	/**<Pointer to bucket*/
 
-bucketp *symtable;		/**<Array of bucket pointers */
+Bucketp *symtable;		/**<Array of bucket pointers */
  
 #define FREE(x)      free((char *) (x))					/**<Free storage*/
 #define NEW(t)      ((t *) alloca((unsigned) sizeof(t)))		/**<Allocate a new table entry*/
@@ -47,14 +47,14 @@ bucketp *symtable;		/**<Array of bucket pointers */
 int nsyms;				/**<Number of Symbols */
 #endif
 
-static bucketp firstsymbol;	/**<??*/
-static bucketp lastsymbol;	/**<??*/
+static Bucketp firstsymbol;	/**<??*/
+static Bucketp lastsymbol;	/**<??*/
 
 void tabinit()
 {
     int i;
 
-    symtable = (bucketp *) malloc(TABLESIZE * sizeof(bucketp));
+    symtable = (Bucketp *) malloc(TABLESIZE * sizeof(Bucketp));
 
     if (symtable == NULL) {
 	FAIL(tabinit, "Too many variables for memory.");
@@ -91,10 +91,10 @@ static int hash(char *key)
 }
 
 /** Find table entry for key.  Create new entry if no existing entry */
-static bucketp lookup(char *key)
+static Bucketp lookup(char *key)
 {
     register int hashval;
-    register bucketp bp;
+    register Bucketp bp;
     register int found;
 
     hashval = hash(key) % TABLESIZE;
@@ -116,7 +116,7 @@ static bucketp lookup(char *key)
 		    "%i variables exceeds symtable size.\n", TABLESIZE);
 	    FAIL(lookup, fbfr);
 	}
-	bp = (bucketp) malloc(sizeof(bucket));
+	bp = (Bucketp) malloc(sizeof(bucket));
 	bp->link = symtable[hashval];
 	bp->next = NULL;
 	bp->tag = strdup(key);
@@ -140,7 +140,7 @@ static bucketp lookup(char *key)
 void free_symtab()
 {
     register int i;
-    register bucketp bp, bptmp;	/* JF don't use ptr after free */
+    register Bucketp bp, bptmp;	/* JF don't use ptr after free */
 
     for (i = 0; i < TABLESIZE; i++) {
 	bp = symtable[i];
@@ -154,7 +154,7 @@ void free_symtab()
 
 /** Find string for key.*/
 String getSymVar(String name) {
-    bucketp b;
+    Bucketp b;
 
     b = lookup(name);
     if(b->u.string==NULL)
@@ -164,7 +164,7 @@ String getSymVar(String name) {
 
 /** Find string value for key.*/
 String getStringVar(String name) {
-    bucketp b;
+    Bucketp b;
 
     b = lookup(name);
     if(b->u.string==NULL)
@@ -174,7 +174,7 @@ String getStringVar(String name) {
 
 /** Add new string value to table. */
 String addStringVar(String name, String val) {
-    bucketp b;
+    Bucketp b;
 
     b = lookup((char*)name);
     b->u.string = strdup(val);
@@ -183,7 +183,7 @@ String addStringVar(String name, String val) {
 
 /** Add new value for symbol variable to table */
 String addSymVar(String name, String val) {
-    bucketp b;
+    Bucketp b;
 
     b = lookup(name);
     b->u.string = val;
@@ -193,7 +193,7 @@ String addSymVar(String name, String val) {
 /** Add new component pointer to table */
 Component addComponent(char *name, char *path, Component c)
 {
-    bucketp b;
+    Bucketp b;
     char key[BUFFSIZE+1];
 
     key[0] = '^';
@@ -209,7 +209,7 @@ Component addComponent(char *name, char *path, Component c)
 /** Find component in table */
 Component getComponent(char *name, char *path)
 {
-    bucketp b;
+    Bucketp b;
     char key[BUFFSIZE+1];
 
     key[0] = '^';
@@ -224,7 +224,7 @@ Component getComponent(char *name, char *path)
 /** Add new process to table */
 Process addProc(char *key, Process p)
 {
-    bucketp b;
+    Bucketp b;
 
     b = lookup(key);
     b->u.proc = p;
@@ -234,7 +234,7 @@ Process addProc(char *key, Process p)
 /** Find process in table */
 Process getProc(char *key)
 {
-    bucketp b;
+    Bucketp b;
 
     b = lookup(key);
     return b->u.proc;
@@ -243,7 +243,7 @@ Process getProc(char *key)
 /** Get Conf Type */
 String getConfType(char *path)
 {
-   bucketp b;
+   Bucketp b;
     char key[BUFFSIZE+1];
 
     key[0] = '#';
@@ -261,7 +261,7 @@ String getConfType(char *path)
 }
 
 int getPathColor(char *p) {
-    bucketp b;
+    Bucketp b;
     char key[BUFFSIZE+1]; key[0] = '<';
     static int color_i=0; 
     
@@ -283,7 +283,7 @@ int getPathColor(char *p) {
 /** Find path for key */
 int getPath(char *name)
 {
-    bucketp b;
+    Bucketp b;
     char key[BUFFSIZE+1];
 
     key[0] = '<';

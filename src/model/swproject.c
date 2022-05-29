@@ -133,13 +133,11 @@ static char setIO(Component c, Port pt, Process p) {
 	return 'i';	
 }
 
-// print  -i type1 -o type 2 ...
 static void printTypes(Process p, Component c) {
 	Port pt;
 	char io;
 	
 	c=p->comp;
-	// p=findProcForComp(m,c);
 	pt=p->port;
 	do {
 	  char *typ="_";

@@ -9,6 +9,5 @@
 #include "model.h"
 
 void genGoFBP(Model mod);
-// void genND(Model mod);   /* Generate Network Definition */
 
 #endif  // SWGOFBP_H_

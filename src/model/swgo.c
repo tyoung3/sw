@@ -30,8 +30,6 @@ static String Timestamp()
 /** Generate Suffix code */
 void genSuffix(char *name)
 {
-		// #define green "\\u001b[32m"
-		//#define reset "\\u001b[0m"
     P(_wg.Wait());
     printf("\tfmt.Println(\"\\u001b[32m\",\"%s: Ended\",\"\\u001b[0m\")\n}\n",name);
 }
@@ -83,7 +81,6 @@ static void genPaths(Model m)
 {
     Process p;
 
-    // P(import "fmt");
     P(import "sync");
     P(import "fmt");
 
@@ -313,7 +310,7 @@ static void showND(Model m)
     int nparts, ncycles;			/* Number of partitions */
     int nstreams;           /* Total nbr streams of all types */
 
-    //* Generate commented Reconstructed Network Definition */
+    /** Generate commented Reconstructed Network Definition */
     printf
 	("            ***  Expanded Network Definition  ***\n");
     f = m->stream;
@@ -441,10 +438,6 @@ static void MakeChannels(Model m) {
         f->iptype=ftype;
         f->streamNum=nstream;
         module=fixModule(m, ftype);
-	      //printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
-		    //				nstream++, module, ftype,f->bufsz,            
-		    //				f->source->name,f->SourcePort->id, 
-		    //				f->sink->name,f->SinkPort->id);
 	      printf("_ch%d := make(chan %s%s,%i)\t//%s.%d->%s.%d\n",
 		    				nstream++,
 		    				module, 
@@ -469,13 +462,11 @@ void genPrefix(Model m)
     
     printf("Network file: %s/%s\n",
         getcwd(bfr,sizeof(bfr)),
-        m->name);
-        //getSha(m->name);    
+        m->name);  
         
     printf("\tConfiguration file: %s/%s\n",
         getcwd(bfr,sizeof(bfr)),
-        configfile);
-       // getSha(configfile);    
+        configfile);   
     
     showND(m);			/* Show commented ND */
     printf("\n");
@@ -492,45 +483,6 @@ void genPrefix(Model m)
     printf("\n\t_wg.Add(%d)\n", m->nprocs);
 }
 
-#if 0
-/** Return true if channel numbers not lined up */
-static int needaSlice(Port pt)
-{
-    Port pt0 = pt;
-    int ch;
-
-    ch = pt->channel;
-    pt = pt->next;
-
-    do {
-	if (pt->channel != ++ch) {
-	    return 1;
-	}
-	pt = pt->next;
-    } while (pt != pt0);
-    return 0;
-}
-
-	/** Generate a slice of channels for this process */
-static void makeChSlice(Process p, int nstreams, char *channelType)
-{
-    char *name;
-    Port pt;
-
-    name = p->name;
-    printf("\n\tvar _cs%s []chan %s\n", name, channelType);
-    printf("\tfor i:=0; i<%i; i++ {\n\t\t", nstreams);
-    //printf("_cs%s=append(_cs%s, make(chan %s,2))",
-    //     name, name, channelType);
-    printf("\n\t}\n");
-
-    pt = p->port;
-    do {
-	    printf("\t_cs%s[%i] = cs[%i]\n", name, pt->id, pt->channel);
-	    pt = pt->next;
-    } while (pt != p->port);
-}
-#endif
 
 /** Return rightmost path element */
 char *stripPath( char *s1 ) {
@@ -581,7 +533,6 @@ static void generateChannels(Process p, int nslice) {
 	      
         while(pt != NULL) {
             if(pt->next != p->port 
-          			//&& pt->stream->iptype == pt->next->stream->iptype)
           			&& strncmp(pt->stream->iptype,
           			     pt->next->stream->iptype,100)==0)
           			{    	 

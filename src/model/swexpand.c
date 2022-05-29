@@ -24,7 +24,7 @@
 #define MAX(A,B) ( (A>B)? A: B)
 
 /******************   Local Variables   *****************/
-static streamType stype = IS_NET;
+static StreamType stype = IS_NET;
 static Process fl = NULL;  /** List of processes to free	*/
 
 /**<Anchor for external port list */
@@ -35,21 +35,21 @@ static Extport extprtList = NULL;
 void linkPort(Process P, Port p);
 void linkProc(Model m, Process p);
 int fixId(int i);
-int VerifyStream(Stream s);
+int verifyStream(Stream s);
 int fixId(int i);
-char **MakeArg(ListArgument la, char *name);
+char **makeArg(ListArgument la, char *name);
 char *fixName(char *name);
-Extport MakeExtport(PortType type, Process p, Port prt, Arrow a, int id);
+Extport makeExtport(PortType type, Process p, Port prt, Arrow a, int id);
 Arrow makeArrow(char *iptype, int bs);
-Port MakePort(int n, Ident id);
+Port makePort(int n, Ident id);
 
-Stream MakeStream(streamType stype, Process src, Process snk, int bs,
+Stream makeStream(StreamType stype, Process src, Process snk, int bs,
     Model m, Port SourcePort, Port SinkPort, char *iptype);
 
 void checkIPtype(char *msg, char *srcType, char *snkType, char *srcName,
 	    char *snkName);
 
-Process MakeProcess(Model model, Ident name, 
+Process makeProcess(Model model, Ident name, 
             Component comp, char **arg, Attribute attr);
             
 /******************   Local Functions   *****************/
@@ -59,20 +59,23 @@ static char *makeName(char *nn, Process p) /** Create a name string */
 	char bfr[1000];
 
 	strncpy(bfr, p->name, 500);
+#ifdef SCORE_NAME	
 	if(p->comp->name[0] == '^') {
-	    // strncat(bfr,p->comp->name,1000);
+	    strncat(bfr,"_",1000);
+	    strncat(bfr,p->comp->name+1,1000);
 	}
+#endif	
 	strncat(bfr, nn, 1000);
 	return (strdup(bfr));
 }
 /** Check depth of subnet expansion.   Subnets may invoke subnets up to maxdepth depth. */
-static int CheckDepth(int d)
+static int checkDepth(int d)
 {
 	if (d > maxdepth) {
 		snprintf(fbfr, BUFFSIZE,
 			 "Exceeded maximum subnet expansion depth, %d. Loop maybe.\n",
 			 maxdepth);
-		FAIL(CheckDepth, fbfr);
+		FAIL(checkDepth, fbfr);
 	}
 	return d + 1;
 }
@@ -81,7 +84,7 @@ static int CheckDepth(int d)
 static Port copyPort(Port p0)
 {
 	Port p1;
-	p1 = MakePort(p0->id, p0->name);
+	p1 = makePort(p0->id, p0->name);
 	*p1 = *p0;
 	return p1;
 }
@@ -92,7 +95,6 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
 	Extport ep2 = NULL;
 	Port pt;
 	Process p2;
-	// Component c=NULL;
 	char *srcname;
 	char *snkname;
 
@@ -102,26 +104,26 @@ static int findAmatchingPort(Model m, Process p, Extport ep)
 		srcname = makeName(fixName(ep->source->name),p);
 		p2 = getProc(srcname);
 		if (!p2) {
-			p2 = MakeProcess(m, srcname, ep->source->comp,
+			p2 = makeProcess(m, srcname, ep->source->comp,
 					 ep->source->arg, ep->source->attr);
 		}
 
-		pt = MakePort(ep->source_id, ep->name);
+		pt = makePort(ep->source_id, ep->name);
 	} else { if(ep->type == SINK) {
 		        snkname = makeName(fixName(ep->sink->name),p);
 		        p2 = getProc(snkname);
 		        if (!p2) {
-			        p2 = MakeProcess(m, snkname, ep->sink->comp,
+			        p2 = makeProcess(m, snkname, ep->sink->comp,
 					 ep->sink->arg, ep->sink->attr);
 		        }
-		        pt = MakePort(ep->sink_id, ep->name);
+		        pt = makePort(ep->sink_id, ep->name);
 	        } else {  // Must be ORPHAN 
 	            return 0;
 	        }
 	}
 	        
 	p2->depth = p->depth + 1;
-	ep2 =MakeExtport(ep->type, p2, pt, 
+	ep2 =makeExtport(ep->type, p2, pt, 
 	                  makeArrow(ep->iptype, ep->bufsz), -1);
 	ep2->next = extprtList;
 	ep2->source_id = ep->source_id;
@@ -153,12 +155,12 @@ static void buildStream(Model m, Process p, Port pt, Extport ep) {
 					s = pt->stream;
 					if (s == NULL)
 						return;
-					VerifyStream(s);
+					verifyStream(s);
 					assert(s && pt == s->SourcePort);
 					srcname =
 					    makeName(fixName(ep->source->name),p);
 					pnew =
-					    MakeProcess(m, srcname,
+					    makeProcess(m, srcname,
 							ep->source->comp,
 							ep->source->arg,
 							ep->source->attr);
@@ -180,7 +182,7 @@ static void buildStream(Model m, Process p, Port pt, Extport ep) {
 					s->SinkPort->match = s->SourcePort;
 					s->SourcePort->match = s->SinkPort;
 					s->SinkPort->name = s->SourcePort->name;
-					VerifyStream(s);
+					verifyStream(s);
 }	
 	
 
@@ -192,12 +194,12 @@ static void buildStream2(Model m, Process p, Port pt, Extport ep) {
 					s = pt->stream;
 					if (s == NULL)
 						return;
-					VerifyStream(s);
+					verifyStream(s);
 					assert(s && pt == s->SinkPort);
 					snkname =
 					    makeName(fixName(ep->sink->name),p);
 					pnew =
-					    MakeProcess(m, snkname,
+					    makeProcess(m, snkname,
 							ep->sink->comp,
 							ep->sink->arg,
 							ep->sink->attr);
@@ -218,7 +220,7 @@ static void buildStream2(Model m, Process p, Port pt, Extport ep) {
 					s->SinkPort = ptc;
 					s->SinkPort->match = s->SourcePort;
 					s->SourcePort->match = s->SinkPort;
-					VerifyStream(s);
+					verifyStream(s);
 }					
 
 static void expandSn(Model m, Process p, Subnetm sn) {
@@ -229,9 +231,9 @@ static void expandSn(Model m, Process p, Subnetm sn) {
     
     ep=sn->extport;
     while(ep) {
-        p2 = MakeProcess(m, makeName(ep->source->name,p), ep->source->comp,
+        p2 = makeProcess(m, makeName(ep->source->name,p), ep->source->comp,
 					 ep->source->arg, ep->source->attr);
-	    ep2 =MakeExtport(ep->type, p2, pt, 
+	    ep2 =makeExtport(ep->type, p2, pt, 
 	                  makeArrow(ep->iptype, ep->bufsz), -1);
 	    ep2->source_id = ep->source_id;
 	    ep2->sink_id = ep->sink_id;
@@ -270,7 +272,7 @@ static void ExpandAprocess(Model m, Process p, Extport ep)
 {
 
 	Port pt = NULL;
-	CheckDepth(p->depth);        /* FAIL if excessive expansion depth*/
+	checkDepth(p->depth);        /* FAIL if excessive expansion depth*/
 	
 	if (ep->type == SOURCE) {
 		pt = p->port;	/** Find matching sink port  */
@@ -316,34 +318,33 @@ static void ExpandAsubnet(Model m, Process p, Stream s)
 	Port psrc, psnk;
 	Stream ns;		/* New Stream */
 	stype = IS_NET;
-	CheckDepth(p->depth);  /* FAIL if excessive expansion depth*/
+	checkDepth(p->depth);  /* FAIL if excessive expansion depth*/
 	srcname = makeName(s->source->name,p);
 	snkname = makeName(s->sink->name,p);
 	src =
-	    MakeProcess(m, srcname, s->source->comp, MakeArg(NULL, NULL), NULL);
+	    makeProcess(m, srcname, s->source->comp, makeArg(NULL, NULL), NULL);
 	src->arg = s->source->arg;
 	src->attr = s->source->attr;
-	snk = MakeProcess(m, snkname, s->sink->comp, MakeArg(NULL, NULL), NULL);
+	snk = makeProcess(m, snkname, s->sink->comp, makeArg(NULL, NULL), NULL);
 	snk->arg = s->sink->arg;
 	snk->attr = s->sink->attr;
-	psrc = MakePort(s->source_id, s->source->port->name);
-	psnk = MakePort(s->sink_id, s->sink->port->name);
+	psrc = makePort(s->source_id, s->source->port->name);
+	psnk = makePort(s->sink_id, s->sink->port->name);
 	linkPort(src, psrc);
 	linkPort(snk, psnk);
 	src->nportsOut++;
 	snk->nportsIn++;
-	//bs = s->bufsz;
-	ns = MakeStream(stype, src, snk, s->bufsz, m, psrc, psnk, s->iptype);
+	ns = makeStream(stype, src, snk, s->bufsz, m, psrc, psnk, s->iptype);
 	ns->sink_id = s->sink_id;
 	ns->source_id = s->source_id;
 	ns->bufsz = s->bufsz;
 	ns->type = stype;
 	psrc->stream = psnk->stream = ns;
-	ns->source->depth = ns->sink->depth = CheckDepth(p->depth);
+	ns->source->depth = ns->sink->depth = checkDepth(p->depth);
 	ns->SinkPort->match = ns->SourcePort;
 	ns->SourcePort->match = ns->SinkPort;
-	VerifyStream(ns);
-	VerifyStream(s);
+	verifyStream(ns);
+	verifyStream(s);
 
 }
 
@@ -576,7 +577,6 @@ static void SortPorts(Process p)
 					pt2->next = pt1;
 					pt1->prev = pt2;
 					ptw = pt1;
-					//pt1 = pt2;
 					pt2 = ptw;
 				}
 			}
@@ -622,7 +622,7 @@ static void createStream(Model m, Extport ep, Extport ep2)
 	checkIPtype("createStream", ep->iptype, ep2->iptype, ep->name,
 		    ep2->name);
 
-	s = MakeStream(IS_NET, ep->source, ep2->sink,
+	s = makeStream(IS_NET, ep->source, ep2->sink,
 		       MAX(ep->bufsz, ep2->bufsz), m, srcpt, snkpt,
 		       pickType(ep->iptype,ep2->iptype));
 
@@ -638,7 +638,7 @@ static void createStream(Model m, Extport ep, Extport ep2)
 
 	SortPorts(s->source);
 	SortPorts(s->sink);
-	VerifyStream(s);
+	verifyStream(s);
 }
 
 static void removeDeadStreams(Model m)
@@ -655,7 +655,6 @@ static void removeDeadStreams(Model m)
 					sp->next = s->next;
 					s = sp;
 				}
-				//free(s);
 			}
 		}
 		sp = s;
@@ -715,7 +714,7 @@ static void autolink(Model m)
 	while (p) {
 		if (p->nportsIn + p->nportsOut == 0) {
 			p->kind = IS_ORPHAN;
-			MakeStream(IS_ORPHAN, p, NULL, -1, m, NULL, NULL, "");
+			makeStream(IS_ORPHAN, p, NULL, -1, m, NULL, NULL, "");
 		}
 		p = p->next;
 	}
@@ -775,13 +774,13 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
 	   (j)0  <- y(C);          [ s1 pt1   ] 
 	 */
 
-	c = MakeComponent("Join", STDPACKAGE);
-	j = MakeProcess(m, "_", c, MakeArg(NULL, NULL), NULL);
+	c = makeComponent("Join", STDPACKAGE);
+	j = makeProcess(m, "_", c, makeArg(NULL, NULL), NULL);
 	j->depth = p->depth + 1;
 
-	pt1 = MakePort(0, "");
-	pt2 = MakePort(1, "");
-	ptn = MakePort(2, "");	/*Join output */
+	pt1 = makePort(0, "");
+	pt2 = makePort(1, "");
+	ptn = makePort(2, "");	/*Join output */
 
 	s1 = pt->stream;
 	s0 = pt0->stream;
@@ -795,7 +794,7 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
 	if (s1->iptype == NULL || s1->iptype[0] == 0)
 		s1->iptype = s0->iptype;
 
-	s2 = MakeStream(IS_NET, pt0->stream->source, j,
+	s2 = makeStream(IS_NET, pt0->stream->source, j,
 			pt0->stream->bufsz, m, pt0, pt, pt0->stream->iptype);
 	s2->SourcePort = s0->SourcePort;
 
@@ -847,9 +846,9 @@ static void fixFan2(Model m, Process p, Port pt0, Port pt)
 	s1->SourcePort->match = s1->SinkPort;
 	s2->SinkPort->match = s2->SourcePort;
 	s2->SourcePort->match = s2->SinkPort;
-	VerifyStream(s0);
-	VerifyStream(s1);
-	VerifyStream(s2);
+	verifyStream(s0);
+	verifyStream(s1);
+	verifyStream(s2);
 }
 
 /** Create anonymous Split process if output port directed to more than one process.*/
@@ -868,12 +867,12 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
 	   (C)y <-  2(j;   [ s1    ] 
 	   (j)0 <- id(A);  [ s2    ]  */
 
-	c = MakeComponent("Split", STDPACKAGE);
-	j = MakeProcess(m, "_", c, MakeArg(NULL, NULL), NULL);
+	c = makeComponent("Split", STDPACKAGE);
+	j = makeProcess(m, "_", c, makeArg(NULL, NULL), NULL);
 	j->depth = p->depth + 1;
 
-	pt1 = MakePort(1, "");
-	pt2 = MakePort(2, "");
+	pt1 = makePort(1, "");
+	pt2 = makePort(2, "");
 	s0 = pt0->stream;
 	s1 = pt->stream;
 
@@ -883,7 +882,7 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
 	if (s0->iptype == NULL || s0->iptype[0] == 0)
 		s0->iptype = s1->iptype;
 
-	s2 = MakeStream(IS_NET, pt0->stream->source, j,
+	s2 = makeStream(IS_NET, pt0->stream->source, j,
 			pt0->stream->bufsz, m, pt0, pt, pt0->stream->iptype);
 
 	s0->iptype = s1->iptype = s2->iptype;
@@ -936,9 +935,9 @@ static void fixFanOut(Model m, Process p, Port pt0, Port pt)
 	s1->SourcePort->match = s1->SinkPort;
 	s2->SinkPort->match = s2->SourcePort;
 	s2->SourcePort->match = s2->SinkPort;
-	VerifyStream(s0);
-	VerifyStream(s1);
-	VerifyStream(s2);
+	verifyStream(s0);
+	verifyStream(s1);
+	verifyStream(s2);
 
 }
 
@@ -995,12 +994,12 @@ static void fixFanInOut(Model m)
 
 
 /******************   Global Functions   *****************/
-int VerifyStream(Stream s){ /* Check proper Stream connections */
+int verifyStream(Stream s){ /* Check proper Stream connections */
 	Process src, snk;
 	Port psrc, psnk;
 
 	if (s == NULL) {
-		FAIL(VerifyStream, "No stream to verify.");
+		FAIL(verifyStream, "No stream to verify.");
 	};
 	src = s->source;
 	snk = s->sink;
@@ -1025,7 +1024,7 @@ int VerifyStream(Stream s){ /* Check proper Stream connections */
 }
 
 /** Free discarded process structure memory. */
-static void FreeExpandedProcesses(Process * fl)
+static void freeExpandedProcesses(Process * fl)
 {
 	Process pn;
 
@@ -1037,14 +1036,14 @@ static void FreeExpandedProcesses(Process * fl)
 	*fl = NULL;
 }
 
-void ExpandModel(Model m) {    /* Called by sw.c after parsing */
+void expandModel(Model m) {    /* Called by sw.c after parsing */
 	fixFanInOut(m);	/* Insert Join and Split processes as necessary. */
 	explodeSubnets(m);
 	fixFanInOut(m);
 	autolink(m);	           /* Connect disconnected matching ports. */
 	removeDeadStreams(m);      /*  Some streams could have 
 	                                only subnet components. */
-	FreeExpandedProcesses(&fl);	/* Remove dead streams first.*/
+	freeExpandedProcesses(&fl);	/* Remove dead streams first.*/
 }	
 
 /************************   End of SWEXPAND.C   ****************/

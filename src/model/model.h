@@ -33,7 +33,7 @@
 /*    MODEL  Structures   */
    
 /** Type of Stream: Network, Subnet, or Orphan */
-typedef enum {IS_NET, IS_SUB, IS_ORPHAN, IS_IFACE, IS_STRUCT} streamType;
+typedef enum {IS_NET, IS_SUB, IS_ORPHAN, IS_IFACE, IS_STRUCT} StreamType;
 
 /** Port structure */
 typedef struct Port_ {
@@ -88,7 +88,7 @@ typedef struct Process_ {
 		int  ch;		    /**<Low channel number */
 		int  depth;		    /**<Subnet depth */
 		char **arg;		    /**< Pointer to an array of strings. */
-		streamType kind;	  	    /**< In subnet or net or orphan */
+		StreamType kind;	  	    /**< In subnet or net or orphan */
 		int  partn;		    /**< Partition number.  */
 		Attribute attr;     /**< List of attributes. */
 		struct Process_ *next;  /**<Pointer to next process in the network*/
@@ -119,7 +119,7 @@ typedef struct Stream_ {
 	int source_id; 		/**<Souce port number*/
 	int sink_id; 		/**<Sink port number*/
 	int bufsz; 		    /**<Buffersize */
-	streamType  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN* or IS_STRUCT or IS_IFACE*/
+	StreamType  type;    		/**< Type of Stream IS_SUB or IS_NET or IS_ORPHAN* or IS_STRUCT or IS_IFACE*/
 	char *iptype;    	/**< Type of data being sent -- the information packet type*/
 	struct Stream_ *next;	/**<Pointer to next Stream*/
 	int streamNum;      /** Stream serial number */
