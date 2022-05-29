@@ -1,4 +1,4 @@
-# STREAMWORK -- SW-0.28.6 
+# STREAMWORK -- SW-0.28.7 
 
 
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
@@ -595,10 +595,6 @@ sw.sh-1.0.1 USAGE:
 
 ## BUGS:<a name="bugs"/>
 
-Subnet process names must be unique, but this is not guaranteed.
-Using the same process name in different subnet definitions will cause
-unpredictable, negative consequences.
-
 **_sw.Gen_** fails unless all three arguments are present.
 
 Stream directors like => and <= are accepted, but treated the same
@@ -606,6 +602,13 @@ as -> and <-, except for appearing differently in graphs.
 The meaning is reserved for future use, which could 
 break existing networks.
 	 
+	 
+### Fixed	 
+[Fixed with v0.28.7] Subnet process names must be unique, 
+but this is not guaranteed.  Using the same process name in different
+subnet definitions will no longer cause 
+unpredictable, negative consequences.
+
 ## Home Page<a name="homepage"/>
 
 (https://sw.twyoung.com)
@@ -721,6 +724,9 @@ break existing networks.
     * Fix cfg initialization
     * Check Wextra warnings.
     * Remove some dead code    
+    
+## 0.28.7
+    * Prefix subnet process names to make them unique.    
   
 ## Author<a name="author"/>
 

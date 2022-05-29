@@ -219,8 +219,10 @@ cat << EOF.ex2.sw | ./sw >/dev/null && echo ok 20 - ex2.sw || echo not ok 20 -  
     (X ^d)->(E e);
 };  
 
+(X f)->(Y g);
 A ^a;
 B ^b;
+(X)1<-1(Y);
 EOF.ex2.sw
 
 cat << EOF.fb.sw | ./sw >/dev/null && echo ok 21 - fb.sw || echo not ok 21 -  fb.sw
