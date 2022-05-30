@@ -956,6 +956,7 @@ static char *setFixSubName(NOP p, char *id) {
         strncat(bfr,"_",1000);
         pfx=strdup(bfr);
     default:    
+        return "";
     }
     
     return pfx;   
@@ -1290,7 +1291,7 @@ char *fixName(char *name)  {
 	char *pfx;
 	static int nanon = 1;	/* Number of anonymous processes */
 
-    pfx=setFixSubName(NGET,NULL);
+    pfx=setFixSubName(NGET,"");
     
 	if (name[0] == '_') {	// Anonymous process Q
 		snprintf(bfr, BUFFSIZE, "%i", nanon++);

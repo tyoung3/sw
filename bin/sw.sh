@@ -3,7 +3,7 @@
 # sw/bin/sw.sh
 # Lorca/pipes:  https://github.com/zserge/lorca/issues/43
 
-version="0.28.1"
+version="0.28.7"
 sw=/usr/local/bin/sw
 
 ShowGitBranch() {
@@ -57,7 +57,6 @@ RunCollate () {
 
 RunPoC() {
 	temp=/tmp
-	## [ -x $sw  ] || pushd ../ 
 	[ -x $sw ] || Die  $sw is missing.  Run make install
 	tdir=$temp/sw/poc
 	[ -d $tdir ] || mkdir -p $tdir
