@@ -1,4 +1,4 @@
-# STREAMWORK -- SW-0.28.7 
+# STREAMWORK -- SW-0.28.8 
 
 
 Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com 
@@ -728,6 +728,9 @@ unpredictable, negative consequences.
 ## 0.28.7
     * Prefix subnet process names to make them unique.    
   
+## 0.28.8 
+    * Fix go.mod yaml.v3 dependency failure -- 'require stretch..v1.1
+      
 ## Author<a name="author"/>
 
     Tom Young, streamwork@twyoung.com
