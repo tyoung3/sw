@@ -130,6 +130,10 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#bugs">BUGS:</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#fixed">Fixed</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#home-page">Home Page</a>
     </li>
@@ -192,6 +196,12 @@
     <li class="toctree-l2"><a class="reference internal" href="#0283">0.28.3</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#0284">0.28.4</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#0286">0.28.6</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#0287">0.28.7</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#0288">0.28.8</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#author">Author</a>
     </li>
@@ -274,7 +284,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="streamwork-sw-0285">STREAMWORK -- SW-0.28.5</h1>
+                <h1 id="streamwork-sw-0288">STREAMWORK -- SW-0.28.8</h1>
 <p>Copyright (C) 2019,2020,2021,2022 Thomas W. Young, sw@twyoung.com </p>
 <p>Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file or its derivitaves except in compliance with the License.
@@ -761,14 +771,16 @@ The result is a running program ready for your enhancements.</p>
         --help  . Display this help
 </code></pre>
 <h2 id="bugs">BUGS:<a name="bugs"/></h2>
-<p>Subnet process names must be unique, but this is not guaranteed.
-Using the same process name in different subnet definitions will cause
-unpredictable, negative consequences.</p>
 <p><strong><em>sw.Gen</em></strong> fails unless all three arguments are present.</p>
 <p>Stream directors like =&gt; and &lt;= are accepted, but treated the same
 as -&gt; and &lt;-, except for appearing differently in graphs.<br />
 The meaning is reserved for future use, which could 
 break existing networks.</p>
+<h3 id="fixed">Fixed</h3>
+<p>[Fixed with v0.28.7] Subnet process names must be unique, 
+but this is not guaranteed.  Using the same process name in different
+subnet definitions will no longer cause 
+unpredictable, negative consequences.</p>
 <h2 id="home-page">Home Page<a name="homepage"/></h2>
 <p>(https://sw.twyoung.com)</p>
 <h2 id="release-notes">Release Notes<a name="releasnotes"/></h2>
@@ -901,7 +913,18 @@ break existing networks.</p>
 <pre><code>* Fix project generation i/o bug
 </code></pre>
 <h2 id="0284">0.28.4</h2>
-<pre><code>* More roject generation fixes
+<pre><code>* More project generation fixes
+</code></pre>
+<h2 id="0286">0.28.6</h2>
+<pre><code>* Fix cfg initialization
+* Check Wextra warnings.
+* Remove some dead code
+</code></pre>
+<h2 id="0287">0.28.7</h2>
+<pre><code>* Prefix subnet process names to make them unique.
+</code></pre>
+<h2 id="0288">0.28.8</h2>
+<pre><code>* Fix go.mod yaml.v3 dependency failure -- 'require stretch..v1.1
 </code></pre>
 <h2 id="author">Author<a name="author"/></h2>
 <pre><code>Tom Young, streamwork@twyoung.com
