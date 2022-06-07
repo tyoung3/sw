@@ -11,4 +11,8 @@ require (
 	github.com/go-ini/ini v1.66.6 // indirect
 	github.com/stretchr/testify v1.1.4 // indirect
 	github.com/urfave/cli v1.22.9 // indirect
+<<<<<<< HEAD
+=======
+	gopkg.in/yaml.v2 v2.2.8 // indirect
+>>>>>>> 3959c85247dff66216f1e2d3bcee96dbc970a551
 )
