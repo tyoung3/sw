@@ -4,7 +4,7 @@
 # Lorca/pipes:  https://github.com/zserge/lorca/issues/43
 
 version="0.28.7-b"
-sw=/usr/local/src/sw/bin/sw
+sw=/usr/local/src/sw/src/model/sw
 
 ShowGitBranch() {
 	cat <<EOF >/dev/null
