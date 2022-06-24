@@ -1,4 +1,4 @@
-package sw
+package github.com/tyoung3/sw
 
 /*  Generated StreamWork component, Pass,
  by sw.sh on Wed May  5 12:44:47 PM EDT 2021

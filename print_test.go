@@ -1,4 +1,4 @@
-package sw
+package github.com/tyoung3/sw
 
 import "testing"
 import "fmt"

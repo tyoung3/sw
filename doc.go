@@ -8,4 +8,4 @@ This package contains basic Streamwork components: Split, Join, Gen, Pass, Print
 
 Sw components have a simple interface.  There is no complex API; there are no StreamWork required import statements. Just the exported function is required.  This makes it easy to create your own components. The bash script, **_swproject_** generates an entire project tree from a network definition 
 */
-package sw
+package github.com/tyoung3/sw
