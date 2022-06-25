@@ -1,4 +1,4 @@
-package sw
+package github.com/tyoung3/sw
 
 /* NETWORK:
    (Q Gen)out1 -> in1(S split)out1 -> in1(A1 Print)

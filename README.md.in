@@ -730,6 +730,8 @@ unpredictable, negative consequences.
   
 ## 0.28.8 
     * Fix go.mod yaml.v3 dependency failure -- 'require stretch..v1.1
+    * Point package names to github.com.../sw
+    * Use src/model/sw not bin/sw(removed) in sw.sh/run script
       
 ## Author<a name="author"/>
 

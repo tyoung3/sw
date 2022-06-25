@@ -1,4 +1,4 @@
-package sw
+package github.com/tyoung3/sw
 
 /*  	Network
 		(G2 Gen "2")out -> in1(M Join) -> in(Sink Print)

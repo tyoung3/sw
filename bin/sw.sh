@@ -3,8 +3,8 @@
 # sw/bin/sw.sh
 # Lorca/pipes:  https://github.com/zserge/lorca/issues/43
 
-version="0.28.7"
-sw=/usr/local/bin/sw
+version="0.28.7-b"
+sw=/usr/local/src/sw/src/model/sw
 
 ShowGitBranch() {
 	cat <<EOF >/dev/null
@@ -57,7 +57,7 @@ RunCollate () {
 
 RunPoC() {
 	temp=/tmp
-	[ -x $sw ] || Die  $sw is missing.  Run make install
+	[ -x $sw ] || Die  $sw is missing.  Run make 
 	tdir=$temp/sw/poc
 	[ -d $tdir ] || mkdir -p $tdir
 	echo "(Hello Print)0 <- 0(World Gens \"3\"); " 	\
